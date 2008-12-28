@@ -7,6 +7,7 @@ using Server.Network;
 
 namespace Server.Mobiles
 {
+    [CorpseName("an elite ninja corpse")] 
 	public class EliteNinja : BaseCreature
 	{
 		public override bool ClickTitle{ get{ return false; } }

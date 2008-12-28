@@ -2065,6 +2065,10 @@ namespace Server.Mobiles
 					m_AI = new NecromageAI(this);
 					break;
 				#endregion
+// >>>>>>>>>> ERICA'S ORC SCOUT
+				case AIType.AI_OrcScout:
+					m_AI = new OrcScoutAI( this );			         
+				        break;
 			}
 		}
 
