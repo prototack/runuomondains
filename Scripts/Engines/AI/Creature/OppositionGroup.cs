@@ -106,9 +106,11 @@ namespace Server
 					typeof( Silvani ),
 					typeof( Unicorn ),
 					typeof( Wisp ),
+					#region Mondain's Legacy
 					typeof( Treefellow ),
-				      typeof( DryadA )
-                        },
+				    typeof( DryadA )
+				    #endregion
+                },
 				new Type[]
 				{
 					typeof( AncientLich ),
@@ -130,8 +132,9 @@ namespace Server
 					typeof( RottingCorpse ),
 					typeof( SkeletalDragon ),
 					typeof( Lich ),
-				      typeof( GiantBlackWidow ),
-                              typeof( Gnaw ),
+				    typeof( GiantBlackWidow ),
+				    #region Mondain's Legacy
+                	typeof( Gnaw ),
 					typeof( LadyLissith ),
 					typeof( Guile ),
 					typeof( LadySabrix ),
@@ -140,13 +143,14 @@ namespace Server
 					typeof( Irk ),
 					typeof( Malefic ),
 					typeof( Spite ),
-				      typeof( DireWolf ),
-                              typeof( Quagmire ),
-                              typeof( SwampTentacle ),
-                              typeof( WhippingVine ),
-                              typeof( Corpser ),
-                              typeof( Changeling )
-                         }
+				    typeof( DireWolf ),
+                    typeof( Quagmire ),
+                    typeof( SwampTentacle ),
+                    typeof( WhippingVine ),
+                    typeof( Corpser ),
+                    typeof( Changeling )
+                    #endregion
+                }
 			} );
 
 		public static OppositionGroup FeyAndUndead

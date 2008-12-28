@@ -14,7 +14,7 @@ namespace Server.Items
 			
 			Attributes.WeaponDamage = 10;
 			
-			DamageModifier.Fire = 100;
+			DamageModifier.Chaos = 100;
 			
 			WeightReduction = 50;
 		}
@@ -27,7 +27,7 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 1 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
@@ -35,6 +35,12 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+
+            if ( version == 0 )
+            {
+                DamageModifier.Fire = 0;
+                DamageModifier.Chaos = 100;
+            }
 		}
 	}
 }
