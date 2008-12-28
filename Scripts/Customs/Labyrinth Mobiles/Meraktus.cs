@@ -57,14 +57,12 @@ namespace Server.Mobiles
 			
 			switch ( Utility.Random( 3 ) )
 			{
-				case 1: c.DropItem( new MinotaurHedge() ); break;
-				case 2: c.DropItem( new BonePile() ); break;
-				case 3: c.DropItem( new LightYarn() ); break;
+				case 0: c.DropItem( new MinotaurHedge() ); break;
+				case 1: c.DropItem( new BonePile() ); break;
+				case 2: c.DropItem( new LightYarn() ); break;
 			}
 
 			//c.DropItem( new InsertYourItemHere() );
-
-			base.OnDeath( c );
 			
 			if ( Utility.RandomBool() )
 				c.DropItem( new TormentedChains() );
