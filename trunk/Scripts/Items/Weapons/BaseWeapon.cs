@@ -905,10 +905,11 @@ namespace Server.Items
 
 			double delayInSeconds;
 
+			#region Mondain's Legacy
 			if ( Core.ML )
 			{
 				float ticks = MlSpeed * 4;
-				int stamTicks = Math.Min( m.Stam / 30, 1 );
+				int stamTicks = m.Stam / 30;
 								
 				// Swing speed bonus
 				int bonus = AosAttributes.GetValue( m, AosAttribute.WeaponSpeed );
@@ -942,8 +943,9 @@ namespace Server.Items
 				if ( bonus > 60 )
 					bonus = 60;
 					
-				delayInSeconds = Math.Max( ( ( ticks - stamTicks ) * ( 100.0 / ( 100 + bonus ) ) ) / 4, 1.25 );								
+				delayInSeconds = Math.Max( ( ( ticks - stamTicks ) * ( 100.0 / ( 100 + bonus ) ) ) / 4, 1.25 );
 			}
+			#endregion
 			else if ( Core.SE )
 			{
 				/*
@@ -3339,10 +3341,10 @@ namespace Server.Items
 			if ( m_Poison != null && m_PoisonCharges > 0 )
 			{
 				
-				if ( m_Poison == Poison.Darkglow )
-					list.Add( 1072853, m_PoisonCharges.ToString() ); // darkglow poison charges: ~1_val~
-				else if ( m_Poison == Poison.Parasitic )
+				if ( m_Poison.Level >= 14 )
 					list.Add( 1072852, m_PoisonCharges.ToString() ); // parasitic poison charges: ~1_val~
+				else if ( m_Poison.Level >= 10 )
+					list.Add( 1072853, m_PoisonCharges.ToString() ); // darkglow poison charges: ~1_val~
 				else
 					list.Add( 1062412 + m_Poison.Level, m_PoisonCharges.ToString() );
 			}

@@ -122,16 +122,46 @@ namespace Server.SkillHandlers
 							{
 								((BaseWeapon)m_Target).Poison = m_Poison;
 								((BaseWeapon)m_Target).PoisonCharges = 18 - (m_Poison.Level * 2);
+
+								#region Mondain's Legacy
+								if ( m_Poison != null )
+								{
+									if ( m_Poison.Level >= 14 )
+										((BaseWeapon)m_Target).PoisonCharges = 46 - (m_Poison.Level * 2);
+									else if ( m_Poison.Level >= 10 )
+										((BaseWeapon)m_Target).PoisonCharges = 38 - (m_Poison.Level * 2);
+								}
+								#endregion
 							}
 							else if ( m_Target is FukiyaDarts )
 							{
 								((FukiyaDarts)m_Target).Poison = m_Poison;
 								((FukiyaDarts)m_Target).PoisonCharges = Math.Min( 18 - (m_Poison.Level * 2), ((FukiyaDarts)m_Target).UsesRemaining );
+
+								#region Mondain's Legacy
+								if ( m_Poison != null )
+								{
+									if ( m_Poison.Level >= 14 )
+										((FukiyaDarts)m_Target).PoisonCharges =  Math.Min( 46 - (m_Poison.Level * 2), ((FukiyaDarts)m_Target).UsesRemaining );
+									else if ( m_Poison.Level >= 10 )
+										((FukiyaDarts)m_Target).PoisonCharges =  Math.Min( 38 - (m_Poison.Level * 2), ((FukiyaDarts)m_Target).UsesRemaining );
+								}
+								#endregion
 							}
 							else if ( m_Target is Shuriken )
 							{
 								((Shuriken)m_Target).Poison = m_Poison;
 								((Shuriken)m_Target).PoisonCharges = Math.Min( 18 - (m_Poison.Level * 2), ((Shuriken)m_Target).UsesRemaining );
+
+								#region Mondain's Legacy
+								if ( m_Poison != null )
+								{
+									if ( m_Poison.Level >= 14 )
+										((Shuriken)m_Target).PoisonCharges =  Math.Min( 46 - (m_Poison.Level * 2), ((Shuriken)m_Target).UsesRemaining );
+									else if ( m_Poison.Level >= 10 )
+										((Shuriken)m_Target).PoisonCharges =  Math.Min( 38 - (m_Poison.Level * 2), ((Shuriken)m_Target).UsesRemaining );
+								}
+								#endregion
 							}
 
 							m_From.SendLocalizedMessage( 1010517 ); // You apply the poison
