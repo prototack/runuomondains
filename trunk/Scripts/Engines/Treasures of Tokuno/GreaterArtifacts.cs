@@ -542,7 +542,12 @@ namespace Server.Items
 			if( !CraftResources.IsStandard( resource ) )
 				return true;
 
-			return( 
+			#region Heritage Items
+			if ( i is ITokunoDyable )
+				return true;
+			#endregion
+
+			return ( 
 				IsInTypeList( t, TreasuresOfTokuno.LesserArtifacts )
 				|| IsInTypeList( t, TreasuresOfTokuno.GreaterArtifacts ) 
 				#region Mondain's Legacy

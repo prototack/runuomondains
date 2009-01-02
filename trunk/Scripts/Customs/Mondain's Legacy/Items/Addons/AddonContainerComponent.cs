@@ -52,6 +52,14 @@ namespace Server.Items
 		{
 		}
 
+		public override bool OnDragDrop( Mobile from, Item dropped )
+		{
+			if ( Addon != null )
+				return Addon.OnDragDrop( from, dropped );
+
+			return false;
+		}
+
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( m_Addon != null )

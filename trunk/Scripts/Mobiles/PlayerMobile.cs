@@ -284,6 +284,17 @@ namespace Server.Mobiles
         }
         #endregion
 
+        #region Veteran Rewards
+        private DateTime m_AnkhNextUse;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime AnkhNextUse
+        {
+            get { return m_AnkhNextUse; }
+            set { m_AnkhNextUse = value; }
+        }
+        #endregion
+
         #region Mondain's Legacy
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Bedlam
@@ -2414,6 +2425,14 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                #region Mondain's Legacy
+                case 27:
+                    {
+                        m_AnkhNextUse = reader.ReadDateTime();
+
+                        goto case 26;
+                    }
+                #endregion
                 case 26:
                     {
                         #region Mondain's Legacy
@@ -2731,7 +2750,11 @@ namespace Server.Mobiles
 
             base.Serialize(writer);
 
-            writer.Write((int)26); // version
+            writer.Write((int)27); // version
+
+            #region Veteran Rewards
+            writer.Write((DateTime)m_AnkhNextUse);
+            #endregion
 
             #region Mondain's Legacy version 26
             QuestWriter.Quests(writer, m_Quests);
@@ -2907,6 +2930,11 @@ namespace Server.Mobiles
 
         public override bool CanSee(Mobile m)
         {
+            #region Veteran Rewards
+            if (m is CharacterStatue)
+                ((CharacterStatue)m).OnRequestedAnimation(this);
+            #endregion
+
             if (m is PlayerMobile && ((PlayerMobile)m).m_VisList.Contains(this))
                 return true;
 

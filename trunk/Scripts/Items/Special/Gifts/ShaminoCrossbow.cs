@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class ShaminoCrossbow : RepeatingCrossbow
+	public class ShaminoCrossbow : RepeatingCrossbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1062915; } } // Shamino’s Best Crossbow
 

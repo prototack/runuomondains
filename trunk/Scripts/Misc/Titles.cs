@@ -79,7 +79,16 @@ namespace Server.Misc
 					offset *= (1 - (int) (((double) -talisman.KarmaLoss) / 100));
 			}		
 			#endregion
-			
+
+			#region Heritage Items
+			int karmaLoss = AosAttributes.GetValue( m, AosAttribute.IncreasedKarmaLoss );
+
+			if ( karmaLoss != 0 && offset < 0 )
+			{				
+				offset -=  (int) ( offset * ( karmaLoss / 100.0 ) );
+			}		
+			#endregion
+
 			if ( offset > 0 )
 			{
 				if ( m is PlayerMobile && ((PlayerMobile)m).KarmaLocked )

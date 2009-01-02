@@ -34,7 +34,7 @@ namespace Server.Items
 		{
 		}
 
-		public bool Dye( Mobile from, DyeTub sender )
+		public virtual bool Dye( Mobile from, DyeTub sender )
 		{
 			if ( Deleted )
 				return false;
@@ -92,7 +92,7 @@ namespace Server.Items
 				{
 					if ( from.InRange( m_Bandage.GetWorldLocation(), Bandage.Range ) )
 					{
-						if ( BandageContext.BeginHeal( from, (Mobile)targeted ) != null )
+						if ( BandageContext.BeginHeal( from, (Mobile)targeted, m_Bandage is EnhancedBandage ) != null )
 						{
 							m_Bandage.Consume();
 						}
@@ -122,19 +122,27 @@ namespace Server.Items
 		public int Slips{ get{ return m_Slips; } set{ m_Slips = value; } }
 		public Timer Timer{ get{ return m_Timer; } }
 
+		#region Heritage Items
+		private bool m_Enhanced;
+
+		public bool Enhanced{ get{ return m_Enhanced; } }
+		#endregion
+
 		public void Slip()
 		{
 			m_Healer.SendLocalizedMessage( 500961 ); // Your fingers slip!
 			++m_Slips;
 		}
 
-		public BandageContext( Mobile healer, Mobile patient, TimeSpan delay )
+		public BandageContext( Mobile healer, Mobile patient, TimeSpan delay, bool enhanced )
 		{
 			m_Healer = healer;
 			m_Patient = patient;
 
 			m_Timer = new InternalTimer( this, delay );
 			m_Timer.Start();
+
+			m_Enhanced = enhanced;
 		}
 
 		public void StopHeal()
@@ -332,6 +340,10 @@ namespace Server.Items
 				double anatomy = m_Healer.Skills[secondarySkill].Value;
 				double chance = ((healing + 10.0) / 100.0) - (m_Slips * 0.02);
 
+				#region Heritage Items
+				healing += EnhancedBandage.HealingBonus;
+				#endregion
+
 				if ( chance > Utility.RandomDouble() )
 				{
 					healerNumber = 500969; // You finish applying the bandages.
@@ -408,6 +420,11 @@ namespace Server.Items
 
 		public static BandageContext BeginHeal( Mobile healer, Mobile patient )
 		{
+			return BeginHeal( healer, patient, false );
+		}
+
+		public static BandageContext BeginHeal( Mobile healer, Mobile patient, bool enhanced )
+		{
 			bool isDeadPet = ( patient is BaseCreature && ((BaseCreature)patient).IsDeadPet );
 
 			if ( patient is Golem )
@@ -468,7 +485,7 @@ namespace Server.Items
 				if ( context != null )
 					context.StopHeal();
 
-				context = new BandageContext( healer, patient, TimeSpan.FromSeconds( seconds ) );
+				context = new BandageContext( healer, patient, TimeSpan.FromSeconds( seconds ), enhanced );
 
 				m_Table[healer] = context;
 

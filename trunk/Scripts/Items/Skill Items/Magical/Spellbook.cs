@@ -659,6 +659,11 @@ namespace Server.Items
 			if ( (prop = m_AosAttributes.WeaponSpeed) != 0 )
 				list.Add( 1060486, prop.ToString() ); // swing speed increase ~1_val~%
 
+			#region Heritage Items
+			if ( (prop = m_AosAttributes.IncreasedKarmaLoss) != 0 )
+				list.Add( 1075210, prop.ToString() ); // Increased Karma Loss ~1val~%
+			#endregion
+
 			list.Add( 1042886, m_Count.ToString() ); // ~1_NUMBERS_OF_SPELLS~ Spells
 		}
 
@@ -850,7 +855,7 @@ namespace Server.Items
 			};
 
 		public virtual int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
-		{		
+		{
 			int magery = from.Skills.Magery.BaseFixedPoint;
 
 			if ( magery >= 800 )

@@ -10,7 +10,7 @@ using Server.ContextMenus;
 namespace Server.Items
 {
 	[FlipableAttribute( 0x234E, 0x234F )]
-	public class TapestryOfSosaria : Item, ISecurable
+	public class TapestryOfSosaria : Item, ISecurable, ITokunoDyable
 	{
 		private SecureLevel m_Level;
 

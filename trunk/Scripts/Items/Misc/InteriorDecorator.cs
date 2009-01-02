@@ -164,7 +164,7 @@ namespace Server.Items
 					{
 						from.SendLocalizedMessage( 1042270 ); // That is not in your house.
 					}
-					else if ( !house.IsLockedDown( item ) && !house.IsSecure( item ) )
+					else if ( !house.IsLockedDown( item ) && !house.IsSecure( item ) && !( item is AddonComponent ) && !( item is AddonContainerComponent ) )
 					{
 						from.SendLocalizedMessage( 1042271 ); // That is not locked down.
 					}
@@ -192,10 +192,34 @@ namespace Server.Items
 			{
 				FlipableAttribute[] attributes = (FlipableAttribute[])item.GetType().GetCustomAttributes( typeof( FlipableAttribute ), false );
 
+				Item addon = null;
+
 				if( attributes.Length > 0 )
 					attributes[0].Flip( item );
+				#region Heritage Items
+				else if ( item is AddonComponent )
+				{
+					addon = ((AddonComponent) item).Addon;
+				}
+				else if ( item is AddonContainerComponent )
+				{
+					addon = ((AddonContainerComponent) item).Addon;
+				}
+				else if ( item is BaseAddonContainer )
+				{
+					addon = (BaseAddonContainer) item;
+				}
+				#endregion
 				else
 					from.SendLocalizedMessage( 1042273 ); // You cannot turn that.
+
+				if ( addon != null )
+				{
+					FlipableAddonAttribute[] fattributes = (FlipableAddonAttribute[]) addon.GetType().GetCustomAttributes( typeof( FlipableAddonAttribute ), false );
+					
+					if ( fattributes.Length > 0 )
+						fattributes[ 0 ].Flip( from, addon );
+				}
 			}
 
 			private static void Up( Item item, Mobile from )

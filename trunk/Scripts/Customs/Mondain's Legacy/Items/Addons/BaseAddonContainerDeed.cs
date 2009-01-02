@@ -70,7 +70,7 @@ namespace Server.Items
 			if ( IsChildOf( from.Backpack ) )
 				from.Target = new InternalTarget( this );
 			else
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
+				from.SendLocalizedMessage( 1062334 ); // This item must be in your backpack to be used.
 		}
 
 		public override void GetProperties( ObjectPropertyList list )

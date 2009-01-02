@@ -33,7 +33,12 @@ namespace Server.Items
 		FireElemental,
 		Wolf,
 		PhillipsWoodenSteed,
-		Seahorse
+		Seahorse,
+
+		#region Veteran Rewards
+		Harrower,
+		Efreet
+		#endregion
 	}
 
 	public class MonsterStatuetteInfo
@@ -51,6 +56,13 @@ namespace Server.Items
 			m_LabelNumber = labelNumber;
 			m_ItemID = itemID;
 			m_Sounds = new int[]{ baseSoundID, baseSoundID + 1, baseSoundID + 2, baseSoundID + 3, baseSoundID + 4 };
+		}
+
+		public MonsterStatuetteInfo( int labelNumber, int itemID, int[] sounds )
+		{
+			m_LabelNumber = labelNumber;
+			m_ItemID = itemID;
+			m_Sounds = sounds;
 		}
 
 		private static MonsterStatuetteInfo[] m_Table = new MonsterStatuetteInfo[]
@@ -79,7 +91,12 @@ namespace Server.Items
 				/* FireElemental */		new MonsterStatuetteInfo( 1049769, 0x20F3, 838 ),
 				/* Wolf */				new MonsterStatuetteInfo( 1049770, 0x2122, 229 ),
 				/* Phillip's Steed */	new MonsterStatuetteInfo( 1063488, 0x3FFE, 205 ),
-				/* Seahorse */			new MonsterStatuetteInfo( 1070819, 0x25BA, 138 )
+				/* Seahorse */			new MonsterStatuetteInfo( 1070819, 0x25BA, 138 ),
+
+				#region Veteran Rewards
+				/* Harrower */			new MonsterStatuetteInfo( 1080520, 0x25BB, new int[] { 0x289, 0x28A, 0x28B } ),
+				/* Efreet */			new MonsterStatuetteInfo( 1080521, 0x2590, 0x300 )
+				#endregion
 			};
 
 		public static MonsterStatuetteInfo GetInfo( MonsterStatuetteType type )

@@ -23,6 +23,17 @@ namespace Server.Items
 
 	public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability, ISetItem
 	{
+		#region Veteran Rewards
+		private string m_EngravedText;
+		
+		[CommandProperty( AccessLevel.GameMaster )]
+		public string EngravedText
+		{
+			get{ return m_EngravedText; }
+			set{ m_EngravedText = value; InvalidateProperties(); }
+		}		
+		#endregion
+	
 		#region Factions
 		private FactionItem m_FactionState;
 
@@ -1560,7 +1571,6 @@ namespace Server.Items
 
 			//damage = (int)(damage * factor);
 			damage = AOS.Scale( damage, 100 + percentageBonus );
-			
 			#endregion
 
 			if ( attacker is BaseCreature )
@@ -2550,7 +2560,11 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 10 ); // version
+			writer.Write( (int) 11 ); // version
+
+			#region Veteran Rewards Version 11
+			writer.Write( (string) m_EngravedText );
+			#endregion
 
 			#region Mondain's Legacy version 10
 			writer.Write( (int) m_Slayer3 );
@@ -2777,6 +2791,12 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				case 11:
+					#region Veteran Rewards 
+					m_EngravedText = reader.ReadString();
+					
+					goto case 10;
+					#endregion
 				#region Mondain's Legacy
 				case 10:
 				{
@@ -3263,6 +3283,11 @@ namespace Server.Items
 				list.Add( LabelNumber );
 			else
 				list.Add( Name );
+				
+			#region Veteran Rewards
+			if ( !String.IsNullOrEmpty( m_EngravedText ) )
+				list.Add( 1062613, m_EngravedText );
+			#endregion
 		}
 
 		public override bool AllowEquipedCast( Mobile from )
@@ -3652,7 +3677,7 @@ namespace Server.Items
 
 		#region ICraftable Members
 
-		public virtual int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
+		public int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
 		{
 			Quality = (WeaponQuality)quality;
 

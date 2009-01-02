@@ -10,7 +10,7 @@ using Server.ContextMenus;
 namespace Server.Items
 {
 	[FlipableAttribute( 0x234C, 0x234D )]
-	public class RoseOfTrinsic : Item, ISecurable
+	public class RoseOfTrinsic : Item, ISecurable, ITokunoDyable
 	{
 		private static readonly TimeSpan m_SpawnTime = TimeSpan.FromHours( 4.0 );
 
