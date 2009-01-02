@@ -22,7 +22,7 @@ namespace Server
 				info.StatTotal = 0.0;
 			}
 		}
-		
+
 		public static int Damage( Mobile m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy )
 		{
 			return Damage( m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, 0 );
@@ -239,7 +239,11 @@ namespace Server
 		EnhancePotions=0x00080000,
 		Luck=0x00100000,
 		SpellChanneling=0x00200000,
-		NightSight=0x00400000
+		NightSight=0x00400000,
+
+		#region Heritage Items
+		IncreasedKarmaLoss = 0x00800000
+		#endregion
 	}
 
 	public sealed class AosAttributes : BaseAttributes
@@ -437,7 +441,12 @@ namespace Server
 		public int SpellChanneling { get { return this[AosAttribute.SpellChanneling]; } set { this[AosAttribute.SpellChanneling] = value; } }
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int NightSight { get { return this[AosAttribute.NightSight]; } set { this[AosAttribute.NightSight] = value; } }
+		public int NightSight { get { return this[AosAttribute.NightSight]; } set { this[AosAttribute.NightSight] = value; } }		
+
+		#region Heritage Items
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int IncreasedKarmaLoss { get { return this[AosAttribute.IncreasedKarmaLoss]; } set { this[AosAttribute.IncreasedKarmaLoss] = value; } }
+		#endregion
 	}
 
 	[Flags]

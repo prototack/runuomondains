@@ -8,6 +8,7 @@ namespace Server.Items
 	public class HearthOfHomeFire : BaseAddon
 	{
 		public override BaseAddonDeed Deed{ get{ return new HearthOfHomeFireDeed(); } }
+		public override bool RetainDeedHue{ get{ return true; } }
 
 		[Constructable]
 		public HearthOfHomeFire( bool east )
@@ -50,12 +51,11 @@ namespace Server.Items
 		}
 	}
 
-	public class HearthOfHomeFireDeed : BaseAddonDeed
+	public class HearthOfHomeFireDeed : BaseAddonDeed, ITokunoDyable
 	{
 		private bool m_East;
 
 		public override BaseAddon Addon{ get{ return new HearthOfHomeFire( m_East ); } }
-
 		public override int LabelNumber{ get{ return 1062919; } } // Hearth of the Home Fire
 
 		[Constructable]

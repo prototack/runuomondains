@@ -95,7 +95,7 @@ namespace Server.Items
 		
 		public Item Ammo
 		{
-			get{ return Items.Count == 1 ? Items[ 0 ] : null; }
+			get{ return Items.Count >= 1 ? Items[ 0 ] : null; }
 		}
 		#endregion
 		

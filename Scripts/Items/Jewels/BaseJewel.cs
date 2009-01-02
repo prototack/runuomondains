@@ -287,6 +287,14 @@ namespace Server.Items
 				list.Add( 1060486, prop.ToString() ); // swing speed increase ~1_val~%
 
 			base.AddResistanceProperties( list );
+							
+			#region Sets
+			if ( IsSetItem && !m_SetEquipped )
+			{
+				list.Add( 1072378 ); // <br>Only when full set is present:				
+				SetHelper.GetSetProperties( list, this );
+			}
+			#endregion		
 		}
 
 		public override void Serialize( GenericWriter writer )

@@ -1062,6 +1062,10 @@ namespace Server.Multis
 				return true;
 			else if ( item is VendorRentalContract )
 				return true;
+			#region Veteran Rewards
+			else if ( item is RewardBrazier )
+				return true;
+			#endregion
 
 			return false;
 		}
@@ -1834,6 +1838,11 @@ namespace Server.Multis
 				item.PublicOverheadMessage( Server.Network.MessageType.Label, 0x3B2, 501657 );//[no longer locked down]
 				SetLockdown( item, false );
 				//TidyItemList( m_LockDowns );
+
+				#region Veteran Rewards
+				if ( item is RewardBrazier )
+					((RewardBrazier) item).TurnOff();
+				#endregion
 			}
 			else if ( IsSecure( item ) )
 			{
@@ -1961,7 +1970,7 @@ namespace Server.Multis
 				SecureInfo info = (SecureInfo)m_Secures[i];
 
 				if ( info.Item == item && HasSecureAccess( m, info.Level ) )
-				{					
+				{
 					item.IsLockedDown = false;
 					item.IsSecure = false;
 

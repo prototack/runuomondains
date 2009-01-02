@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Items
 {
 	[FlipableAttribute( 0x2B02, 0x2B03 )]
-	public class QuiverOfInfinity : BaseQuiver
+	public class QuiverOfInfinity : BaseQuiver, ITokunoDyable
 	{		
 		public override int LabelNumber{ get{ return 1075201; } } // Quiver of Infinity
 		
