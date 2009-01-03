@@ -106,7 +106,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (m_IsRewardItem)
-                list.Add(1076223); // 7th Year Veteran Reward
+                list.Add(1076217); // 1st Year Veteran Reward
         }
 
         public override void Serialize(GenericWriter writer)
@@ -161,7 +161,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (m_IsRewardItem)
-                list.Add(1076223); // 7th Year Veteran Reward
+                list.Add(1076217); // 1st Year Veteran Reward
         }
 
         public MalasMountainPassDeed(Serial serial)

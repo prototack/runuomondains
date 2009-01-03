@@ -287,6 +287,8 @@ namespace Server.Engines.VeteranRewards
 						#region Veteran Rewards
 						new RewardEntry( miscellaneous,  1076155, typeof( RedSoulstone ) ),
 						new RewardEntry( miscellaneous,  1080523, typeof( CommodityDeedBox ) ),
+                        new RewardEntry( houseAddOns,    1062692, typeof( MalasMountainPassDeed ) ),
+						new RewardEntry( houseAddOns,    1072216, typeof( ChurchAtNightDeed ) ),
 						#endregion
 					} ),
 					new RewardList( RewardInterval, 2, new RewardEntry[]
@@ -422,8 +424,6 @@ namespace Server.Engines.VeteranRewards
 						#region Veteran Rewards
 						new RewardEntry( houseAddOns,	1076157, typeof( CannonDeed ) ),					
 						new RewardEntry( houseAddOns,	1080550, typeof( TreeStumpDeed ) ),
-                        new RewardEntry( houseAddOns,    1062692, typeof( MalasMountainPassDeed ) ),
-						new RewardEntry( houseAddOns,    1072216, typeof( ChurchAtNightDeed ) ),
 						#endregion
 					} ),
 					new RewardList( RewardInterval, 8, new RewardEntry[]
