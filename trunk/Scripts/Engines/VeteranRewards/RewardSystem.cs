@@ -285,8 +285,6 @@ namespace Server.Engines.VeteranRewards
 						new RewardEntry( monsterStatues, 1006037, typeof( MonsterStatuette ), MonsterStatuetteType.Troll ),
 						
 						#region Veteran Rewards
-						new RewardEntry( houseAddOns,    1062692, typeof( ContestMiniHouseDeed ), MiniHouseType.MalasMountainPass ),
-						new RewardEntry( houseAddOns,    1072216, typeof( ContestMiniHouseDeed ), MiniHouseType.ChurchAtNight ),
 						new RewardEntry( miscellaneous,  1076155, typeof( RedSoulstone ) ),
 						new RewardEntry( miscellaneous,  1080523, typeof( CommodityDeedBox ) ),
 						#endregion
@@ -369,7 +367,7 @@ namespace Server.Engines.VeteranRewards
 						new RewardEntry( etherealSteeds, 1049746, typeof( EtherealKirin ) ),
 						new RewardEntry( etherealSteeds, 1049745, typeof( EtherealUnicorn ) ),
 						new RewardEntry( etherealSteeds, 1049747, typeof( EtherealRidgeback ) ),
-						
+
 						#region Veteran Rewards
 						new RewardEntry( houseAddOns,    1049737, typeof( DecorativeShieldDeed ) ),
 						new RewardEntry( houseAddOns, 	 1049738, typeof( HangingSkeletonDeed ) )
@@ -404,18 +402,18 @@ namespace Server.Engines.VeteranRewards
 						new RewardEntry( monsterStatues, 1049770, typeof( MonsterStatuette ), MonsterStatuetteType.Wolf ),
 						new RewardEntry( etherealSteeds, 1049749, typeof( EtherealSwampDragon ) ),
 						new RewardEntry( etherealSteeds, 1049748, typeof( EtherealBeetle ) ),
-						
+
 						#region Veteran Rewards
 						new RewardEntry( houseAddOns,    1049739, typeof( StoneAnkhDeed ) ),
 						new RewardEntry( houseAddOns,    1080384, typeof( BloodyPentagramDeed ) )
 						#endregion
-					} ),					
+					} ),
 					new RewardList( RewardInterval, 6, new RewardEntry[]
 					{
 						#region Veteran Rewards
 						new RewardEntry( houseAddOns,	1076188, typeof( CharacterStatueMaker ), StatueType.Jade ),
 						new RewardEntry( houseAddOns,	1076189, typeof( CharacterStatueMaker ), StatueType.Marble ),
-						new RewardEntry( houseAddOns,	1076190, typeof( CharacterStatueMaker ), StatueType.Bronze ),						
+						new RewardEntry( houseAddOns,	1076190, typeof( CharacterStatueMaker ), StatueType.Bronze ),
 						new RewardEntry( houseAddOns,	1080527, typeof( RewardBrazierDeed ) )
 						#endregion
 					} ),		
@@ -423,7 +421,9 @@ namespace Server.Engines.VeteranRewards
 					{
 						#region Veteran Rewards
 						new RewardEntry( houseAddOns,	1076157, typeof( CannonDeed ) ),					
-						new RewardEntry( houseAddOns,	1080550, typeof( TreeStumpDeed ) )
+						new RewardEntry( houseAddOns,	1080550, typeof( TreeStumpDeed ) ),
+                        new RewardEntry( houseAddOns,    1062692, typeof( MalasMountainPassDeed ) ),
+						new RewardEntry( houseAddOns,    1072216, typeof( ChurchAtNightDeed ) ),
 						#endregion
 					} ),
 					new RewardList( RewardInterval, 8, new RewardEntry[]

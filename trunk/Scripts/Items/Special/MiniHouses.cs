@@ -3,207 +3,271 @@ using Server;
 
 namespace Server.Items
 {
-	public class MiniHouseAddon : BaseAddon
-	{
-		private MiniHouseType m_Type;
+    public class MiniHouseAddon : BaseAddon
+    {
+        private MiniHouseType m_Type;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public MiniHouseType Type
+        [CommandProperty(AccessLevel.GameMaster)]
+        public MiniHouseType Type
+        {
+            get { return m_Type; }
+            set { m_Type = value; Construct(); }
+        }
+
+        public override BaseAddonDeed Deed { get { return new MiniHouseDeed(m_Type); } }
+        public override int LabelNumber { get { return MiniHouseInfo.GetInfo(m_Type).LabelNumber; } }
+
+        [Constructable]
+        public MiniHouseAddon()
+            : this(MiniHouseType.StoneAndPlaster)
+        {
+        }
+
+        [Constructable]
+        public MiniHouseAddon(MiniHouseType type)
+        {
+            m_Type = type;
+            Construct();
+        }
+
+        public void Construct()
+        {
+            Components.Clear();
+
+            MiniHouseInfo info = MiniHouseInfo.GetInfo(m_Type);
+
+            if (m_Type == MiniHouseType.ChurchAtNight)
+            {
+                AddComponent(new AddonComponent(info.Graphics[0]), 0, 0, 0);
+                AddComponent(new AddonComponent(info.Graphics[1]), -1, 0, 0);
+                AddComponent(new AddonComponent(info.Graphics[2]), 0, -1, 0);
+                return;
+            }
+            else if (m_Type == MiniHouseType.GingerBreadHouse)
+            {
+                AddComponent(new AddonComponent(info.Graphics[0]), 0, 0, 0);
+                AddComponent(new AddonComponent(info.Graphics[1]), 1, 0, 0);
+                AddComponent(new AddonComponent(info.Graphics[2]), 1, -1, 0);
+                return;
+            }
+
+            int size = (int)Math.Sqrt(info.Graphics.Length);
+            int num = 0;
+
+            for (int y = 0; y < size; ++y)
+                for (int x = 0; x < size; ++x)
+                    AddComponent(new AddonComponent(info.Graphics[num++]), size - x - 1, size - y - 1, 0);
+        }
+
+        public MiniHouseAddon(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+
+            writer.Write((int)m_Type);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 0:
+                    {
+                        m_Type = (MiniHouseType)reader.ReadInt();
+                        break;
+                    }
+            }
+        }
+    }
+
+    public class MiniHouseDeed : BaseAddonDeed
+    {
+        private MiniHouseType m_Type;
+        public static MiniHouseType[] MiniHouseDeedCommon = new MiniHouseType[]
 		{
-			get{ return m_Type; }
-			set{ m_Type = value; Construct(); }
-		}
-
-		public override BaseAddonDeed Deed{ get{ return new MiniHouseDeed( m_Type ); } }
-
-		[Constructable]
-		public MiniHouseAddon() : this( MiniHouseType.StoneAndPlaster )
+			MiniHouseType.Brick, MiniHouseType.FieldStone, MiniHouseType.SmallBrick,
+			MiniHouseType.LargeHouseWithPatio, MiniHouseType.SmallMarbleWorkshop, MiniHouseType.SmallStoneWorkshop,
+			MiniHouseType.TwoStoryLogCabin, MiniHouseType.TwoStoryStoneAndPlaster, MiniHouseType.TwoStoryWoodAndPlaster,
+			MiniHouseType.Wooden, MiniHouseType.StoneAndPlaster			
+		};
+        public static MiniHouseType[] MiniHouseDeedSemiRare = new MiniHouseType[]
 		{
-		}
-
-		[Constructable]
-		public MiniHouseAddon( MiniHouseType type )
+			MiniHouseType.SmallStoneTower, MiniHouseType.TwoStoryVilla, MiniHouseType.MarbleHouseWithPatio,
+			MiniHouseType.WoodAndPlaster, MiniHouseType.SandstoneHouseWithPatio
+		};
+        public static MiniHouseType[] MiniHouseDeedRare = new MiniHouseType[]
 		{
-			m_Type = type;
-
-			Construct();
-		}
-
-		public void Construct()
-		{					
-			#region Veteran Rewards
-			foreach ( AddonComponent c in Components )
-			{
-				c.Addon = null;
-				c.Delete();
-			}
-			#endregion
-			
-			Components.Clear();
-
-			MiniHouseInfo info = MiniHouseInfo.GetInfo( m_Type );
-
-			int size = (int)Math.Sqrt( info.Graphics.Length );
-			int num = 0;
-
-			for ( int y = 0; y < size; ++y )
-				for ( int x = 0; x < size; ++x )
-					if ( info.Graphics[num] != 0x1 ) // Veteran Rewards Mod
-						AddComponent( new AddonComponent( info.Graphics[num++] ), size - x - 1, size - y - 1, 0 );
-		}
-
-		public MiniHouseAddon( Serial serial ) : base( serial )
+			MiniHouseType.ThatchedRoof, MiniHouseType.MalasMountainPass, MiniHouseType.GingerBreadHouse
+		};
+        public static MiniHouseType[] MiniHouseDeedVeryRare = new MiniHouseType[]
 		{
-		}
-
-		public override void Serialize( GenericWriter writer )
+			MiniHouseType.SmallStoneKeep, MiniHouseType.Tower
+		};
+        public static MiniHouseType[] MiniHouseDeedUltraRare = new MiniHouseType[]
 		{
-			base.Serialize( writer );
+			MiniHouseType.ChurchAtNight, MiniHouseType.Castle 
+		};
 
-			writer.Write( (int) 0 ); // version
+        [CommandProperty(AccessLevel.GameMaster)]
+        public MiniHouseType Type
+        {
+            get { return m_Type; }
+            set
+            {
+                m_Type = (value == MiniHouseType.Random) ? RandomMiniHouseDeed() : value;
+                InvalidateProperties();
+            }
+        }
 
-			writer.Write( (int) m_Type );
-		}
+        public override BaseAddon Addon { get { return new MiniHouseAddon(m_Type); } }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override int LabelNumber
+        {
+            get
+            {
+                switch (m_Type)
+                {
+                    case MiniHouseType.MalasMountainPass: return 1062692; // Mini House: Contest Winning House Design
+                    case MiniHouseType.ChurchAtNight: return 1072216; // Mini House: Contest 2004 Winning House Design
+                    case MiniHouseType.GingerBreadHouse: return 1077394; // a Gingerbread House Deed
+                    default: return 1062096;  // a mini house deed
+                }
+            }
+        }
 
-			int version = reader.ReadInt();
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+            list.Add(MiniHouseInfo.GetInfo(m_Type).LabelNumber);
+        }
 
-			switch ( version )
-			{
-				case 0:
-				{
-					m_Type = (MiniHouseType)reader.ReadInt();
-					break;
-				}
-			}
-		}
-	}
+        [Constructable]
+        public MiniHouseDeed()
+            : this(MiniHouseType.Random)
+        {
+        }
 
-	public class MiniHouseDeed : BaseAddonDeed
-	{
-		private MiniHouseType m_Type;
+        [Constructable]
+        public MiniHouseDeed(MiniHouseType type)
+        {
+            m_Type = (type == MiniHouseType.Random) ? RandomMiniHouseDeed() : type;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public MiniHouseType Type
-		{
-			get{ return m_Type; }
-			set{ m_Type = value; InvalidateProperties(); }
-		}
+        }
 
-		public override BaseAddon Addon{ get{ return new MiniHouseAddon( m_Type ); } }
-		public override int LabelNumber{ get{ return 1062096; } } // a mini house deed
+        public MiniHouseDeed(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
+        private MiniHouseType RandomMiniHouseDeed()
+        {
+            Double rnd = Utility.RandomDouble();
+            if (rnd < .86)
+                return MiniHouseDeedCommon[Utility.Random(MiniHouseDeedCommon.Length)];
+            else if (rnd < .965)
+                return MiniHouseDeedSemiRare[Utility.Random(MiniHouseDeedSemiRare.Length)];
+            else if (rnd < .985)
+                return MiniHouseDeedRare[Utility.Random(MiniHouseDeedRare.Length)];
+            else if (rnd < .995)
+                return MiniHouseDeedVeryRare[Utility.Random(MiniHouseDeedVeryRare.Length)];
+            else
+                return MiniHouseDeedUltraRare[Utility.Random(MiniHouseDeedUltraRare.Length)];
+        }
 
-			list.Add( MiniHouseInfo.GetInfo( m_Type ).LabelNumber );
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-		[Constructable]
-		public MiniHouseDeed() : this( MiniHouseType.StoneAndPlaster )
-		{
-		}
+            writer.Write((int)0); // version
 
-		[Constructable]
-		public MiniHouseDeed( MiniHouseType type )
-		{
-			m_Type = type;
+            writer.Write((int)m_Type);
+        }
 
-			Weight = 1.0;
-			LootType = LootType.Blessed;
-		}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
 
-		public MiniHouseDeed( Serial serial ) : base( serial )
-		{
-		}
+            int version = reader.ReadInt();
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+            switch (version)
+            {
+                case 0:
+                    {
+                        m_Type = (MiniHouseType)reader.ReadInt();
+                        break;
+                    }
+            }
 
-			writer.Write( (int) 0 ); // version
+            if (Weight == 0.0)
+                Weight = 1.0;
+        }
+    }
 
-			writer.Write( (int) m_Type );
-		}
+    public enum MiniHouseType
+    {
+        StoneAndPlaster,
+        FieldStone,
+        SmallBrick,
+        Wooden,
+        WoodAndPlaster,
+        ThatchedRoof,
+        Brick,
+        TwoStoryWoodAndPlaster,
+        TwoStoryStoneAndPlaster,
+        Tower,
+        SmallStoneKeep,
+        Castle,
+        LargeHouseWithPatio,
+        MarbleHouseWithPatio,
+        SmallStoneTower,
+        TwoStoryLogCabin,
+        TwoStoryVilla,
+        SandstoneHouseWithPatio,
+        SmallStoneWorkshop,
+        SmallMarbleWorkshop,
+        MalasMountainPass,
+        ChurchAtNight,
+        GingerBreadHouse,
+        Random
+    }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+    public class MiniHouseInfo
+    {
+        private int[] m_Graphics;
+        private int m_LabelNumber;
 
-			int version = reader.ReadInt();
+        public int[] Graphics { get { return m_Graphics; } }
+        public int LabelNumber { get { return m_LabelNumber; } }
 
-			switch ( version )
-			{
-				case 0:
-				{
-					m_Type = (MiniHouseType)reader.ReadInt();
-					break;
-				}
-			}
+        public MiniHouseInfo(int start, int count, int labelNumber)
+        {
+            m_Graphics = new int[count];
 
-			if ( Weight == 0.0 )
-				Weight = 1.0;
-		}
-	}
+            for (int i = 0; i < count; ++i)
+                m_Graphics[i] = start + i;
 
-	public enum MiniHouseType
-	{
-		StoneAndPlaster,
-		FieldStone,
-		SmallBrick,
-		Wooden,
-		WoodAndPlaster,
-		ThatchedRoof,
-		Brick,
-		TwoStoryWoodAndPlaster,
-		TwoStoryStoneAndPlaster,
-		Tower,
-		SmallStoneKeep,
-		Castle,
-		LargeHouseWithPatio,
-		MarbleHouseWithPatio,
-		SmallStoneTower,
-		TwoStoryLogCabin,
-		TwoStoryVilla,
-		SandstoneHouseWithPatio,
-		SmallStoneWorkshop, 
-		SmallMarbleWorkshop,
-		
-		#region Veteran Rewards		
-		MalasMountainPass,
-		ChurchAtNight
-		#endregion
-	}
+            m_LabelNumber = labelNumber;
+        }
 
-	public class MiniHouseInfo
-	{
-		private int[] m_Graphics;
-		private int m_LabelNumber;
+        public MiniHouseInfo(int labelNumber, params int[] graphics)
+        {
+            m_LabelNumber = labelNumber;
+            m_Graphics = graphics;
+        }
 
-		public int[] Graphics{ get{ return m_Graphics; } }
-		public int LabelNumber{ get{ return m_LabelNumber; } }
-
-		public MiniHouseInfo( int start, int count, int labelNumber )
-		{
-			m_Graphics = new int[count];
-
-			for ( int i = 0; i < count; ++i )
-				m_Graphics[i] = start + i;
-
-			m_LabelNumber = labelNumber;
-		}
-
-		public MiniHouseInfo( int labelNumber, params int[] graphics )
-		{
-			m_LabelNumber = labelNumber;
-			m_Graphics = graphics;
-		}
-
-		private static MiniHouseInfo[] m_Info = new MiniHouseInfo[]
+        private static MiniHouseInfo[] m_Info = new MiniHouseInfo[]
 			{
 				/* Stone and plaster house           */ new MiniHouseInfo( 0x22C4, 1, 1011303 ),
 				/* Field stone house                 */ new MiniHouseInfo( 0x22DE, 1, 1011304 ),
@@ -225,21 +289,20 @@ namespace Server.Items
 				/* Sandstone house with patio        */ new MiniHouseInfo( 0x22F3, 1, 1011320 ),
 				/* Small stone workshop              */ new MiniHouseInfo( 0x22F6, 1, 1011321 ),
 				/* Small marble workshop             */ new MiniHouseInfo( 0x22F4, 1, 1011322 ),
-				
-				#region Veteran Rewards
-				/* Malas Mountain Pass               */ new MiniHouseInfo( 1062691, 0x2316, 0x2315, 0x2314, 0x2313 ),
-				/* Church At Night                   */ new MiniHouseInfo( 1072214, 0x2318, 0x2317, 0x2319, 0x1 )
-				#endregion
+                /* Malas Mountain Pass		         */ new MiniHouseInfo( 1062691, 0x2316, 0x2315, 0x2314, 0x2313 ),
+                /* Church at Night                   */ new MiniHouseInfo( 1072214, 0x2318, 0x2317, 0x2319 ),
+				/* Gingerbread House                 */ new MiniHouseInfo( 1077395, 0x2BE5, 0x2BE6, 0x2BE7 )
+
 			};
 
-		public static MiniHouseInfo GetInfo( MiniHouseType type )
-		{
-			int v = (int)type;
+        public static MiniHouseInfo GetInfo(MiniHouseType type)
+        {
+            int v = (int)type;
 
-			if ( v < 0 || v >= m_Info.Length )
-				v = 0;
+            if (v < 0 || v >= m_Info.Length)
+                v = 0;
 
-			return m_Info[v];
-		}
-	}
+            return m_Info[v];
+        }
+    }
 }
