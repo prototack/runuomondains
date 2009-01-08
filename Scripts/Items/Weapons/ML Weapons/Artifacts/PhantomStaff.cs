@@ -17,12 +17,14 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 20;
 			Attributes.WeaponDamage = 60;
 		}
-
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy )
+        
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			phys = fire = nrgy = 0;
+			phys = fire = nrgy = chaos = direct = 0;
 			cold = pois = 50;
 		}
+		#endregion
 
 		public PhantomStaff( Serial serial ) : base( serial )
 		{

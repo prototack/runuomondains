@@ -7,13 +7,14 @@ namespace Server.Mobiles
 { 
 	[CorpseName( "an elf corpse" )] 
 	public class ElfBrigand : BaseCreature 
-	{ 
-		public override bool AlwaysMurderer{ get{ return true; } }
+	{
+        public override bool AlwaysMurderer{ get { return true; } }
+        public override bool ShowFameTitle{ get { return false; } }
 		
 		[Constructable] 
 		public ElfBrigand() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 )  // TODO apellweaving AI
-		{ 			
-			Hue = Race.Elf.RandomSkinHue();
+        {
+			Race = Race.Elf;
 
 			if ( Female = Utility.RandomBool() )
 			{
@@ -24,15 +25,16 @@ namespace Server.Mobiles
 			{
 				Body = 605;
 				Name = NameList.RandomName( "male" );
-			}
-				
+            }
+
 			Title = "the brigand";
+			Hue = Race.RandomSkinHue();
 			
 			SetStr( 86, 100 );
 			SetDex( 81, 95 );
 			SetInt( 61, 75 );
 
-			SetDamage( 15, 27 );
+			SetDamage( 10, 23 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -43,7 +45,10 @@ namespace Server.Mobiles
 
 			SetSkill( SkillName.MagicResist, 25.0, 47.5 );
 			SetSkill( SkillName.Tactics, 65.0, 87.5 );
-			SetSkill( SkillName.Wrestling, 15.0, 37.5 );	
+            SetSkill( SkillName.Wrestling, 15.0, 37.5 );
+
+			Fame = 1000;
+			Karma = -1000;	
 			
 			// outfit
 			AddItem( new Shirt( Utility.RandomNeutralHue() ) );
@@ -67,13 +72,15 @@ namespace Server.Mobiles
 				AddItem( new ShortPants( Utility.RandomNeutralHue() ) );				
 			
 			// hair, facial hair			
-			HairItemID = Race.Elf.RandomHair( Female );
-			HairHue = Race.Elf.RandomHairHue();
-			
+			HairItemID = Race.RandomHair( Female );
+			HairHue = Race.RandomHairHue();
+
 			// weapon, shield
-			AddItem( Loot.RandomWeapon() );
-			
-			if ( Utility.RandomBool() )
+			Item weapon = Loot.RandomWeapon();
+
+			AddItem( weapon );
+
+			if ( weapon.Layer == Layer.OneHanded && Utility.RandomBool() )
 				AddItem( Loot.RandomShield() );
 								
 			PackGold( 50, 150 );

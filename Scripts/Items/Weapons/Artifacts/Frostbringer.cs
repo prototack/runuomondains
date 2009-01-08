@@ -18,13 +18,15 @@ namespace Server.Items
 			WeaponAttributes.HitDispel = 50;
 			Attributes.RegenStam = 10;
 			Attributes.WeaponDamage = 50;
-		}
+        }
 
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy )
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			phys = fire = pois = nrgy = 0;
+			phys = fire = pois = nrgy = chaos = direct = 0;
 			cold = 100;
 		}
+		#endregion
 
 		public Frostbringer( Serial serial ) : base( serial )
 		{

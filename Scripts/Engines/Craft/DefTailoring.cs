@@ -232,7 +232,7 @@ namespace Server.Engines.Craft
 				SetNeededExpansion( index, Expansion.ML );
 				
 				index = AddCraft( typeof( QuiverOfIce ), 1015283, 1073110, 65.0, 105.0, typeof( Leather ), 1044462, 28, 1044463 );
-				AddRes( index, typeof( FireRuby ), 1032695, 15, 1042081 );
+				AddRes( index, typeof( WhitePearl ), 1032694, 15, 1042081 );
 				AddRecipe( index, (int) TailorRecipe.QuiverOfIce );
 				SetNeededExpansion( index, Expansion.ML );
 				

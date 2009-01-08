@@ -23,12 +23,13 @@ namespace Server.Items
 			Slayer = SlayerName.Repond;
 		}
 
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy )
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
+			pois = fire = phys = nrgy = chaos = direct = 0;
 			cold = 100;
-
-			pois = fire = phys = nrgy = 0;
 		}
+		#endregion
 
 		public SoulSeeker( Serial serial ) : base( serial )
 		{
