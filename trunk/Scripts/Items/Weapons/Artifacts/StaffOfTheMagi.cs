@@ -19,13 +19,15 @@ namespace Server.Items
 			Attributes.SpellChanneling = 1;
 			Attributes.CastSpeed = 1;
 			Attributes.WeaponDamage = 50;
-		}
+        }
 
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy )
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			phys = fire = cold = pois = 0;
+			phys = fire = cold = pois = chaos = direct = 0;
 			nrgy = 100;
 		}
+		#endregion
 
 		public StaffOfTheMagi( Serial serial ) : base( serial )
 		{

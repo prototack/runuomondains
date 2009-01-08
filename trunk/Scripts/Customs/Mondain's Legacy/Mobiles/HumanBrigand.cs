@@ -7,13 +7,14 @@ namespace Server.Mobiles
 { 
 	[CorpseName( "a human corpse" )] 
 	public class HumanBrigand : BaseCreature 
-	{ 
-		public override bool AlwaysMurderer{ get{ return true; } }
+	{
+        public override bool AlwaysMurderer{ get { return true; } }
+        public override bool ShowFameTitle{ get { return false; } }
 		
 		[Constructable] 
 		public HumanBrigand() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) 
-		{ 			
-			Hue = Race.Human.RandomSkinHue();
+		{
+			Race = Race.Human;
 
 			if ( Female = Utility.RandomBool() )
 			{
@@ -25,14 +26,15 @@ namespace Server.Mobiles
 				Body = 400;
 				Name = NameList.RandomName( "male" );
 			}
-				
+			
 			Title = "the brigand";
+			Hue = Race.RandomSkinHue();
 			
 			SetStr( 86, 100 );
 			SetDex( 81, 95 );
 			SetInt( 61, 75 );
 
-			SetDamage( 15, 27 );
+			SetDamage( 10, 23 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -70,14 +72,16 @@ namespace Server.Mobiles
 				AddItem( new ShortPants( Utility.RandomNeutralHue() ) );				
 			
 			// hair, facial hair			
-			HairItemID = Race.Human.RandomHair( Female );
-			HairHue = Race.Human.RandomHairHue();
-			FacialHairItemID = Race.Human.RandomFacialHair( Female );
+			HairItemID = Race.RandomHair( Female );
+			HairHue = Race.RandomHairHue();
+			FacialHairItemID = Race.RandomFacialHair( Female );
 			
 			// weapon, shield
-			AddItem( Loot.RandomWeapon() );
+			Item weapon = Loot.RandomWeapon();
+
+			AddItem( weapon );
 			
-			if ( Utility.RandomBool() )
+			if ( weapon.Layer == Layer.OneHanded && Utility.RandomBool() )
 				AddItem( Loot.RandomShield() );
 								
 			PackGold( 50, 150 );

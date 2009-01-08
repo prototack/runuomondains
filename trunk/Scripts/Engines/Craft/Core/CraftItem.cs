@@ -887,20 +887,41 @@ namespace Server.Engines.Craft
                 return 0.0;
 
             #region Mondain's Legacy
+            double bonus = 0.0;
+
             if (from.Talisman is BaseTalisman)
             {
                 BaseTalisman talisman = (BaseTalisman)from.Talisman;
 
                 if (talisman.Skill == system.MainSkill)
-                    chance += (talisman.ExceptionalBonus - talisman.SuccessBonus) / (double)100;
+                {
+                    chance -= talisman.SuccessBonus / (double)100;
+                    bonus = talisman.ExceptionalBonus / (double)100;
+                }
             }
             #endregion
 
             switch (system.ECA)
             {
                 default:
-                case CraftECA.ChanceMinusSixty: return chance - 0.6;
-                case CraftECA.FiftyPercentChanceMinusTenPercent: return (chance * 0.5) - 0.1;
+                case CraftECA.ChanceMinusSixty:
+                    {
+                        #region Mondain's Legacy
+                        if (chance - 0.6 > 0)
+                            return chance + bonus - 0.6;
+                        #endregion
+
+                        return chance - 0.6;
+                    }
+                case CraftECA.FiftyPercentChanceMinusTenPercent:
+                    {
+                        #region Mondain's Legacy
+                        if ((chance * 0.5) - 0.1 > 0)
+                            return (chance * 0.5) + bonus - 0.1;
+                        #endregion
+
+                        return (chance * 0.5) - 0.1;
+                    }
                 case CraftECA.ChanceMinusSixtyToFourtyFive:
                     {
                         double offset = 0.60 - ((from.Skills[system.MainSkill].Value - 95.0) * 0.03);
@@ -909,6 +930,11 @@ namespace Server.Engines.Craft
                             offset = 0.45;
                         else if (offset > 0.60)
                             offset = 0.60;
+
+                        #region Mondain's Legacy
+                        if (chance - offset > 0)
+                            return chance + bonus - offset;
+                        #endregion
 
                         return chance - offset;
                     }

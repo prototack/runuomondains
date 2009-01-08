@@ -22,12 +22,14 @@ namespace Server.Items
 		public MischiefMaker( Serial serial ) : base( serial )
 		{
 		}
-		
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy )
+
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			phys = fire = pois = nrgy = 0;
+			pois = fire = phys = nrgy = chaos = direct = 0;
 			cold = 100;
 		}
+		#endregion
 
 		public override void Serialize( GenericWriter writer )
 		{

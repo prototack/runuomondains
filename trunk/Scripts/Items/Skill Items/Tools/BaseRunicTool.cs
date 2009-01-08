@@ -269,12 +269,16 @@ namespace Server.Items
 
 			m_Props.SetAll( false );
 
+			#region Mondain's Legacy
+			BaseRanged ranged = weapon as BaseRanged;
+			#endregion
+
 			if ( weapon is BaseRanged )
 				m_Props.Set( 2, true ); // ranged weapons cannot be ubws or mageweapon
-
+			
 			for ( int i = 0; i < attributeCount; ++i )
 			{
-				int random = GetUniqueRandom( 25 );
+				int random = GetUniqueRandom( ranged != null ? 27 : 25 );
 
 				if ( random == -1 )
 					break;
@@ -338,6 +342,11 @@ namespace Server.Items
 					case 22: ApplyAttribute( secondary, min, max, AosWeaponAttribute.DurabilityBonus,		10, 100, 10 ); break;
 					case 23: weapon.Slayer = GetRandomSlayer(); break;
 					case 24: GetElementalDamages( weapon ); break;
+					
+					#region Mondain's Legacy
+					case 25: ranged.Balanced = true; break;
+					case 26: ranged.Velocity = Utility.RandomMinMax( 10, 50 ); break;
+					#endregion
 				}
 			}
 		}
@@ -349,9 +358,10 @@ namespace Server.Items
 
 		public static void GetElementalDamages( BaseWeapon weapon, bool randomizeOrder )
 		{
-			int fire, phys, cold, nrgy, pois;
-
-			weapon.GetDamageTypes( null, out phys, out fire, out cold, out pois, out nrgy );
+			#region Mondain's Legacy
+			int phys, fire, cold, pois, nrgy, chaos, direct;
+			weapon.GetDamageTypes( null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct );
+			#endregion
 
 			int totalDamage = phys;
 
