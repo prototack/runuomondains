@@ -18,15 +18,15 @@ namespace Server.Items
 			WeaponAttributes.HitLightning = 60;
 			Attributes.WeaponSpeed = 25;
 			Attributes.WeaponDamage = 50;
-		}
-
-        #region Mondain's Legacy
-        public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
-        {
-			phys = fire = pois = chaos = direct = 0;
-            cold = nrgy = 50;
         }
-        #endregion
+
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
+		{
+			pois = fire = phys = chaos = direct = 0;
+			cold = nrgy = 50;
+		}
+		#endregion
 
 		public DarkenedSky( Serial serial ) : base( serial )
 		{
@@ -190,15 +190,15 @@ namespace Server.Items
 			WeaponAttributes.HitHarm = 100;
 			Attributes.AttackChance = 10;
 			Attributes.WeaponDamage = 60;
-		}
-
-        #region Mondain's Legacy
-        public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
-        {
-            phys = fire = pois = nrgy = chaos = direct = 0;
-            cold = 100;
         }
-        #endregion
+
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
+		{
+			phys = fire = pois = nrgy = chaos = direct = 0;
+			cold = 100;
+		}
+		#endregion
 
 		public SwordOfTheStampede( Serial serial ) : base( serial )
 		{
@@ -236,13 +236,13 @@ namespace Server.Items
 			Attributes.Luck = 200;
         }
 
-        #region Mondain's Legacy
-        public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
-        {
-            phys = cold = pois = nrgy = chaos = direct = 0;
-            fire = 100;
-        }
-        #endregion
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
+		{
+			phys = cold = pois = nrgy = chaos = direct = 0;
+			fire = 100;
+		}
+		#endregion
 
 		public SwordsOfProsperity( Serial serial ) : base( serial )
 		{
@@ -351,13 +351,13 @@ namespace Server.Items
 			Attributes.DefendChance = 10;
         }
 
-        #region Mondain's Legacy
-        public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
+		#region Mondain's Legacy
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-            phys = fire = cold = pois = chaos = direct = 0;
+			phys = fire = cold = pois = chaos = direct = 0;
 			nrgy = 100;
-        }
-        #endregion
+		}
+		#endregion
 
 		public WindsEdge( Serial serial ) : base( serial )
 		{
