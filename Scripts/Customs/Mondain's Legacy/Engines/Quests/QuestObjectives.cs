@@ -199,9 +199,14 @@ namespace Server.Engines.Quests
 		{			
 			m_Creature = creature;
 			m_Name = name;
-			
+
 			if ( region != null )
+			{
 				m_Region = QuestHelper.FindRegion( region );
+
+				if ( m_Region == null )
+					Console.WriteLine( String.Format( "Invalid region name ('{0}') in '{1}' objective!", region, GetType() ) );
+			}
 		}
 		
 		public virtual void OnKill( Mobile killed )
@@ -520,6 +525,7 @@ namespace Server.Engines.Quests
 	{
 		private Region m_Region;
 		private int m_Fame;
+		private int m_Compassion;
 	
 		public Region Region
 		{		
@@ -532,19 +538,33 @@ namespace Server.Engines.Quests
 			get{ return m_Fame; }
 			set{ m_Fame = value; }
 		}
+
+		public int Compassion
+		{
+			get { return m_Compassion; }
+			set { m_Compassion = value; }
+		}
 		
-		public EscortObjective( string region ) : this( region, 0, 0 )
+		public EscortObjective( string region ) : this( region, 10, 200, 0 )
 		{
 		}
 		
-		public EscortObjective( string region, int fame ) : this( region, fame, 0 )
+		public EscortObjective( string region, int fame ) : this( region, fame, 200 )
+		{
+		}
+
+		public EscortObjective( string region, int fame, int compassion ) : this( region, fame, compassion, 0 )
 		{
 		}
 		
-		public EscortObjective( string region, int fame, int seconds ) : base( 1, seconds )
+		public EscortObjective( string region, int fame, int compassion, int seconds ) : base( 1, seconds )
 		{
-			if ( region != null )
-				m_Region = QuestHelper.FindRegion( region );
+			m_Region = QuestHelper.FindRegion( region );
+			m_Fame = fame;
+			m_Compassion = Compassion;
+
+			if ( m_Region == null )
+				Console.WriteLine( String.Format( "Invalid region name ('{0}') in '{1}' objective!", region, GetType() ) );
 		}
 		
 		public override void Serialize( GenericWriter writer )
@@ -606,6 +626,9 @@ namespace Server.Engines.Quests
 				m_Region = QuestHelper.FindRegion( region );					
 				m_Enter = enterRegion;	
 				m_Leave = leaveRegion;
+				
+				if ( m_Region == null )
+					Console.WriteLine( String.Format( "Invalid region name ('{0}') in '{1}' objective!", region, GetType() ) );
 			}
 		}
 		

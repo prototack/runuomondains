@@ -34,7 +34,7 @@ namespace Server.Engines.Quests
 		private PlayerMobile m_Owner;
 		private object m_Quester;
 		private Timer m_Timer;
-		
+
 		public List<BaseObjective> Objectives
 		{
 			get{ return m_Objectives; }
@@ -71,28 +71,21 @@ namespace Server.Engines.Quests
 		{
 			get
 			{
-				int comp = 0;
-				
-				for ( int i = 0; i < m_Objectives.Count; i ++ )
+				for ( int i = 0; i < m_Objectives.Count; i++ )
 				{
 					if ( m_Objectives[ i ].Completed )
 					{
 						if ( !AllObjectives )
 							return true;
-							
-						comp += 1;
 					}
 					else
 					{
 						if ( AllObjectives )						
 							return false;
 					}
-				}
+				}					
 				
-				if ( comp >= 0 && comp == m_Objectives.Count )							
-					return true;
-				
-				return false;
+				return true;
 			}
 		}
 		
@@ -100,16 +93,12 @@ namespace Server.Engines.Quests
 		{
 			get
 			{		
-				int fail = 0;
-							
-				for ( int i = 0; i < m_Objectives.Count; i ++ )
+				for ( int i = 0; i < m_Objectives.Count; i++ )
 				{
 					if ( m_Objectives[ i ].Failed )
 					{
 						if ( AllObjectives )
 							return true;
-							
-						fail += 1;
 					}
 					else
 					{
@@ -117,10 +106,7 @@ namespace Server.Engines.Quests
 							return false;
 					}
 				}
-				
-				if ( fail == m_Objectives.Count )									
-					return true;
-					
+												
 				return false;
 			}
 		}
@@ -172,30 +158,10 @@ namespace Server.Engines.Quests
 					
 					chain.CurrentQuest = GetType();
 					chain.Quester = StartingMobile.GetType();
-					
-					if ( Core.Debug )
-					{
-						Console.WriteLine();
-						Console.WriteLine( "Updating quest chain: ");
-						Console.WriteLine( "	CahinID: {0} ", ChainID.ToString() );
-						Console.WriteLine( "	CurrentQuest: {0} ", chain.CurrentQuest.ToString() );
-						Console.WriteLine( "	Quester: {0} ", chain.Quester.ToString() );
-						Console.WriteLine();
-					}
 				}
 				else
 				{
-					m_Owner.Chains.Add( ChainID, new BaseChain( GetType(), StartingMobile.GetType() ) );					
-					
-					if ( Core.Debug )
-					{
-						Console.WriteLine();
-						Console.WriteLine( "Adding quest chain: ");
-						Console.WriteLine( "	CahinID: {0} ", ChainID.ToString() );
-						Console.WriteLine( "	CurrentQuest: {0} ", GetType().ToString() );
-						Console.WriteLine( "	Quester: {0} ", StartingMobile.GetType().ToString() );
-						Console.WriteLine();
-					}
+					m_Owner.Chains.Add( ChainID, new BaseChain( GetType(), StartingMobile.GetType() ) );		
 				}
 			}	
 		}
@@ -220,12 +186,18 @@ namespace Server.Engines.Quests
 				
 				if ( escort.SetControlMaster( m_Owner ) )
 				{
-					escort.Quest = this;
-					
+					escort.Quest = this;					
 					escort.LastSeenEscorter = DateTime.Now;
 					escort.StartFollow();
 					escort.AddHash( Owner );
-					escort.Say( 1042806, "destination"  ); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
+
+					Region region = escort.GetDestination();
+
+					if ( region != null )
+						escort.Say( 1042806, region.Name ); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
+					else
+						escort.Say( 1042806, "destination" ); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
+
 					m_Owner.LastEscortTime = DateTime.Now;
 				}
 			}
@@ -265,13 +237,14 @@ namespace Server.Engines.Quests
 				}
 			}		
 			
-			// delere escorter
+			// delete escorter
 			if ( m_Quester is BaseEscort )
 			{
 				BaseEscort escort = (BaseEscort) m_Quester;
-				
+
 				escort.Say( 1005653 ); // Hmmm.  I seem to have lost my master.
-				escort.BeginDelete();
+				escort.PlaySound( 0x5B3 );
+				escort.BeginDelete( m_Owner );
 			}
 			
 			RemoveQuest( resignChain );

@@ -475,6 +475,24 @@ namespace Server.Items
 			#endregion
 		}
 
+		public override void OnAfterDuped( Item newItem )
+		{
+			BaseClothing clothing = newItem as BaseClothing;
+
+			if ( clothing == null )
+				return;
+
+			clothing.m_AosAttributes = new AosAttributes( newItem, m_AosAttributes );
+			clothing.m_AosResistances = new AosElementAttributes( newItem, m_AosResistances );
+			clothing.m_AosSkillBonuses = new AosSkillBonuses( newItem, m_AosSkillBonuses );
+			clothing.m_AosClothingAttributes = new AosArmorAttributes( newItem, m_AosClothingAttributes );
+
+			#region Mondain's Legacy
+			clothing.m_SetAttributes = new AosAttributes( newItem, m_SetAttributes );
+			clothing.m_SetSkillBonuses = new AosSkillBonuses( newItem, m_SetSkillBonuses );
+			#endregion
+		}
+
 		public BaseClothing( Serial serial ) : base( serial )
 		{
 		}

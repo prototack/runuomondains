@@ -29,8 +29,6 @@ namespace Server.Engines.Craft
 				return m_CraftSystem;
 			}
 		}
-		
-		public override CraftECA ECA{ get{ return CraftECA.ChanceMinusSixtyToFourtyFive; } }
 
 		public override double GetChanceAtMin( CraftItem item )
 		{
@@ -204,7 +202,7 @@ namespace Server.Engines.Craft
 			AddSpell( typeof( FireballScroll ), Reg.BlackPearl );
 			AddSpell( typeof( MagicLockScroll ), Reg.Bloodmoss, Reg.Garlic, Reg.SulfurousAsh );
 			AddSpell( typeof( PoisonScroll ), Reg.Nightshade );
-			AddSpell( typeof( TelekinisisScroll ), Reg.Garlic, Reg.SpidersSilk, Reg.SulfurousAsh );
+			AddSpell( typeof( TelekinisisScroll ), Reg.Bloodmoss, Reg.MandrakeRoot );
 			AddSpell( typeof( TeleportScroll ), Reg.Bloodmoss, Reg.MandrakeRoot );
 			AddSpell( typeof( UnlockScroll ), Reg.Bloodmoss, Reg.SulfurousAsh );
 			AddSpell( typeof( WallOfStoneScroll ), Reg.Bloodmoss, Reg.Garlic );

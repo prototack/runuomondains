@@ -17,11 +17,11 @@ namespace Server.Items
 {
 	public enum TalismanRemoval
 	{
-		None	= 0,
-		Ward	= 390,
-		Damage	= 404,
-		Curse	= 407,
-		// TODO Wildfire
+		None		= 0,
+		Ward		= 390,
+		Damage		= 404,
+		Curse		= 407,
+		Wildfire	= 2843
 	}
 
 	public class BaseTalisman : Item
@@ -197,6 +197,17 @@ namespace Server.Items
 		public BaseTalisman( Serial serial ) :  base( serial )
 		{
 		}
+
+		public override void OnAfterDuped( Item newItem )
+		{
+			BaseTalisman talisman = newItem as BaseTalisman;
+
+			if ( talisman == null )
+				return;
+
+			talisman.m_AosAttributes = new AosAttributes( newItem, m_AosAttributes );
+			talisman.m_AosSkillBonuses = new AosSkillBonuses( newItem, m_AosSkillBonuses );
+		}	
 		
 		public override bool CanEquip( Mobile m )
 		{
@@ -961,7 +972,9 @@ namespace Server.Items
 							target.SendLocalizedMessage( 1072402 ); // Your wards have been removed!
 						}
 						
-						break;									
+						break;			
+					case TalismanRemoval.Wildfire:
+						break;						
 				}
 				
 				m_Talisman.ChargeTime = m_Talisman.MaxChargeTime;

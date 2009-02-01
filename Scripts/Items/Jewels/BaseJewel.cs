@@ -78,6 +78,23 @@ namespace Server.Items
 			}
 		}
 
+		public override void OnAfterDuped( Item newItem )
+		{
+			BaseJewel jewel = newItem as BaseJewel;
+
+			if ( jewel == null )
+				return;
+
+			jewel.m_AosAttributes = new AosAttributes( newItem, m_AosAttributes );
+			jewel.m_AosResistances = new AosElementAttributes( newItem, m_AosResistances );
+			jewel.m_AosSkillBonuses = new AosSkillBonuses( newItem, m_AosSkillBonuses );
+
+			#region Mondain's Legacy
+			jewel.m_SetAttributes = new AosAttributes( newItem, m_SetAttributes );
+			jewel.m_SetSkillBonuses = new AosSkillBonuses( newItem, m_SetSkillBonuses );
+			#endregion
+		}
+
 		public virtual int ArtifactRarity{ get{ return 0; } }
 		
 		#region Mondain's Legacy

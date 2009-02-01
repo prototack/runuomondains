@@ -60,8 +60,6 @@ namespace Server.Engines.Craft
 				return m_CraftSystem;
 			}
 		}
-		
-		public override CraftECA ECA{ get{ return CraftECA.ChanceMinusSixtyToFourtyFive; } }
 
 		public override double GetChanceAtMin( CraftItem item )
 		{
@@ -314,10 +312,10 @@ namespace Server.Engines.Craft
 				index = AddCraft( typeof( ElegantArmoire ),	1044292, 1030330, 90.0, 115.0,	typeof( Log ), 1044041, 40, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 				
-				index = AddCraft( typeof( MapleArmoire ),	1044292, 1030331, 90.0, 115.0,	typeof( Log ), 1044041, 40, 1044351 );
+				index = AddCraft( typeof( MapleArmoire ),	1044292, 1030328, 90.0, 115.0,	typeof( Log ), 1044041, 40, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 				
-				index = AddCraft( typeof( CherryArmoire ),	1044292, 1030333, 90.0, 115.0,	typeof( Log ), 1044041, 40, 1044351 );
+				index = AddCraft( typeof( CherryArmoire ),	1044292, 1030328, 90.0, 115.0,	typeof( Log ), 1044041, 40, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 			}
 
@@ -390,13 +388,13 @@ namespace Server.Engines.Craft
 
 			if( Core.SE )
 			{
-				index = AddCraft( typeof( Bokuto ), 1044566, 1030227, 70.0, 95.0, typeof( Log ), 1044041, 6, 1044351 );
+				index = AddCraft( typeof( Bokuto ), 1044295, 1030227, 70.0, 95.0, typeof( Log ), 1044041, 6, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 
-				index = AddCraft( typeof( Fukiya ), 1044566, 1030229, 60.0, 85.0, typeof( Log ), 1044041, 6, 1044351 );
+				index = AddCraft( typeof( Fukiya ), 1044295, 1030229, 60.0, 85.0, typeof( Log ), 1044041, 6, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 
-				index = AddCraft( typeof( Tetsubo ), 1044566, 1030225, 85.0, 110.0, typeof( Log ), 1044041, 8, 1044351 );
+				index = AddCraft( typeof( Tetsubo ), 1044295, 1030225, 85.0, 110.0, typeof( Log ), 1044041, 8, 1044351 );
 				AddSkill( index, SkillName.Tinkering, 40.0, 45.0 );
 				AddRes( index, typeof( IronIngot ), 1044036, 5, 1044037 );
 				SetNeededExpansion( index, Expansion.SE );
@@ -640,6 +638,8 @@ namespace Server.Engines.Craft
 			index = AddCraft( typeof( LargeBedEastDeed ), 1044290, 1044324, 94.7, 113.1, typeof( Log ), 1044041, 150, 1044351 );
 			AddSkill( index, SkillName.Tailoring, 75.0, 80.0 );
 			AddRes( index, typeof( Cloth ), 1044286, 150, 1044287 );
+			AddCraft( typeof( DartBoardSouthDeed ), 1044290, 1044325, 15.7, 40.7, typeof( Log ), 1044041, 5, 1044351 );
+			AddCraft( typeof( DartBoardEastDeed ), 1044290, 1044326, 15.7, 40.7, typeof( Log ), 1044041, 5, 1044351 );
 			AddCraft( typeof( BallotBoxDeed ), 1044290, 1044327, 47.3, 72.3, typeof( Log ), 1044041, 5, 1044351 );
 			index = AddCraft( typeof( PentagramDeed ), 1044290, 1044328, 100.0, 125.0, typeof( Log ), 1044041, 100, 1044351 );
 			AddSkill( index, SkillName.Magery, 75.0, 80.0 );
