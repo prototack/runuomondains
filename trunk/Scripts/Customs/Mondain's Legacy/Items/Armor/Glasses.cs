@@ -33,6 +33,18 @@ namespace Server.Items
 		public Glasses( Serial serial ) : base( serial )
 		{
 		}
+
+		public override void OnAfterDuped( Item newItem )
+		{
+			base.OnAfterDuped( newItem );
+
+			Glasses glasses = newItem as Glasses;
+
+			if ( glasses == null )
+				return;
+
+			glasses.m_AosWeaponAttributes = new AosWeaponAttributes( newItem, m_AosWeaponAttributes );
+		}
 		
 		public override bool CanEquip( Mobile m )
 		{

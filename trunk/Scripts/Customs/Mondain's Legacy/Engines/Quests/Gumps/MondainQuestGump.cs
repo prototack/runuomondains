@@ -276,6 +276,8 @@ namespace Server.Engines.Quests
 						
 						continue;
 					}
+                    AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                    AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());	 // %current progress%
 					
 					offset += 16;
 					

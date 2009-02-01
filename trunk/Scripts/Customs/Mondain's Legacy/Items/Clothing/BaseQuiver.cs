@@ -95,7 +95,7 @@ namespace Server.Items
 		
 		public Item Ammo
 		{
-			get{ return Items.Count >= 1 ? Items[ 0 ] : null; }
+			get{ return Items.Count == 1 ? Items[ 0 ] : null; }
 		}
 		#endregion
 		
@@ -117,7 +117,20 @@ namespace Server.Items
 		
 		public BaseQuiver( Serial serial ) : base( serial )
 		{
-		}		
+		}
+
+		public override void OnAfterDuped( Item newItem )
+		{
+			BaseQuiver quiver = newItem as BaseQuiver;
+
+			if ( quiver == null )
+				return;
+
+			quiver.m_Attributes = new AosAttributes( newItem, m_Attributes );
+			quiver.m_SetAttributes = new AosAttributes( newItem, m_SetAttributes );
+			quiver.m_SetSkillBonuses = new AosSkillBonuses( newItem, m_SetSkillBonuses );
+			quiver.m_DamageModifier = new AosElementAttributes( newItem, m_DamageModifier );
+		}	
 		
 		public override int GetTotal( TotalType type )
 		{

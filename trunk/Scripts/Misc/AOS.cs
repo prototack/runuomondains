@@ -253,6 +253,11 @@ namespace Server
 		{
 		}
 
+		public AosAttributes( Item owner, AosAttributes other )
+			: base( owner, other )
+		{
+		}
+
 		public AosAttributes( Item owner, GenericReader reader )
 			: base( owner, reader )
 		{
@@ -441,7 +446,7 @@ namespace Server
 		public int SpellChanneling { get { return this[AosAttribute.SpellChanneling]; } set { this[AosAttribute.SpellChanneling] = value; } }
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int NightSight { get { return this[AosAttribute.NightSight]; } set { this[AosAttribute.NightSight] = value; } }		
+		public int NightSight { get { return this[AosAttribute.NightSight]; } set { this[AosAttribute.NightSight] = value; } }
 
 		#region Heritage Items
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -483,6 +488,11 @@ namespace Server
 	{
 		public AosWeaponAttributes( Item owner )
 			: base( owner )
+		{
+		}
+
+		public AosWeaponAttributes( Item owner, AosWeaponAttributes other )
+			: base( owner, other )
 		{
 		}
 
@@ -633,6 +643,11 @@ namespace Server
 		{
 		}
 
+		public AosArmorAttributes( Item owner, AosArmorAttributes other )
+			: base( owner, other )
+		{
+		}
+
 		public static int GetValue( Mobile m, AosArmorAttribute attribute )
 		{
 			if( !Core.AOS )
@@ -690,7 +705,7 @@ namespace Server
 
 	public sealed class AosSkillBonuses : BaseAttributes
 	{
-		private ArrayList m_Mods;
+		private List<SkillMod> m_Mods;
 
 		public AosSkillBonuses( Item owner )
 			: base( owner )
@@ -699,6 +714,11 @@ namespace Server
 
 		public AosSkillBonuses( Item owner, GenericReader reader )
 			: base( owner, reader )
+		{
+		}
+
+		public AosSkillBonuses( Item owner, AosSkillBonuses other )
+			: base( owner, other )
 		{
 		}
 
@@ -729,7 +749,7 @@ namespace Server
 					continue;
 
 				if( m_Mods == null )
-					m_Mods = new ArrayList();
+					m_Mods = new List<SkillMod>();
 
 				SkillMod sk = new DefaultSkillMod( skill, true, bonus );
 				sk.ObeyCap = true;
@@ -744,7 +764,7 @@ namespace Server
 				return;
 
 			for( int i = 0; i < m_Mods.Count; ++i )
-				((SkillMod)m_Mods[i]).Remove();
+				m_Mods[i].Remove();
 
 			m_Mods = null;
 		}
@@ -879,6 +899,11 @@ namespace Server
 		{
 		}
 
+		public AosElementAttributes( Item owner, AosElementAttributes other )
+			: base( owner, other )
+		{
+		}
+
 		public AosElementAttributes( Item owner, GenericReader reader )
 			: base( owner, reader )
 		{
@@ -943,6 +968,14 @@ namespace Server
 		{
 			m_Owner = owner;
 			m_Values = m_Empty;
+		}
+
+		public BaseAttributes( Item owner, BaseAttributes other )
+		{
+			m_Owner = owner;
+			m_Values = new int[other.m_Values.Length];
+			other.m_Values.CopyTo( m_Values, 0 );
+			m_Names = other.m_Names;
 		}
 
 		public BaseAttributes( Item owner, GenericReader reader )

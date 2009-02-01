@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Spells.Spellweaving
 {
@@ -29,6 +30,12 @@ namespace Server.Spells.Spellweaving
 				return false;
 			}
 
+			if ( GetArcanists().Count < 2 )
+			{
+				Caster.SendLocalizedMessage( 1080452 ); //There are not enough spellweavers present to create an Arcane Focus.
+				return false;
+			}
+
 			return base.CheckCast();
 		}
 
@@ -40,23 +47,14 @@ namespace Server.Spells.Spellweaving
 				Caster.PlaySound( 0x5C0 );
 
 				List<Mobile> Arcanists = GetArcanists();
-				
-				#region Mondain's Legacy
-				if ( Arcanists.Count <= 1 )
-				{
-					Caster.SendLocalizedMessage( 1080452 ); // There are not enough spellweavers present to create an Arcane Focus.
-					FinishSequence();
-					return;
-				}
-				#endregion
 
 				TimeSpan duration = TimeSpan.FromHours( Math.Max( 1, (int)(Caster.Skills.Spellweaving.Value / 24) ) );
 				
 				#region Mondain's Legacy
-				duration += TimeSpan.FromHours( Math.Min( 5, Arcanists.Count - 1 ) );
+				duration += TimeSpan.FromHours( Math.Min( 5, Arcanists.Count ) );
 				#endregion
 
-				int strengthBonus = Math.Min( Arcanists.Count - 1, IsSanctuary( Caster.Location, Caster.Map ) ? 6 : 5 );	//The Sanctuary is a special, single location place
+				int strengthBonus = Math.Min( Arcanists.Count, IsSanctuary( Caster.Location, Caster.Map ) ? 6 : 5 );	//The Sanctuary is a special, single location place
 
 				for( int i = 0; i < Arcanists.Count; i++ )
 					GiveArcaneFocus( Arcanists[i], duration, strengthBonus );
@@ -124,7 +122,7 @@ namespace Server.Spells.Spellweaving
 			//OSI Verified: Even enemies/combatants count
 			foreach( Mobile m in Caster.GetMobilesInRange( 1 ) )	//Range verified as 1
 			{
-				if( m != Caster && Caster.CanBeBeneficial( m, false ) && Math.Abs( Caster.Skills.Spellweaving.Value - m.Skills.Spellweaving.Value ) <= 20 )	//TODO: OSI check, aggressor/agressed?  Visibility?
+				if ( m != Caster && Caster.CanBeBeneficial( m, false ) && Math.Abs( Caster.Skills.Spellweaving.Value - m.Skills.Spellweaving.Value ) <= 20 && !(m is Clone) )
 				{
 					weavers.Add( m );
 				}
@@ -149,7 +147,7 @@ namespace Server.Spells.Spellweaving
 					#region Mondain's Legacy
 					to.AddStatMod( new StatMod( StatType.Str, "[ArcaneFocus]", strengthBonus, duration ) );
 					#endregion
-				
+
 					f.SendTimeRemainingMessage( to );
 					to.SendLocalizedMessage( 1072740 ); // An arcane focus appears in your backpack.
 				}
@@ -166,8 +164,8 @@ namespace Server.Spells.Spellweaving
 				focus.CreationTime = DateTime.Now;
 				focus.StrengthBonus = strengthBonus;
 				focus.InvalidateProperties();
-				focus.SendTimeRemainingMessage( to );				
-				
+				focus.SendTimeRemainingMessage( to );
+
 				#region Mondain's Legacy
 				to.AddStatMod( new StatMod( StatType.Str, "[ArcaneFocus]", strengthBonus, duration ) );
 				#endregion
