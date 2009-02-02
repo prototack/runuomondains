@@ -902,7 +902,6 @@ namespace Server.Engines.Quests
 		}
 	}
 
-    [Constructable]
 	public class EscortableHealer : TownEscortable
 	{
 		public override bool ClickTitle { get { return false; } }
@@ -920,6 +919,7 @@ namespace Server.Engines.Quests
 				|| ( skill == SkillName.SpiritSpeak );
 		}
 
+        [Constructable]
 		public EscortableHealer() : base()
 		{
 			Title = "the wandering healer";
