@@ -842,17 +842,17 @@ namespace Server.Engines.Quests
 		}
 	}
 
-	public class NewHavenPeasat : NewHavenEscortable
+	public class NewHavenPeasant : NewHavenEscortable
 	{
 		public override bool ClickTitle { get { return false; } }
 
 		[Constructable]
-		public NewHavenPeasat()
+		public NewHavenPeasant()
 		{
 			Title = "the peasant";
 		}
 
-		public NewHavenPeasat( Serial serial ) : base( serial )
+		public NewHavenPeasant( Serial serial ) : base( serial )
 		{
 		}
 
@@ -892,6 +892,7 @@ namespace Server.Engines.Quests
 		}
 	}
 
+    [Constructable]
 	public class NewHavenHealer : NewHavenEscortable
 	{
 		public override bool ClickTitle { get { return false; } }

@@ -902,6 +902,7 @@ namespace Server.Engines.Quests
 		}
 	}
 
+    [Constructable]
 	public class EscortableHealer : TownEscortable
 	{
 		public override bool ClickTitle { get { return false; } }
