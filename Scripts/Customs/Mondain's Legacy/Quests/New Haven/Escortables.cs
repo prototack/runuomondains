@@ -892,7 +892,6 @@ namespace Server.Engines.Quests
 		}
 	}
 
-    [Constructable]
 	public class NewHavenHealer : NewHavenEscortable
 	{
 		public override bool ClickTitle { get { return false; } }
@@ -910,6 +909,7 @@ namespace Server.Engines.Quests
 				|| ( skill == SkillName.SpiritSpeak );
 		}
 
+        [Constructable]
 		public NewHavenHealer() : base()
 		{
 			Title = "the wandering healer";
