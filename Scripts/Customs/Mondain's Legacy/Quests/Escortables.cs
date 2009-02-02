@@ -852,17 +852,17 @@ namespace Server.Engines.Quests
 		}
 	}
 
-	public class EscortablePeasat : NewHavenEscortable
+	public class EscortablePeasant : NewHavenEscortable
 	{
 		public override bool ClickTitle { get { return false; } }
 
 		[Constructable]
-		public EscortablePeasat()
+		public EscortablePeasant()
 		{
 			Title = "the peasant";
 		}
 
-		public EscortablePeasat( Serial serial ) : base( serial )
+		public EscortablePeasant( Serial serial ) : base( serial )
 		{
 		}
 
