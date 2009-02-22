@@ -561,7 +561,7 @@ namespace Server.Engines.Quests
 		{
 			m_Region = QuestHelper.FindRegion( region );
 			m_Fame = fame;
-			m_Compassion = Compassion;
+			m_Compassion = compassion;
 
 			if ( m_Region == null )
 				Console.WriteLine( String.Format( "Invalid region name ('{0}') in '{1}' objective!", region, GetType() ) );

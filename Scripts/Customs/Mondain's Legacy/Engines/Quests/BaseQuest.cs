@@ -80,19 +80,19 @@ namespace Server.Engines.Quests
 					}
 					else
 					{
-						if ( AllObjectives )						
+						if ( AllObjectives )
 							return false;
 					}
-				}					
-				
-				return true;
+				}
+
+				return AllObjectives;
 			}
 		}
 		
 		public bool Failed
 		{
 			get
-			{		
+			{
 				for ( int i = 0; i < m_Objectives.Count; i++ )
 				{
 					if ( m_Objectives[ i ].Failed )
@@ -106,8 +106,8 @@ namespace Server.Engines.Quests
 							return false;
 					}
 				}
-												
-				return false;
+				
+				return !AllObjectives;
 			}
 		}
 		

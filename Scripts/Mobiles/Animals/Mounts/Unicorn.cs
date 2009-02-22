@@ -31,7 +31,10 @@ namespace Server.Mobiles
 
 				if( p != null )
 				{
-					int chanceToCure = 10000 + (int)(this.Skills[SkillName.Magery].Value * 75) - ((p.Level + 1) * (Core.AOS ? (p.Level < 4 ? 3300 : 3100) : 1750));
+					#region Mondain's Legacy mod
+					int chanceToCure = 10000 + (int)(this.Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (Core.AOS ? (p.RealLevel < 4 ? 3300 : 3100) : 1750));
+					#endregion
+
 					chanceToCure /= 100;
 
 					if( chanceToCure > Utility.Random( 100 ) )

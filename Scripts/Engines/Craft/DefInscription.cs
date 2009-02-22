@@ -296,7 +296,7 @@ namespace Server.Engines.Craft
 				index = AddCraft( typeof( EnchantedSwitch ), 1044294, 1072893, 45.0, 95.0, typeof( BlankScroll ), 1044377, 1, 1044378 );
 				AddRes( index, typeof( SpidersSilk ), 1015007, 1, 1044253 );
 				AddRes( index, typeof( BlackPearl ), 1015001, 1, 1044253 );
-				AddRes( index, typeof( Switch ), 1073464, 1, 1044253 );
+				AddRes( index, typeof( SwitchItem ), 1073464, 1, 1044253 );
 				SetNeededExpansion( index, Expansion.ML );
 				
 				index = AddCraft( typeof( RunedPrism ), 1044294, 1073465, 45.0, 95.0, typeof( BlankScroll ), 1044377, 1, 1044378 );

@@ -84,6 +84,34 @@ namespace Server
 		public override string Name{ get{ return m_Name; } }
 		public override int Level{ get{ return m_Level; } }
 
+		#region Mondain's Legacy
+		public override int RealLevel
+		{
+			get
+			{
+				if ( m_Level >= 14 )
+					return m_Level - 14;
+				else if ( m_Level >= 10 )
+					return m_Level - 10;
+
+				return m_Level;
+			}
+		}
+
+		public override int LabelNumber
+		{
+			get
+			{
+				if ( m_Level >= 14 )
+					return 1072852; // parasitic poison charges: ~1_val~
+				else if ( m_Level >= 10 )
+					return 1072853; // darkglow poison charges: ~1_val~
+
+				return 1062412 + m_Level; // ~poison~ poison charges: ~1_val~
+			}
+		}
+		#endregion
+
 		public class PoisonTimer : Timer
 		{
 			private PoisonImpl m_Poison;
@@ -103,9 +131,11 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if ( (Core.AOS && m_Poison.Level < 4 && TransformationSpellHelper.UnderTransformation( m_Mobile, typeof( VampiricEmbraceSpell ) )) ||
-					(m_Poison.Level < 3 && OrangePetals.UnderEffect( m_Mobile )) ||
+				#region Mondain's Legacy mod
+				if ( (Core.AOS && m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation( m_Mobile, typeof( VampiricEmbraceSpell ) )) ||
+					(m_Poison.RealLevel < 3 && OrangePetals.UnderEffect( m_Mobile )) ||
 					AnimalForm.UnderTransformation( m_Mobile, typeof( Unicorn ) ) )
+				#endregion
 				{
 					if ( m_Mobile.CurePoison( m_Mobile ) )
 					{

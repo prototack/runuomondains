@@ -3389,13 +3389,9 @@ namespace Server.Items
 
 			if ( m_Poison != null && m_PoisonCharges > 0 )
 			{
-				
-				if ( m_Poison.Level >= 14 )
-					list.Add( 1072852, m_PoisonCharges.ToString() ); // parasitic poison charges: ~1_val~
-				else if ( m_Poison.Level >= 10 )
-					list.Add( 1072853, m_PoisonCharges.ToString() ); // darkglow poison charges: ~1_val~
-				else
-					list.Add( 1062412 + m_Poison.Level, m_PoisonCharges.ToString() );
+				#region Mondain's Legacy mod
+				list.Add( m_Poison.LabelNumber, m_PoisonCharges.ToString() );
+				#endregion
 			}
 
 			if( m_Slayer != SlayerName.None )

@@ -77,7 +77,10 @@ namespace Server.Spells.Fourth
 
 						if ( poison != null )
 						{
-							int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Magery].Value * 75) - ((poison.Level + 1) * 1750);
+							#region Mondain's Legacy mod
+							int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Magery].Value * 75) - ((poison.RealLevel + 1) * 1750);
+							#endregion
+
 							chanceToCure /= 100;
 							chanceToCure -= 1;
 

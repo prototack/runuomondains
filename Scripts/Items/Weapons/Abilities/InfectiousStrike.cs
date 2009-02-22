@@ -51,11 +51,11 @@ namespace Server.Items
 			if ( maxLevel < 0 ) maxLevel = 0;
 
 			#region Mondain's Legacy
-			if ( p == Poison.Darkglow && maxLevel < 2 )
-				p = Poison.GetPoison( 10 + maxLevel );
-			else if ( p == Poison.Parasitic && maxLevel < 3 )
-				p = Poison.GetPoison( 14 + maxLevel );
-			else if ( p.Level < 10 && p.Level > maxLevel ) 
+			if ( p == Poison.Darkglow )
+				p = Poison.GetPoison( 10 + Math.Min( maxLevel, 2 ) );
+			else if ( p == Poison.Parasitic )
+				p = Poison.GetPoison( 14 + Math.Min( maxLevel, 3 ) );
+			else if ( p.Level > maxLevel ) 
 				p = Poison.GetPoison( maxLevel );
 			#endregion
 
