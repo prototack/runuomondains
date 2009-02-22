@@ -247,7 +247,9 @@ namespace Server.Items
 			if ( p == null )
 				return 0;
 
-			return p.Level + 1;
+			#region Mondain's Legacy mod
+			return p.RealLevel + 1;
+			#endregion
 		}
 
 		public static double GetBaseDifficulty( Mobile targ )

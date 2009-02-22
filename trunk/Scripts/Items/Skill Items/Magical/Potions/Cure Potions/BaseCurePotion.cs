@@ -62,11 +62,13 @@ namespace Server.Items
 			{
 				CureLevelInfo li = info[i];
 
-				if ( li.Poison == from.Poison && Scale( from, li.Chance ) > Utility.RandomDouble() )
+				#region Mondain's Legacy mod
+				if ( li.Poison.RealLevel == from.Poison.RealLevel && Scale( from, li.Chance ) > Utility.RandomDouble() )
 				{
 					cure = true;
 					break;
 				}
+				#endregion
 			}
 
 			if ( cure && from.CurePoison( from ) )

@@ -954,7 +954,9 @@ namespace Server.Mobiles
 
 			Poison p = this.PoisonImmune;
 
-			return ( p != null && p.Level >= poison.Level );
+			#region Mondain's Legacy mod
+			return ( p != null && p.RealLevel >= poison.RealLevel );
+			#endregion
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -4874,8 +4876,10 @@ namespace Server.Mobiles
 			{
 				double healing = Skills.Healing.Value;
 				double anatomy = Skills.Anatomy.Value;
-				double chance = ( healing - 30.0 ) / 50.0 - patient.Poison.Level * 0.1;
-				
+				#region Mondain's Legacy mod
+				double chance = ( healing - 30.0 ) / 50.0 - patient.Poison.RealLevel * 0.1;
+				#endregion
+
 				if ( ( healing >= 60.0 && anatomy >= 60.0 ) && chance > Utility.RandomDouble() )
 				{
 					if ( patient.CurePoison( this ) )

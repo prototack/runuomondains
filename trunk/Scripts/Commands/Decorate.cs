@@ -1,11 +1,11 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using Server;
 using Server.Items;
 using Server.Engines.Quests.Haven;
 using Server.Engines.Quests.Necro;
-using System.Collections.Generic;
 
 namespace Server.Commands
 {
@@ -45,7 +45,7 @@ namespace Server.Commands
 			for ( int i = 0; i < files.Length; ++i )
 			{
 				ArrayList list = DecorationList.ReadAll( files[i] );
-								
+
 				#region Mondain's Legacy
 				m_List = list;
 				#endregion
@@ -54,24 +54,24 @@ namespace Server.Commands
 					m_Count += ((DecorationList)list[j]).Generate( maps );
 			}
 		}
-		
+
 		#region Mondain's Legacy
 		public static Item FindByID( int id )
 		{
 			if ( m_List == null )
 				return null;
-						
+
 			for ( int j = 0; j < m_List.Count; ++j )
 			{
 				DecorationList list = (DecorationList) m_List[ j ];
-				
+
 				if ( list.ID == id )
 					return list.Constructed;
 			}
-			
+
 			return null;
 		}
-		
+
 		private static ArrayList m_List;
 		#endregion
 
@@ -85,16 +85,16 @@ namespace Server.Commands
 		private int m_ItemID;
 		private string[] m_Params;
 		private ArrayList m_Entries;
-		
+
 		#region Mondain's Legacy
 		private Item m_Constructed;
-		
+
 		public Item Constructed{ get{ return m_Constructed; } }
-		
+
 		public int ID
 		{
 			get
-			{					
+			{
 				for ( int i = 0; i < m_Params.Length; ++i )
 				{
 					if ( m_Params[i].StartsWith( "ID" ) )
@@ -105,7 +105,7 @@ namespace Server.Commands
 							return Utility.ToInt32( m_Params[i].Substring( ++indexOf ) );
 					}
 				}
-				
+
 				return 0;
 			}
 		}
@@ -1078,7 +1078,7 @@ namespace Server.Commands
 				{
 					if ( item == null )
 						item = Construct();
-						
+
 					#region Mondain's Legacy
 					m_Constructed = item;
 					#endregion

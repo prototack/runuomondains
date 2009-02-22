@@ -56,8 +56,10 @@ namespace Server.Items
 
 			list.Add( 1060584, m_UsesRemaining.ToString() ); // uses remaining: ~1_val~
 
+			#region Mondain's Legacy mod
 			if ( m_Poison != null && m_PoisonCharges > 0 )
-				list.Add( 1062412 + m_Poison.Level, m_PoisonCharges.ToString() );
+				list.Add( m_Poison.LabelNumber, m_PoisonCharges.ToString() );
+			#endregion
 		}
 
 		public override void OnDoubleClick( Mobile from )
@@ -208,9 +210,10 @@ namespace Server.Items
 
 				if ( darts.Poison != null && darts.PoisonCharges > 0 )
 				{
-					if ( m_PoisonCharges <= 0 || m_Poison == null || m_Poison.Level <= darts.Poison.Level )
+					#region Mondain's Legacy mod
+					if ( m_PoisonCharges <= 0 || m_Poison == null || m_Poison.RealLevel <= darts.Poison.RealLevel )
 					{
-						if ( m_Poison != null && m_Poison.Level < darts.Poison.Level )
+						if ( m_Poison != null && m_Poison.RealLevel < darts.Poison.RealLevel )
 							Unload( from );
 
 						if ( need > darts.PoisonCharges )
@@ -231,6 +234,7 @@ namespace Server.Items
 						m_UsesRemaining += need;
 						darts.UsesRemaining -= need;
 					}
+					#endregion
 					else
 					{
 						from.SendLocalizedMessage( 1070767 ); // Loaded projectile is stronger, unload it first

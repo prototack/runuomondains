@@ -2900,20 +2900,6 @@ namespace Server.Multis
 
 		public override void OnDelete()
 		{
-			/*Map map = this.Map;
-
-			if ( map != null )
-			{
-				MultiComponentList mcl = Components;
-				IPooledEnumerable eable = map.GetItemsInBounds( new Rectangle2D( X + mcl.Min.X, Y + mcl.Min.Y, mcl.Width, mcl.Height ) );
-
-				foreach ( Item item in eable )
-					if ( item is Guildstone && Contains( item ) )
-						item.Delete();
-				
-				eable.Free();
-			}*/
-
 			RestoreRelocatedEntities();
 
 			new FixColumnTimer( this ).Start();
@@ -3555,18 +3541,18 @@ namespace Server.Multis
 			if ( targeted is Item )
 			{
 				if ( m_Release )
-				{					
+				{
 					#region Mondain's legacy
 					if ( targeted is AddonContainerComponent )
 					{
 						AddonContainerComponent component = (AddonContainerComponent) targeted;
-						
+
 						if ( component.Addon != null )
 							m_House.ReleaseSecure( from, component.Addon );
 					}
 					else
 					#endregion
-					
+
 					m_House.ReleaseSecure( from, (Item)targeted );
 				}
 				else
@@ -3582,13 +3568,13 @@ namespace Server.Multis
 						if ( targeted is AddonContainerComponent )
 						{
 							AddonContainerComponent component = (AddonContainerComponent) targeted;
-							
+
 							if ( component.Addon != null )
 								m_House.AddSecure( from, component.Addon );
 						}
 						else
 						#endregion
-						
+
 						m_House.AddSecure( from, (Item)targeted );
 					}
 				}
