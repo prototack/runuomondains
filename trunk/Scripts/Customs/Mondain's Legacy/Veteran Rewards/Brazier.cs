@@ -1,7 +1,9 @@
 using System;
 
 using Server;
+using Server.Gumps;
 using Server.Multis;
+using Server.Network;
 using Server.Engines.VeteranRewards;
 
 namespace Server.Items
@@ -27,8 +29,13 @@ namespace Server.Items
 		};
 		
 		[Constructable]
-		public RewardBrazier() : base( Utility.RandomList( m_Art ) )
+		public RewardBrazier() : this( Utility.RandomList( m_Art ) )
 		{	
+		}
+
+		[Constructable]
+		public RewardBrazier( int itemID ) : base( itemID )
+		{
 			LootType = LootType.Blessed;
 			Weight = 10.0;
 		}
@@ -139,22 +146,14 @@ namespace Server.Items
 		{
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-			
+
 			if ( IsChildOf( from.Backpack ) )
 			{
-				RewardBrazier brazier = new RewardBrazier();
-				brazier.IsRewardItem = m_IsRewardItem;
-
-				if ( !from.PlaceInBackpack( brazier ) )
-				{
-					brazier.Delete();
-					from.SendLocalizedMessage( 500722 ); // You don't have enough room in your backpack!
-				}
-				else
-					Delete();
+				from.CloseGump( typeof( InternalGump ) );
+				from.SendGump( new InternalGump( this ) );
 			}
 			else
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
+				from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.
 		}
 
 		public override void GetProperties( ObjectPropertyList list )
@@ -181,6 +180,55 @@ namespace Server.Items
 			int version = reader.ReadEncodedInt();
 			
 			m_IsRewardItem = reader.ReadBool();
+		}
+
+		private class InternalGump : Gump
+		{
+			private RewardBrazierDeed m_Brazier;
+
+			public InternalGump( RewardBrazierDeed brazier ) : base( 100, 200 )
+			{
+				m_Brazier = brazier;
+
+				Closable = true;
+				Disposable = true;
+				Dragable = true;
+				Resizable = false;
+
+				AddPage( 0 );
+				AddBackground( 0, 0, 200, 200, 2600 );
+
+				AddPage( 1 );
+				AddLabel( 45, 15, 0, "Choose a Brazier:" );
+
+				AddItem( 40, 75, 0x19AA );
+				AddButton( 55, 50, 0x845, 0x846, 0x19AA, GumpButtonType.Reply, 0 );
+
+				AddItem( 100, 75, 0x19BB );
+				AddButton( 115, 50, 0x845, 0x846, 0x19BB, GumpButtonType.Reply, 0 );
+			}
+
+			public override void OnResponse( NetState sender, RelayInfo info )
+			{
+				if ( m_Brazier == null | m_Brazier.Deleted )
+					return;
+
+				Mobile m = sender.Mobile;
+
+				if ( info.ButtonID == 0x19AA || info.ButtonID == 0x19BB )
+				{
+					RewardBrazier brazier = new RewardBrazier( info.ButtonID );
+					brazier.IsRewardItem = m_Brazier.IsRewardItem;
+
+					if ( !m.PlaceInBackpack( brazier ) )
+					{
+						brazier.Delete();
+						m.SendLocalizedMessage( 1078837 ); // Your backpack is full! Please make room and try again.
+					}
+					else
+						m_Brazier.Delete();
+				}
+			}
 		}
 	}
 }
