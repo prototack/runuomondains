@@ -1071,22 +1071,22 @@ namespace Server.Gumps
 
 			//fundo cinza
 			//alt era 310
-			AddBackground( 0, 0, 243, 270, 5054 );
+			AddBackground( 0, 0, 243, 295, 5054 );
 			//----------
 			AddLabel( 100, 2, 200, "MALAS" );
 			//fundo branco
 			//x, y, largura, altura, item
 			//alt era 232
-			AddImageTiled( 10, 20, 220, 215, 3004 );
+			AddImageTiled( 10, 20, 220, 235, 3004 );
 			//----------
 			AddLabel( 30, 27, 200, "Map name" );
 			AddLabel( 167, 27, 200, "Spawn It" );
 			//colunas
 			//x, y, comprimento, ?, item
 			//comp era 222
-			AddImageTiled( 20, 25, 2, 196, 10003 );
-			AddImageTiled( 163, 25, 2, 196, 10003 );
-			AddImageTiled( 220, 25, 2, 196, 10003 );
+			AddImageTiled( 20, 25, 2, 222, 10003 );
+			AddImageTiled( 163, 25, 2, 222, 10003 );
+			AddImageTiled( 220, 25, 2, 222, 10003 );
 			//Linhas
 			//x, y, comprimento, ?, item
 			AddImageTiled( 20, 25, 200, 2, 10001 );
@@ -1097,7 +1097,8 @@ namespace Server.Gumps
 			AddImageTiled( 20, 145, 200, 2, 10001 );
 			AddImageTiled( 20, 170, 200, 2, 10001 );
 			AddImageTiled( 20, 195, 200, 2, 10001 );
-			AddImageTiled( 20, 220, 200, 2, 10001 );
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 			//Map names
 			AddLabel( 35, 51, 200, "Doom" );
 			AddLabel( 35, 76, 200, "North" );
@@ -1105,7 +1106,8 @@ namespace Server.Gumps
 			AddLabel( 35, 126, 200, "South" );
 			AddLabel( 35, 151, 200, "Vendors" );
 			AddLabel( 35, 176, 246, "Citadel" );
-			AddLabel( 35, 201, 246, "Labyrinth" );
+            AddLabel(35, 201, 246, "Labyrinth");
+            AddLabel(35, 226, 246, "Bedlam");
 
 			//Options
 			AddCheck( 182, 48, 210, 211, true, 101 );
@@ -1114,12 +1116,13 @@ namespace Server.Gumps
 			AddCheck( 182, 123, 210, 211, true, 104 );
 			AddCheck( 182, 148, 210, 211, true, 105 );
 			AddCheck( 182, 173, 210, 211, true, 106 );
-			AddCheck( 182, 198, 210, 211, true, 107 );
+            AddCheck(182, 198, 210, 211, true, 107);
+            AddCheck(182, 223, 210, 211, true, 108);
 
 			//Ok, Cancel
 			// alt era 280
-			AddButton( 55, 240, 247, 249, 1, GumpButtonType.Reply, 0 );
-			AddButton( 125, 240, 241, 243, 0, GumpButtonType.Reply, 0 );
+			AddButton( 55, 265, 247, 249, 1, GumpButtonType.Reply, 0 );
+			AddButton( 125, 265, 241, 243, 0, GumpButtonType.Reply, 0 );
 		}
 
 		public override void OnResponse( NetState state, RelayInfo info )
@@ -1173,7 +1176,11 @@ namespace Server.Gumps
 						if( Selections.Contains( 107 ) == true )
 						{
 							CommandSystem.Handle( from, String.Format( "{0}Spawngen malas/Labyrinth.map", prefix ) );
-						}
+                        }
+                        if (Selections.Contains(108) == true)
+                        {
+                            CommandSystem.Handle(from, String.Format("{0}Spawngen malas/Bedlam.map", prefix));
+                        }
 					}
 
 					from.Say( "Spawn generation completed!" );
