@@ -285,10 +285,10 @@ namespace Server.Engines.VeteranRewards
 						new RewardEntry( monsterStatues, 1006037, typeof( MonsterStatuette ), MonsterStatuetteType.Troll ),
 						
 						#region Veteran Rewards
+						new RewardEntry( houseAddOns,    1062692, typeof( ContestMiniHouseDeed ), MiniHouseType.MalasMountainPass ),
+						new RewardEntry( houseAddOns,    1072216, typeof( ContestMiniHouseDeed ), MiniHouseType.ChurchAtNight ),
 						new RewardEntry( miscellaneous,  1076155, typeof( RedSoulstone ) ),
 						new RewardEntry( miscellaneous,  1080523, typeof( CommodityDeedBox ) ),
-                        new RewardEntry( houseAddOns,    1062692, typeof( MalasMountainPassDeed ) ),
-						new RewardEntry( houseAddOns,    1072216, typeof( ChurchAtNightDeed ) ),
 						#endregion
 					} ),
 					new RewardList( RewardInterval, 2, new RewardEntry[]

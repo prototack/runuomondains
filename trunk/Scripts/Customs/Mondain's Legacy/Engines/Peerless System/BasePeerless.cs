@@ -79,6 +79,17 @@ namespace Server.Mobiles
 			get { return m_CurrentWave; }
 			set { m_CurrentWave = value; }
 		}
+
+		public bool AllHelpersDead
+		{
+			get
+			{
+				if ( m_Altar != null )
+					return m_Altar.AllHelpersDead();
+
+				return true;
+			}
+		}
 		
 		public virtual bool CanSpawnWave()
 		{
@@ -115,6 +126,9 @@ namespace Server.Mobiles
 		{
 			if ( helper == null )
 				return;
+
+			helper.Home = location;
+			helper.RangeHome = 4;
 		
 			if ( m_Altar != null )
 				m_Altar.AddHelper( helper );
