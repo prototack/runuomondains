@@ -18,7 +18,18 @@ namespace Server.Mobiles
 			Skills[SkillName.MagicResist].Base = 25.0 + (Utility.RandomDouble() * 5.0);
 			Skills[SkillName.Wrestling].Base = 35.0 + (Utility.RandomDouble() * 10.0);
 			Skills[SkillName.Tactics].Base = 30.0 + (Utility.RandomDouble() * 15.0);
+
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 100;
+
+            CanSwim = true;
+            CantWalk = true;
 		}
+
+        public override int Meat { get { return 3; } }
+        public override int Hides { get { return 10; } }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
 
 		public SeaHorse( Serial serial ) : base( serial )
 		{
@@ -36,6 +47,12 @@ namespace Server.Mobiles
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+
+            if (CanSwim == false)
+                CanSwim = true;
+
+            if (CantWalk == false)
+                CantWalk = true;
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Server
 				info.StatTotal = 0.0;
 			}
 		}
-
+		
 		public static int Damage( Mobile m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy )
 		{
 			return Damage( m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, 0 );
@@ -344,10 +344,10 @@ namespace Server
 				}
 				else if ( attribute == AosAttribute.CastSpeed )
 				{
-					if ( MonstrousInterredGrizzle.UnderCacophonicAttack( m ) || LadyMelisande.UnderSlowAttack( m ) )
+					if ( MonstrousInterredGrizzle.UnderCacophonicAttack( m ) || LadyMelisande.UnderPutridNausea( m ) )
 						value -= 3; // TODO check
 				}
-				else if ( attribute == AosAttribute.WeaponSpeed || LadyMelisande.UnderSlowAttack( m ))
+				else if ( attribute == AosAttribute.WeaponSpeed || LadyMelisande.UnderPutridNausea( m ) )
 				{
 					if ( MonstrousInterredGrizzle.UnderCacophonicAttack( m ) )
 						value -= 3; // TODO check

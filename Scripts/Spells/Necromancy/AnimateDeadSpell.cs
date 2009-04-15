@@ -326,6 +326,16 @@ namespace Server.Spells.Necromancy
 			Type toSummon = null;
 			SummonEntry[] entries = group.m_Entries;
 
+			#region Mondain's Legacy
+			BaseCreature creature = caster as BaseCreature;
+
+			if ( creature != null )
+			{
+				if ( creature.AIObject is NecromageAI )
+					toSummon = typeof( FleshGolem );
+			}
+			#endregion
+
 			for ( int i = 0; toSummon == null && i < entries.Length; ++i )
 			{
 				SummonEntry entry = entries[i];
@@ -382,6 +392,14 @@ namespace Server.Spells.Necromancy
 			corpse.ProcessDelta();
 
 			Register( caster, summoned );
+
+			#region Mondain's Legacy
+			if ( creature != null )
+			{
+				if ( creature.AIObject is NecromageAI )
+					((NecromageAI) creature.AIObject).Animated = summoned;
+			}
+			#endregion
 		}
 
 		private static void Scale( BaseCreature bc, int scalar )
@@ -399,7 +417,7 @@ namespace Server.Spells.Necromancy
 			bc.Hits = bc.Hits; // refresh hits
 		}
 
-		private class InternalTarget : Target
+		public class InternalTarget : Target
 		{
 			private AnimateDeadSpell m_Owner;
 

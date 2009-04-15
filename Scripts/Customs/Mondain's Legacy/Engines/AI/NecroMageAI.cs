@@ -13,6 +13,8 @@ using Server.Spells.Fifth;
 using Server.Spells.Sixth;
 using Server.Spells.Seventh;
 using Server.Spells.Necromancy;
+using Server.Engines.Quests;
+using Server.Engines.Quests.Necro;
 using Server.Misc;
 using Server.Regions;
 using Server.SkillHandlers;
@@ -21,7 +23,16 @@ namespace Server.Mobiles
 {
 	public class NecromageAI : BaseAI
 	{
+		private Mobile m_Animated;
+
+		public Mobile Animated
+		{
+			get { return m_Animated; }
+			set { m_Animated = value; }
+		}
+
 		private DateTime m_NextCastTime;
+		
 
 		public NecromageAI( BaseCreature m ) : base( m )
 		{
@@ -52,12 +63,12 @@ namespace Server.Mobiles
 
 		public virtual double ScaleByNecromancy( double v )
 		{
-			return m_Mobile.Skills[SkillName.Necromancy].Value * v * 0.01;
+			return m_Mobile.Skills[ SkillName.Necromancy ].Value * v * 0.1;
 		}
 		
 		public virtual double ScaleByMagery( double v )
 		{
-			return m_Mobile.Skills[SkillName.Magery].Value * v * 0.01;
+			return m_Mobile.Skills[ SkillName.Magery ].Value * v * 0.01;
 		}
 
 		public override bool DoActionWander()
@@ -91,15 +102,8 @@ namespace Server.Mobiles
 				}
 				else if ( !m_Mobile.Summoned )
 				{
-					if ( m_Mobile.Hits < (m_Mobile.HitsMax - 50) )
-					{
-						if ( !new GreaterHealSpell( m_Mobile, null ).Cast() )
-							new HealSpell( m_Mobile, null ).Cast();
-					}
-					else if ( m_Mobile.Hits < (m_Mobile.HitsMax - 10) )
-					{
-						new HealSpell( m_Mobile, null ).Cast();
-					}
+					if ( m_Mobile.Hits < m_Mobile.HitsMax )
+						m_Mobile.UseSkill( SkillName.SpiritSpeak );
 				}
 			}
 
@@ -123,34 +127,23 @@ namespace Server.Mobiles
 				if ( DateTime.Now < m_NextHealTime )
 					return null;
 			}
-			
+
 			if ( ScaleByMagery( HealChance ) < Utility.RandomDouble() )
 				return null;
 
-			Spell spell = null;
-
-			if ( m_Mobile.Hits < (m_Mobile.HitsMax - 50) )
-			{
-				spell = new GreaterHealSpell( m_Mobile, null );
-
-				if ( spell == null )
-					spell = new HealSpell( m_Mobile, null );
-			}
-			else if ( m_Mobile.Hits < (m_Mobile.HitsMax - 10) )
-				spell = new HealSpell( m_Mobile, null );
-
+			if ( m_Mobile.Hits < m_Mobile.HitsMax )
+				m_Mobile.UseSkill( SkillName.SpiritSpeak );
+			
 			double delay;
 
 			if ( m_Mobile.Int >= 500 )
 				delay = Utility.RandomMinMax( 7, 10 );
 			else
 				delay = Math.Sqrt( 600 - m_Mobile.Int );
-				
-			m_Mobile.UseSkill( SkillName.SpiritSpeak );
 
 			m_NextHealTime = DateTime.Now + TimeSpan.FromSeconds( delay );
 
-			return spell;
+			return null;
 		}
 
 		public void RunTo( Mobile m )
@@ -208,7 +201,7 @@ namespace Server.Mobiles
 
 		public void Run( Direction d )
 		{
-			if ( (m_Mobile.Spell != null && m_Mobile.Spell.IsCasting) || m_Mobile.Paralyzed || m_Mobile.Frozen || m_Mobile.DisallowAllMoves )
+			if ( ( m_Mobile.Spell != null && m_Mobile.Spell.IsCasting ) || m_Mobile.Paralyzed || m_Mobile.Frozen || m_Mobile.DisallowAllMoves )
 				return;
 
 			m_Mobile.Direction = d | Direction.Running;
@@ -219,36 +212,30 @@ namespace Server.Mobiles
 
 		public virtual Spell GetRandomDamageSpell()
 		{
-			int necro = (int)((m_Mobile.Skills[SkillName.Necromancy].Value + 50.0) / (100.0 / 7.0));
-			int mage = (int)((m_Mobile.Skills[SkillName.Magery].Value + 50.0) / (100.0 / 7.0));
-			
-			if ( mage < 1 )
-				mage = 1;
-				
-			if ( necro < 1 )
-				necro = 1;
+			int necro = (int) Math.Min( 5, ( m_Mobile.Skills[SkillName.Necromancy].Value - 50 ) / 10 );
+			int mage = (int) Math.Min( 7, m_Mobile.Skills[ SkillName.Magery ].Value / 10 );
 
-			if ( m_Mobile.Skills[SkillName.Necromancy].Value > 60 && Utility.Random( necro ) > Utility.Random( mage ) )
-			{				
-				switch ( Utility.Random( necro - 7 ) )
+			if ( necro >= 0 && Utility.Random( 4 ) < 3 )
+			{
+				switch ( Utility.Random( necro ) )
 				{
-					case 0: case 1: return new PainSpikeSpell( m_Mobile, null );
-					case 2: case 3: return new StrangleSpell( m_Mobile, null );
-					case 4: return new VengefulSpiritSpell( m_Mobile, null );
-					default: return new StrangleSpell( m_Mobile, null );
+					case 0: return new PoisonStrikeSpell( m_Mobile, null );
+					case 1: return new WitherSpell( m_Mobile, null );
+					case 2: return new StrangleSpell( m_Mobile, null );
+					default: return new WitherSpell( m_Mobile, null );
 				}
 			}
 			else
 			{			
-				switch ( Utility.Random( mage * 2 ) )
+				switch ( Utility.Random( mage ) )
 				{
-					case  0: case  1: return new MagicArrowSpell( m_Mobile, null );
-					case  2: case  3: return new HarmSpell( m_Mobile, null );
-					case  4: case  5: return new FireballSpell( m_Mobile, null );
-					case  6: case  7: return new LightningSpell( m_Mobile, null );
-					case  8: case  9: return new MindBlastSpell( m_Mobile, null );
-					case 10: return new EnergyBoltSpell( m_Mobile, null );
-					case 11: return new ExplosionSpell( m_Mobile, null );
+					case 0: return new MagicArrowSpell( m_Mobile, null );
+					case 1: return new HarmSpell( m_Mobile, null );
+					case 2: return new FireballSpell( m_Mobile, null );
+					case 3: return new LightningSpell( m_Mobile, null );
+					case 4: return new MindBlastSpell( m_Mobile, null );
+					case 5: return new EnergyBoltSpell( m_Mobile, null );
+					case 6: return new ExplosionSpell( m_Mobile, null );
 					default: return new FlameStrikeSpell( m_Mobile, null );
 				}
 			}
@@ -256,34 +243,29 @@ namespace Server.Mobiles
 
 		public virtual Spell GetRandomCurseSpell()
 		{
-			int necro = (int)((m_Mobile.Skills[SkillName.Necromancy].Value + 50.0) / (100.0 / 7.0));
-			int mage = (int)((m_Mobile.Skills[SkillName.Magery].Value + 50.0) / (100.0 / 7.0));
-			
-			if ( mage < 1 )
-				mage = 1;
-				
-			if ( necro < 1 )
-				necro = 1;
-				
-			if ( m_Mobile.Skills[SkillName.Necromancy].Value > 30 && Utility.Random( necro ) > Utility.Random( mage ) )
-			{							
-				switch ( Utility.Random( necro - 5 ) )
+			int necro = (int) Math.Min( 5, ( m_Mobile.Skills[ SkillName.Necromancy ].Value - 20 ) / 10 );
+			int mage = (int) Math.Min( 5, m_Mobile.Skills[ SkillName.Magery ].Value / 10 );
+
+			if ( necro >= 0 && Utility.Random( 3 ) < 2 )
+			{
+				switch ( Utility.Random( necro ) )
 				{
-					case 0: case 1: return new CorpseSkinSpell( m_Mobile, null );
-					case 2: case 3: return new MindRotSpell( m_Mobile, null );
-					default: return new MindRotSpell( m_Mobile, null );
+					case 0: return new CorpseSkinSpell( m_Mobile, null );
+					case 1: return new EvilOmenSpell( m_Mobile, null );
+					case 2: return new BloodOathSpell( m_Mobile, null );
+					case 3: return new MindRotSpell( m_Mobile, null );
+					default: return new EvilOmenSpell( m_Mobile, null );
 				}
 			}
-			
-			if ( Utility.RandomBool() && mage > 3 )
-					return new CurseSpell( m_Mobile, null );
-
-			switch ( Utility.Random( 3 ) )
+			else
 			{
-				default:
-				case 0: return new WeakenSpell( m_Mobile, null );
-				case 1: return new ClumsySpell( m_Mobile, null );
-				case 2: return new FeeblemindSpell( m_Mobile, null );
+				switch ( Utility.Random( mage ) )
+				{
+					case 0: return new ClumsySpell( m_Mobile, null );
+					case 1: return new FeeblemindSpell( m_Mobile, null );
+					case 2: return new WeakenSpell( m_Mobile, null );
+					default: return new CurseSpell( m_Mobile, null );
+				}
 			}
 		}
 
@@ -313,12 +295,12 @@ namespace Server.Mobiles
 			if ( spell != null )
 				return spell;
 				
-			double damage = ((m_Mobile.Skills[SkillName.SpiritSpeak].Value - c.Skills[SkillName.MagicResist].Value) / 10) + (c.Player ? 18 : 30);
+			double damage = ( ( m_Mobile.Skills[ SkillName.SpiritSpeak ].Value - c.Skills[ SkillName.MagicResist ].Value ) / 10 ) + ( c.Player ? 18 : 30 );
 			
 			if ( damage > c.Hits )
-				spell = new PainSpikeSpell( m_Mobile, null );
+				return new PainSpikeSpell( m_Mobile, null );
 
-			switch ( Utility.Random( 16 ) )
+			switch ( Utility.Random( 18 ) )
 			{
 				case 0:
 				case 1:
@@ -351,7 +333,7 @@ namespace Server.Mobiles
 				{
 					m_Mobile.DebugSay( "Attempting to paralyze" );
 
-					if ( m_Mobile.Skills[SkillName.Magery].Value > 50.0 )
+					if ( m_Mobile.Skills[ SkillName.Magery ].Value > 50.0 )
 						spell = new ParalyzeSpell( m_Mobile, null );
 
 					break;
@@ -363,13 +345,24 @@ namespace Server.Mobiles
 					spell = GetRandomManaDrainSpell();
 					break;
 				}
-				case 9: // Blood oath them
+				case 9:
+				case 10: // Blood oath them
 				{
 					m_Mobile.DebugSay( "Attempting to blood oath" );
 										
-					if ( m_Mobile.Skills[SkillName.Necromancy].Value > 30 && BloodOathSpell.GetBloodOath( c ) != m_Mobile )
+					if ( m_Mobile.Skills[ SkillName.Necromancy ].Value > 30 && BloodOathSpell.GetBloodOath( c ) != m_Mobile )
 						spell = new BloodOathSpell( m_Mobile, null );
 						
+					break;
+				}
+				case 11:
+				case 12: // Animate dead
+				{
+					m_Mobile.DebugSay( "Attempting to animate dead" );
+
+					if ( ( m_Animated == null || !m_Animated.Alive ) && m_Mobile.Skills[ SkillName.Necromancy ].Value > 40 )
+						spell = new AnimateDeadSpell( m_Mobile, null );
+
 					break;
 				}
 				default: // Damage them.
@@ -393,7 +386,7 @@ namespace Server.Mobiles
 			if ( m_Combo == 0 )
 			{
 				spell = new ExplosionSpell( m_Mobile, null );
-				++m_Combo; // Move to next spell
+				++m_Combo; // Move  to next spell
 			}
 			else if ( m_Combo == 1 )
 			{
@@ -499,13 +492,12 @@ namespace Server.Mobiles
 				}
 			}
 
-			if ( !m_Mobile.StunReady && m_Mobile.Skills[SkillName.Wrestling].Value >= 80.0 && m_Mobile.Skills[SkillName.Anatomy].Value >= 80.0 )
+			if ( !m_Mobile.StunReady && m_Mobile.Skills[ SkillName.Wrestling ].Value >= 80.0 && m_Mobile.Skills[ SkillName.Anatomy ].Value >= 80.0 )
 				EventSink.InvokeStunRequest( new StunRequestEventArgs( m_Mobile ) );
 
 			if ( !m_Mobile.InRange( c, m_Mobile.RangePerception ) )
 			{
 				// They are somewhat far away, can we find something else?
-
 				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
 				{
 					m_Mobile.Combatant = m_Mobile.FocusMob;
@@ -532,16 +524,14 @@ namespace Server.Mobiles
 				if ( m_Mobile.Hits < m_Mobile.HitsMax * 20/100 )
 				{
 					// We are low on health, should we flee?
-
 					bool flee = false;
 
 					if ( m_Mobile.Hits < c.Hits )
 					{
 						// We are more hurt than them
-
 						int diff = c.Hits - m_Mobile.Hits;
 
-						flee = ( Utility.Random( 0, 100 ) > (10 + diff) ); // (10 + diff)% chance to flee
+						flee = ( Utility.Random( 0, 100 ) > ( 10 + diff ) ); // (10 + diff)% chance to flee
 					}
 					else
 					{
@@ -557,14 +547,11 @@ namespace Server.Mobiles
 						return true;
 					}
 				}
-			}
-
-			
+			}			
 
 			if ( m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange( c, 12 ) )
 			{
 				// We are ready to cast a spell
-
 				Spell spell = null;
 				Mobile toDispel = FindDispelTarget( true );
 
@@ -644,16 +631,24 @@ namespace Server.Mobiles
 				{
 					new CureSpell( m_Mobile, null ).Cast();
 				}
-				else if ( !m_Mobile.Summoned && ((ScaleByMagery( HealChance ) > Utility.RandomDouble())) )
+				else if ( !m_Mobile.Summoned )
 				{
-					if ( m_Mobile.Hits < (m_Mobile.HitsMax - 50) )
+					if ( ScaleByNecromancy( HealChance ) > Utility.RandomDouble() )
 					{
-						if ( !new GreaterHealSpell( m_Mobile, null ).Cast() )
-							new HealSpell( m_Mobile, null ).Cast();
+						if ( m_Mobile.Hits < ( m_Mobile.HitsMax - 30 ) )
+							m_Mobile.UseSkill( SkillName.SpiritSpeak );
 					}
-					else if ( m_Mobile.Hits < (m_Mobile.HitsMax - 10) )
+					else if ( ScaleByMagery( HealChance ) > Utility.RandomDouble() )
 					{
-						new HealSpell( m_Mobile, null ).Cast();
+						if ( m_Mobile.Hits < ( m_Mobile.HitsMax - 50 ) )
+						{
+							if ( !new GreaterHealSpell( m_Mobile, null ).Cast() )
+								new HealSpell( m_Mobile, null ).Cast();
+						}
+						else if ( m_Mobile.Hits < ( m_Mobile.HitsMax - 10 ) )
+						{
+							new HealSpell( m_Mobile, null ).Cast();
+						}
 					}
 					else
 					{
@@ -810,6 +805,32 @@ namespace Server.Mobiles
 			return null;
 		}
 
+		public Item FindCorpseToAnimate()
+		{
+			foreach ( Item item in m_Mobile.GetItemsInRange( 12 ) )
+			{
+				if ( item is MaabusCoffinComponent )
+					return item;
+
+				Corpse c = item as Corpse;
+
+				if ( c != null )
+				{
+					Type type = null;
+
+					if ( c.Owner != null )
+						type = c.Owner.GetType();
+
+					BaseCreature owner = c.Owner as BaseCreature;
+
+					if ( ( c.ItemID < 0xECA || c.ItemID > 0xED5 ) && m_Mobile.InLOS( c ) && !c.Channeled && type != typeof( PlayerMobile ) && type != null && ( owner == null || ( !owner.Summoned && !owner.IsBonded ) ) )
+						return item;
+				}
+			}
+
+			return null;
+		}
+
 		public bool CanDispel( Mobile m )
 		{
 			return ( m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful( m, false ) && !((BaseCreature)m).IsAnimatedDead );
@@ -849,6 +870,7 @@ namespace Server.Mobiles
 			bool isDispel = ( targ is DispelSpell.InternalTarget );
 			bool isParalyze = ( targ is ParalyzeSpell.InternalTarget );
 			bool isTeleport = ( targ is TeleportSpell.InternalTarget );
+			bool isAnimate = ( targ is AnimateDeadSpell.InternalTarget );
 			bool teleportAway = false;
 
 			Mobile toTarget;
@@ -880,6 +902,15 @@ namespace Server.Mobiles
 				{
 					teleportAway = true;
 				}
+			}
+			else if ( isAnimate )
+			{
+				Item corpse = FindCorpseToAnimate();				
+
+				if ( corpse != null )
+					targ.Invoke( m_Mobile, corpse );
+
+				toTarget = null;
 			}
 			else
 			{

@@ -363,6 +363,8 @@ namespace Server.Items
 					
 				if ( m_Peerless != null )
 				{
+					m_Peerless.Home = m_BossLocation;
+					m_Peerless.RangeHome = 4;
 					m_Peerless.MoveToWorld( m_BossLocation, Map );
 					m_Peerless.Altar = this;
 				}
@@ -629,31 +631,43 @@ namespace Server.Items
 		}
 		
 		#region Helpers
-		private List<BaseCreature> m_Helpers;
+		private List<BaseCreature> m_Helpers = new List<BaseCreature>();
+
+		public List<BaseCreature> Helpers
+		{
+			get{ return m_Helpers; }
+		}
 		
 		public void AddHelper( BaseCreature helper )
-		{
-			if ( m_Helpers == null )
-				m_Helpers = new List<BaseCreature>();
-			
+		{			
 			if ( helper != null && helper.Alive && !helper.Deleted )
 				m_Helpers.Add( helper );
-		}		
+		}
+
+		public bool AllHelpersDead()
+		{
+			for ( int i = m_Helpers.Count - 1; i >= 0; i-- )
+			{
+				BaseCreature c = m_Helpers[ i ];
+
+				if ( c.Alive )
+					return false;
+			}
+
+			return true;
+		}
 		
 		public void CleanupHelpers()
 		{
-			if ( m_Helpers != null )
+			for ( int i = m_Helpers.Count - 1; i >= 0 ; i -- )
 			{
-				for ( int i = m_Helpers.Count - 1; i >= 0 ; i -- )
-				{
-					BaseCreature c = m_Helpers[ i ];
-					
-					if ( c.Alive )
-						c.Delete();
-				}
+				BaseCreature c = m_Helpers[ i ];
 				
-				m_Helpers.Clear();
-			}			
+				if ( c.Alive )
+					c.Delete();
+			}
+			
+			m_Helpers.Clear();
 		}
 		#endregion
 	}

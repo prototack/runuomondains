@@ -134,6 +134,11 @@ namespace Server.Spells
 			damageBonus += intBonus;
 
 			int sdiBonus = AosAttributes.GetValue( m_Caster, AosAttribute.SpellDamage );
+			
+			#region Mondain's Legacy
+			sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus( m_Caster, playerVsPlayer );
+			#endregion
+			
 			// PvP spell damage increase cap of 15% from an item’s magic property
 			if ( playerVsPlayer && sdiBonus > 15 )
 				sdiBonus = 15;
