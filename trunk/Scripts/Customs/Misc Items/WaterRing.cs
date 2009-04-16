@@ -19,8 +19,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override void OnAdded(object parent)
+        // Just uncomment it if you want it active.
+        /*public override void OnAdded(object parent)
         {
             base.OnAdded(parent);
 
@@ -28,8 +28,10 @@ namespace Server.Items
             {
                 ((Mobile)parent).CanSwim = true;
             }
-        }
+        }*/
 
+        /*I left the below as is just incase anyone was wearing it before change took effect.  
+        Once they take it off it will no longer allow them to swim with mounts.*/
         public override void OnRemoved(object parent)
         {
             base.OnRemoved(parent);
