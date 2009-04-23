@@ -19,11 +19,6 @@ namespace Server.Mobiles
 			Skills[SkillName.Wrestling].Base = 35.0 + (Utility.RandomDouble() * 10.0);
 			Skills[SkillName.Tactics].Base = 30.0 + (Utility.RandomDouble() * 15.0);
 
-            // EDIT #1:  Uncomment below to allow taming of the SeaHorse.
-            //Tamable = true;
-            //ControlSlots = 2;
-            //MinTameSkill = 100;
-
             CanSwim = true;
             CantWalk = true;
 		}
@@ -54,7 +49,7 @@ namespace Server.Mobiles
 
             if (CantWalk == false)
                 CantWalk = true;
-            // EDIT #2:  Remove below to make it tamable again.
+
             if (Tamable == true)
                 Tamable = false;
         }

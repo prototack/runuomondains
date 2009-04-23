@@ -110,6 +110,12 @@ namespace Server.Mobiles
 			if ( CanPutridNausea() )
 				PutridNausea();
 		}
+
+		public override void SetLocation( Point3D newLocation, bool isTeleport )
+		{
+			if ( newLocation.Z > -10 )
+				base.SetLocation( newLocation, isTeleport );
+		}
 		
 		public override void OnDamage( int amount, Mobile from, bool willKill )
 		{
