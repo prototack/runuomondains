@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Server.ContextMenus;
 using Server.Network;
 using Server.Engines.Craft;
 using Server.Factions;
@@ -113,6 +114,54 @@ namespace Server.Items
 			armor.m_SetSkillBonuses = new AosSkillBonuses( newItem, m_SetSkillBonuses );
 			#endregion
 		}
+
+        #region Personal Bless Deed
+        private Mobile m_BlessedBy;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile BlessedBy
+        {
+            get { return m_BlessedBy; }
+            set { m_BlessedBy = value; InvalidateProperties(); }
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (BlessedFor == from && BlessedBy == from && RootParent == from)
+            {
+                list.Add(new UnBlessEntry(from, this));
+            }
+        }
+
+        private class UnBlessEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private BaseArmor m_Item;
+
+            public UnBlessEntry(Mobile from, BaseArmor item)
+                : base(6208, -1)
+            {
+                m_From = from;
+                m_Item = item;
+            }
+
+            public override void OnClick()
+            {
+                m_Item.BlessedFor = null;
+                m_Item.BlessedBy = null;
+
+                Container pack = m_From.Backpack;
+
+                if (pack != null)
+                {
+                    pack.DropItem(new PersonalBlessDeed(m_From));
+                    m_From.SendLocalizedMessage(1062200); // A personal bless deed has been placed in your backpack.
+                }
+            }
+        }
+        #endregion
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public AMA MeditationAllowance
@@ -801,8 +850,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 8 ); // version
-			
+			writer.Write( (int) 9 ); // version
+
+            writer.Write((Mobile)m_BlessedBy); // Personal Bless Deed
+
 			#region Mondain's Legacy Sets version 8
 			SetFlag sflags = SetFlag.None;
 			
@@ -961,9 +1012,16 @@ namespace Server.Items
 			int version = reader.ReadInt();
 
 			switch ( version )
-			{
-				#region Mondain's Legacy Sets
-				case 8:
+            {
+                #region Personal Bless Deed
+                case 9:
+                    {
+                        m_BlessedBy = reader.ReadMobile();
+                        goto case 8;
+                    }
+                #endregion
+                #region Mondain's Legacy Sets
+                case 8:
 					SetFlag sflags = (SetFlag) reader.ReadEncodedInt();
 					
 					if ( GetSaveFlag( sflags, SetFlag.Attributes ) )
@@ -1363,8 +1421,16 @@ namespace Server.Items
 						from.SendMessage( "You may not wear this." );
 
 					return false;
-				}
-				else
+                }
+                #region Personal Bless Deed
+                else if (BlessedBy != null && BlessedBy != from)
+                {
+                    from.SendLocalizedMessage(1075277); // That item is blessed by another player.
+
+                    return false;
+                }
+                #endregion
+                else
 				{
 					int strBonus = ComputeStatBonus( StatType.Str ), strReq = ComputeStatReq( StatType.Str );
 					int dexBonus = ComputeStatBonus( StatType.Dex ), dexReq = ComputeStatReq( StatType.Dex );

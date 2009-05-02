@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server;
+using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Factions;
 using Server.Network;
@@ -113,6 +114,54 @@ namespace Server.Items
 			set{ m_PlayerConstructed = value; }
 		}
 
+        #region Personal Bless Deed
+        private Mobile m_BlessedBy;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile BlessedBy
+        {
+            get { return m_BlessedBy; }
+            set { m_BlessedBy = value; InvalidateProperties(); }
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (BlessedFor == from && BlessedBy == from && RootParent == from)
+            {
+                list.Add(new UnBlessEntry(from, this));
+            }
+        }
+
+        private class UnBlessEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private BaseClothing m_Item;
+
+            public UnBlessEntry(Mobile from, BaseClothing item)
+                : base(6208, -1)
+            {
+                m_From = from;
+                m_Item = item; // BaseArmor, BaseWeapon or BaseClothing
+            }
+
+            public override void OnClick()
+            {
+                m_Item.BlessedFor = null;
+                m_Item.BlessedBy = null;
+
+                Container pack = m_From.Backpack;
+
+                if (pack != null)
+                {
+                    pack.DropItem(new PersonalBlessDeed(m_From));
+                    m_From.SendLocalizedMessage(1062200); // A personal bless deed has been placed in your backpack.
+                }
+            }
+        }
+        #endregion
+
 		public virtual CraftResource DefaultResource{ get{ return CraftResource.None; } }
 
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -213,8 +262,16 @@ namespace Server.Items
 						from.SendMessage( "You may not wear this." );
 
 					return false;
-				}
-				else
+                }
+                #region Personal Bless Deed
+                else if (BlessedBy != null && BlessedBy != from)
+                {
+                    from.SendLocalizedMessage(1075277); // That item is blessed by another player.
+
+                    return false;
+                }
+                #endregion
+                else
 				{
 					int strBonus = ComputeStatBonus( StatType.Str );
 					int strReq = ComputeStatReq( StatType.Str );
@@ -816,8 +873,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 6 ); // version
-			
+			writer.Write( (int) 7 ); // version
+
+            writer.Write((Mobile)m_BlessedBy); // Personal Bless Deed
+
 			#region Mondain's Legacy Sets version 6
 			SetFlag sflags = SetFlag.None;
 			
@@ -923,7 +982,13 @@ namespace Server.Items
 			int version = reader.ReadInt();
 
 			switch ( version )
-			{
+            {
+                //personal bless deed
+                case 7:
+                    {
+                        m_BlessedBy = reader.ReadMobile();
+                        goto case 6;
+                    }
 				case 6:
 				{
 					#region Mondain's Legacy Sets

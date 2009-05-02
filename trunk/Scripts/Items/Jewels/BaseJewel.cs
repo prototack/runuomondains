@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Server.ContextMenus;
 using Server.Engines.Craft;
 
 namespace Server.Items
@@ -24,6 +26,53 @@ namespace Server.Items
 		private AosSkillBonuses m_AosSkillBonuses;
 		private CraftResource m_Resource;
 		private GemType m_GemType;
+
+		#region Personal Bless Deed
+		private Mobile m_BlessedBy;
+
+		[CommandProperty( AccessLevel.GameMaster )] 
+		public Mobile BlessedBy
+		{
+			get { return m_BlessedBy; } 
+			set { m_BlessedBy = value;InvalidateProperties();} 
+		}
+	
+		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list ) 
+		{
+			base.GetContextMenuEntries( from, list ); 
+				
+			if ( BlessedFor == from && BlessedBy == from && RootParent == from )
+			{
+				list.Add( new UnBlessEntry( from, this ) );
+			}
+		}
+			
+		private class UnBlessEntry : ContextMenuEntry
+		{
+			private Mobile m_From;
+			private BaseJewel m_Item;
+			
+			public UnBlessEntry( Mobile from, BaseJewel item ) : base( 6208, -1 )
+			{
+				m_From = from;
+				m_Item = item;
+			}
+
+			public override void OnClick()
+			{
+				m_Item.BlessedFor = null;
+				m_Item.BlessedBy = null;
+				
+				Container pack = m_From.Backpack;
+
+				if ( pack != null )
+				{
+					pack.DropItem( new PersonalBlessDeed( m_From ) );
+					m_From.SendLocalizedMessage( 1062200 ); // A personal bless deed has been placed in your backpack.
+				}
+			}
+		}
+		#endregion
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public AosAttributes Attributes
@@ -130,50 +179,66 @@ namespace Server.Items
 			m_SetAttributes = new AosAttributes( this );
 			m_SetSkillBonuses = new AosSkillBonuses( this );
 			#endregion
-		}
+        }
 
-		public override void OnAdded( object parent )
-		{
-			if ( Core.AOS && parent is Mobile )
-			{
-				Mobile from = (Mobile)parent;
+        #region Personal Bless Deed
+        public override bool CanEquip(Mobile from)
+        {
+            if (BlessedBy != null && BlessedBy != from)
+            {
+                from.SendLocalizedMessage(1075277); // That item is blessed by another player.
 
-				m_AosSkillBonuses.AddTo( from );
+                return false;
+            }
+            else
+            {
+                return base.CanEquip(from);
+            }
+        }
+        #endregion
 
-				int strBonus = m_AosAttributes.BonusStr;
-				int dexBonus = m_AosAttributes.BonusDex;
-				int intBonus = m_AosAttributes.BonusInt;
+        public override void OnAdded(object parent)
+        {
+            if (Core.AOS && parent is Mobile)
+            {
+                Mobile from = (Mobile)parent;
 
-				if ( strBonus != 0 || dexBonus != 0 || intBonus != 0 )
-				{
-					string modName = this.Serial.ToString();
+                m_AosSkillBonuses.AddTo(from);
 
-					if ( strBonus != 0 )
-						from.AddStatMod( new StatMod( StatType.Str, modName + "Str", strBonus, TimeSpan.Zero ) );
+                int strBonus = m_AosAttributes.BonusStr;
+                int dexBonus = m_AosAttributes.BonusDex;
+                int intBonus = m_AosAttributes.BonusInt;
 
-					if ( dexBonus != 0 )
-						from.AddStatMod( new StatMod( StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero ) );
+                if (strBonus != 0 || dexBonus != 0 || intBonus != 0)
+                {
+                    string modName = this.Serial.ToString();
 
-					if ( intBonus != 0 )
-						from.AddStatMod( new StatMod( StatType.Int, modName + "Int", intBonus, TimeSpan.Zero ) );
-				}
+                    if (strBonus != 0)
+                        from.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
 
-				from.CheckStatTimers();
-								
-				#region Mondain's Legacy Sets
-				if ( IsSetItem )
-				{
-					m_SetEquipped = SetHelper.FullSetEquipped( from, SetID, Pieces );
-				
-					if ( m_SetEquipped )
-					{
-						m_LastEquipped = true;							
-						SetHelper.AddSetBonus( from, SetID );
-					}
-				}
-				#endregion
-			}
-		}
+                    if (dexBonus != 0)
+                        from.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero));
+
+                    if (intBonus != 0)
+                        from.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
+                }
+
+                from.CheckStatTimers();
+
+                #region Mondain's Legacy Sets
+                if (IsSetItem)
+                {
+                    m_SetEquipped = SetHelper.FullSetEquipped(from, SetID, Pieces);
+
+                    if (m_SetEquipped)
+                    {
+                        m_LastEquipped = true;
+                        SetHelper.AddSetBonus(from, SetID);
+                    }
+                }
+                #endregion
+            }
+        }
 
 		public override void OnRemoved( object parent )
 		{
@@ -318,7 +383,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 4 ); // version
+			writer.Write( (int) 5 ); // version
+
+			writer.Write( (Mobile)m_BlessedBy ); // Personal Bless Deed
 
 			#region Mondain's Legacy Sets version 4
 			writer.Write( (bool) m_LastEquipped );
@@ -350,6 +417,12 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				//personal bless deed
+				case 5:
+				{
+					m_BlessedBy = reader.ReadMobile();
+					goto case 4;
+				}
 				#region Mondain's Legacy Sets
 				case 4:
 				{
