@@ -300,7 +300,7 @@ namespace Server.Mobiles
 			if ( damage > c.Hits )
 				return new PainSpikeSpell( m_Mobile, null );
 
-			switch ( Utility.Random( 18 ) )
+			switch ( Utility.Random( 20 ) )
 			{
 				case 0:
 				case 1:
@@ -362,6 +362,16 @@ namespace Server.Mobiles
 
 					if ( ( m_Animated == null || !m_Animated.Alive ) && m_Mobile.Skills[ SkillName.Necromancy ].Value > 40 )
 						spell = new AnimateDeadSpell( m_Mobile, null );
+
+					break;
+				}
+				case 13:
+				case 14:
+				{
+					m_Mobile.DebugSay( "Attempting to cast vengeful spirit" );
+
+					if ( m_Mobile.Skills[ SkillName.Necromancy ].Value > 80 && ( m_Mobile.Followers + 3 ) > m_Mobile.FollowersMax )
+						spell = new VengefulSpiritSpell( m_Mobile, null );
 
 					break;
 				}

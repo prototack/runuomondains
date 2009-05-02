@@ -2937,6 +2937,14 @@ namespace Server.Multis
 
 		public override void OnAfterDelete()
 		{
+			#region Mondain's Legacy
+			if ( m_Region != null )
+			{
+				NoHousingItem houseItem = new NoHousingItem( this );
+				houseItem.MoveToWorld( m_Region.GoLocation, m_Region.Map );
+			}
+			#endregion
+
 			base.OnAfterDelete();
 
 			if ( m_Owner != null )

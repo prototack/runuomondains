@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections;
+using Server.ContextMenus;
 using Server.Network;
 using Server.Targeting;
 using Server.Mobiles;
@@ -168,6 +169,50 @@ namespace Server.Items
 		#endregion
 
 		public virtual SkillName AccuracySkill { get { return SkillName.Tactics; } }
+
+		#region Personal Bless Deed
+		private Mobile m_BlessedBy;
+			
+		[CommandProperty( AccessLevel.GameMaster )] 
+		public Mobile BlessedBy
+		{ 
+			get { return m_BlessedBy; } 
+			set { m_BlessedBy = value;InvalidateProperties();} 
+		}
+		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+		{
+			base.GetContextMenuEntries( from, list );
+
+			if( BlessedFor == from && BlessedBy == from && RootParent == from )
+				list.Add( new UnBlessEntry( from, this ) );
+		}
+
+		private class UnBlessEntry : ContextMenuEntry
+		{
+			private Mobile m_From;
+			private BaseWeapon m_Weapon; // BaseArmor, BaseWeapon or BaseClothing
+
+			public UnBlessEntry(Mobile from, BaseWeapon weapon) : base( 6208, -1 )
+			{
+				m_From = from;
+				m_Weapon = weapon;
+			}
+
+			public override void OnClick()
+			{
+				m_Weapon.BlessedFor = null;
+				m_Weapon.BlessedBy = null;
+
+				Container pack = m_From.Backpack;
+
+				if( pack != null )
+				{
+					pack.DropItem( new PersonalBlessDeed( m_From ) );
+					m_From.SendLocalizedMessage( 1062200 ); // A personal bless deed has been placed in your backpack.
+				}
+			}
+		}
+		#endregion
 		#endregion
 
 		#region Getters & Setters
@@ -639,8 +684,16 @@ namespace Server.Items
 			else if ( !from.CanBeginAction( typeof( BaseWeapon ) ) )
 			{
 				return false;
-			}
-			else
+            }
+            #region Personal Bless Deed
+            else if (BlessedBy != null && BlessedBy != from)
+            {
+                from.SendLocalizedMessage(1075277); // That item is blessed by another player.
+
+                return false;
+            }
+            #endregion
+            else
 			{
 				return base.CanEquip( from );
 			}
@@ -2581,7 +2634,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 11 ); // version
+			writer.Write( (int) 12 ); // version
+
+			writer.Write( (Mobile)m_BlessedBy ); // personal bless deed
 
 			#region Veteran Rewards Version 11
 			writer.Write( (string) m_EngravedText );
@@ -2812,6 +2867,12 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				//personal bless deed
+				case 12:
+				{
+					m_BlessedBy = reader.ReadMobile();
+					goto case 11;
+				}
 				case 11:
 					#region Veteran Rewards 
 					m_EngravedText = reader.ReadString();
