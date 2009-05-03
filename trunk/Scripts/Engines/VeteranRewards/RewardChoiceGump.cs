@@ -73,7 +73,7 @@ namespace Server.Engines.VeteranRewards
 				if ( !RewardSystem.HasAccess( m_From, (RewardEntry)categories[i].Entries[0] ) )
 					continue;
 
-				AddButton( 100, 180 + (i * 40), 4005, 4005, 0, GumpButtonType.Page, 2 + i );
+				AddButton( 100, 180 + (i * 40), 4005, 4005, 0, GumpButtonType.Page, page );
 
 				page += PagesPerCategory( categories[ i ] );
 
@@ -113,7 +113,7 @@ namespace Server.Engines.VeteranRewards
 
 		private void RenderCategory( RewardCategory category, int index, ref int page )
 		{
-			AddPage( 2 + index );
+			AddPage( page );
 
 			List<RewardEntry> entries = category.Entries;
 
