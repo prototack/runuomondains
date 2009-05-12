@@ -2,6 +2,7 @@ using System;
 using Server;
 using Server.Misc;
 using Server.Items;
+using Server.Items.MusicBox;
 using Server.Network;
 
 namespace Server.Mobiles
@@ -52,6 +53,27 @@ namespace Server.Mobiles
 			if ( 0.4 > Utility.RandomDouble() )
 				PackItem( new ClockworkAssembly() );
 		}
+		
+		#region mod by Dies Irae
+		public override void OnDeath( Container c )
+		{
+			base.OnDeath( c );		
+			
+			if( Utility.RandomDouble() < 0.05 )
+			{
+				if( IsParagon )
+					c.DropItem( MusicBoxGears.RandomMusixBoxGears( TrackRarity.Rare ) );
+				else
+				{
+					if( Utility.RandomBool() )
+						c.DropItem( MusicBoxGears.RandomMusixBoxGears( TrackRarity.Common ) );
+					else
+						c.DropItem( MusicBoxGears.RandomMusixBoxGears( TrackRarity.UnCommon ) );
+				}
+			}
+		}
+		#endregion
+		
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.Rich );

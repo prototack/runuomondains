@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Items.MusicBox;
 using Server.Network;
 
 namespace Server.Mobiles
@@ -84,6 +85,26 @@ namespace Server.Mobiles
 			ControlSlots = 4;
 		}
 
+		#region mod by Dies Irae
+		public override void OnDeath( Container c )
+		{
+			base.OnDeath( c );		
+			
+			if( !Summoned && Utility.RandomDouble() < 0.05 )
+			{
+				if( IsParagon )
+					c.DropItem( MusicBoxGears.RandomMusixBoxGears( TrackRarity.Rare ) );
+				else
+				{
+					if( Utility.RandomBool() )
+						c.DropItem( MusicBoxGears.RandomMusixBoxGears( TrackRarity.Common ) );
+					else
+						c.DropItem( MusicBoxGears.RandomMusixBoxGears( TrackRarity.UnCommon ) );
+				}
+			}
+		}
+		#endregion
+		
 		public override bool DeleteOnRelease{ get{ return true; } }
 
 		public override int GetAngerSound()
