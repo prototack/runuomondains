@@ -297,7 +297,7 @@ namespace Server.Gumps
 				//case 0x6C: types.Add( typeof( ValorGauntlets ) ); cliloc = 1075192; break;
 				case 0x6D: types.Add( typeof( DupresShield ) ); cliloc = 1075196; break;
 				case 0x6E: types.Add( typeof( FountainOfLifeDeed ) ); cliloc = 1075197; break;
-				//case 0x6F: types.Add( typeof( Server.Items.MusicBox.DawnsMusicBox ) ); cliloc = 1075198; break;
+				case 0x6F: types.Add( typeof( Server.Items.MusicBox.DawnsMusicBox ) ); cliloc = 1075198; break;
 				case 0x70: types.Add( typeof( OssianGrimoire ) ); cliloc = 1078148; break;
 				case 0x71: types.Add( typeof( FerretFormTalisman ) ); cliloc = 1078142; break;	
 				case 0x72: types.Add( typeof( SquirrelFormTalisman ) ); cliloc = 1078143; break;	
