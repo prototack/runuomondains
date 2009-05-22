@@ -77,6 +77,10 @@ namespace Server.Misc
 			}
 			#endregion
 			
+			#region Mondain's Legacy
+			if ( target is Gregorio )
+				return false;
+			#endregion
 
 			if( map != null && (map.Rules & MapRules.BeneficialRestrictions) == 0 )
 				return true; // In felucca, anything goes
@@ -105,6 +109,19 @@ namespace Server.Misc
 				return true;
 
 			Map map = from.Map;
+
+			#region Mondain's Legacy
+			if ( target is Gregorio )
+			{
+				Gregorio gregorio = (Gregorio) target;
+
+				if ( Gregorio.IsMurderer( from ) )
+					return true;
+				
+				from.SendLocalizedMessage( 1075456 ); // You are not allowed to damage this NPC unless your on the Guilty Quest
+				return false;
+			}
+			#endregion
 
 			if( map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0 )
 				return true; // In felucca, anything goes
@@ -289,11 +306,11 @@ namespace Server.Misc
 				return Notoriety.Murderer;
 				
 			#region Mondain's Legacy
-			if ( source.Player && target is Gregorio )
+			if ( target is Gregorio )
 			{
 				Gregorio gregorio = (Gregorio) target;
-				
-				if ( gregorio.IsMurderer( source as PlayerMobile ) )
+
+				if ( Gregorio.IsMurderer( source ) )
 					return Notoriety.Murderer;
 				
 				return Notoriety.Innocent;

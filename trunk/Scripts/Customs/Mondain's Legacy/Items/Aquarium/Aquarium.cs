@@ -335,7 +335,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 			
-			writer.Write( 1 ); // Version
+			writer.Write( 2 ); // Version
+
+			// version 2
+			writer.Write( m_EvaluateDay );
 			
 			// version 1
 			if ( m_Timer != null )
@@ -366,6 +369,10 @@ namespace Server.Items
 			
 			switch ( version )
 			{
+				case 2:
+					m_EvaluateDay = reader.ReadBool();
+
+					goto case 1;
 				case 1: 				
 					DateTime next = reader.ReadDateTime();
 					

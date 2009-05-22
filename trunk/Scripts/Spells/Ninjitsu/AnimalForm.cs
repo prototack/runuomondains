@@ -217,8 +217,8 @@ namespace Server.Spells.Ninjitsu
 		{
 			m_Table[m] = context;
 
-			if ( context.Type == typeof( BakeKitsune ) || context.Type == typeof( GreyWolf ) )
-				m.Hits += 20;
+			/*if ( context.Type == typeof( BakeKitsune ) || context.Type == typeof( GreyWolf ) )
+				m.Hits += 20;*/
 		}
 
 		public static void RemoveContext( Mobile m, bool resetGraphics )
@@ -276,9 +276,8 @@ namespace Server.Spells.Ninjitsu
 /*
 		private delegate void AnimalFormCallback( Mobile from );
 		private delegate bool AnimalFormRequirementCallback( Mobile from );
- * */
-
-		public class AnimalFormEntry
+*/
+ 		public class AnimalFormEntry
 		{
 			private Type m_Type;
 			private TextDefinition m_Name;
@@ -315,7 +314,7 @@ namespace Server.Spells.Ninjitsu
 			private AnimalFormCallback m_TransformCallback;
 			private AnimalFormCallback m_UntransformCallback;
 			private AnimalFormRequirementCallback m_RequirementCallback;
-			 * */
+			*/
 
 			public AnimalFormEntry( Type type, TextDefinition name, int itemID, int hue, int x, int y, int tooltip, double reqSkill, int bodyMod, bool stealthBonus, bool speedBoost, bool stealingBonus )
 				: this( type, name, itemID, hue, x, y, tooltip, reqSkill, bodyMod, 0, stealthBonus, speedBoost, stealingBonus )
@@ -366,7 +365,6 @@ namespace Server.Spells.Ninjitsu
 
 		public class AnimalFormGump : Gump
 		{
-
 			//TODO: Convert this for ML to the BaseImageTileButtonsgump
 			private Mobile m_Caster;
 			private AnimalForm m_Spell;
@@ -438,9 +436,9 @@ namespace Server.Spells.Ninjitsu
 
 			public override void OnResponse( NetState sender, RelayInfo info )
 			{
-				if ( info.ButtonID >= 100 && info.ButtonID <= 100 + m_Entries.Length )
+				if ( info.ButtonID == 1 && info.Switches.Length > 0 )
 				{
-					int entryID = info.ButtonID - 100;
+					int entryID = info.Switches[0] - 100;
 					
 					if ( AnimalForm.Morph( m_Caster, entryID ) == MorphResult.Fail )
 					{

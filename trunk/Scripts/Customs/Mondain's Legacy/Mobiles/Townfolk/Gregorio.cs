@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server;
 using Server.Items;
+using Server.Targeting;
 using Server.Engines.Quests;
 
 namespace Server.Mobiles
@@ -9,7 +10,6 @@ namespace Server.Mobiles
 	public class Gregorio : BaseCreature
 	{						
 		public override bool InitialInnocent{ get{ return true; } }
-		
 		[Constructable]
 		public Gregorio() : base( AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{			
@@ -66,29 +66,12 @@ namespace Server.Mobiles
 			AddItem( new Pitchfork() );
 		}
 		
-		public override void Damage( int amount, Mobile from, bool informMount )	
-		{
-			if ( from.Player )
-			{
-				if ( IsMurderer( from as PlayerMobile ) )
-					base.Damage( amount, from, informMount );		
-				else
-					from.SendLocalizedMessage( 1075456 ); // You are not allowed to damage this NPC unless your on the Guilty Quest
-			}
-		}
-		
-		public override void AlterMeleeDamageTo( Mobile to, ref int damage )
-		{
-			if ( !IsMurderer( to as PlayerMobile ) )
-				damage = 0;
-		}
-		
-		public bool IsMurderer( PlayerMobile from )
+		public static bool IsMurderer( Mobile from )
 		{			
-			if ( from != null )
+			if ( from != null && from is PlayerMobile )
 			{
-				BaseQuest quest = QuestHelper.GetQuest( from, typeof( GuiltyQuest ) );
-				
+				BaseQuest quest = QuestHelper.GetQuest( (PlayerMobile) from, typeof( GuiltyQuest ) );
+
 				if ( quest != null )
 					return !quest.Completed;
 			}

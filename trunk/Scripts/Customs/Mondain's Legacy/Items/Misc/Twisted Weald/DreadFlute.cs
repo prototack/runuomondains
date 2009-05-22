@@ -6,12 +6,14 @@ namespace Server.Items
 	public class DreadFlute : BaseInstrument
 	{
 		public override int LabelNumber{ get{ return 1075089; } } // Dread Flute
+		public override int InitMinUses { get { return 700; } }
+		public override int InitMaxUses { get { return 700; } }
+		public override TimeSpan ChargeReplenishRate { get { return TimeSpan.FromMinutes( 15.0 ); } }
 	
 		[Constructable]
 		public DreadFlute() : base( 0x315C, 0x58B, 0x58C ) // TODO check sounds
 		{
 			Weight = 1.0;
-			UsesRemaining = 700;
 			ReplenishesCharges = true;
 			Hue = 0x4F2;
 		}

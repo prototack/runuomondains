@@ -130,9 +130,7 @@ namespace Server.Mobiles
 				
 			base.OnDamage( amount, from, willKill );				
 		}
-
-		public override bool CanAnimateDead{ get{ return true; } }
-		public override BaseCreature Animates{ get{ return new FleshGolem(); } }	
+	
 		public override bool GivesMinorArtifact{ get{ return true; } }
 		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
 		public override int TreasureMapLevel{ get{ return 5; } }
@@ -265,7 +263,7 @@ namespace Server.Mobiles
 				
 		public void TakeLife( Mobile from )
 		{
-			Hits += from.Hits / ( from.Player ? 1 : 3 );
+			Hits += from.Hits / ( from.Player ? 2 : 6 );
 			
 			FixedParticles( 0x376A, 9, 32, 5005, EffectLayer.Waist );
 			PlaySound( 0x1F2 );
@@ -296,8 +294,8 @@ namespace Server.Mobiles
 					if ( CanBeHarmful( fighter ) )
 					{
 						EnslavedSatyr satyr = new EnslavedSatyr();
-						SpawnHelper( satyr, GetSpawnPosition( fighter.Location, fighter.Map, 2 ) );
 						satyr.Combatant = fighter;
+						SpawnHelper( satyr, GetSpawnPosition( fighter.Location, fighter.Map, 2 ) );
 
 						fighter.SendLocalizedMessage( 1075116 ); // A twisted satyr scrambles onto the branch beside you and attacks!
 					}
@@ -305,7 +303,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				for ( int i = 0; i < count; i-- )
+				for ( int i = 0; i < count; i++ )
 					SpawnHelper( new EnslavedSatyr(), 4 );
 			}
 		}	
