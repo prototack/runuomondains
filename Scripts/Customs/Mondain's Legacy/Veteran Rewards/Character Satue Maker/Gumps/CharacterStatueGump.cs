@@ -10,6 +10,8 @@ namespace Server.Gumps
 	{
 		private Item m_Maker;
 		private CharacterStatue m_Statue;
+		private Timer m_Timer;
+		private Mobile m_Owner;
 	
 		private enum Buttons
 		{
@@ -24,10 +26,11 @@ namespace Server.Gumps
 			Restore
 		}
 	
-		public CharacterStatueGump( Item maker, CharacterStatue statue ) : base( 60, 36 )
+		public CharacterStatueGump( Item maker, CharacterStatue statue, Mobile owner ) : base( 60, 36 )
 		{
 			m_Maker = maker;
 			m_Statue = statue;
+			m_Owner = owner;
 			
 			if ( m_Statue == null )
 				return;
@@ -77,6 +80,20 @@ namespace Server.Gumps
 			{
 				AddButton( 107, 294, 0xFAB, 0xFAD, (int) Buttons.Restore, GumpButtonType.Reply, 0 );
 				AddHtmlLocalized( 142, 294, 80, 20, 1076193, 0x7FFF, false, false ); // Restore	
+			}
+
+			m_Timer = Timer.DelayCall( TimeSpan.FromSeconds( 2.5 ), TimeSpan.FromSeconds( 2.5 ), new TimerCallback( CheckOnline ) );
+		}
+
+		private void CheckOnline()
+		{
+			if ( m_Owner != null && m_Owner.NetState == null )
+			{
+				if ( m_Timer != null )
+					m_Timer.Stop();
+
+				if ( m_Statue != null && !m_Statue.Deleted )
+					m_Statue.Delete();
 			}
 		}
 		
@@ -192,9 +209,21 @@ namespace Server.Gumps
 			{
 				m_Statue.Delete();
 			}
-			
+
 			if ( sendGump )
-				state.Mobile.SendGump( new CharacterStatueGump( m_Maker, m_Statue ) );
+				state.Mobile.SendGump( new CharacterStatueGump( m_Maker, m_Statue, m_Owner ) );
+			
+			if ( m_Timer != null )
+				m_Timer.Stop();
+		}
+
+		public override void OnServerClose( NetState owner )
+		{
+			if ( m_Timer != null )
+				m_Timer.Stop();
+
+			if ( m_Statue != null && !m_Statue.Deleted )
+				m_Statue.Delete();
 		}
 	}
 }

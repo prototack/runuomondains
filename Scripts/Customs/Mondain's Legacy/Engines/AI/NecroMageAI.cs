@@ -370,7 +370,7 @@ namespace Server.Mobiles
 				{
 					m_Mobile.DebugSay( "Attempting to cast vengeful spirit" );
 
-					if ( m_Mobile.Skills[ SkillName.Necromancy ].Value > 80 && ( m_Mobile.Followers + 3 ) > m_Mobile.FollowersMax )
+					if ( m_Mobile.Skills[ SkillName.Necromancy ].Value > 80 && ( m_Mobile.Followers + 3 ) < m_Mobile.FollowersMax )
 						spell = new VengefulSpiritSpell( m_Mobile, null );
 
 					break;

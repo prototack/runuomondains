@@ -181,6 +181,10 @@ namespace Server.Commands
 							if ( indexOf >= 0 )
 								wall.PointDest = Point3D.Parse( m_Params[i].Substring( ++indexOf ) );
 						}
+						else if ( m_Params[i].StartsWith( "Unlocked" ) )
+						{
+							wall.Locked = false;
+						}
 					}
 					
 					item = wall;					

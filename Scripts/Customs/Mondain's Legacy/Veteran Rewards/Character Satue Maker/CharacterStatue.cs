@@ -584,8 +584,9 @@ namespace Server.Mobiles
 					statue.Plinth = plinth;
 					plinth.MoveToWorld( loc, map );
 					statue.InvalidatePose();
-					
-					from.SendGump( new CharacterStatueGump( m_Maker, statue ) );
+
+					from.CloseGump( typeof( CharacterStatueGump ) );
+					from.SendGump( new CharacterStatueGump( m_Maker, statue, from ) );
 				}
 				else if ( result == AddonFitResult.Blocked )
 					from.SendLocalizedMessage( 500269 ); // You cannot build that there.

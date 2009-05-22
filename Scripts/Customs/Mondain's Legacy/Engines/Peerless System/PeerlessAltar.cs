@@ -92,14 +92,6 @@ namespace Server.Items
 		{
 			get{ return m_Fighters[ 0 ]; }
 		}
-		
-		private bool m_Spawned;
-		
-		public bool Spawned
-		{
-			get{ return m_Spawned; }
-			set{ m_Spawned = value; }
-		}
 	
 		public PeerlessAltar( int itemID ) : base( itemID )
 		{
@@ -177,7 +169,7 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 1 ); // version
+			writer.Write( (int) 2 ); // version
 
 			// version 1
 			writer.Write( (bool) ( m_Helpers != null ) );
@@ -208,8 +200,6 @@ namespace Server.Items
 				
 				writer.WriteMobileList( pair.Value );
 			}
-			
-			writer.Write( (bool) m_Spawned );
 		}
 		
 		public override void Deserialize( GenericReader reader )
@@ -220,6 +210,7 @@ namespace Server.Items
 			
 			switch ( version )
 			{
+				case 2:
 				case 1:
 					if ( reader.ReadBool() )
 						m_Helpers = reader.ReadStrongMobileList<BaseCreature>();
@@ -244,8 +235,10 @@ namespace Server.Items
 					
 					for ( int i = 0; i < count; i ++ )
 						m_Pets.Add( reader.ReadMobile(), reader.ReadStrongMobileList() );
-						
-					m_Spawned = reader.ReadBool();
+					
+					if ( version < 2 )
+						reader.ReadBool();
+					
 					break;
 			}			
 			
