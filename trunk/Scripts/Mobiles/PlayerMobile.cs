@@ -2190,6 +2190,9 @@ namespace Server.Mobiles
             if (Alive)
                 return false;
 
+            if (Core.ML && Skills[SkillName.SpiritSpeak].Value >= 100.0)
+                return false;
+
             if (Core.AOS)
             {
                 for (int i = 0; i < hears.Count; ++i)
