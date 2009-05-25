@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Server;
+using Server.ContextMenus;
 using Server.Network;
 using Server.Gumps;
 using Server.Multis;
@@ -158,6 +160,12 @@ namespace Server.Items
 			Author		= 0x02,
 			Writable	= 0x04,
 			Content		= 0x08
+		}
+
+		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
+		{
+			base.GetContextMenuEntries( from, list );
+			SetSecureLevelEntry.AddTo( from, this, list );
 		}
 
 		public override void Serialize( GenericWriter writer )
