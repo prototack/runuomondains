@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class TormentedMinotaurStatuette : MonsterStatuette
+    public class TormentedMinotaurStatuette : BaseStatuette
 	{
 	
 		[Constructable]
