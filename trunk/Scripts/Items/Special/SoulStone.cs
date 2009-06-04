@@ -6,12 +6,13 @@ using Server.Accounting;
 
 namespace Server.Items
 {
-	public class SoulStone : Item
+    public class SoulStone : Item, Engines.VeteranRewards.IRewardItem
 	{
 		public override int LabelNumber { get { return 1030899; } } // soulstone
 
 		private int m_ActiveItemID;
-		private int m_InactiveItemID;
+        private int m_InactiveItemID;
+        private bool m_IsRewardItem;
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public virtual int ActiveItemID
@@ -38,7 +39,14 @@ namespace Server.Items
 					this.ItemID = m_InactiveItemID;
 			}
 		}
-	
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem
+        {
+            get { return m_IsRewardItem; }
+            set { m_IsRewardItem = value; }
+        }
+
 		public static readonly TimeSpan UseDelay = TimeSpan.FromDays( 1.0 );
 
 		private string m_Account;
@@ -725,7 +733,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.WriteEncodedInt( 1 ); // version
+			writer.WriteEncodedInt( 2 ); // version
+
+            writer.Write(m_IsRewardItem);
 
 			writer.Write( m_ActiveItemID );
 			writer.Write( m_InactiveItemID );
@@ -745,6 +755,11 @@ namespace Server.Items
 
 			switch( version )
 			{
+                case 2:
+                    {
+                        m_IsRewardItem = reader.ReadBool();
+                        goto case 1;
+                    }
 				case 1:
 					{
 						m_ActiveItemID = reader.ReadInt();
@@ -943,6 +958,14 @@ namespace Server.Items
 			: base( serial )
 		{
 		}
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (IsRewardItem)
+                list.Add(1076217); // 1st Year Veteran Reward
+        }
 
 		public override void Serialize( GenericWriter writer )
 		{

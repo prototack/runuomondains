@@ -51,8 +51,6 @@ namespace Server.Mobiles
 				case 2: PackItem( new CopperOre( Utility.RandomMinMax( 1, 10 ) ) ); break;
 				case 3: PackItem( new BronzeOre( Utility.RandomMinMax( 1, 10 ) ) ); break;
 			}
-
-			// TODO: skeleton
 		}
 
 		public override int GetAngerSound()
@@ -85,6 +83,30 @@ namespace Server.Mobiles
 			AddLoot( LootPack.Average, 2 );
 		}
 
+		public override bool OnBeforeDeath()
+		{
+			if ( 0.02 > Utility.RandomDouble() )
+				switch ( Utility.Random( 4 ) )
+				{
+					default:
+					case 0: PackItem( new BardBones() ) ; break;
+					case 1:	PackItem( new RogueBones() ) ; break;
+					case 2: PackItem( new MageBones() ) ; break;
+					case 3: PackItem( new WarriorBones() ) ; break;
+				};
+
+			return base.OnBeforeDeath();
+		}
+
+		public override bool HasBreath{ get{ return true; } }
+		public override int BreathEffectSpeed{ get{ return 1; } }
+		public override int BreathEffectHue{ get{ return 0x1D3; } }
+		public override int BreathEffectSound{ get{ return 0x1CC; } }
+
+		public override void BreathDealDamage( Mobile target )
+		{
+			target.ApplyPoison( this, Poison.Deadly );
+		}
 
 		public AntLion( Serial serial ) : base( serial )
 		{
