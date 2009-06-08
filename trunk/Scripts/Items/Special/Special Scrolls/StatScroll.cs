@@ -79,10 +79,11 @@ namespace Server.Items
 				else
 				{
 					if ( firstStage )
-					{
-						from.CloseGump( typeof( StatCapScroll.InternalGump ) );
-						from.CloseGump( typeof( PowerScroll.InternalGump ) );
-						from.SendGump( new InternalGump( from, this ) );
+                    {
+                        from.CloseGump(typeof(StatCapScroll.InternalGump));
+                        from.CloseGump(typeof(PowerScroll.InternalGump));
+                        from.CloseGump(typeof(ScrollofTranscendence.InternalGump));
+                        from.SendGump(new InternalGump(from, this));
 					}
 					else
 					{

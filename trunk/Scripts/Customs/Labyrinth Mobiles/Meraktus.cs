@@ -2,13 +2,32 @@ using System;
 using System.Collections;
 using Server.Items;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
 	[CorpseName( "the remains of Meraktus" )]
 	
 	public class Meraktus : BaseCreature
-	{
+    {
+        public static Type[] UniqueArtifacts { get { return m_UniqueArtifacts; } }
+
+        private static Type[] m_UniqueArtifacts = new Type[]
+		{
+			// Unique Artifacts
+			typeof( Subdue )
+		};
+
+        public static Type[] DecorationArtifacts { get { return m_DecorationArtifacts; } }
+
+        private static Type[] m_DecorationArtifacts = new Type[]
+		{
+			// Decoration Artifacts
+            typeof( MinotaurStatuette ),
+            typeof( DecorationLargeVase ),
+            typeof( DecorationSmallVase )
+		};
+
 		public override WeaponAbility GetWeaponAbility()
 		{
 			return WeaponAbility.Dismount;
@@ -61,19 +80,119 @@ namespace Server.Mobiles
 				case 1: c.DropItem( new BonePile() ); break;
 				case 2: c.DropItem( new LightYarn() ); break;
 			}
-
-			//c.DropItem( new InsertYourItemHere() );
 			
 			if ( Utility.RandomBool() )
 				c.DropItem( new TormentedChains() );
 				
-			//if ( Utility.RandomDouble() < 0.05 )
-				//c.DropItem( new TormentedMinotaurStatuette() );
-				
 			if ( Utility.RandomDouble() < 0.025 )
                 c.DropItem(new CrimsonCincture());
-				
-		}
+
+            if (Utility.RandomDouble() < 0.30)
+            {
+                double random = Utility.Random(29);
+
+                if (random <= 4)
+                    GiveUniqueArtifact();
+                else if (random >= 15 && random <= 29)
+                    GiveDecorationArtifact();
+            }
+        }
+
+        #region Unique Artifact
+        public void GiveUniqueArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveUniqueArtifactTo(m);
+            }
+        }
+
+        public static void GiveUniqueArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_UniqueArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
+
+        #region Decoration Artifact
+        public void GiveDecorationArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveDecorationArtifactTo(m);
+            }
+        }
+
+        public static void GiveDecorationArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_DecorationArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
 
 		public override void GenerateLoot()
 		{
