@@ -525,47 +525,94 @@ namespace Server.Engines.CannedEvil
 			if( !m_Active || Deleted || m_Champion != null )
 				return;
 
-			while( m_Creatures.Count < (200 - (GetSubLevel() * 40)) )
-			{
-				Mobile m = Spawn();
+            if (m_Type == ChampionSpawnType.TwistedGlade || m_Type == ChampionSpawnType.Pestilence)
+            {
+                while (m_Creatures.Count < (100 - (GetSubLevel() * 20)))
+                {
+                    Mobile m = Spawn();
 
-				if( m == null )
-					return;
+                    if (m == null)
+                        return;
 
-				Point3D loc = GetSpawnLocation();
+                    Point3D loc = GetSpawnLocation();
 
-				// Allow creatures to turn into Paragons at Ilshenar champions.
-				m.OnBeforeSpawn( loc, Map );
+                    // Allow creatures to turn into Paragons at Ilshenar champions.
+                    m.OnBeforeSpawn(loc, Map);
 
-				m_Creatures.Add( m );
-				m.MoveToWorld( loc, Map );
+                    m_Creatures.Add(m);
+                    m.MoveToWorld(loc, Map);
 
-				if( m is BaseCreature )
-				{
-					BaseCreature bc = m as BaseCreature;
-					bc.Tamable = false;
+                    if (m is BaseCreature)
+                    {
+                        BaseCreature bc = m as BaseCreature;
+                        bc.Tamable = false;
 
-					if( !m_ConfinedRoaming )
-					{
-						bc.Home = this.Location;
-						bc.RangeHome = (int)(Math.Sqrt( m_SpawnArea.Width * m_SpawnArea.Width + m_SpawnArea.Height * m_SpawnArea.Height )/2);
-					}
-					else
-					{
-						bc.Home = bc.Location;
+                        if (!m_ConfinedRoaming)
+                        {
+                            bc.Home = this.Location;
+                            bc.RangeHome = (int)(Math.Sqrt(m_SpawnArea.Width * m_SpawnArea.Width + m_SpawnArea.Height * m_SpawnArea.Height) / 2);
+                        }
+                        else
+                        {
+                            bc.Home = bc.Location;
 
-						Point2D xWall1 = new Point2D( m_SpawnArea.X, bc.Y );
-						Point2D xWall2 = new Point2D( m_SpawnArea.X + m_SpawnArea.Width, bc.Y );
-						Point2D yWall1 = new Point2D( bc.X, m_SpawnArea.Y );
-						Point2D yWall2 = new Point2D( bc.X, m_SpawnArea.Y + m_SpawnArea.Height );
+                            Point2D xWall1 = new Point2D(m_SpawnArea.X, bc.Y);
+                            Point2D xWall2 = new Point2D(m_SpawnArea.X + m_SpawnArea.Width, bc.Y);
+                            Point2D yWall1 = new Point2D(bc.X, m_SpawnArea.Y);
+                            Point2D yWall2 = new Point2D(bc.X, m_SpawnArea.Y + m_SpawnArea.Height);
 
-						double minXDist = Math.Min( bc.GetDistanceToSqrt( xWall1 ), bc.GetDistanceToSqrt( xWall2 ) );
-						double minYDist = Math.Min( bc.GetDistanceToSqrt( yWall1 ), bc.GetDistanceToSqrt( yWall2 ) );
+                            double minXDist = Math.Min(bc.GetDistanceToSqrt(xWall1), bc.GetDistanceToSqrt(xWall2));
+                            double minYDist = Math.Min(bc.GetDistanceToSqrt(yWall1), bc.GetDistanceToSqrt(yWall2));
 
-						bc.RangeHome = (int)Math.Min( minXDist, minYDist );
-					}
-				}
-			}
+                            bc.RangeHome = (int)Math.Min(minXDist, minYDist);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                while (m_Creatures.Count < (200 - (GetSubLevel() * 40)))
+                {
+                    Mobile m = Spawn();
+
+                    if (m == null)
+                        return;
+
+                    Point3D loc = GetSpawnLocation();
+
+                    // Allow creatures to turn into Paragons at Ilshenar champions.
+                    m.OnBeforeSpawn(loc, Map);
+
+                    m_Creatures.Add(m);
+                    m.MoveToWorld(loc, Map);
+
+                    if (m is BaseCreature)
+                    {
+                        BaseCreature bc = m as BaseCreature;
+                        bc.Tamable = false;
+
+                        if (!m_ConfinedRoaming)
+                        {
+                            bc.Home = this.Location;
+                            bc.RangeHome = (int)(Math.Sqrt(m_SpawnArea.Width * m_SpawnArea.Width + m_SpawnArea.Height * m_SpawnArea.Height) / 2);
+                        }
+                        else
+                        {
+                            bc.Home = bc.Location;
+
+                            Point2D xWall1 = new Point2D(m_SpawnArea.X, bc.Y);
+                            Point2D xWall2 = new Point2D(m_SpawnArea.X + m_SpawnArea.Width, bc.Y);
+                            Point2D yWall1 = new Point2D(bc.X, m_SpawnArea.Y);
+                            Point2D yWall2 = new Point2D(bc.X, m_SpawnArea.Y + m_SpawnArea.Height);
+
+                            double minXDist = Math.Min(bc.GetDistanceToSqrt(xWall1), bc.GetDistanceToSqrt(xWall2));
+                            double minYDist = Math.Min(bc.GetDistanceToSqrt(yWall1), bc.GetDistanceToSqrt(yWall2));
+
+                            bc.RangeHome = (int)Math.Min(minXDist, minYDist);
+                        }
+                    }
+                }
+            }
 		}
 
 		public Point3D GetSpawnLocation()
