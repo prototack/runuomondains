@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class Spiderweb : Item
     {
-        public override int LabelNumber { get { return 1023814; } } // spiderweb
+        //public override int LabelNumber { get { return 1023814; } } // spiderweb
 	
 		[Constructable]
 		public Spiderweb() : base( 0x10DD )
@@ -32,47 +32,18 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-    public class CocoonWeb : BaseAddon
+
+    public class EggCaseWeb : Item
     {
-        public override BaseAddonDeed Deed { get { return new CocoonWebDeed(); } }
-        [Constructable]
-        public CocoonWeb()
-        {
-            AddComponent(new AddonComponent(0x10DD), 0, 0, 0);
-            AddComponent(new AddonComponent(0x10DA), 0, 0, 0);
-        }
-
-        public CocoonWeb(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    public class CocoonWebDeed : BaseAddonDeed
-    {
-        public override BaseAddon Addon { get { return new CocoonWeb(); } }
+        //public override int LabelNumber { get { return 1024312; } } // egg case web
 
         [Constructable]
-        public CocoonWebDeed()
+        public EggCaseWeb()
+            : base(0x10D8)
         {
-            Name = "Cocoon with Spiderweb Deed";
         }
 
-        public CocoonWebDeed(Serial serial)
+        public EggCaseWeb(Serial serial)
             : base(serial)
         {
         }

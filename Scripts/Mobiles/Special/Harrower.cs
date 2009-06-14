@@ -95,7 +95,10 @@ namespace Server.Mobiles
 		{
 			// Decoration Artifacts
             typeof( SkullPole ),
-            typeof( EvilIdol )
+            typeof( EvilIdol ),
+            typeof( Pier ),
+            typeof( SmallRockWater ),
+            typeof( SmallRocksWater )
 		};
 
 		[Constructable]

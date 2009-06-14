@@ -36,7 +36,9 @@ namespace Server.Mobiles
 		{
 			// Decoration Artifacts
             typeof( OphidianWarriorStatuette ),
+            typeof( OphidianKnightStatuette ),
             typeof( OphidianArchMageStatuette ),
+            typeof( OphidianMageStatuette ),
 			typeof( LavaTile )
 		};
 
