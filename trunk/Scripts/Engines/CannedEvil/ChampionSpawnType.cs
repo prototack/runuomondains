@@ -93,7 +93,7 @@ namespace Server.Engines.CannedEvil
 					new Type[]{ typeof( LesserHiryu ), typeof( RevenantLion ) },
 					new Type[]{ typeof( Hiryu ), typeof( Oni ) }
 				} ),
-                new ChampionSpawnInfo( "Twisted Glade", typeof( Twaulo ), new string[]{ "Banisher of the Glade", "Subjugator of the Glade ", "Enforcer of the Glade " } , new Type[][]
+                new ChampionSpawnInfo( "Twisted Glade", typeof( Twaulo ), new string[]{ "Banisher of the Glade", "Subjugator of the Glade ", "Enforcer of the Glade" } , new Type[][]
 				{																											// Twisted Glade
 					new Type[]{ typeof( Pixie ), typeof( ShadowWisp ) },
 					new Type[]{ typeof( Centaur ), typeof( DryadA ) },

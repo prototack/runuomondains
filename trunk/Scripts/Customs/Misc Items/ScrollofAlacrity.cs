@@ -1,19 +1,21 @@
-/*Created by Shai'Tan Malkier (Modified PowerScroll.cs with additions/modifications)*/
+/*Created by Shai'Tan Malkier with the aid of MalGanis*/
 
 using System;
 using Server;
 using Server.Gumps;
 using Server.Network;
 using Server.Mobiles;
+using System.Collections;
+using Server.Engines.Quests;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class ScrollofTranscendence : Item
+    public class ScrollofAlacrity : Item
     {
-        public override int LabelNumber { get { return 1094934; } } // Scroll of Transcendence
+        public override int LabelNumber { get { return 1078604; } } // Scroll of Alacrity
 
         private SkillName m_Skill;
-        private double m_Value;
 
         private static SkillName[] m_Skills = new SkillName[]
 			{
@@ -76,30 +78,17 @@ namespace Server.Items
 
         public static SkillName[] Skills { get { return (m_Skills); } }
 
-        public static ScrollofTranscendence CreateRandom(int min, int max)
-        {
-            min /= 1;
-            max /= 1;
-
-            SkillName[] skills = ScrollofTranscendence.Skills;
-
-            return new ScrollofTranscendence(skills[Utility.Random(skills.Length)], Utility.RandomMinMax(min, max) * 0.1);
-        }
-
         [Constructable]
-        public ScrollofTranscendence(SkillName skill, double value)
+        public ScrollofAlacrity(SkillName skill)
             : base(0x14EF)
         {
-            base.Hue = 0x7E;
+            base.Hue = 0x4AB;
             base.Weight = 1.0;
 
             m_Skill = skill;
-            m_Value = value;
-            if (m_Value > 0.0)
-                LootType = LootType.Cursed;
         }
 
-        public ScrollofTranscendence(Serial serial)
+        public ScrollofAlacrity(Serial serial)
             : base(serial)
         {
         }
@@ -114,19 +103,6 @@ namespace Server.Items
             set
             {
                 m_Skill = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double Value
-        {
-            get
-            {
-                return m_Value;
-            }
-            set
-            {
-                m_Value = value;
             }
         }
 
@@ -150,18 +126,45 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1076759, "{0}\t{1} Skill Points", GetName(), m_Value);
+            list.Add(1071345, "{0} 15 Minutes", GetName());// Skill: ~1_val~
         }
 
         public void Use(Mobile from, bool firstStage)
         {
+            PlayerMobile pm = from as PlayerMobile;
+
             if (Deleted)
                 return;
+
+            #region Mondain's Legacy
+            for (int i = pm.Quests.Count - 1; i >= 0; i--)
+            {
+                BaseQuest quest = pm.Quests[i];
+
+                for (int j = quest.Objectives.Count - 1; j >= 0; j--)
+                {
+                    BaseObjective objective = quest.Objectives[j];
+
+                    if (objective is ApprenticeObjective)
+                    {
+                        from.SendMessage("You are already under the effect of an enhanced skillgain quest.");
+                        return;
+                    }
+                }
+            }
+            #endregion
 
             if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
+
+            else if (pm.AcceleratedStart > DateTime.Now)
+            {
+                from.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                return;
+            }
+
             else
             {
                 if (firstStage)
@@ -176,8 +179,6 @@ namespace Server.Items
                 {
                     double tskill = from.Skills[m_Skill].Base;
                     double tcap = from.Skills[m_Skill].Cap;
-                    bool canGain = true;
-                    PlayerMobile pm = from as PlayerMobile;
 
                     if (tskill >= tcap || from.Skills[m_Skill].Lock == SkillLock.Locked || from.Skills[m_Skill].Lock == SkillLock.Down)
                     {
@@ -185,56 +186,39 @@ namespace Server.Items
                                                              *If you are at your total skill cap, you must use a Powerscroll to increase your current skill cap.*/
                         return;
                     }
-
-                    else if (pm.AcceleratedStart > DateTime.Now)
-                    {
-                        from.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
-                        return;
-                    }
-
-                    if ((tskill + m_Value) > tcap)
-                        m_Value = tcap - tskill;
-
-                    if ((from.SkillsTotal + m_Value * 10) > from.SkillsCap)
-                    {
-                        canGain = false;
-                        for (int i = 0; i <= 54; i++)
-                        {
-                            if (from.Skills[i].Lock == SkillLock.Down && from.Skills[i].Base >= m_Value)
-                            {
-                                from.Skills[i].Base = from.Skills[i].Base - m_Value;
-                                canGain = true;
-                                break;
-                            }
-                        }
-
-                        if (!canGain)
-                        {
-                            from.SendLocalizedMessage(1094935); /*You cannot increase this skill at this time. The skill may be locked or set to lower in your skill menu.
-                                                                 *If you are at your total skill cap, you must use a Powerscroll to increase your current skill cap.*/
-                            return;
-                        }
-                    }
-
-                    if (tskill + m_Value > tcap)
-                    {
-                        from.Skills[m_Skill].Base = tcap;
-                    }
                     else
                     {
-                        from.Skills[m_Skill].Base = tskill + m_Value;
+                        Effects.PlaySound(from.Location, from.Map, 0x1E9);
+
+                        Effects.SendTargetParticles(from, 0x373A, 35, 45, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+
+                        from.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
+
+                        pm.AcceleratedStart = DateTime.Now + TimeSpan.FromMinutes(15);
+
+                        Timer t = (Timer)m_Table[from];
+
+                        m_Table[from] = Timer.DelayCall(TimeSpan.FromMinutes(15), new TimerStateCallback(Expire_Callback), from);
+
+                        pm.AcceleratedSkill = m_Skill;
+
+                        Delete();
                     }
-
-                    from.SendLocalizedMessage(1049513, GetNameLocalized()); // You feel a surge of magic as the scroll enhances your ~1_type~!
-
-                    Effects.PlaySound(from.Location, from.Map, 0x1F7);
-
-                    Effects.SendTargetParticles(from, 0x373A, 35, 45, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
-                    Effects.SendTargetParticles(from, 0x376A, 35, 45, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
-
-                    Delete();
                 }
             }
+        }
+
+        private static Hashtable m_Table = new Hashtable();
+
+        private static void Expire_Callback(object state)
+        {
+            Mobile m = (Mobile)state;
+
+            m_Table.Remove(m);
+
+            m.PlaySound(0x1F8);
+
+            m.SendLocalizedMessage(1077957);// The intense energy dissipates. You are no longer under the effects of an accelerated skillgain scroll.
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -249,7 +233,6 @@ namespace Server.Items
             writer.Write((int)0); // version
 
             writer.Write((int)m_Skill);
-            writer.Write((double)m_Value);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -263,26 +246,22 @@ namespace Server.Items
                 case 0:
                     {
                         m_Skill = (SkillName)reader.ReadInt();
-                        m_Value = reader.ReadDouble();
                         break;
                     }
             }
 
-            if (m_Value >= 0.1)
-            {
-                LootType = LootType.Cursed;
+            LootType = LootType.Cursed;
 
-                if (Insured)
-                    Insured = false;
-            }
+            if (Insured)
+                Insured = false;
         }
 
         public class InternalGump : Gump
         {
             private Mobile m_Mobile;
-            private ScrollofTranscendence m_Scroll;
+            private ScrollofAlacrity m_Scroll;
 
-            public InternalGump(Mobile mobile, ScrollofTranscendence scroll)
+            public InternalGump(Mobile mobile, ScrollofAlacrity scroll)
                 : base(25, 50)
             {
                 m_Mobile = mobile;
@@ -295,9 +274,9 @@ namespace Server.Items
                 AddImageTiled(33, 20, 401, 181, 2624);
                 AddAlphaRegion(33, 20, 401, 181);
 
-                AddHtmlLocalized(40, 48, 387, 100, 1094933, true, true); /*Using a Scroll of Transcendence for a given skill will permanently increase your current 
-                                                                          *level in that skill by the amount of points displayed on the scroll.
-                                                                          *As you may not gain skills beyond your maximum skill cap, any excess points will be lost.*/
+                AddHtmlLocalized(40, 48, 387, 100, 1078602, true, true); /* Using a Scroll of Alacrity for a given skill will increase the amount of skillgain
+                                                                          * you receive for that skill. Once the Scroll of Alacrity duration has expired,
+                                                                          * skillgain will return to normal for that skill. */
 
                 AddHtmlLocalized(125, 148, 200, 20, 1049478, 0xFFFFFF, false, false); // Do you wish to use this scroll?
 
@@ -307,9 +286,7 @@ namespace Server.Items
                 AddButton(275, 172, 4005, 4007, 0, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(310, 172, 120, 20, 1046363, 0xFFFFFF, false, false); // No
 
-                double value = scroll.m_Value;
-
-                AddHtml(40, 20, 260, 20, String.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", value), false, false);
+                AddHtml(40, 20, 260, 20, String.Format("<basefont color=#FFFFFF>Scroll of Alacrity:</basefont>"), false, false);
 
                 AddHtmlLocalized(310, 20, 120, 20, 1044060 + (int)scroll.m_Skill, 0xFFFFFF, false, false);
             }

@@ -197,9 +197,9 @@ namespace Server.Commands
 				CreateTeleporter( 5594, 1841, -9, 5467, 1805, 7, map, false );
 
 				// Wrong
-				CreateTeleporter( 5824, 631, 0, 2041, 215, 14, map, true );
-				CreateTeleporter( 5825, 631, 0, 2042, 215, 14, map, true );
-				CreateTeleporter( 5826, 631, 0, 2043, 215, 14, map, true );
+				CreateTeleporter( 5824, 631, 5, 2041, 215, 15, map, true );
+				CreateTeleporter( 5825, 631, 5, 2042, 215, 15, map, true );
+                //CreateTeleporter( 5826, 631, 10, 2043, 215, 14, map, true );
 				CreateTeleporter( 5698, 662, 0, 5793, 527, 10, map, false );
 
 				DestroyTeleporter( 5863, 525, 15, map );
@@ -256,9 +256,9 @@ namespace Server.Commands
 				CreateTeleporter( 5409, 859, 52, 5387, 756, -3, map, false );
 
 				// Destard
-				CreateTeleporter( 5242, 1007, 0, 1175, 2635, 0, map, true );
-				CreateTeleporter( 5243, 1007, 0, 1176, 2635, 0, map, true );
-				CreateTeleporter( 5244, 1007, 0, 1177, 2635, 0, map, true );
+				CreateTeleporter( 5242, 1007, 4, 1175, 2635, 0, map, true );
+				CreateTeleporter( 5243, 1007, 3, 1176, 2635, 0, map, true );
+				CreateTeleporter( 5244, 1007, 4, 1177, 2635, 0, map, true );
 				CreateTeleporter( 5142, 797, 22, 5129, 908, -23, map, false );
 				CreateTeleporter( 5143, 797, 22, 5130, 908, -23, map, false );
 				CreateTeleporter( 5144, 797, 22, 5131, 908, -23, map, false );
@@ -298,9 +298,10 @@ namespace Server.Commands
 				// Misc
 				CreateTeleporter( 5217, 18, 15, 5204, 74, 17, map, false );
 				CreateTeleporter( 5200, 71, 17, 5211, 22, 15, map, false );
-				CreateTeleporter( 1997, 81, 7, 5881, 242, 0, map, false );
-				CreateTeleporter( 5704, 146, -45, 5705, 305, 7, map, false );
-				CreateTeleporter( 5704, 147, -45, 5705, 306, 7, map, false );
+                CreateTeleporter(1997, 81, 7, 5881, 242, 0, map, false);
+                CreateTeleporter(5705, 145, -45, 5705, 304, 7, map, false);
+				CreateTeleporter( 5705, 146, -45, 5705, 305, 7, map, false );
+				CreateTeleporter( 5705, 147, -45, 5705, 306, 7, map, false );
 				CreateTeleporter( 5874, 146, 27, 5208, 2323, 31, map, false );
 				CreateTeleporter( 5875, 146, 27, 5208, 2322, 32, map, false );
 				CreateTeleporter( 5876, 146, 27, 5208, 2322, 32, map, false ); 
@@ -318,9 +319,10 @@ namespace Server.Commands
 				CreateTeleporter( 5853, 239, -23, 5835, 324, 27, map, false );
 				CreateTeleporter( 5882, 241, 0, 1998, 81, 5, map, false );
 				CreateTeleporter( 5882, 242, 0, 1998, 81, 5, map, false );
-				CreateTeleporter( 5882, 243, 0, 1998, 81, 5, map, false );
-				CreateTeleporter( 5706, 305, 12, 5705, 146, -45, map, false );
-				CreateTeleporter( 5706, 306, 12, 5705, 147, -45, map, false );
+                CreateTeleporter(5882, 243, 0, 1998, 81, 5, map, false);
+                CreateTeleporter(5706, 304, 12, 5706, 145, -45, map, false);
+				CreateTeleporter( 5706, 305, 12, 5706, 146, -45, map, false );
+				CreateTeleporter( 5706, 306, 12, 5706, 147, -45, map, false );
 				CreateTeleporter( 5748, 362, 2, 313, 786, -24, map, false );
 				CreateTeleporter( 5749, 362, 0, 313, 786, -24, map, false );
 				CreateTeleporter( 5750, 362, 3, 314, 786, -24, map, false );

@@ -33,6 +33,7 @@ namespace Server.Mobiles
 		{
 			// Decoration Artifacts
             typeof( Spiderweb ),
+            typeof( CocoonWebDeed ),
 			typeof( DreadSpiderStatuette )
 		};
 

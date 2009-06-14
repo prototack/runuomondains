@@ -198,40 +198,48 @@ namespace Server.Misc
 			if ( skill.SkillName == SkillName.Focus && from is BaseCreature )
 				return;
 
-			if ( skill.Base < skill.Cap && skill.Lock == SkillLock.Up )
-			{
-				int toGain = 1;
+            if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
+            {
+                int toGain = 1;
 
-				if ( skill.Base <= 10.0 )
-					toGain = Utility.Random( 4 ) + 1;
+                if (skill.Base <= 10.0)
+                    toGain = Utility.Random(4) + 1;
 
-				Skills skills = from.Skills;
+                Skills skills = from.Skills;
 
-				if ( ( skills.Total / skills.Cap ) >= Utility.RandomDouble() )//( skills.Total >= skills.Cap )
-				{
-					for ( int i = 0; i < skills.Length; ++i )
-					{
-						Skill toLower = skills[i];
+                if ((skills.Total / skills.Cap) >= Utility.RandomDouble())//( skills.Total >= skills.Cap )
+                {
+                    for (int i = 0; i < skills.Length; ++i)
+                    {
+                        Skill toLower = skills[i];
 
-						if ( toLower != skill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain )
-						{
-							toLower.BaseFixedPoint -= toGain;
-							break;
-						}
-					}
-				}			
-				
-				#region Mondain's Legacy
-				if ( from is PlayerMobile )
-					if ( Server.Engines.Quests.QuestHelper.EnhancedSkill( (PlayerMobile) from, skill ) )
-						toGain *= Utility.RandomMinMax( 2, 4 );
-				#endregion
+                        if (toLower != skill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain)
+                        {
+                            toLower.BaseFixedPoint -= toGain;
+                            break;
+                        }
+                    }
+                }
 
-				if ( (skills.Total + toGain) <= skills.Cap )
-				{
-					skill.BaseFixedPoint += toGain;
-				}
-			}
+                #region Mondain's Legacy
+                if (from is PlayerMobile)
+                    if (Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
+                        toGain *= Utility.RandomMinMax(2, 4);
+                #endregion
+
+                #region Scroll of Alacrity
+                PlayerMobile pm = from as PlayerMobile;
+
+                if (from is PlayerMobile)
+                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.Now)
+                        toGain *= Utility.RandomMinMax(2, 5);
+                #endregion
+
+                if ((skills.Total + toGain) <= skills.Cap)
+                {
+                    skill.BaseFixedPoint += toGain;
+                }
+            }
 				
 			#region Mondain's Legacy
 			if ( from is PlayerMobile )

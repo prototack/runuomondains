@@ -23,7 +23,7 @@ namespace Server.Engines.Quests
 		public override object Description{ get{ return 1078217; } }
 		
 		/* Farewell, friend. Be careful out here. If you change your mind and want to learn Tracking come back and talk to me.*/
-		public override object Refuse{ get{ return 10782218; } }
+        public override object Refuse { get { return 1078218; } }
 		
 		/* So far so good, kid. You are still alive, and you are getting the hang of Tracking. There are many more animals, monsters, 
 		and people to track. Come back to me once you have tracked them. */
@@ -43,11 +43,20 @@ namespace Server.Engines.Quests
 		
 			AddReward( new BaseReward( typeof( WalkersLeggings ), 1078222 ) );
 		}
-		
-		public override bool CanOffer()
-		{		
-			return Owner.Skills.Tracking.Base < 50;
-		}
+
+        public override bool CanOffer()
+        {
+            #region Scroll of Alacrity
+            PlayerMobile pm = Owner as PlayerMobile;
+            if (pm.AcceleratedStart > DateTime.Now)
+            {
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                return false;
+            }
+            #endregion
+            else
+                return Owner.Skills.Tracking.Base < 50;
+        }
 		
 		public override void OnCompleted()
 		{			

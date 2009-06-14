@@ -24,7 +24,7 @@ namespace Server.Mobiles
 
 			SetHits( 602 );
 
-			SetDamage( 20, 30 );  // not sure if this is right or not?
+			SetDamage( 18, 20 );  // Erica's
 
 			SetDamageType( ResistanceType.Energy, 80 );
 			SetDamageType( ResistanceType.Cold, 20 );

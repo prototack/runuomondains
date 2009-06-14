@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
 			SetHits( 4122 );
 
-			SetDamage( 15, 100 );
+			SetDamage( 27, 31 ); // Erica's
 
 			SetDamageType( ResistanceType.Physical, 100 );			
 
@@ -200,7 +200,7 @@ namespace Server.Mobiles
 		}
 		
 		
-			public override int GetAttackSound()
+		public override int GetAttackSound()
 		{
 			return 682;
 		}
@@ -231,8 +231,9 @@ namespace Server.Mobiles
 		public override Poison PoisonImmune{ get{ return Poison.Regular; } }
 		public override int TreasureMapLevel{ get{ return 3; } }
 		public override bool BardImmune{ get{ return true; } }
-		public override bool Unprovokable{ get{ return true; } }
-		public override bool Uncalmable{get{return true;} }
+// Varchild's
+		//public override bool Unprovokable{ get{ return true; } }
+		//public override bool Uncalmable{get{return true;} }
 
 		public Meraktus( Serial serial ) : base( serial )
 		{

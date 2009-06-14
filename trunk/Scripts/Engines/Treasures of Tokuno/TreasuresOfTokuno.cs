@@ -11,7 +11,7 @@ namespace Server.Misc
 {
 	public class TreasuresOfTokuno
 	{
-		private static bool m_Enabled = (Core.Expansion == Expansion.SE);
+		private static bool m_Enabled = (Core.Expansion >= Expansion.SE);
 		public static bool Enabled { get { return m_Enabled; } }
 
 		public const int ItemsPerReward = 10;
