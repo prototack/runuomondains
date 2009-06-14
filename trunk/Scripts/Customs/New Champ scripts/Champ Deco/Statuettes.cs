@@ -52,13 +52,104 @@ namespace Server.Items
 
         [Constructable]
         public OphidianArchMageStatuette()
-            : base(0x25AB)
+            : base(0x25A9)
         {
             Name = "Ophidian Arch Mage";
             Weight = 5.0;
         }
 
         public OphidianArchMageStatuette(Serial serial)
+            : base(serial)
+        {
+        }
+
+        private static int[] m_Sounds = new int[]
+		{
+            0x280, 0x281, 0x282, 0x283, 0x284
+		};
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.AccessLevel == AccessLevel.Player) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
+                Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+
+            base.OnMovement(m, oldLocation);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (ItemID == 0x25AB)
+                ItemID = 0x25A9;
+        }
+    }
+
+    public class OphidianKnightStatuette : BaseStatuette
+    {
+
+        [Constructable]
+        public OphidianKnightStatuette()
+            : base(0x25AA)
+        {
+            Name = "Ophidian Knight";
+            Weight = 5.0;
+        }
+
+        public OphidianKnightStatuette(Serial serial)
+            : base(serial)
+        {
+        }
+
+        private static int[] m_Sounds = new int[]
+		{
+            0x27B, 0x27C, 0x27D, 0x27E, 0x27F
+		};
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.AccessLevel == AccessLevel.Player) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
+                Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+
+            base.OnMovement(m, oldLocation);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class OphidianMageStatuette : BaseStatuette
+    {
+
+        [Constructable]
+        public OphidianMageStatuette()
+            : base(0x25AB)
+        {
+            Name = "Ophidian Mage";
+            Weight = 5.0;
+        }
+
+        public OphidianMageStatuette(Serial serial)
             : base(serial)
         {
         }
@@ -186,6 +277,7 @@ namespace Server.Items
         public SlimeStatuette()
             : base(0x20E8)
         {
+            Hue = Utility.RandomList(0x899, 0x8A2, 0x8B0);
             Name = "Slime Statuette";
             Weight = 1.0;
         }

@@ -31,7 +31,10 @@ namespace Server.Mobiles
 		{
 			// Decoration Artifacts
             typeof( RedDeathStatuette ),
-			typeof( PlagueBeastStatuette )
+			typeof( PlagueBeastStatuette ),
+            typeof( Pier ),
+            typeof( SmallRockWater ),
+            typeof( SmallRocksWater )
 		};
 
         [Constructable]

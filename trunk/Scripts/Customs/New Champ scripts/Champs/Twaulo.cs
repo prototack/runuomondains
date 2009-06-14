@@ -12,6 +12,14 @@ namespace Server.Mobiles
     {
         public override ChampionSkullType SkullType { get { return ChampionSkullType.Power; } }
 
+        public static Type[] UniqueArtifacts { get { return m_UniqueArtifacts; } }
+
+        private static Type[] m_UniqueArtifacts = new Type[]
+		{
+			// Unique Artifacts
+			typeof( Quell )
+		};
+
         public static Type[] SharedArtifacts { get { return m_SharedArtifacts; } }
 
         private static Type[] m_SharedArtifacts = new Type[]
@@ -83,12 +91,62 @@ namespace Server.Mobiles
             {
                 double random = Utility.Random(29);
 
-                if (random >= 5 && random <= 14)
+                if (random <= 4)
+                    GiveUniqueArtifact();
+                else if (random >= 5 && random <= 14)
                     GiveSharedArtifact();
-                else if (random >= 15 && random <= 29)
+                else
                     GiveDecorationArtifact();
             }
         }
+
+        #region Unique Artifact
+        public void GiveUniqueArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveUniqueArtifactTo(m);
+            }
+        }
+
+        public static void GiveUniqueArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_UniqueArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
 
         #region Shared Artifact
         public void GiveSharedArtifact()
