@@ -6,8 +6,9 @@ namespace Server.Items
     public class DemonSkull : Item
     {
 		[Constructable]
-		public DemonSkull() : base( 0x2250 )
-		{		
+		public DemonSkull() : base( 0x2251 )
+		{
+            ItemID = Utility.RandomList(0x2251, 0x224F);
 		}
 
         public DemonSkull(Serial serial)
