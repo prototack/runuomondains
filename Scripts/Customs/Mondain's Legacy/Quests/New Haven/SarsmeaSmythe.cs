@@ -48,11 +48,20 @@ namespace Server.Engines.Quests
 			
 			AddReward( new BaseReward( typeof( ClaspOfConcentration ), 1077695 ) ); 
 		}
-		
-		public override bool CanOffer()
-		{		
-			return Owner.Skills.Focus.Base < 50;
-		}
+
+        public override bool CanOffer()
+        {
+            #region Scroll of Alacrity
+            PlayerMobile pm = Owner as PlayerMobile;
+            if (pm.AcceleratedStart > DateTime.Now)
+            {
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                return false;
+            }
+            #endregion
+            else
+                return Owner.Skills.Focus.Base < 50;
+        }
 		
 		public override void OnCompleted()
 		{			

@@ -51,6 +51,10 @@ namespace Server.Mobiles
         LibraryFriend = 0x00020000,
         Spellweaving = 0x00040000,
         #endregion
+
+        #region Scroll of Alacrity
+        AcceleratedSkill = 0x00080000,
+        #endregion
     }
 
     public enum NpcGuild
@@ -318,6 +322,25 @@ namespace Server.Mobiles
         }
         #endregion
 
+        #region Scroll of Alacrity
+        private DateTime m_AcceleratedStart;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime AcceleratedStart
+        {
+            get { return m_AcceleratedStart; }
+            set { m_AcceleratedStart = value; }
+        }
+
+        private SkillName m_AcceleratedSkill;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SkillName AcceleratedSkill
+        {
+            get { return m_AcceleratedSkill; }
+            set { m_AcceleratedSkill = value; }
+        }
+        #endregion
 
         public static Direction GetDirection4(Point3D from, Point3D to)
         {
@@ -3971,6 +3994,14 @@ namespace Server.Mobiles
 
             [CommandProperty(AccessLevel.GameMaster)]
             public int Harrower { get { return m_Harrower; } set { m_Harrower = value; } }
+
+            #region Mondain's Legacy Peerless Champion
+            [CommandProperty( AccessLevel.GameMaster )]
+            public int TwistedGlade { get { return GetValue( ChampionSpawnType.TwistedGlade ); } set { SetValue( ChampionSpawnType.TwistedGlade, value ); } }
+
+            [CommandProperty(AccessLevel.GameMaster)]
+            public int Pestilence { get { return GetValue( ChampionSpawnType.Pestilence ); } set { SetValue( ChampionSpawnType.Pestilence, value ); } }
+            #endregion
 
             public ChampionTitleInfo()
             {

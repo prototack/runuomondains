@@ -74,7 +74,7 @@ namespace Server.Items
 			m_Table[ TalismanSlayerName.Flame ] = new Type[] 
 			{ 
 				typeof( FireElemental ), typeof( HellHound ), typeof( HellCat ), typeof( FireSteed ),
-				typeof( PredatorHellCat ), typeof( LavaSerpent ), typeof( LavaSnake ), typeof( LavaLizard ) 
+				typeof( PredatorHellCat ), typeof( LavaSerpent ), typeof( LavaSnake ), typeof( LavaLizard), typeof(FireRabbit) 
 			};
 			
 			m_Table[ TalismanSlayerName.Bovine ] = new Type[] 
