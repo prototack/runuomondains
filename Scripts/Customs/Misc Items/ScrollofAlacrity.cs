@@ -85,6 +85,8 @@ namespace Server.Items
             base.Hue = 0x4AB;
             base.Weight = 1.0;
 
+            LootType = LootType.Cursed;
+
             m_Skill = skill;
         }
 
