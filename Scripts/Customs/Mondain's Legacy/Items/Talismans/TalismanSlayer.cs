@@ -79,7 +79,7 @@ namespace Server.Items
 			
 			m_Table[ TalismanSlayerName.Bovine ] = new Type[] 
 			{ 
-				typeof( Cow ), typeof( Bull ), typeof( Gaman ), typeof( MinotaurCaptain ), typeof( MinotaurScout ), typeof( Minotaur ) // typeof( TormentedMinotaur )
+				typeof( Cow ), typeof( Bull ), typeof( Gaman ), typeof( MinotaurCaptain ), typeof( MinotaurScout ), typeof( Minotaur ), typeof( TormentedMinotaur )
 			};
 			
 			m_Table[ TalismanSlayerName.Wolf ] = new Type[]

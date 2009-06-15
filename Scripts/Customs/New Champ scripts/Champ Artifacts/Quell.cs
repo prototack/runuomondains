@@ -15,7 +15,8 @@ namespace Server.Items
 		[Constructable]
 		public Quell()
 		{
-            Weight = 7.0;
+            Hue = 0x970;
+
             WeaponAttributes.HitLeechMana = 100;
             Attributes.SpellChanneling = 1;
             Attributes.AttackChance = 10;

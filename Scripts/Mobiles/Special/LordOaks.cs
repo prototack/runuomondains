@@ -43,7 +43,6 @@ namespace Server.Mobiles
 			// Decoration Artifacts
             typeof( Pier ),
             typeof( WindSpirit ),
-			typeof( WaterTile ),
             typeof( SmallRockWater ),
             typeof( SmallRocksWater )
 		};
