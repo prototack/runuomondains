@@ -180,7 +180,7 @@ namespace Server.Items
 					if ( wep.IsChildOf( from.Backpack ) && m_Powder.IsChildOf( from.Backpack ) )
 					{
                         if (wep is BraveKnight || wep is Calm || wep is FangofRactus || wep is OblivionsNeedle || wep is Pacify ||
-                            wep is RoyalGuardSurvivalKnife || wep is Subdue)
+                            wep is RoyalGuardSurvivalKnife || wep is Subdue || wep is Quell)
                         {
                             from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
                         }
