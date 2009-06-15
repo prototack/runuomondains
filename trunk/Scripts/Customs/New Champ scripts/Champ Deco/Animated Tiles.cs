@@ -31,35 +31,6 @@ namespace Server.Items
         }
     }
 
-    public class WaterTile : Item
-    {
-        [Constructable]
-        public WaterTile()
-            : base(0x3490)
-        {
-            ItemID = Utility.RandomList(0x3490, 0x34D1, 0x34B8);
-        }
-
-        public WaterTile(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
     public class SwampTile : Item
     {
         [Constructable]

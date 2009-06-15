@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using Server.Items;
-using Server.Targeting;
 
 namespace Server.Mobiles
 {
 	[CorpseName( "a tormented minotaur corpse" )]
-	
 	public class TormentedMinotaur : BaseCreature
     {
         public override WeaponAbility GetWeaponAbility()
@@ -17,9 +14,8 @@ namespace Server.Mobiles
 		[Constructable]
 		public TormentedMinotaur() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
-			Name = "a Tormented Minotaur";
+			Name = "Tormented Minotaur";
 			Body = 262;
-			BaseSoundID = 427;
 
 			SetStr( 822, 930 );
 			SetDex( 401, 415 );
@@ -31,31 +27,35 @@ namespace Server.Mobiles
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
-            SetResistance(ResistanceType.Physical, 62);
-            SetResistance(ResistanceType.Fire, 74);
+			SetResistance( ResistanceType.Physical, 62 );
+			SetResistance( ResistanceType.Fire, 74 );
 			SetResistance( ResistanceType.Cold, 54 );
 			SetResistance( ResistanceType.Poison, 56 );
 			SetResistance( ResistanceType.Energy, 54 );
 
-			SetSkill( SkillName.MagicResist, 104.3, 116.3 );
-			SetSkill( SkillName.Tactics, 100.7, 102.8 );
 			SetSkill( SkillName.Wrestling, 110.1, 111.0 );
+			SetSkill( SkillName.Tactics, 100.7, 102.8 );
+			SetSkill( SkillName.MagicResist, 104.3, 116.3 );
+		    
 
-			Fame = 15000;
-			Karma = -15000;
+            Fame = 20000;
+            Karma = -20000;
 
-			VirtualArmor = 60;
-
-			PackItem( new Club() );
-		}
+        }
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.FilthyRich );
+            AddLoot(LootPack.FilthyRich, 10);
 		}
 
-		public override Poison PoisonImmune{ get{ return Poison.Regular; } }
+		public override Poison PoisonImmune{ get{ return Poison.Deadly; } }
 		public override int TreasureMapLevel{ get{ return 3; } }
+
+		public override int GetDeathSound()	{ return 0x596; }
+		public override int GetAttackSound() { return 0x597; }
+		public override int GetIdleSound() { return 0x598; }
+		public override int GetAngerSound() { return 0x599; }
+		public override int GetHurtSound() { return 0x59A; }
 
 		public TormentedMinotaur( Serial serial ) : base( serial )
 		{
@@ -64,12 +64,14 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			writer.Write( (int) 0 );
+			
+			writer.Write( (int) 0 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
+
 			int version = reader.ReadInt();
 		}
 	}

@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Server.Items;
 using Server.Targeting;
-using System.Collections.Generic;
+
 
 namespace Server.Mobiles
 {
@@ -41,32 +42,58 @@ namespace Server.Mobiles
 			BaseSoundID = 680;
 			Hue = 0x835;
 
-			SetStr( 1550 );
-			SetDex( 339 );
-			SetInt( 127 );
+			SetStr( 1419, 1438 );
+			SetDex( 309, 413 );
+			SetInt( 129, 131 );
 
-			SetHits( 4122 );
+			SetHits( 4115, 4183 );
 
-			SetDamage( 27, 31 ); // Erica's
+			SetDamage( 16, 30 );
 
 			SetDamageType( ResistanceType.Physical, 100 );			
 
-			SetResistance( ResistanceType.Physical, 73 );
-			SetResistance( ResistanceType.Cold, 49 );
-			SetResistance( ResistanceType.Poison, 59 );
-			SetResistance( ResistanceType.Energy, 57 );
-			SetResistance( ResistanceType.Fire, 60, 70 );
+			SetResistance( ResistanceType.Physical, 67, 90 );
+			SetResistance( ResistanceType.Fire, 65, 70 );
+			SetResistance( ResistanceType.Cold, 54, 57 );
+			SetResistance( ResistanceType.Poison, 41, 58 );
+			SetResistance( ResistanceType.Energy, 50, 52 );
 
-			SetSkill( SkillName.MagicResist, 111.5 );
-			SetSkill( SkillName.Tactics, 104.9 );
-			SetSkill( SkillName.Wrestling, 105.0 );
+			SetSkill( SkillName.Wrestling, 101.2, 104.1 );
+			SetSkill( SkillName.Tactics, 107.5, 117.3 );
+			SetSkill( SkillName.MagicResist, 107.0, 111.3 );
 
 			Fame = 17000;
 			Karma = -17000;
 
 			VirtualArmor = 55;
-			
-		}
+
+            PackResources(8);
+            PackTalismans(5);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnTormented));
+        }
+
+        public virtual void PackResources(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+                switch (Utility.Random(6))
+                {
+                    case 0: PackItem(new Blight()); break;
+                    case 1: PackItem(new Scourge()); break;
+                    case 2: PackItem(new Taint()); break;
+                    case 3: PackItem(new Putrefication()); break;
+                    case 4: PackItem(new Corruption()); break;
+                    case 5: PackItem(new Muculent()); break;
+                }
+        }
+
+        public virtual void PackTalismans(int amount)
+        {
+            int count = Utility.Random(amount);
+
+            for (int i = 0; i < count; i++)
+                PackItem(new RandomTalisman());
+        }
 
 		public override void OnDeath( Container c )
 		{
@@ -231,9 +258,46 @@ namespace Server.Mobiles
 		public override Poison PoisonImmune{ get{ return Poison.Regular; } }
 		public override int TreasureMapLevel{ get{ return 3; } }
 		public override bool BardImmune{ get{ return true; } }
-// Varchild's
-		//public override bool Unprovokable{ get{ return true; } }
-		//public override bool Uncalmable{get{return true;} }
+		public override bool Unprovokable{ get{ return true; } }
+        public override bool Uncalmable { get { return true; } }
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
+            if (0.2 >= Utility.RandomDouble())
+                Earthquake();
+        }
+
+        public void Earthquake()
+        {
+            Map map = this.Map;
+            if (map == null)
+                return;
+            ArrayList targets = new ArrayList();
+            foreach (Mobile m in this.GetMobilesInRange(8))
+            {
+                if (m == this || !CanBeHarmful(m))
+                    continue;
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
+                    targets.Add(m);
+                else if (m.Player)
+                    targets.Add(m);
+            }
+            PlaySound(0x2F3);
+            for (int i = 0; i < targets.Count; ++i)
+            {
+                Mobile m = (Mobile)targets[i];
+                double damage = m.Hits * 0.6;//was .6
+                if (damage < 10.0)
+                    damage = 10.0;
+                else if (damage > 75.0)
+                    damage = 75.0;
+                DoHarmful(m);
+                AOS.Damage(m, this, (int)damage, 100, 0, 0, 0, 0);
+                if (m.Alive && m.Body.IsHuman && !m.Mounted)
+                    m.Animate(20, 7, 1, true, false, 0); // take hit
+            }
+        }
 
 		public Meraktus( Serial serial ) : base( serial )
 		{
@@ -249,6 +313,24 @@ namespace Server.Mobiles
 		{
 			base.Deserialize( reader );
 			int version = reader.ReadInt();
-		}
-	}
+        }
+        #region SpawnHelpers
+        public void SpawnTormented()
+        {
+            BaseCreature spawna = new TormentedMinotaur();
+            spawna.MoveToWorld(Location, Map);
+
+            BaseCreature spawnb = new TormentedMinotaur();
+            spawnb.MoveToWorld(Location, Map);
+
+            BaseCreature spawnc = new TormentedMinotaur();
+            spawnc.MoveToWorld(Location, Map);
+
+            BaseCreature spawnd = new TormentedMinotaur();
+            spawnd.MoveToWorld(Location, Map);
+        }
+        #endregion
+    }
 }
+
+        
