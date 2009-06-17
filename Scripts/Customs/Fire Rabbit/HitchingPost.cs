@@ -1,5 +1,3 @@
-//using Server.Misc; 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,12 +12,21 @@ using Server.Multis;
 
 namespace Server.Items
 {
-    public class HitchingPost : Item
+    [FlipableAttribute( 0x14E7, 0x14E8 )]
+    public class HitchingPost : Item, ISecurable
     {
         public override int LabelNumber { get { return 1071127; } } // hitching post (replica)
 
         private int m_UsesRemaining;
         private int m_Charges;
+        private SecureLevel m_Level = SecureLevel.Owner;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SecureLevel Level
+        {
+            get { return m_Level; }
+            set { m_Level = value; InvalidateProperties(); }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
@@ -45,6 +52,12 @@ namespace Server.Items
             UsesRemaining = 15;
         }
 
+        public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
+	    {
+		base.GetContextMenuEntries( from, list );
+		SetSecureLevelEntry.AddTo( from, this, list );
+	    }
+
         public HitchingPost(Serial serial)
             : base(serial)
         {
@@ -58,7 +71,7 @@ namespace Server.Items
 
             list.Add(1060584, m_UsesRemaining.ToString());
 
-            list.Add(1060741, m_Charges.ToString());
+            list.Add(1071215, m_Charges.ToString());
         }
 
         private class StableEntry : ContextMenuEntry
@@ -401,12 +414,24 @@ namespace Server.Items
 
             return (house != null && house.IsOwner(mob));
         }
+		public bool CheckAccess( Mobile m )
+		{
+			if ( !IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster )
+				return true;
+
+			BaseHouse house = BaseHouse.FindHouseAt( this );
+
+			if ( house != null && house.IsAosRules && (house.Public ? house.IsBanned( m ) : !house.HasAccess( m )) )
+				return false;
+
+			return ( house != null && house.HasSecureAccess( m, m_Level ) );
+		}
 
         public override bool HandlesOnSpeech { get { return true; } }
 
         public override void OnSpeech(SpeechEventArgs e)
         {
-            if (IsOwner(e.Mobile) && IsLockedDown)
+            if (CheckAccess(e.Mobile) && IsLockedDown)
             {
                 if (!e.Handled && e.HasKeyword(0x0008))
                 {
@@ -433,7 +458,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+	
+            writer.Write((int)m_Level);
             writer.Write((int)m_UsesRemaining);
             writer.Write((int)m_Charges);
         }
@@ -446,6 +473,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    {
+                        m_Level = (SecureLevel)reader.ReadInt();
+                        goto case 2;
+                    }
                 case 2:
                     {
                         m_UsesRemaining = reader.ReadInt();
