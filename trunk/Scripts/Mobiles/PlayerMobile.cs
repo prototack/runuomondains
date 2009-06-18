@@ -1229,8 +1229,17 @@ namespace Server.Mobiles
                 {
                     if (m_AnimalFormRestrictedSkills[i] == skill)
                     {
-                        SendLocalizedMessage(1070771); // You cannot use that skill in this form.
-                        return false;
+                        #region Talisman of the Fey (Ferret Form) Unofficial Fix
+                        if (SkillName.Stealing == skill && this.BodyValue == 0x117)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            SendLocalizedMessage(1070771); // You cannot use that skill in this form.
+                            return false;
+                        }
+                        #endregion
                     }
                 }
             }
