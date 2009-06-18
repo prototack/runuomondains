@@ -365,6 +365,7 @@ namespace Server.Spells.Ninjitsu
 
 		public class AnimalFormGump : Gump
 		{
+
 			//TODO: Convert this for ML to the BaseImageTileButtonsgump
 			private Mobile m_Caster;
 			private AnimalForm m_Spell;
@@ -436,9 +437,9 @@ namespace Server.Spells.Ninjitsu
 
 			public override void OnResponse( NetState sender, RelayInfo info )
 			{
-				if ( info.ButtonID == 1 && info.Switches.Length > 0 )
+				if ( info.ButtonID >= 100 && info.ButtonID <= 100 + m_Entries.Length )
 				{
-					int entryID = info.Switches[0] - 100;
+					int entryID = info.ButtonID - 100;
 					
 					if ( AnimalForm.Morph( m_Caster, entryID ) == MorphResult.Fail )
 					{
