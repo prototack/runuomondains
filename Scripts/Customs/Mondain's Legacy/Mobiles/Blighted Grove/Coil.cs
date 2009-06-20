@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
 	[CorpseName( "a coil corpse" )]
-	public class Coil : BogThing
+	public class Coil : SilverSerpent
 	{
 		[Constructable]
 		public Coil () : base()
@@ -14,7 +14,7 @@ namespace Server.Mobiles
 			PassiveSpeed = 0.2;
 		
 			Name = "a coil";
-			Body = 0x5B;
+			//Body = 0x5B;
 			Hue = 0x3F;
 			BaseSoundID = 0xDB;
 
