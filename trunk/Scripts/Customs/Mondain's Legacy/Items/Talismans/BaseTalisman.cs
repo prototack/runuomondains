@@ -341,7 +341,7 @@ namespace Server.Items
 							item.Amount = m_Summoner.Amount;		
 						else
 							item.Amount = 10; // default value
-					}								
+					}
 					
 					if ( !from.AddToBackpack( item ) )
 					{

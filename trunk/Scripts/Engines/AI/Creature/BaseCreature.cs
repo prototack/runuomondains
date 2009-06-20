@@ -4433,15 +4433,26 @@ namespace Server.Mobiles
                         {
                             double random = Utility.RandomDouble();
 
-                            #region Felucca Ruleset Transcendence Scroll Edit 1
+                            #region Felucca Ruleset Transcendence and 105 Power Scrolls Edit 1
                             if (Map == Map.Felucca)
                             {
-                                if (0.005 >= random)
-                                {
-                                    ScrollofTranscendence st = CreateRandomFelTranscendenceScroll();
+                                    if (Utility.RandomDouble() < 0.005)
+                                    {
+                                        double random1 = Utility.Random(49);
 
-                                    GiveFelTranscendenceScrollTo(pm, st);
-                                }
+                                        if (random1 <= 24)
+                                        {
+                                            ScrollofTranscendence st = CreateRandomFelTranscendenceScroll();
+
+                                            GiveFelTranscendenceScrollTo(pm, st);
+                                        }
+                                        else
+                                        {
+                                            PowerScroll ps = CreateFelPowerScroll();
+
+                                            GiveFelPowerScrollTo(pm, ps);
+                                        }
+                                    }
                             }
                             #endregion
 
@@ -4467,6 +4478,35 @@ namespace Server.Mobiles
                     c.Delete();
             }
         }
+
+        #region 105 Power Scroll Edit 2
+        private PowerScroll CreateFelPowerScroll()
+        {
+            int level;
+
+            level = 5;
+
+            return PowerScroll.CreateRandomNoCraft(level, level);
+        }
+
+        public static void GiveFelPowerScrollTo(Mobile m, PowerScroll ps)
+        {
+            if (ps == null || m == null)	//sanity
+                return;
+
+            m.SendLocalizedMessage(1049524); // You have received a scroll of power!
+
+            if (!Core.SE || m.Alive)
+                m.AddToBackpack(ps);
+            else
+            {
+                if (m.Corpse != null && !m.Corpse.Deleted)
+                    m.Corpse.DropItem(ps);
+                else
+                    m.AddToBackpack(ps);
+            }
+        }
+        #endregion
 
         #region Scroll of Transcendence Edit 2
 

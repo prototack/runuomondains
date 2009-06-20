@@ -600,7 +600,7 @@ namespace Server.Items
 					return;
                 }
 
-                #region Scroll of ALacrity
+                #region Scroll of Alacrity
                 PlayerMobile pm = from as PlayerMobile;
                 if (pm.AcceleratedStart > DateTime.Now)
                 {
