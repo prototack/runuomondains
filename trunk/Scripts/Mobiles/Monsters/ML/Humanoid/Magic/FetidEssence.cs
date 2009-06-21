@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Server;
 using Server.Items;
 
@@ -11,16 +12,15 @@ namespace Server.Mobiles
 		public FetidEssence() : base( AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
 			Name = "a fetid essence";
-			Body = 0x110;
-			BaseSoundID = 0x56C;
+			Body = 273;
 
-			SetStr( 100, 120 );
+			SetStr( 100, 150 );
 			SetDex( 200, 250 );
 			SetInt( 450, 550 );
 
 			SetHits( 550, 650 );
-
-			SetDamage( 21, 25 );
+			
+			SetDamage( 11, 13 );
 
 			SetDamageType( ResistanceType.Physical, 30 );
 			SetDamageType( ResistanceType.Poison, 70 );
@@ -28,27 +28,53 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Physical, 40, 50 );
 			SetResistance( ResistanceType.Fire, 40, 50 );
 			SetResistance( ResistanceType.Cold, 40, 50 );
-			SetResistance( ResistanceType.Poison, 75, 90 );
+			SetResistance( ResistanceType.Poison, 70, 90 );
 			SetResistance( ResistanceType.Energy, 75, 80 );
 
-			SetSkill( SkillName.Wrestling, 80.0, 85.0 );
-			SetSkill( SkillName.Tactics, 80.0, 85.0 );
-			SetSkill( SkillName.MagicResist, 100.0, 115.0 );
-			SetSkill( SkillName.Poisoning, 100.0 );
-			SetSkill( SkillName.Magery, 90.0, 100.0 );
-			SetSkill( SkillName.EvalInt, 80.0, 100.0 );
-			SetSkill( SkillName.Meditation, 80.0, 100.0 );
-			
+			SetSkill(SkillName.Meditation, 91.4, 99.4 );
+			SetSkill(SkillName.EvalInt, 88.5, 92.3 );
+			SetSkill(SkillName.Magery, 97.9, 101.7 );
+			SetSkill(SkillName.Poisoning, 100 );
+			SetSkill(SkillName.Anatomy, 0, 4.5 );
+			SetSkill( SkillName.MagicResist, 103.5, 108.8 );
+			SetSkill( SkillName.Tactics, 81.0, 84.6 );
+			SetSkill( SkillName.Wrestling, 81.3, 83.9 );
+
 			Fame = 14000;
 			Karma = -14000;
 		}
-		
-		public override void GenerateLoot()
+
+		public override void GenerateLoot() //-- Need to verify
 		{
-			AddLoot( LootPack.FilthyRich );
-			AddLoot( LootPack.Rich );
+			AddLoot( LootPack.Meager );
+			AddLoot( LootPack.Average );
 		}
-		
+		 
+		public override int GetAngerSound()
+		{
+			return 0x56d;
+		}
+
+		public override int GetIdleSound()
+		{
+			return 0x56b;
+		}
+
+		public override int GetAttackSound()
+		{
+			return 0x56c;
+		}
+
+		public override int GetHurtSound()
+		{
+			return 0x56c;
+		}
+
+		public override int GetDeathSound()
+		{
+			return 0x56e;
+		}
+
 		#region Area Damage
 		public override void AreaDamageEffect( Mobile m )
 		{
@@ -83,5 +109,20 @@ namespace Server.Mobiles
 
 			int version = reader.ReadInt();
 		}
+
+		/*private class InternalTimer : Timer
+		{
+			private Mobile m_From;
+			private Mobile m_Mobile;
+			private int m_Count;
+
+			public InternalTimer( Mobile from, Mobile m ) : base( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 1.0 ) )
+			{
+				m_From = from;
+				m_Mobile = m;
+				Priority = TimerPriority.TwoFiftyMS;
+			}
+
+		}*/
 	}
 }

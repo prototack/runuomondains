@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Targeting;
-
+using Server.Misc;
 
 namespace Server.Mobiles
 {
@@ -33,11 +33,12 @@ namespace Server.Mobiles
 		{
 			return WeaponAbility.Dismount;
 		}
-		
+
 		[Constructable]
-		public Meraktus() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public Meraktus() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
 		{
-			Name = "Meraktus the Tormented";
+			Name = "Meraktus";
+			Title = "the Tormented";
 			Body = 263;
 			BaseSoundID = 680;
 			Hue = 0x835;
@@ -46,26 +47,31 @@ namespace Server.Mobiles
 			SetDex( 309, 413 );
 			SetInt( 129, 131 );
 
-			SetHits( 4115, 4183 );
+			SetHits( 4100, 4200 );
 
-			SetDamage( 16, 30 );
+			SetDamage( 3, 5 );
 
-			SetDamageType( ResistanceType.Physical, 100 );			
+			SetDamageType( ResistanceType.Physical, 100 );
 
-			SetResistance( ResistanceType.Physical, 67, 90 );
+			SetResistance( ResistanceType.Physical, 65, 90 );
 			SetResistance( ResistanceType.Fire, 65, 70 );
-			SetResistance( ResistanceType.Cold, 54, 57 );
-			SetResistance( ResistanceType.Poison, 41, 58 );
-			SetResistance( ResistanceType.Energy, 50, 52 );
+			SetResistance( ResistanceType.Cold, 50, 60 );
+			SetResistance( ResistanceType.Poison, 40, 60 );
+			SetResistance( ResistanceType.Energy, 50, 55 );
 
-			SetSkill( SkillName.Wrestling, 101.2, 104.1 );
-			SetSkill( SkillName.Tactics, 107.5, 117.3 );
+			//SetSkill( SkillName.Meditation, Unknown );
+			//SetSkill( SkillName.EvalInt, Unknown );
+			//SetSkill( SkillName.Magery, Unknown );
+			//SetSkill( SkillName.Poisoning, Unknown );
+			SetSkill( SkillName.Anatomy, 0);
 			SetSkill( SkillName.MagicResist, 107.0, 111.3 );
+			SetSkill( SkillName.Tactics, 107.0, 117.0 );
+			SetSkill( SkillName.Wrestling, 100.0, 105.0 );
 
-			Fame = 17000;
-			Karma = -17000;
+			Fame = 70000;
+			Karma = -70000;
 
-			VirtualArmor = 55;
+			VirtualArmor = 28; // Don't know what it should be
 
             PackResources(8);
             PackTalismans(5);
@@ -223,33 +229,32 @@ namespace Server.Mobiles
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosSuperBoss, 5 );	
+			AddLoot( LootPack.AosSuperBoss, 5 );  // Need to verify
 		}
 		
-		
-		public override int GetAttackSound()
-		{
-			return 682;
-		}
-
 		public override int GetAngerSound()
 		{
-			return 681;
-		}
-
-		public override int GetDeathSound()
-		{
-			return 684;
-		}
-
-		public override int GetHurtSound()
-		{
-			return 683;
+			return 0x597;
 		}
 
 		public override int GetIdleSound()
 		{
-			return 680;
+			return 0x596;
+		}
+
+		public override int GetAttackSound()
+		{
+			return 0x599;
+		}
+
+		public override int GetHurtSound()
+		{
+			return 0x59a;
+		}
+
+		public override int GetDeathSound()
+		{
+			return 0x59c;
 		}
 
 		public override int Meat { get { return 2; } }

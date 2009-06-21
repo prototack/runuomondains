@@ -172,8 +172,10 @@ namespace Server.Engines.BulkOrders
 				{
 					BulkMaterialType material = BulkMaterialType.None;
 
-					if ( o is BaseArmor )
-						material = GetMaterial( ((BaseArmor)o).Resource );
+                    if (o is BaseWeapon)
+                        material = GetMaterial(((BaseWeapon)o).Resource);
+					else if ( o is BaseArmor )
+                        material = GetMaterial(((BaseArmor)o).Resource);
 					else if ( o is BaseClothing )
 						material = GetMaterial( ((BaseClothing)o).Resource );
 

@@ -14,7 +14,7 @@ namespace Server.Mobiles
 			PassiveSpeed = 0.2;
 		
 			Name = "a coil";
-			//Body = 0x5B;
+
 			Hue = 0x3F;
 			BaseSoundID = 0xDB;
 

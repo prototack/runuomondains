@@ -1,49 +1,61 @@
 using System;
-using Server;
+using System.Collections;
 using Server.Items;
+using Server.Targeting;
+using Server.Misc;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a minotaur corpse" )]	
+	[CorpseName( "a minotaur corpse" )]
 	public class Minotaur : BaseCreature
 	{
 		[Constructable]
-		public Minotaur() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public Minotaur() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
 		{
 			Name = "a minotaur";
 			Body = 0x107;			
 
-			SetStr( 301, 322 );
-			SetDex( 94, 108 );
-			SetInt( 35, 49 );
+			SetStr( 301, 340 );
+			SetDex( 91, 110 );
+			SetInt( 31, 50 );
 
-			SetHits( 302, 332 );
+			SetHits( 301, 340 );
 
-			SetDamage( 11, 20 );
+			SetDamage( 5, 8 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
 			SetResistance( ResistanceType.Physical, 55, 65 );
-			SetResistance( ResistanceType.Fire, 25, 33 );
-			SetResistance( ResistanceType.Cold, 32, 40 );
-			SetResistance( ResistanceType.Poison, 31, 39 );
+			SetResistance( ResistanceType.Fire, 25, 35 );
+			SetResistance( ResistanceType.Cold, 30, 40 );
+			SetResistance( ResistanceType.Poison, 30, 40 );
 			SetResistance( ResistanceType.Energy, 30, 40 );
 
-			SetSkill( SkillName.Wrestling, 83.2, 99.7 );
-			SetSkill( SkillName.Tactics, 80.2, 95.2 );
-			SetSkill( SkillName.MagicResist, 55.2, 65.0 );
+			SetSkill( SkillName.Meditation, 0 );
+			SetSkill( SkillName.EvalInt, 0 );
+			SetSkill( SkillName.Magery, 0 );
+			SetSkill( SkillName.Poisoning, 0 );
+			SetSkill( SkillName.Anatomy, 0 );
+			SetSkill( SkillName.MagicResist, 56.1, 64.0 );
+			SetSkill( SkillName.Tactics, 93.3, 97.8 );
+			SetSkill( SkillName.Wrestling, 90.4, 92.1 );
+
+			Fame = 5000;
+			Karma = -5000;
+
+			VirtualArmor = 28; // Don't know what it should be
 		}
-				
+
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich );
+			AddLoot( LootPack.AosFilthyRich );  // Need to verify
 		}
-		
+
 		public override WeaponAbility GetWeaponAbility()
 		{
 			return WeaponAbility.ParalyzingBlow;
 		}
-		
+
 		public override void OnThink()
 		{
 			if ( Combatant != null )
@@ -52,11 +64,11 @@ namespace Server.Mobiles
 					CurrentSpeed = 0.05;
 				else
 					CurrentSpeed = ActiveSpeed;
-			}			
+			}
 		}
-		
+
 		public override int TreasureMapLevel{ get{ return 3; } }
-		
+
 		public override int GetDeathSound()	{ return 0x596; }
 		public override int GetAttackSound() { return 0x597; }
 		public override int GetIdleSound() { return 0x598; }
@@ -77,7 +89,7 @@ namespace Server.Mobiles
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-			
+
 			int version = reader.ReadInt();
 		}
 	}
