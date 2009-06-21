@@ -108,8 +108,10 @@ namespace Server
 					typeof( Wisp ),
 					#region Mondain's Legacy
 					typeof( Treefellow ),
-				    typeof( DryadA )
+				    typeof( DryadA ),
 				    #endregion
+                    typeof( Twaulo ),
+                    typeof( FeralTreefellow )
                 },
 				new Type[]
 				{

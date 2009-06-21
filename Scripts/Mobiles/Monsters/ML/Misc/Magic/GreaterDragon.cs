@@ -12,37 +12,38 @@ namespace Server.Mobiles
 		{
 			Name = "a greater dragon";
 			Body = Utility.RandomList( 12, 59 );
-			
-            BaseSoundID = 362;
-                
-			SetStr( 1000, 1300 );
-			SetDex( 118, 150 );
-			SetInt( 588, 700 );
+			BaseSoundID = 362;
 
-			SetHits( 1238, 1920 );
+			SetStr( 1000, 1425 );
+			SetDex( 81, 148 );
+			SetInt( 475, 675 );
 
-			SetDamage( 24, 33 );
+			SetHits( 1000, 2000 );
+            SetStam( 120, 135 );
+
+			SetDamage( 5, 6 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
-			SetResistance( ResistanceType.Physical, 70, 88 );
-			SetResistance( ResistanceType.Fire, 70, 90 );
-			SetResistance( ResistanceType.Cold, 43, 55 );
-			SetResistance( ResistanceType.Poison, 55, 66 );
-			SetResistance( ResistanceType.Energy, 55, 75 );
+			SetResistance( ResistanceType.Physical, 60, 85 );
+			SetResistance( ResistanceType.Fire, 65, 90 );
+			SetResistance( ResistanceType.Cold, 40, 55 );
+			SetResistance( ResistanceType.Poison, 40, 60 );
+			SetResistance( ResistanceType.Energy, 50, 75 );
 
-			SetSkill( SkillName.EvalInt, 48.1, 80.0 );
-			SetSkill( SkillName.Magery, 120.0, 130.0 );
-			SetSkill( SkillName.MagicResist, 113.2, 130.0 );
-			SetSkill( SkillName.Tactics, 115.0, 130.0 );
+            SetSkill( SkillName.Meditation, 0 );
+			SetSkill( SkillName.EvalInt, 110.0, 140.0 );
+			SetSkill( SkillName.Magery, 110.0, 140.0 );
+            SetSkill( SkillName.Poisoning, 0 );
+            SetSkill( SkillName.Anatomy, 0 );
+			SetSkill( SkillName.MagicResist, 110.0, 140.0 );
+			SetSkill( SkillName.Tactics, 110.0, 140.0 );
 			SetSkill( SkillName.Wrestling, 115.0, 145.0 );
-            SetSkill( SkillName.Meditation, 65.8, 90.0 );
-			SetSkill( SkillName.Anatomy, 25.0, 75.0 );
 
-            Fame = 15000;
-			Karma = -15000;
+			Fame = 55000;
+			Karma = -55000;
 
-			VirtualArmor = 70;
+			VirtualArmor = 60;
 
 			Tamable = true;
 			ControlSlots = 5;
@@ -51,18 +52,18 @@ namespace Server.Mobiles
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.FilthyRich, 3 );
-			AddLoot( LootPack.Gems, 12 );
+			AddLoot( LootPack.FilthyRich, 4 );
+			AddLoot( LootPack.Gems, 8 );
 		}
-            
+
 		public override bool ReacquireOnMovement{ get{ return !Controlled; } }
 		public override bool HasBreath{ get{ return true; } } // fire breath enabled
 		public override bool AutoDispel{ get{ return !Controlled; } }
-		public override int TreasureMapLevel{ get{ return 4; } }
+		public override int TreasureMapLevel{ get{ return 5; } }
 		public override int Meat{ get{ return 19; } }
-		public override int Hides{ get{ return 30; } }
+		public override int Hides{ get{ return 31; } }
 		public override HideType HideType{ get{ return HideType.Barbed; } }
-		public override int Scales{ get{ return 15; } }
+		public override int Scales{ get{ return 7; } }
 		public override ScaleType ScaleType{ get{ return ( Body == 12 ? ScaleType.Yellow : ScaleType.Red ); } }
 		public override FoodType FavoriteFood{ get{ return FoodType.Meat; } }
 		public override bool CanAngerOnTame { get { return true; } }

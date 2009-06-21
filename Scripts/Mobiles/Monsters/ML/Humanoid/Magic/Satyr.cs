@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using Server;
 using Server.Items;
+using Server.Targeting;
+using Server.Misc;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a satyr's corpse" )] 
+	[CorpseName("a satyr corpse")]
 	public class Satyr : BaseCreature
-	{		
+	{
 		// peace
 		public virtual bool CanPeace{ get{ return true; } }
 		public virtual int PeaceDuration{ get{ return 20; } }
@@ -27,45 +29,63 @@ namespace Server.Mobiles
 		public virtual int ProvokeMaxDelay{ get{ return 5; } }
 				
 		public virtual int PerceptionRange{ get{ return 12; } }
-	
+
+		public override WeaponAbility GetWeaponAbility()
+		{
+			return WeaponAbility.Disrobe;
+		}
+		
 		[Constructable]
-		public Satyr() : base( AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
+		public Satyr()
+			: base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4) // NEED TO CHECK
 		{
 			Name = "a satyr";
-			Body =  0x10F;
+			Body = 0x10F;
+			BaseSoundID = 0x586;  
 
-			SetStr( 178, 194 );
-			SetDex( 254, 268 );
-			SetInt( 151, 169 );
+			SetStr(177, 195);
+			SetDex(251, 269);
+			SetInt(153, 170);
 
-			SetHits( 356, 400 );
-			SetStam( 254, 268 );
-			SetMana( 151, 169 );
+			SetHits(353, 399);
 
-			SetDamage( 20, 25 );
+			SetDamage(6, 11);
 
-			SetDamageType( ResistanceType.Physical, 100 );
+			SetDamageType(ResistanceType.Physical, 100);
 
-			SetResistance( ResistanceType.Physical, 55, 60 );
-			SetResistance( ResistanceType.Fire, 25, 35 );
-			SetResistance( ResistanceType.Cold, 30, 39 );
-			SetResistance( ResistanceType.Poison, 31, 39 );
-			SetResistance( ResistanceType.Energy, 31, 39 );
+			SetResistance(ResistanceType.Physical, 55, 60);
+			SetResistance(ResistanceType.Fire, 26, 35);
+			SetResistance(ResistanceType.Cold, 30, 40);
+			SetResistance(ResistanceType.Poison, 30, 40);
+			SetResistance(ResistanceType.Energy, 30, 40);
 
-			SetSkill( SkillName.Wrestling, 81.2, 95.1 );
-			SetSkill( SkillName.Tactics, 81.9, 98.0 );
-			SetSkill( SkillName.MagicResist, 55.3, 63.9 );
+			SetSkill(SkillName.Poisoning, 0);
+			SetSkill(SkillName.Meditation, 0);
+			SetSkill(SkillName.EvalInt, 0);
+			SetSkill(SkillName.Magery, 0);
+			SetSkill(SkillName.Anatomy, 0);
+			SetSkill(SkillName.MagicResist, 55.3, 64.3);
+			SetSkill(SkillName.Tactics, 80.1, 99.3);
+			SetSkill(SkillName.Wrestling, 80.6, 100.0);
+
+			Fame = 5000;
+			Karma = -5000;
+
+			VirtualArmor = 28; // Don't know what it should be
 		}
+
+
+		public override void GenerateLoot()
+		{
+			AddLoot( LootPack.AosRich, 3 );  // Need to verify
+		}
+
+		public override int Meat { get { return 1; } }
 
 		public Satyr( Serial serial ) : base( serial )
 		{
 		}
-		
-		public override void GenerateLoot()
-		{
-			AddLoot( LootPack.AosRich, 3 );
-		}
-		
+
 		public override void OnThink()
 		{
 			if ( CanPeace && m_NextPeaceTime <= DateTime.Now )
@@ -92,13 +112,7 @@ namespace Server.Mobiles
 					Provoke( target );
 			}
 		}
-		
-		public override int GetDeathSound()	{ return 0x585; }
-		public override int GetAttackSound() { return 0x586; }
-		public override int GetIdleSound() { return 0x587; }
-		public override int GetAngerSound() { return 0x588; }
-		public override int GetHurtSound() { return 0x589; }
-		
+
 		private DateTime m_NextPeaceTime;
 		private DateTime m_NextDiscordTime;
 		private DateTime m_NextProvokeTime;
@@ -208,7 +222,7 @@ namespace Server.Mobiles
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-			
+
 			int version = reader.ReadInt();
 		}
 	}

@@ -41,37 +41,43 @@ namespace Server.Mobiles
         public Ilhenir()
             : base(AIType.AI_Mage)
         {
-            Name = "Ilhenir the Stained";
-            Body = 0x103;
+			Name = "Ilhenir";
+			Title = "the Stained";
+			Body = 0x103;
+
             BaseSoundID = 589;
 
-            SetStr(1198, 1307);
-            SetDex(127, 135);
-            SetInt(595, 646);
+			SetStr( 1105, 1350 );
+			SetDex( 82, 160 );
+			SetInt( 505, 750 );
 
-            SetHits(9000);
-            SetMana(595, 646);
-            SetStam(127, 135);
+			SetHits( 9000 );
 
-            SetDamage(27, 31);
+			SetDamage(4, 6);
 
-            SetDamageType(ResistanceType.Physical, 60);
-            SetDamageType(ResistanceType.Fire, 20);
-            SetDamageType(ResistanceType.Energy, 20);
+			SetDamageType(ResistanceType.Physical, 60);
+			SetDamageType(ResistanceType.Fire, 20);
+			SetDamageType(ResistanceType.Poison, 20);
 
-            SetResistance(ResistanceType.Physical, 48, 52);
-            SetResistance(ResistanceType.Fire, 77, 82);
-            SetResistance(ResistanceType.Cold, 56, 61);
-            SetResistance(ResistanceType.Poison, 32, 40);
-            SetResistance(ResistanceType.Energy, 69, 71);
+			SetResistance(ResistanceType.Physical, 55, 65);
+			SetResistance(ResistanceType.Fire, 50, 60);
+			SetResistance(ResistanceType.Cold, 55, 65);
+			SetResistance(ResistanceType.Poison, 70, 90);
+			SetResistance(ResistanceType.Energy, 65, 75);
 
-            SetSkill(SkillName.Wrestling, 112.6, 116.9);
-            SetSkill(SkillName.Tactics, 118.5, 119.2);
-            SetSkill(SkillName.MagicResist, 120);
-            SetSkill(SkillName.Anatomy, 111.0, 111.7);
-            SetSkill(SkillName.Magery, 100.0);
-            SetSkill(SkillName.EvalInt, 100);
-            SetSkill(SkillName.Meditation, 100);
+			SetSkill(SkillName.EvalInt, 100);
+			SetSkill(SkillName.Magery, 100);
+			SetSkill(SkillName.Meditation, 0);
+			SetSkill(SkillName.Poisoning, 5.4);
+			SetSkill(SkillName.Anatomy, 117.5);
+			SetSkill(SkillName.MagicResist, 120.0);
+			SetSkill(SkillName.Tactics, 119.9);  
+			SetSkill(SkillName.Wrestling, 119.9);
+
+			Fame = 50000;
+			Karma = -50000;
+
+			VirtualArmor = 44;
 
             PackResources(8);
             PackTalismans(5);
@@ -105,10 +111,10 @@ namespace Server.Mobiles
                 PackItem(new RandomTalisman());
         }
 
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.AosSuperBoss, 8);
-        }
+		public override void GenerateLoot()
+		{
+			AddLoot(LootPack.FilthyRich, 8);
+		}
 
         public override void OnDeath(Container c)
         {
@@ -244,6 +250,9 @@ namespace Server.Mobiles
         }
         #endregion
 
+		public override bool Unprovokable { get { return true; } }
+		public override bool Uncalmable { get { return true; } }
+		public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool GivesMinorArtifact { get { return true; } }
         public override int TreasureMapLevel { get { return 5; } }
 
@@ -266,11 +275,30 @@ namespace Server.Mobiles
             base.OnDamage(amount, from, willKill);
         }
 
-        public override int GetDeathSound() { return 0x57F; }
-        public override int GetAttackSound() { return 0x580; }
-        public override int GetIdleSound() { return 0x581; }
-        public override int GetAngerSound() { return 0x582; }
-        public override int GetHurtSound() { return 0x583; }
+		public override int GetAngerSound()
+		{
+			return 0x581;
+		}
+
+		public override int GetIdleSound()
+		{
+			return 0x582;
+		}
+
+		public override int GetAttackSound()
+		{
+			return 0x580;
+		}
+
+		public override int GetHurtSound()
+		{
+			return 0x583;
+		}
+
+		public override int GetDeathSound()
+		{
+			return 0x584;
+		}
 
         public Ilhenir(Serial serial)
             : base(serial)

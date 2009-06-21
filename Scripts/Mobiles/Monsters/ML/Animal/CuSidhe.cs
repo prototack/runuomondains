@@ -12,31 +12,29 @@ namespace Server.Mobiles
 		public CuSidhe() : this( "a Cu Sidhe" )
 		{
 		}
-		
+
 		[Constructable]
 		public CuSidhe( string name ) : base( name, 277, 0x3E91, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{			
 			double chance = Utility.RandomDouble() * 23301;
-			
+
 			if ( chance <= 1 )
 				Hue = 0x489;
 			else if ( chance < 50 )
 				Hue = Utility.RandomList( 0x657, 0x515, 0x4B1, 0x481, 0x480, 0x455 );
 			else if ( chance < 500 )
 				Hue = Utility.RandomList( 0x97A, 0x978, 0x901, 0x8AC, 0x5A7, 0x527 ); 
-		
+
 			SetStr( 1201, 1225 );
 			SetDex( 151, 170 );
 			SetInt( 251, 282 );
-			
-			SetHits( 1010, 1275 );
-			
-			SetDamage( 21, 28 );
-			
+
+			SetDamage( 4, 5 );
+
 			SetDamageType( ResistanceType.Physical, 0 );
 			SetDamageType( ResistanceType.Cold, 50 );
 			SetDamageType( ResistanceType.Energy, 50 );
-			
+
 			SetResistance( ResistanceType.Physical, 55, 65 );
 			SetResistance( ResistanceType.Fire, 30, 45 );
 			SetResistance( ResistanceType.Cold, 70, 85 );
@@ -56,24 +54,24 @@ namespace Server.Mobiles
 			Tamable = true;
 			ControlSlots = 4;
 			MinTameSkill = 101.1;					
-			
+
 			if ( Utility.RandomDouble() < 0.2 )
 				PackItem( new TreasureMap( 5, Map.Trammel ) );
-				
+
 			if ( Utility.RandomDouble() < 0.1 )				
 				PackItem( new ParrotItem() );
-				
-			PackGold( 1500, 1900 );		
+
+			PackGold( 500, 800 );
+
 			PackItem( new Bandage( 10 ) );
-				
 			// TODO 0-2 spellweaving scroll
 		}	
-		
+
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.AosFilthyRich, 5 );
-		}	
-		
+		}
+
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( from.Race != Race.Elf && from == ControlMaster && from.AccessLevel == AccessLevel.Player )
@@ -85,7 +83,6 @@ namespace Server.Mobiles
 				else
 				{
 					from.SendLocalizedMessage( 1072203 ); // Only Elves may use this.
-					
 					return;
 				}
 			}
@@ -105,11 +102,11 @@ namespace Server.Mobiles
 		{
 			return WeaponAbility.BleedAttack;
 		}
-		
+
 		public CuSidhe( Serial serial ) : base( serial )
 		{
 		}
-		
+
 		public override int GetIdleSound() { return 0x577; }
 		public override int GetAttackSound() { return 0x576; }
 		public override int GetAngerSound() { return 0x578; }
