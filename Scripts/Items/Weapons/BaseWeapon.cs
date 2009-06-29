@@ -882,9 +882,6 @@ namespace Server.Items
             double atkValue = atkWeapon.GetAttackSkillValue(attacker, defender);
             double defValue = defWeapon.GetDefendSkillValue(attacker, defender);
 
-            //attacker.CheckSkill( atkSkill.SkillName, defValue - 20.0, 120.0 );
-            //defender.CheckSkill( defSkill.SkillName, atkValue - 20.0, 120.0 );
-
             double ourValue, theirValue;
 
             int bonus = GetHitChanceBonus();
@@ -897,12 +894,7 @@ namespace Server.Items
                 if (defValue <= -20.0)
                     defValue = -19.9;
 
-                // Hit Chance Increase = 45%
-                int atkChance = AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
-                if (atkChance > 45)
-                    atkChance = 45;
-
-                bonus += atkChance;
+                bonus += AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
 
                 if (Spells.Chivalry.DivineFurySpell.UnderEffect(attacker))
                     bonus += 10; // attacker gets 10% bonus when they're under divine fury
@@ -913,12 +905,23 @@ namespace Server.Items
                 if (HitLower.IsUnderAttackEffect(attacker))
                     bonus -= 25; // Under Hit Lower Attack effect -> 25% malus
 
-                ourValue = (atkValue + 20.0) * (100 + bonus);
+                WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
 
-                // Defense Chance Increase = 45%
-                bonus = AosAttributes.GetValue(defender, AosAttribute.DefendChance);
+                if (ability != null)
+                    bonus += ability.AccuracyBonus;
+
+                SpecialMove move = SpecialMove.GetCurrentMove(attacker);
+
+                if (move != null)
+                    bonus += move.GetAccuracyBonus(attacker);
+
+                // Max Hit Chance Increase = 45%
                 if (bonus > 45)
                     bonus = 45;
+
+                ourValue = (atkValue + 20.0) * (100 + bonus);
+
+                bonus = AosAttributes.GetValue(defender, AosAttribute.DefendChance);
 
                 if (Spells.Chivalry.DivineFurySpell.UnderEffect(defender))
                     bonus -= 20; // defender loses 20% bonus when they're under divine fury
@@ -941,6 +944,10 @@ namespace Server.Items
                 // Defender loses -0/-28% if under the effect of Discordance.
                 if (SkillHandlers.Discordance.GetEffect(attacker, ref discordanceEffect))
                     bonus -= discordanceEffect;
+
+                // Defense Chance Increase = 45%
+                if (bonus > 45)
+                    bonus = 45;
 
                 theirValue = (defValue + 20.0) * (100 + bonus);
 
@@ -965,19 +972,7 @@ namespace Server.Items
             if (Core.AOS && chance < 0.02)
                 chance = 0.02;
 
-            WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
-
-            if (ability != null)
-                chance *= ability.AccuracyScalar;
-
-            SpecialMove move = SpecialMove.GetCurrentMove(attacker);
-
-            if (move != null)
-                chance *= move.GetAccuracyScalar(attacker);
-
             return attacker.CheckSkill(atkSkill.SkillName, chance);
-
-            //return ( chance >= Utility.RandomDouble() );
         }
 
         public virtual TimeSpan GetDelay(Mobile m)
@@ -2149,14 +2144,6 @@ namespace Server.Items
                 }
             }
         }
-
-        // Mondain's Legacy mod
-        /*public virtual void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy )
-        {
-            int dummy;
-			
-            GetDamageTypes( wielder, out phys, out fire, out cold, out pois, out nrgy, out dummy, out dummy );
-        }*/
 
         public virtual void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
@@ -3804,6 +3791,10 @@ namespace Server.Items
                     if (Core.ML)
                     {
                         Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
+
+                        if (Attributes.WeaponDamage > 50)
+                            Attributes.WeaponDamage = 50;
+
                         from.CheckSkill(SkillName.ArmsLore, 0, 100);
                     }
                 }

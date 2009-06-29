@@ -22,7 +22,7 @@ namespace Server
 				info.StatTotal = 0.0;
 			}
 		}
-		
+
 		public static int Damage( Mobile m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy )
 		{
 			return Damage( m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, 0 );
@@ -150,7 +150,7 @@ namespace Server
 			#endregion
 
 			#region Dragon Barding
-			if( (!Core.AOS || from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
+			if( (from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
 			{
 				SwampDragon pet = m.Mount as SwampDragon;
 

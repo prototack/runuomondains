@@ -87,17 +87,18 @@ namespace Server.Engines.Harvest
 				{
 					new HarvestVein( 100.0, 0.0, res[0], null )
 				};
-			
-			#region Mondain's Legacy
-			fish.BonusResources = new BonusHarvestResource[]
-				{
-					new BonusHarvestResource( 0, 99.994, null, null ),	//Nothing
-					new BonusHarvestResource( 80, 0.006, 1072597, typeof( WhitePearl ) )
-				};
-			#endregion
 
 			fish.Resources = res;
 			fish.Veins = veins;
+
+			if ( Core.ML )
+			{
+				fish.BonusResources = new BonusHarvestResource[]
+				{
+					new BonusHarvestResource( 0, 99.4, null, null ), //set to same chance as mining ml gems
+					new BonusHarvestResource( 80.0, .6, 1072597, typeof( WhitePearl ) )
+				};
+			}
 
 			m_Definition = fish;
 			Definitions.Add( fish );
