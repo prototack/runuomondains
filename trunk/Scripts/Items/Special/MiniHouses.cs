@@ -27,23 +27,23 @@ namespace Server.Items
         public MiniHouseAddon(MiniHouseType type)
         {
             m_Type = type;
+
             Construct();
         }
 
         public void Construct()
         {
+            foreach (AddonComponent c in Components)
+            {
+                c.Addon = null;
+                c.Delete();
+            }
+
             Components.Clear();
 
             MiniHouseInfo info = MiniHouseInfo.GetInfo(m_Type);
 
-            if (m_Type == MiniHouseType.ChurchAtNight)
-            {
-                AddComponent(new AddonComponent(info.Graphics[0]), 0, 0, 0);
-                AddComponent(new AddonComponent(info.Graphics[1]), -1, 0, 0);
-                AddComponent(new AddonComponent(info.Graphics[2]), 0, -1, 0);
-                return;
-            }
-            else if (m_Type == MiniHouseType.GingerBreadHouse)
+             if (m_Type == MiniHouseType.GingerBreadHouse)
             {
                 AddComponent(new AddonComponent(info.Graphics[0]), 0, 0, 0);
                 AddComponent(new AddonComponent(info.Graphics[1]), 1, 0, 0);
@@ -56,7 +56,8 @@ namespace Server.Items
 
             for (int y = 0; y < size; ++y)
                 for (int x = 0; x < size; ++x)
-                    AddComponent(new AddonComponent(info.Graphics[num++]), size - x - 1, size - y - 1, 0);
+                    if (info.Graphics[num] != 0x1) // Veteran Rewards Mod
+                        AddComponent(new AddonComponent(info.Graphics[num++]), size - x - 1, size - y - 1, 0);
         }
 
         public MiniHouseAddon(Serial serial)
@@ -107,7 +108,7 @@ namespace Server.Items
 		};
         public static MiniHouseType[] MiniHouseDeedRare = new MiniHouseType[]
 		{
-			MiniHouseType.ThatchedRoof, MiniHouseType.MalasMountainPass, MiniHouseType.GingerBreadHouse
+			MiniHouseType.ThatchedRoof
 		};
         public static MiniHouseType[] MiniHouseDeedVeryRare = new MiniHouseType[]
 		{
@@ -137,8 +138,6 @@ namespace Server.Items
             {
                 switch (m_Type)
                 {
-                    case MiniHouseType.MalasMountainPass: return 1062692; // Mini House: Contest Winning House Design
-                    case MiniHouseType.ChurchAtNight: return 1072216; // Mini House: Contest 2004 Winning House Design
                     case MiniHouseType.GingerBreadHouse: return 1077394; // a Gingerbread House Deed
                     default: return 1062096;  // a mini house deed
                 }
@@ -148,6 +147,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
             list.Add(MiniHouseInfo.GetInfo(m_Type).LabelNumber);
         }
 
@@ -161,9 +161,9 @@ namespace Server.Items
         public MiniHouseDeed(MiniHouseType type)
         {
             m_Type = (type == MiniHouseType.Random) ? RandomMiniHouseDeed() : type;
+
             Weight = 1.0;
             LootType = LootType.Blessed;
-
         }
 
         public MiniHouseDeed(Serial serial)
@@ -237,8 +237,8 @@ namespace Server.Items
         SandstoneHouseWithPatio,
         SmallStoneWorkshop,
         SmallMarbleWorkshop,
-        MalasMountainPass,
-        ChurchAtNight,
+        MalasMountainPass,	//Veteran reward house
+        ChurchAtNight,		//Veteran reward house
         GingerBreadHouse,
         Random
     }
@@ -289,10 +289,9 @@ namespace Server.Items
 				/* Sandstone house with patio        */ new MiniHouseInfo( 0x22F3, 1, 1011320 ),
 				/* Small stone workshop              */ new MiniHouseInfo( 0x22F6, 1, 1011321 ),
 				/* Small marble workshop             */ new MiniHouseInfo( 0x22F4, 1, 1011322 ),
-                /* Malas Mountain Pass		         */ new MiniHouseInfo( 1062691, 0x2316, 0x2315, 0x2314, 0x2313 ),
-                /* Church at Night                   */ new MiniHouseInfo( 1072214, 0x2318, 0x2317, 0x2319 ),
+				/* Malas Mountain Pass               */ new MiniHouseInfo( 1062692, 0x2316, 0x2315, 0x2314, 0x2313 ),
+				/* Church At Night                   */ new MiniHouseInfo( 1072215, 0x2318, 0x2317, 0x2319, 0x1 ),
 				/* Gingerbread House                 */ new MiniHouseInfo( 1077395, 0x2BE5, 0x2BE6, 0x2BE7 )
-
 			};
 
         public static MiniHouseInfo GetInfo(MiniHouseType type)

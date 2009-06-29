@@ -3,17 +3,28 @@ using Server;
 using Server.Gumps;
 using Server.Network;
 using Server.Accounting;
+using Server.Engines.VeteranRewards;
+using Server.Multis;
 using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class SoulStone : Item, Engines.VeteranRewards.IRewardItem
+	public class SoulStone : Item, ISecurable
 	{
 		public override int LabelNumber { get { return 1030899; } } // soulstone
 
 		private int m_ActiveItemID;
         private int m_InactiveItemID;
         private bool m_IsRewardItem;
+
+		private SecureLevel m_Level;
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public SecureLevel Level
+		{
+			get{ return m_Level; }
+			set{ m_Level = value; }
+		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public virtual int ActiveItemID
@@ -760,7 +771,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.WriteEncodedInt( 2 ); // version
+			writer.WriteEncodedInt( 3 ); // version
+
+			writer.Write( (int)m_Level );
 
             writer.Write(m_IsRewardItem);
 
@@ -782,6 +795,11 @@ namespace Server.Items
 
 			switch( version )
 			{
+				case 3:
+					{
+						m_Level = (SecureLevel)reader.ReadInt();
+						goto case 2;
+					}
                 case 2:
                     {
                         m_IsRewardItem = reader.ReadBool();

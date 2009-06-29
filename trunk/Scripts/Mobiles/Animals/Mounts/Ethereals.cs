@@ -55,6 +55,8 @@ namespace Server.Mobiles
 				list.Add( "Donation Ethereal" );
 				list.Add( "7.5 sec slower cast time if not a 9mo. Veteran" );
 			}
+			if ( Core.ML && m_IsRewardItem )
+				list.Add( RewardSystem.GetRewardYearLabel( this, new object[]{ } ) ); // X Year Veteran Reward
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -164,7 +166,7 @@ namespace Server.Mobiles
 
 			return true;
 		}
-		
+
 		public override void OnDoubleClick( Mobile from )
 		{
 			if( Validate( from ) )
@@ -716,28 +718,6 @@ namespace Server.Mobiles
 		public ChargerOfTheFallen( Serial serial )
 			: base( serial )
 		{
-		}
-		
-		public override bool Validate( Mobile from )
-		{
-			#region Mondain's Legacy
-			if ( from.NetState != null && !from.NetState.SupportsExpansion( Expansion.ML ) )
-			{
-				from.SendLocalizedMessage( 1072791 ); // You must upgrade to Mondain's Legacy in order to use that item.				
-				return false;
-			}
-			#endregion
-			
-			return base.Validate( from );
-		}
-
-		public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
-			
-			#region Mondain's Legacy
-			list.Add( 1075085 ); // Requirement: Mondain's Legacy		
-			#endregion
 		}
 
 		public override void Serialize( GenericWriter writer )

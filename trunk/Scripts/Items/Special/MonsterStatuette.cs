@@ -4,6 +4,7 @@ using Server.Multis;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {
@@ -34,11 +35,15 @@ namespace Server.Items
 		Wolf,
 		PhillipsWoodenSteed,
 		Seahorse,
-
-		#region Veteran Rewards
 		Harrower,
-		Efreet
-		#endregion
+		Efreet,
+		Slime,
+		PlagueBeast,
+		RedDeath,
+		Spider,
+		OphidianArchMage,
+		OphidianWarrior,
+		DreadHorn
 	}
 
 	public class MonsterStatuetteInfo
@@ -46,10 +51,12 @@ namespace Server.Items
 		private int m_LabelNumber;
 		private int m_ItemID;
 		private int[] m_Sounds;
+		private int m_Hue;
 
 		public int LabelNumber{ get{ return m_LabelNumber; } }
 		public int ItemID{ get{ return m_ItemID; } }
 		public int[] Sounds{ get{ return m_Sounds; } }
+		public int Hue{ get{ return m_Hue; } }
 
 		public MonsterStatuetteInfo( int labelNumber, int itemID, int baseSoundID )
 		{
@@ -92,11 +99,15 @@ namespace Server.Items
 				/* Wolf */				new MonsterStatuetteInfo( 1049770, 0x2122, 229 ),
 				/* Phillip's Steed */	new MonsterStatuetteInfo( 1063488, 0x3FFE, 168 ),
 				/* Seahorse */			new MonsterStatuetteInfo( 1070819, 0x25BA, 138 ),
-
-				#region Veteran Rewards
 				/* Harrower */			new MonsterStatuetteInfo( 1080520, 0x25BB, new int[] { 0x289, 0x28A, 0x28B } ),
-				/* Efreet */			new MonsterStatuetteInfo( 1080521, 0x2590, 0x300 )
-				#endregion
+				/* Efreet */			new MonsterStatuetteInfo( 1080521, 0x2590, 0x300 ),
+				/* Slime */				new MonsterStatuetteInfo( 1015246, 0x20E8, 456 ),
+				/* PlagueBeast */		new MonsterStatuetteInfo( 1029747, 0x2613, 0x1BF ),
+				/* RedDeath */			new MonsterStatuetteInfo( 1094932, 0x2617, new int[] { } ),
+				/* Spider */			new MonsterStatuetteInfo( 1029668, 0x25C4, 1170 ),
+				/* OphidianArchMage */	new MonsterStatuetteInfo( 1029641, 0x25A9, 639 ),
+				/* OphidianWarrior */	new MonsterStatuetteInfo( 1029645, 0x25AD, 634 ),
+				/* DreadHorn */			new MonsterStatuetteInfo( 1031651, 0x2D83, 0xA8 )
 			};
 
 		public static MonsterStatuetteInfo GetInfo( MonsterStatuetteType type )
@@ -110,7 +121,7 @@ namespace Server.Items
 		}
 	}
 
-	public class MonsterStatuette : Item, Engines.VeteranRewards.IRewardItem
+	public class MonsterStatuette : Item, IRewardItem
 	{
 		private MonsterStatuetteType m_Type;
 		private bool m_TurnedOn;
@@ -138,6 +149,14 @@ namespace Server.Items
 			{
 				m_Type = value;
 				ItemID = MonsterStatuetteInfo.GetInfo( m_Type ).ItemID;
+
+				if( m_Type == MonsterStatuetteType.Slime )
+					Hue = Utility.RandomSlimeHue();
+				else if( m_Type == MonsterStatuetteType.RedDeath )
+					Hue = 0x21;
+				else
+					Hue = 0;
+
 				InvalidateProperties();
 			}
 		}
@@ -163,6 +182,11 @@ namespace Server.Items
 			LootType = LootType.Blessed;
 
 			m_Type = type;
+
+			if( m_Type == MonsterStatuetteType.Slime )
+				Hue = Utility.RandomSlimeHue();
+			else if( m_Type == MonsterStatuetteType.RedDeath )
+				Hue = 0x21;
 		}
 
 		public override bool HandlesOnMovement{ get{ return m_TurnedOn && IsLockedDown; } }
@@ -173,7 +197,8 @@ namespace Server.Items
 			{
 				int[] sounds = MonsterStatuetteInfo.GetInfo( m_Type ).Sounds;
 
-				Effects.PlaySound( this.Location, this.Map, sounds[Utility.Random( sounds.Length )] );
+				if( sounds.Length > 0 )
+					Effects.PlaySound( this.Location, this.Map, sounds[Utility.Random( sounds.Length )] );
 			}
 
 			base.OnMovement( m, oldLocation );
@@ -186,6 +211,9 @@ namespace Server.Items
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
+
+			if ( Core.ML && m_IsRewardItem )
+				list.Add( RewardSystem.GetRewardYearLabel( this, new object[]{ m_Type } ) ); // X Year Veteran Reward
 
 			if ( m_TurnedOn )
 				list.Add( 502695 ); // turned on
