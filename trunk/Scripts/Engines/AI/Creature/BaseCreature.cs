@@ -56,6 +56,7 @@ namespace Server.Mobiles
     [Flags]
     public enum FoodType
     {
+        None = 0x0000,
         Meat = 0x0001,
         FruitsAndVegies = 0x0002,
         GrainsAndHay = 0x0004,
@@ -171,34 +172,34 @@ namespace Server.Mobiles
         #region Var declarations
         private BaseAI m_AI;					// THE AI
 
-        private AIType m_CurrentAI;			// The current AI
-        private AIType m_DefaultAI;			// The default AI
+        private AIType m_CurrentAI;				// The current AI
+        private AIType m_DefaultAI;				// The default AI
 
         private Mobile m_FocusMob;				// Use focus mob instead of combatant, maybe we don't whan to fight
-        private FightMode m_FightMode;			// The style the mob uses
+        private FightMode m_FightMode;				// The style the mob uses
 
         private int m_iRangePerception;		// The view area
         private int m_iRangeFight;			// The fight distance
 
-        private bool m_bDebugAI;				// Show debug AI messages
+        private bool m_bDebugAI;			// Show debug AI messages
 
-        private int m_iTeam;				// Monster Team
+        private int m_iTeam;			// Monster Team
 
         private double m_dActiveSpeed;			// Timer speed when active
         private double m_dPassiveSpeed;		// Timer speed when not active
         private double m_dCurrentSpeed;		// The current speed, lets say it could be changed by something;
 
-        private Point3D m_pHome;				// The home position of the creature, used by some AI
+        private Point3D m_pHome;			// The home position of the creature, used by some AI
         private int m_iRangeHome = 10;		// The home range of the creature
 
         List<Type> m_arSpellAttack;		// List of attack spell/power
         List<Type> m_arSpellDefense;		// List of defensive spell/power
 
-        private bool m_bControlled;		// Is controlled
-        private Mobile m_ControlMaster;	// My master
-        private Mobile m_ControlTarget;	// My target mobile
-        private Point3D m_ControlDest;		// My target destination (patrol)
-        private OrderType m_ControlOrder;		// My order
+        private bool m_bControlled;			// Is controlled
+        private Mobile m_ControlMaster;		// My master
+        private Mobile m_ControlTarget;		// My target mobile
+        private Point3D m_ControlDest;			// My target destination (patrol)
+        private OrderType m_ControlOrder;			// My order
 
         private int m_Loyalty;
 
@@ -240,6 +241,10 @@ namespace Server.Mobiles
 
         private bool m_Paragon;
 
+        private bool m_IsPrisoner;
+
+        private Timer m_GhostDeletionTimer;
+
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -247,7 +252,18 @@ namespace Server.Mobiles
         public bool IsStabled
         {
             get { return m_IsStabled; }
-            set { m_IsStabled = value; }
+            set
+            {
+                m_IsStabled = value;
+                SetGhostDeletionTimer(!m_IsStabled);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsPrisoner
+        {
+            get { return m_IsPrisoner; }
+            set { m_IsPrisoner = value; }
         }
 
         protected DateTime SummonEnd
@@ -404,6 +420,7 @@ namespace Server.Mobiles
         public virtual bool BardImmune { get { return false; } }
         public virtual bool Unprovokable { get { return BardImmune || m_IsDeadPet; } }
         public virtual bool Uncalmable { get { return BardImmune || m_IsDeadPet; } }
+        public virtual bool AreaPeaceImmune { get { return BardImmune || m_IsDeadPet; } }
 
         public virtual bool BleedImmune { get { return false; } }
         public virtual double BonusPetDamageScalar { get { return 1.0; } }
@@ -826,16 +843,38 @@ namespace Server.Mobiles
 
             int taming = (int)((useBaseSkill ? m.Skills[SkillName.AnimalTaming].Base : m.Skills[SkillName.AnimalTaming].Value) * 10);
             int lore = (int)((useBaseSkill ? m.Skills[SkillName.AnimalLore].Base : m.Skills[SkillName.AnimalLore].Value) * 10);
+            int bonus = 0, chance = 700;
 
-            int difficulty = (int)(dMinTameSkill * 10);
-            int weighted = ((taming * 4) + lore) / 5;
-            int bonus = weighted - difficulty;
-            int chance;
+            if (Core.ML)
+            {
+                int SkillBonus = taming - (int)(dMinTameSkill * 10);
+                int LoreBonus = lore - (int)(dMinTameSkill * 10);
 
-            if (bonus <= 0)
-                chance = 700 + (bonus * 14);
+                int SkillMod = 6, LoreMod = 6;
+
+                if (SkillBonus < 0)
+                    SkillMod = 28;
+                if (LoreBonus < 0)
+                    LoreMod = 14;
+
+                SkillBonus *= SkillMod;
+                LoreBonus *= LoreMod;
+
+                bonus = (SkillBonus + LoreBonus) / 2;
+            }
             else
-                chance = 700 + (bonus * 6);
+            {
+                int difficulty = (int)(dMinTameSkill * 10);
+                int weighted = ((taming * 4) + lore) / 5;
+                bonus = weighted - difficulty;
+
+                if (bonus <= 0)
+                    bonus *= 14;
+                else
+                    bonus *= 6;
+            }
+
+            chance += bonus;
 
             if (chance >= 0 && chance < 200)
                 chance = 200;
@@ -1757,6 +1796,8 @@ namespace Server.Mobiles
 
             if (IsAnimatedDead)
                 Spells.Necromancy.AnimateDeadSpell.Register(m_SummonMaster, this);
+
+            SetGhostDeletionTimer(true);
         }
 
         public virtual bool IsHumanInTown()
@@ -2288,9 +2329,23 @@ namespace Server.Mobiles
         public void RemoveFollowers()
         {
             if (m_ControlMaster != null)
+            {
                 m_ControlMaster.Followers -= ControlSlots;
+                if (m_ControlMaster is PlayerMobile)
+                {
+                    ((PlayerMobile)m_ControlMaster).AllFollowers.Remove(this);
+                    if (((PlayerMobile)m_ControlMaster).AutoStabled.Contains(this))
+                        ((PlayerMobile)m_ControlMaster).AutoStabled.Remove(this);
+                }
+            }
             else if (m_SummonMaster != null)
+            {
                 m_SummonMaster.Followers -= ControlSlots;
+                if (m_SummonMaster is PlayerMobile)
+                {
+                    ((PlayerMobile)m_SummonMaster).AllFollowers.Remove(this);
+                }
+            }
 
             if (m_ControlMaster != null && m_ControlMaster.Followers < 0)
                 m_ControlMaster.Followers = 0;
@@ -2302,9 +2357,21 @@ namespace Server.Mobiles
         public void AddFollowers()
         {
             if (m_ControlMaster != null)
+            {
                 m_ControlMaster.Followers += ControlSlots;
+                if (m_ControlMaster is PlayerMobile)
+                {
+                    ((PlayerMobile)m_ControlMaster).AllFollowers.Add(this);
+                }
+            }
             else if (m_SummonMaster != null)
+            {
                 m_SummonMaster.Followers += ControlSlots;
+                if (m_SummonMaster is PlayerMobile)
+                {
+                    ((PlayerMobile)m_SummonMaster).AllFollowers.Add(this);
+                }
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -2917,8 +2984,22 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
+            OrderType ct = m_ControlOrder;
+
             if (m_AI != null)
-                m_AI.OnAggressiveAction(aggressor);
+            {
+                if (!Core.ML || (ct != OrderType.Follow && ct != OrderType.Stop))
+                {
+                    m_AI.OnAggressiveAction(aggressor);
+                }
+                else
+                {
+                    DebugSay("I'm being attacked but my master told me not to fight.");
+                    Warmode = false;
+                    Combatant = null;
+                    return;
+                }
+            }
 
             StopFlee();
 
@@ -2932,9 +3013,7 @@ namespace Server.Mobiles
                     pl.FinishShield();
             }
 
-            OrderType ct = m_ControlOrder;
-
-            if (aggressor.ChangingCombatant && (m_bControlled || m_bSummoned) && (ct == OrderType.Come || ct == OrderType.Stay || ct == OrderType.Stop || ct == OrderType.None || ct == OrderType.Follow))
+            if (aggressor.ChangingCombatant && (m_bControlled || m_bSummoned) && (ct == OrderType.Come || (!Core.ML && ct == OrderType.Stay) || ct == OrderType.Stop || ct == OrderType.None || ct == OrderType.Follow))
             {
                 ControlTarget = aggressor;
                 ControlOrder = OrderType.Attack;
@@ -2958,7 +3037,7 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual bool CanDrop { get { return !Summoned; } }
+        public virtual bool CanDrop { get { return IsBonded; } }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
@@ -4370,6 +4449,8 @@ namespace Server.Mobiles
                 GiftOfLifeSpell.HandleDeath(this);
 
                 CheckStatTimers();
+
+                SetGhostDeletionTimer(true);
             }
             else
             {
@@ -5437,7 +5518,25 @@ namespace Server.Mobiles
             }
 
             CheckStatTimers();
+
+            SetGhostDeletionTimer(false);
         }
+
+        private void SetGhostDeletionTimer(bool running)
+        {
+            if (running && (!IsDeadBondedPet || !Core.ML))
+                return;
+
+            if (m_GhostDeletionTimer != null)
+                m_GhostDeletionTimer.Stop();
+
+            if (!running)
+                return;
+
+            m_GhostDeletionTimer = new GhostDeletionTimer(this, TimeSpan.FromMinutes(120 + Utility.Random(120)));
+            m_GhostDeletionTimer.Start();
+        }
+
 
         public override bool CanBeDamaged()
         {
@@ -5475,6 +5574,27 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int RemoveStep { get { return m_RemoveStep; } set { m_RemoveStep = value; } }
+
+        private class GhostDeletionTimer : Timer
+        {
+            private BaseCreature m_Creature;
+
+            public GhostDeletionTimer(BaseCreature Creature, TimeSpan delay)
+                : base(delay)
+            {
+                Priority = TimerPriority.FiveSeconds;
+                m_Creature = Creature;
+            }
+
+            protected override void OnTick()
+            {
+                if (Core.ML && m_Creature.IsDeadBondedPet)
+                {
+                    m_Creature.Delete();
+                }
+                Stop();
+            }
+        }
     }
 
     public class LoyaltyTimer : Timer

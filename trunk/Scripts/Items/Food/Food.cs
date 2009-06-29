@@ -721,7 +721,7 @@ namespace Server.Items
 		[Constructable]
 		public Cookies() : base( 0x160b )
 		{
-			Stackable = false;
+			Stackable = Core.ML;
 			this.Weight = 1.0;
 			this.FillFactor = 4;
 		}
@@ -1030,7 +1030,7 @@ namespace Server.Items
 		[Constructable]
 		public Quiche() : base( 0x1041 )
 		{
-			Stackable = false;
+			Stackable = Core.ML;
 			this.Weight = 1.0;
 			this.FillFactor = 5;
 		}

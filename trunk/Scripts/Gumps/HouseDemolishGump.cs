@@ -89,13 +89,12 @@ namespace Server.Gumps
 					}
 
 
-                    if (m_Mobile.AccessLevel >= AccessLevel.GameMaster)
-                    {
-                        m_Mobile.SendMessage("You do not get a refund for your house as you are not a player");
-
-                        m_House.RemoveKeys(m_Mobile);
-                        m_House.Delete();
-                    }
+					if ( m_Mobile.AccessLevel >= AccessLevel.GameMaster )
+					{
+						m_Mobile.SendMessage( "You do not get a refund for your house as you are not a player" );
+						m_House.RemoveKeys(m_Mobile);
+						m_House.Delete();
+					}
 					else
 					{
 						Item toGive = null;

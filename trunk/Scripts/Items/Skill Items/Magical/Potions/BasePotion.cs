@@ -156,12 +156,20 @@ namespace Server.Items
 				m.Animate( 34, 5, 1, true, false, 0 );
 		}
 
+		public static int EnhancePotions( Mobile m )
+		{
+			int EP = AosAttributes.GetValue( m, AosAttribute.EnhancePotions );
+			if ( Core.ML && EP > 50 )
+				EP = 50;
+			return EP;
+		}
+
 		public static TimeSpan Scale( Mobile m, TimeSpan v )
 		{
 			if ( !Core.AOS )
 				return v;
 
-			double scalar = 1.0 + (0.01 * AosAttributes.GetValue( m, AosAttribute.EnhancePotions ));
+			double scalar = 1.0 + ( 0.01 * EnhancePotions( m ) );
 
 			return TimeSpan.FromSeconds( v.TotalSeconds * scalar );
 		}
@@ -171,7 +179,7 @@ namespace Server.Items
 			if ( !Core.AOS )
 				return v;
 
-			double scalar = 1.0 + (0.01 * AosAttributes.GetValue( m, AosAttribute.EnhancePotions ));
+			double scalar = 1.0 + ( 0.01 * EnhancePotions( m ) );
 
 			return v * scalar;
 		}
@@ -181,7 +189,7 @@ namespace Server.Items
 			if ( !Core.AOS )
 				return v;
 
-			return AOS.Scale( v, 100 + AosAttributes.GetValue( m, AosAttribute.EnhancePotions ) );
+			return AOS.Scale( v, 100 + EnhancePotions( m ) );
 		}
 
 		public override bool StackWith( Mobile from, Item dropped, bool playSound )
