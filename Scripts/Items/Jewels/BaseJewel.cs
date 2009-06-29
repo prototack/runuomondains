@@ -21,6 +21,9 @@ namespace Server.Items
 
 	public abstract class BaseJewel : Item, ICraftable, ISetItem
 	{
+		private int m_MaxHitPoints;
+		private int m_HitPoints;
+
 		private AosAttributes m_AosAttributes;
 		private AosElementAttributes m_AosResistances;
 		private AosSkillBonuses m_AosSkillBonuses;
@@ -75,6 +78,36 @@ namespace Server.Items
 		#endregion
 
 		[CommandProperty( AccessLevel.GameMaster )]
+		public int MaxHitPoints
+		{
+			get{ return m_MaxHitPoints; }
+			set{ m_MaxHitPoints = value; InvalidateProperties(); }
+		}
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int HitPoints
+		{
+			get 
+			{
+				return m_HitPoints;
+			}
+			set 
+			{
+				if ( value != m_HitPoints && MaxHitPoints > 0 )
+				{
+					m_HitPoints = value;
+
+					if ( m_HitPoints < 0 )
+						Delete();
+					else if ( m_HitPoints > MaxHitPoints )
+						m_HitPoints = MaxHitPoints;
+
+					InvalidateProperties();
+				}
+			}
+		}
+
+		[CommandProperty( AccessLevel.Player )]
 		public AosAttributes Attributes
 		{
 			get{ return m_AosAttributes; }
@@ -115,6 +148,9 @@ namespace Server.Items
 		public override int PoisonResistance{ get{ return m_AosResistances.Poison; } }
 		public override int EnergyResistance{ get{ return m_AosResistances.Energy; } }
 		public virtual int BaseGemTypeNumber{ get{ return 0; } }
+
+		public virtual int InitMinHits{ get{ return 0; } }
+		public virtual int InitMaxHits{ get{ return 0; } }
 
 		public override int LabelNumber
 		{
@@ -179,7 +215,9 @@ namespace Server.Items
 			m_SetAttributes = new AosAttributes( this );
 			m_SetSkillBonuses = new AosSkillBonuses( this );
 			#endregion
-        }
+
+			m_HitPoints = m_MaxHitPoints = Utility.RandomMinMax( InitMinHits, InitMaxHits );
+		}
 
         #region Personal Bless Deed
         public override bool CanEquip(Mobile from)
@@ -197,33 +235,33 @@ namespace Server.Items
         }
         #endregion
 
-        public override void OnAdded(object parent)
-        {
-            if (Core.AOS && parent is Mobile)
-            {
-                Mobile from = (Mobile)parent;
+		public override void OnAdded( object parent )
+		{
+			if ( Core.AOS && parent is Mobile )
+			{
+				Mobile from = (Mobile)parent;
 
-                m_AosSkillBonuses.AddTo(from);
+				m_AosSkillBonuses.AddTo( from );
 
-                int strBonus = m_AosAttributes.BonusStr;
-                int dexBonus = m_AosAttributes.BonusDex;
-                int intBonus = m_AosAttributes.BonusInt;
+				int strBonus = m_AosAttributes.BonusStr;
+				int dexBonus = m_AosAttributes.BonusDex;
+				int intBonus = m_AosAttributes.BonusInt;
 
-                if (strBonus != 0 || dexBonus != 0 || intBonus != 0)
-                {
-                    string modName = this.Serial.ToString();
+				if ( strBonus != 0 || dexBonus != 0 || intBonus != 0 )
+				{
+					string modName = this.Serial.ToString();
 
-                    if (strBonus != 0)
-                        from.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
+					if ( strBonus != 0 )
+						from.AddStatMod( new StatMod( StatType.Str, modName + "Str", strBonus, TimeSpan.Zero ) );
 
-                    if (dexBonus != 0)
-                        from.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero));
+					if ( dexBonus != 0 )
+						from.AddStatMod( new StatMod( StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero ) );
 
-                    if (intBonus != 0)
-                        from.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
-                }
+					if ( intBonus != 0 )
+						from.AddStatMod( new StatMod( StatType.Int, modName + "Int", intBonus, TimeSpan.Zero ) );
+				}
 
-                from.CheckStatTimers();
+				from.CheckStatTimers();
 
                 #region Mondain's Legacy Sets
                 if (IsSetItem)
@@ -377,13 +415,18 @@ namespace Server.Items
 				SetHelper.GetSetProperties( list, this );
 			}
 			#endregion		
+			if ( m_HitPoints >= 0 && m_MaxHitPoints > 0 )
+				list.Add( 1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints ); // durability ~1_val~ / ~2_val~
 		}
 
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 5 ); // version
+			writer.Write( (int) 6 ); // version
+
+			writer.WriteEncodedInt( (int) m_MaxHitPoints );
+			writer.WriteEncodedInt( (int) m_HitPoints );
 
 			writer.Write( (Mobile)m_BlessedBy ); // Personal Bless Deed
 
@@ -417,6 +460,13 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				case 6:
+				{
+					m_MaxHitPoints = reader.ReadEncodedInt();
+					m_HitPoints = reader.ReadEncodedInt();
+
+					goto case 5;
+				}
 				//personal bless deed
 				case 5:
 				{

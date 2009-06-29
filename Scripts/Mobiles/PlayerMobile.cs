@@ -45,6 +45,7 @@ namespace Server.Mobiles
         Young = 0x00000400,
         AcceptGuildInvites = 0x00000800,
         DisplayChampionTitle = 0x00001000,
+        HasStatReward = 0x00002000,
 
         #region Mondain's Legacy
         Bedlam = 0x00010000,
@@ -53,7 +54,7 @@ namespace Server.Mobiles
         #endregion
 
         #region Scroll of Alacrity
-        AcceleratedSkill = 0x00080000,
+        AcceleratedSkill = 0x00080000
         #endregion
     }
 
@@ -301,9 +302,15 @@ namespace Server.Mobiles
             get { return GetFlag(PlayerFlag.AcceptGuildInvites); }
             set { SetFlag(PlayerFlag.AcceptGuildInvites, value); }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool HasStatReward
+        {
+            get { return GetFlag(PlayerFlag.HasStatReward); }
+            set { SetFlag(PlayerFlag.HasStatReward, value); }
+        }
         #endregion
 
-        #region Veteran Rewards
         private DateTime m_AnkhNextUse;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -312,7 +319,6 @@ namespace Server.Mobiles
             get { return m_AnkhNextUse; }
             set { m_AnkhNextUse = value; }
         }
-        #endregion
 
         #region Mondain's Legacy
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3011,10 +3017,8 @@ namespace Server.Mobiles
 
         public override bool CanSee(Mobile m)
         {
-            #region Veteran Rewards
             if (m is CharacterStatue)
                 ((CharacterStatue)m).OnRequestedAnimation(this);
-            #endregion
 
             if (m is PlayerMobile && ((PlayerMobile)m).m_VisList.Contains(this))
                 return true;

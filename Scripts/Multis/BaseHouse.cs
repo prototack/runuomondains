@@ -1067,10 +1067,8 @@ namespace Server.Multis
 				return true;
 			else if ( item is VendorRentalContract )
 				return true;
-			#region Veteran Rewards
 			else if ( item is RewardBrazier )
 				return true;
-			#endregion
 
 			return false;
 		}
@@ -1844,10 +1842,8 @@ namespace Server.Multis
 				SetLockdown( item, false );
 				//TidyItemList( m_LockDowns );
 
-				#region Veteran Rewards
 				if ( item is RewardBrazier )
 					((RewardBrazier) item).TurnOff();
-				#endregion
 			}
 			else if ( IsSecure( item ) )
 			{

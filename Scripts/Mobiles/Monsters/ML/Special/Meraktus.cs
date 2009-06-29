@@ -4,30 +4,25 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Targeting;
 using Server.Misc;
+using Server.Engines.CannedEvil;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "the remains of Meraktus" )]
-	
-	public class Meraktus : BaseCreature
-    {
-        public static Type[] UniqueArtifacts { get { return m_UniqueArtifacts; } }
+	[CorpseName( "a minotaur corpse" )]
+	public class Meraktus : BaseChampion
+	{
+		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Pain; } }
 
-        private static Type[] m_UniqueArtifacts = new Type[]
-		{
-			// Unique Artifacts
-			typeof( Subdue )
-		};
+		public override Type[] UniqueList{ get{ return new Type[] { typeof( Subdue ) }; } }
+		public override Type[] SharedList{ get{ return new Type[] { }; } }
+		public override Type[] DecorativeList{ get{ return new Type[] { typeof( ArtifactLargeVase ),
+										typeof( ArtifactVase ),
+										typeof( MinotaurStatueDeed ) }; } }
 
-        public static Type[] DecorationArtifacts { get { return m_DecorationArtifacts; } }
+		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { }; } }
 
-        private static Type[] m_DecorationArtifacts = new Type[]
-		{
-			// Decoration Artifacts
-            typeof( MinotaurStatuette ),
-            typeof( DecorationLargeVase ),
-            typeof( DecorationSmallVase )
-		};
+		public override bool NoGoodies{ get{ return true; } }
+
 
 		public override WeaponAbility GetWeaponAbility()
 		{
@@ -35,21 +30,19 @@ namespace Server.Mobiles
 		}
 
 		[Constructable]
-		public Meraktus() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
+		public Meraktus() : base( AIType.AI_Melee )
 		{
 			Name = "Meraktus";
 			Title = "the Tormented";
-			Body = 263;
-			BaseSoundID = 680;
-			Hue = 0x835;
-
+			Body = 262;
+		   
 			SetStr( 1419, 1438 );
 			SetDex( 309, 413 );
 			SetInt( 129, 131 );
 
 			SetHits( 4100, 4200 );
 
-			SetDamage( 3, 5 );
+			SetDamage( 16, 30 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -119,113 +112,7 @@ namespace Server.Mobiles
 				
 			if ( Utility.RandomDouble() < 0.025 )
                 c.DropItem(new CrimsonCincture());
-
-            if (Utility.RandomDouble() < 0.30)
-            {
-                double random = Utility.Random(29);
-
-                if (random <= 4)
-                    GiveUniqueArtifact();
-                else if (random >= 15 && random <= 29)
-                    GiveDecorationArtifact();
-            }
         }
-
-        #region Unique Artifact
-        public void GiveUniqueArtifact()
-        {
-            List<Mobile> toGive = new List<Mobile>();
-            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
-
-            for (int i = rights.Count - 1; i >= 0; --i)
-            {
-                DamageStore ds = rights[i];
-
-                if (ds.m_HasRight)
-                    toGive.Add(ds.m_Mobile);
-            }
-
-            if (toGive.Count == 0)
-                return;
-
-            // Randomize
-            for (int i = 0; i < toGive.Count; ++i)
-            {
-                int rand = Utility.Random(toGive.Count);
-                Mobile hold = toGive[i];
-                toGive[i] = toGive[rand];
-                toGive[rand] = hold;
-            }
-
-            for (int i = 0; i < 1; ++i)
-            {
-                Mobile m = toGive[i % toGive.Count];
-                GiveUniqueArtifactTo(m);
-            }
-        }
-
-        public static void GiveUniqueArtifactTo(Mobile m)
-        {
-            Item item = Loot.Construct(m_UniqueArtifacts);
-
-            if (item == null || m == null)	//sanity
-                return;
-
-            // TODO: Confirm messages
-            if (m.AddToBackpack(item))
-                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-            else
-                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
-        }
-        #endregion
-
-        #region Decoration Artifact
-        public void GiveDecorationArtifact()
-        {
-            List<Mobile> toGive = new List<Mobile>();
-            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
-
-            for (int i = rights.Count - 1; i >= 0; --i)
-            {
-                DamageStore ds = rights[i];
-
-                if (ds.m_HasRight)
-                    toGive.Add(ds.m_Mobile);
-            }
-
-            if (toGive.Count == 0)
-                return;
-
-            // Randomize
-            for (int i = 0; i < toGive.Count; ++i)
-            {
-                int rand = Utility.Random(toGive.Count);
-                Mobile hold = toGive[i];
-                toGive[i] = toGive[rand];
-                toGive[rand] = hold;
-            }
-
-            for (int i = 0; i < 1; ++i)
-            {
-                Mobile m = toGive[i % toGive.Count];
-                GiveDecorationArtifactTo(m);
-            }
-        }
-
-        public static void GiveDecorationArtifactTo(Mobile m)
-        {
-            Item item = Loot.Construct(m_DecorationArtifacts);
-
-            if (item == null || m == null)	//sanity
-                return;
-
-            // TODO: Confirm messages
-            if (m.AddToBackpack(item))
-                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-            else
-                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
-        }
-        #endregion
 
 		public override void GenerateLoot()
 		{

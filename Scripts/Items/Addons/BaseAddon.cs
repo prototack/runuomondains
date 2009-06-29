@@ -70,7 +70,7 @@ namespace Server.Items
 
 		public virtual bool RetainDeedHue{ get{ return false; } }
 
-		public void OnChop( Mobile from )
+		public virtual void OnChop( Mobile from )
 		{
 			BaseHouse house = BaseHouse.FindHouseAt( this );
 
@@ -137,7 +137,7 @@ namespace Server.Items
 			return ( CouldFit( p, map, null, ref h ) == AddonFitResult.Valid );
 		}
 
-		public AddonFitResult CouldFit( IPoint3D p, Map map, Mobile from, ref BaseHouse house )
+		public virtual AddonFitResult CouldFit( IPoint3D p, Map map, Mobile from, ref BaseHouse house )
 		{
 			if ( Deleted )
 				return AddonFitResult.Blocked;
