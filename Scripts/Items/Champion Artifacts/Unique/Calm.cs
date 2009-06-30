@@ -14,7 +14,9 @@ namespace Server.Items
 
 		[Constructable]
 		public Calm()
-		{
+        {
+            ItemID = 0x143F;
+
 			Attributes.SpellChanneling = 1;
 			Attributes.WeaponSpeed = 20;
 			Attributes.WeaponDamage = 50;

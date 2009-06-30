@@ -11,16 +11,37 @@ namespace Server.Mobiles
 	{
 		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Power; } }
 
-		public override Type[] UniqueList{ get{ return new Type[] { typeof( CrownOfTalKeesh ) }; } }
-		public override Type[] SharedList{ get{ return  new Type[] { 	typeof( TheMostKnowledgePerson ),
-										typeof( BraveKnightOfTheBritannia ),
-										typeof( LieutenantOfTheBritannianRoyalGuard ) }; } }
-		public override Type[] DecorativeList{ get{ return new Type[] { typeof( LavaTile ),
-										typeof( MonsterStatuette ),
-										typeof( MonsterStatuette ) }; } }
+        public override Type[] UniqueList
+        {
+            get { return new Type[] { typeof(CrownOfTalKeesh) }; }
+        }
 
-		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { 	MonsterStatuetteType.OphidianArchMage,
-														MonsterStatuetteType.OphidianWarrior }; } }
+        public override Type[] SharedList
+        {
+            get
+            {
+                return new Type[] { typeof( TheMostKnowledgePerson ),
+									typeof( BraveKnightOfTheBritannia ),
+									typeof( LieutenantOfTheBritannianRoyalGuard ) };
+            }
+        }
+
+        public override Type[] DecorativeList
+        {
+            get
+            {
+                return new Type[] { typeof( LavaTile ),
+                                    typeof( MonsterStatuette ) };
+            }
+        }
+
+        public override MonsterStatuetteType[] StatueTypes
+        {
+            get
+            {
+                return new MonsterStatuetteType[] { MonsterStatuetteType.OphidianArchMage, MonsterStatuetteType.OphidianWarrior, MonsterStatuetteType.OphidianMage, MonsterStatuetteType.OphidianKnight,};
+            }
+        }
 
 		[Constructable]
 		public Rikktor() : base( AIType.AI_Melee )

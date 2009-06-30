@@ -8,7 +8,8 @@ namespace Server.Items
 	{
 		[Constructable]
 		public LavaTile() : base( 0x12EE )
-		{
+        {
+            ItemID = Utility.RandomList(0x12EE, 0x343B, 0x3447, 0x344E, 0x3462, 0x3468);
 		}
 
 		public LavaTile( Serial serial ) : base( serial )
