@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class DjinnisRing : SilverRing
+	public class NewDjinnisRing : SilverRing
 	{
 		public override int LabelNumber{ get{ return 1094927; } } // Djinni's Ring [Replica]
 
@@ -11,14 +11,14 @@ namespace Server.Items
 		public override int InitMaxHits{ get{ return 150; } }
 
 		[Constructable]
-		public DjinnisRing()
+		public NewDjinnisRing()
 		{
 			Attributes.BonusInt = 5;
 			Attributes.SpellDamage = 10;
 			Attributes.CastSpeed = 2;
 		}
 
-		public DjinnisRing( Serial serial ) : base( serial )
+		public NewDjinnisRing( Serial serial ) : base( serial )
 		{
 		}
 		

@@ -13,8 +13,8 @@ namespace Server.Mobiles
 		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Enlightenment; } }
 
 		public override Type[] UniqueList{ get{ return new Type[] { typeof( OrcChieftainHelm ) }; } }
-		public override Type[] SharedList{ get{ return new Type[] { 	typeof( RoyalGuardSurvivalKnife ),
-										typeof( DjinnisRing ),
+		public override Type[] SharedList{ get{ return new Type[] { 	typeof( NewRoyalGuardSurvivalKnife ),
+										typeof( NewDjinnisRing ),
 										typeof( LieutenantOfTheBritannianRoyalGuard ),
 										typeof( SamaritanRobe ),
 										typeof( DetectiveBoots ),
