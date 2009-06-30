@@ -14,15 +14,33 @@ namespace Server.Mobiles
 	{
 		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Pain; } }
 
-		public override Type[] UniqueList{ get{ return new Type[] { }; } }
-		public override Type[] SharedList{ get{ return new Type[] { 	typeof( ANecromancerShroud ),
+        public override Type[] UniqueList
+        {
+            get { return new Type[] { }; }
+        }
+
+        public override Type[] SharedList
+        {
+            get
+            {
+                return new Type[] { 	typeof( ANecromancerShroud ),
 										typeof( LieutenantOfTheBritannianRoyalGuard ),
 										typeof( OblivionsNeedle ),
-										typeof( TheRobeOfBritanniaAri ) }; } }
-		public override Type[] DecorativeList{ get{ return new Type[] { typeof( MonsterStatuette ) }; } }
+										typeof( TheRobeOfBritanniaAri ) };
+            }
+        }
 
-		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { 	MonsterStatuetteType.PlagueBeast,
-														MonsterStatuetteType.RedDeath }; } }
+        public override Type[] DecorativeList
+        {
+            get
+            {
+                return new Type[] { typeof( MonsterStatuette ),
+                                    typeof(Pier),
+                                    typeof(WaterTile)};
+            }
+        }
+
+		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { 	MonsterStatuetteType.PlagueBeast, MonsterStatuetteType.RedDeath }; } }
 
 
         [Constructable]

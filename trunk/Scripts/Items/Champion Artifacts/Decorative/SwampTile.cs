@@ -8,7 +8,8 @@ namespace Server.Items
 	{
 		[Constructable]
 		public SwampTile() : base( 0x320D )
-		{
+        {
+            ItemID = Utility.RandomList(0x320D, 0x3236, 0x3241, 0x320D, 0x3226, 0x3213, 0x3220);
 		}
 
 		public SwampTile( Serial serial ) : base( serial )

@@ -14,7 +14,9 @@ namespace Server.Items
 
 		[Constructable]
 		public Pacify()
-		{
+        {
+            ItemID = 0x26BE;
+
 			Attributes.SpellChanneling = 1;
 			Attributes.AttackChance = 10;
 			Attributes.WeaponSpeed = 20;

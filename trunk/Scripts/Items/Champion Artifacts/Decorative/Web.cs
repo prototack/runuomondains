@@ -7,7 +7,8 @@ namespace Server.Items
 	{
 		[Constructable]
 		public Web() : base( 0x10DD )
-		{
+        {
+            ItemID = Utility.RandomList(0x10DD, 0x10D8);
 		}
 
 		public Web( Serial serial ) : base( serial )

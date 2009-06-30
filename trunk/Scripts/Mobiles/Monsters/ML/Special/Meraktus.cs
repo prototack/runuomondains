@@ -11,18 +11,37 @@ namespace Server.Mobiles
 	[CorpseName( "a minotaur corpse" )]
 	public class Meraktus : BaseChampion
 	{
-		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Pain; } }
+        public override ChampionSkullType SkullType
+        {
+            get { return ChampionSkullType.Pain; }
+        }
 
-		public override Type[] UniqueList{ get{ return new Type[] { typeof( Subdue ) }; } }
-		public override Type[] SharedList{ get{ return new Type[] { }; } }
-		public override Type[] DecorativeList{ get{ return new Type[] { typeof( ArtifactLargeVase ),
-										typeof( ArtifactVase ),
-										typeof( MinotaurStatueDeed ) }; } }
+        public override Type[] UniqueList
+        {
+            get { return new Type[] { typeof(Subdue) }; }
+        }
 
-		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { }; } }
+        public override Type[] SharedList
+        {
+            get { return new Type[] { }; }
+        }
+
+        public override Type[] DecorativeList
+        {
+            get
+            {
+                return new Type[] { typeof( ArtifactLargeVase ),
+									typeof( ArtifactVase ),
+									typeof( MinotaurStatueDeed ) };
+            }
+        }
+
+        public override MonsterStatuetteType[] StatueTypes
+        {
+            get { return new MonsterStatuetteType[] { MonsterStatuetteType.Minotaur }; }
+        }
 
 		public override bool NoGoodies{ get{ return true; } }
-
 
 		public override WeaponAbility GetWeaponAbility()
 		{

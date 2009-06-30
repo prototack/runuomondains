@@ -8,7 +8,8 @@ namespace Server.Items
 	{
 		[Constructable]
 		public WaterTile() : base( 0x346E )
-		{
+        {
+            ItemID = Utility.RandomList(0x346E, 0x3486, 0x348B, 0x3226, 0x3213, 0x3220);
 		}
 
 		public WaterTile( Serial serial ) : base( serial )
