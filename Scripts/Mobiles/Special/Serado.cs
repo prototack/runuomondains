@@ -13,7 +13,7 @@ namespace Server.Mobiles
 		public override Type[] UniqueList{ get{ return new Type[] { typeof( Pacify ) }; } }
 		public override Type[] SharedList{ get{ return new Type[] { 	typeof( BraveKnightOfTheBritannia ),
 										typeof( DetectiveBoots ),
-										typeof( EmbroideredOakLeafCloak ),
+										typeof( NewEmbroideredOakLeafCloak ),
 										typeof( LieutenantOfTheBritannianRoyalGuard ) }; } }
 		public override Type[] DecorativeList{ get{ return new Type[] { typeof( Futon ), typeof( SwampTile ) }; } }
 
