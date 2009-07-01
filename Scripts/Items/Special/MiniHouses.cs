@@ -43,7 +43,7 @@ namespace Server.Items
 
             MiniHouseInfo info = MiniHouseInfo.GetInfo(m_Type);
 
-             if (m_Type == MiniHouseType.GingerBreadHouse)
+            if (m_Type == MiniHouseType.GingerBreadHouse)
             {
                 AddComponent(new AddonComponent(info.Graphics[0]), 0, 0, 0);
                 AddComponent(new AddonComponent(info.Graphics[1]), 1, 0, 0);
@@ -161,7 +161,6 @@ namespace Server.Items
         public MiniHouseDeed(MiniHouseType type)
         {
             m_Type = (type == MiniHouseType.Random) ? RandomMiniHouseDeed() : type;
-
             Weight = 1.0;
             LootType = LootType.Blessed;
         }
@@ -292,6 +291,7 @@ namespace Server.Items
 				/* Malas Mountain Pass               */ new MiniHouseInfo( 1062692, 0x2316, 0x2315, 0x2314, 0x2313 ),
 				/* Church At Night                   */ new MiniHouseInfo( 1072215, 0x2318, 0x2317, 0x2319, 0x1 ),
 				/* Gingerbread House                 */ new MiniHouseInfo( 1077395, 0x2BE5, 0x2BE6, 0x2BE7 )
+
 			};
 
         public static MiniHouseInfo GetInfo(MiniHouseType type)

@@ -159,6 +159,7 @@ namespace Server.Items
         public virtual int InitMaxHits { get { return 0; } }
 
         public virtual bool CanFortify { get { return true; } }
+
         #region Mondain's Legacy Sets
         public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
         public override int FireResistance { get { return m_AosWeaponAttributes.ResistFireBonus; } }

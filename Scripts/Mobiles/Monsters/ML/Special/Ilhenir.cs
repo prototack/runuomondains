@@ -1,47 +1,41 @@
 using System;
 using System.Collections;
 using Server;
-using Server.Engines.CannedEvil;
 using Server.Items;
 using Server.Spells;
 using Server.Network;
 using System.Collections.Generic;
+using Server.Engines.CannedEvil;
 
 namespace Server.Mobiles
 {
-	[CorpseName("corpse of Ilhenir")]
-	public class Ilhenir : BaseChampion
-	{
-		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Pain; } }
+    [CorpseName("a corpse of Ilhenir")]
+    public class Ilhenir : BaseChampion
+    {
+        public override ChampionSkullType SkullType { get { return ChampionSkullType.Power; } }
 
-        public override Type[] UniqueList
-        {
-            get { return new Type[] { }; }
-        }
+        public static Type[] SharedArtifacts { get { return m_SharedArtifacts; } }
 
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[] { 	typeof( ANecromancerShroud ),
-										typeof( LieutenantOfTheBritannianRoyalGuard ),
-										typeof( OblivionsNeedle ),
-										typeof( TheRobeOfBritanniaAri ) };
-            }
-        }
+        private static Type[] m_SharedArtifacts = new Type[]
+		{
+			// Shared Artifacts
+			typeof( ANecromancerShroud ),
+			typeof( LieutenantOfTheBritannianRoyalGuard ),
+			typeof( NewOblivionsNeedle ),
+			typeof( TheRobeOfBritanniaAri )
+		};
 
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[] { typeof( MonsterStatuette ),
-                                    typeof(Pier),
-                                    typeof(WaterTile)};
-            }
-        }
+        public static Type[] DecorationArtifacts { get { return m_DecorationArtifacts; } }
 
-		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { 	MonsterStatuetteType.PlagueBeast, MonsterStatuetteType.RedDeath }; } }
-
+        private static Type[] m_DecorationArtifacts = new Type[]
+		{
+			// Decoration Artifacts
+            typeof( RedDeathStatuette ),
+			typeof( PlagueBeastStatuette ),
+            typeof( Pier ),
+            typeof( SmallRockWater ),
+            typeof( SmallRocksWater )
+		};
 
         [Constructable]
         public Ilhenir()
@@ -49,15 +43,17 @@ namespace Server.Mobiles
         {
 			Name = "Ilhenir";
 			Title = "the Stained";
-			Body = 259;
-			
+			Body = 0x103;
+
+            BaseSoundID = 589;
+
 			SetStr( 1105, 1350 );
 			SetDex( 82, 160 );
 			SetInt( 505, 750 );
 
 			SetHits( 9000 );
 
-			SetDamage(21, 28);
+			SetDamage(4, 6);
 
 			SetDamageType(ResistanceType.Physical, 60);
 			SetDamageType(ResistanceType.Fire, 20);
@@ -146,9 +142,114 @@ namespace Server.Mobiles
                     case 4: c.DropItem(new GrizzleVambraces()); break;
                 }
             }
+
+            if (Utility.RandomDouble() < 0.30)
+            {
+                double random = Utility.Random(29);
+
+                if (random >= 5 && random <= 14)
+                    GiveSharedArtifact();
+                else if (random >= 15 && random <= 29)
+                    GiveDecorationArtifact();
+            }
         }
 
- 
+        #region Shared Artifact
+        public void GiveSharedArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveSharedArtifactTo(m);
+            }
+        }
+
+        public static void GiveSharedArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_SharedArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
+
+        #region Decoration Artifact
+        public void GiveDecorationArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveDecorationArtifactTo(m);
+            }
+        }
+
+        public static void GiveDecorationArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_DecorationArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
+
 		public override bool Unprovokable { get { return true; } }
 		public override bool Uncalmable { get { return true; } }
 		public override Poison PoisonImmune { get { return Poison.Lethal; } }
@@ -199,22 +300,24 @@ namespace Server.Mobiles
 			return 0x584;
 		}
 
-		public Ilhenir(Serial serial)
-			: base(serial)
-		{
-		}
+        public Ilhenir(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write((int)0);
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
 
         private static Hashtable m_Table;
 
