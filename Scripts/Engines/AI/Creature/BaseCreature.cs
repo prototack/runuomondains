@@ -4490,12 +4490,6 @@ namespace Server.Mobiles
                             VirtueArtifactSystem.HandleKill(this, ds.m_Mobile);
                         }
 
-                        //if (!givenToTKill)
-                        //{
-                        //    givenToTKill = true;
-                        //    VirtueArtifactSystem.HandleKill(this, ds.m_Mobile);
-                        //}
-
                         if (givenQuestKill)
                             continue;
 

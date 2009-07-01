@@ -4070,11 +4070,11 @@ namespace Server.Mobiles
             public int Harrower { get { return m_Harrower; } set { m_Harrower = value; } }
 
             #region Mondain's Legacy Peerless Champion
-            [CommandProperty( AccessLevel.GameMaster )]
-            public int TwistedGlade { get { return GetValue( ChampionSpawnType.TwistedGlade ); } set { SetValue( ChampionSpawnType.TwistedGlade, value ); } }
+            [CommandProperty(AccessLevel.GameMaster)]
+            public int TwistedGlade { get { return GetValue(ChampionSpawnType.TwistedGlade); } set { SetValue(ChampionSpawnType.TwistedGlade, value); } }
 
             [CommandProperty(AccessLevel.GameMaster)]
-            public int Pestilence { get { return GetValue( ChampionSpawnType.Pestilence ); } set { SetValue( ChampionSpawnType.Pestilence, value ); } }
+            public int Pestilence { get { return GetValue(ChampionSpawnType.Pestilence); } set { SetValue(ChampionSpawnType.Pestilence, value); } }
             #endregion
 
             public ChampionTitleInfo()
