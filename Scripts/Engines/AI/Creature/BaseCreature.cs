@@ -4487,7 +4487,14 @@ namespace Server.Mobiles
                         {
                             givenToTKill = true;
                             TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
+                            VirtueArtifactSystem.HandleKill(this, ds.m_Mobile);
                         }
+
+                        //if (!givenToTKill)
+                        //{
+                        //    givenToTKill = true;
+                        //    VirtueArtifactSystem.HandleKill(this, ds.m_Mobile);
+                        //}
 
                         if (givenQuestKill)
                             continue;

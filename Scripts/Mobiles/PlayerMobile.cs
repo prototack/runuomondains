@@ -217,6 +217,14 @@ namespace Server.Mobiles
             set { m_ToTTotalMonsterFame = value; }
         }
 
+        private int m_VASTotalMonsterFame;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int VASTotalMonsterFame
+        {
+            get { return m_VASTotalMonsterFame; }
+            set { m_VASTotalMonsterFame = value; }
+        }
         #endregion
 
         #region PlayerFlags
@@ -2503,6 +2511,11 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 29:
+                    {
+                        m_VASTotalMonsterFame = reader.ReadInt();
+                        goto case 28;
+                    }
                 case 28:
                     {
                         m_AutoStabled = reader.ReadStrongMobileList();
@@ -2835,7 +2848,9 @@ namespace Server.Mobiles
 
             base.Serialize(writer);
 
-            writer.Write((int)28); // version
+            writer.Write((int)29); // version
+
+            writer.Write(m_VASTotalMonsterFame);	//This ain't going to be a small #.
 
             writer.Write(m_AutoStabled, true);
 

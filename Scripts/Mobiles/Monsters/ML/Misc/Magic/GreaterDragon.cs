@@ -21,7 +21,7 @@ namespace Server.Mobiles
 			SetHits( 1000, 2000 );
             SetStam( 120, 135 );
 
-			SetDamage( 5, 6 );
+			SetDamage( 24, 33 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -69,7 +69,7 @@ namespace Server.Mobiles
 		public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame{ get{ return true; } }
 
-        public override WeaponAbility GetWeaponAbility()
+		public override WeaponAbility GetWeaponAbility()
 		{
 			return WeaponAbility.BleedAttack;
 		}
@@ -81,13 +81,20 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			writer.Write( (int) 0 );
+			writer.Write( (int) 1 );
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 			int version = reader.ReadInt();
+
+			if( version == 0 )
+			{
+				Server.SkillHandlers.AnimalTaming.ScaleStats( this, 0.50 );
+				Server.SkillHandlers.AnimalTaming.ScaleSkills( this, 0.80, 0.90 ); // 90% * 80% = 72% of original skills trainable to 90%
+				Skills[25].Base = Skills[25].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+			}
 		}
 	}
 }
