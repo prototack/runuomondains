@@ -211,13 +211,13 @@ namespace Server.Items
 
 			Layer = layer;
 
+			m_HitPoints = m_MaxHitPoints = Utility.RandomMinMax( InitMinHits, InitMaxHits );
+
 			#region Mondain's Legacy Sets
 			m_SetAttributes = new AosAttributes( this );
 			m_SetSkillBonuses = new AosSkillBonuses( this );
 			#endregion
-
-			m_HitPoints = m_MaxHitPoints = Utility.RandomMinMax( InitMinHits, InitMaxHits );
-		}
+        }
 
         #region Personal Bless Deed
         public override bool CanEquip(Mobile from)
@@ -407,14 +407,14 @@ namespace Server.Items
 				list.Add( 1060486, prop.ToString() ); // swing speed increase ~1_val~%
 
 			base.AddResistanceProperties( list );
-							
+
 			#region Sets
 			if ( IsSetItem && !m_SetEquipped )
 			{
-				list.Add( 1072378 ); // <br>Only when full set is present:				
+				list.Add( 1072378 ); // <br>Only when full set is present:
 				SetHelper.GetSetProperties( list, this );
 			}
-			#endregion		
+			#endregion
 			if ( m_HitPoints >= 0 && m_MaxHitPoints > 0 )
 				list.Add( 1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints ); // durability ~1_val~ / ~2_val~
 		}

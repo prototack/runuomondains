@@ -9,12 +9,13 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class SoulStone : Item, ISecurable
+    public class SoulStone : Item, Engines.VeteranRewards.IRewardItem, ISecurable
 	{
 		public override int LabelNumber { get { return 1030899; } } // soulstone
 
 		private int m_ActiveItemID;
         private int m_InactiveItemID;
+
         private bool m_IsRewardItem;
 
 		private SecureLevel m_Level;

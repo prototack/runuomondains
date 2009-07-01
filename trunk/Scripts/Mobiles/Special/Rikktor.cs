@@ -4,6 +4,7 @@ using Server;
 using Server.Items;
 using Server.Spells;
 using Server.Engines.CannedEvil;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -11,37 +12,35 @@ namespace Server.Mobiles
 	{
 		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Power; } }
 
-        public override Type[] UniqueList
-        {
-            get { return new Type[] { typeof(CrownOfTalKeesh) }; }
-        }
+        public static Type[] UniqueArtifacts { get { return m_UniqueArtifacts; } }
 
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[] { typeof( TheMostKnowledgePerson ),
-									typeof( BraveKnightOfTheBritannia ),
-									typeof( LieutenantOfTheBritannianRoyalGuard ) };
-            }
-        }
+        private static Type[] m_UniqueArtifacts = new Type[]
+		{
+			// Unique Artifacts
+			typeof( CrownOfTalKeesh )
+		};
 
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[] { typeof( LavaTile ),
-                                    typeof( MonsterStatuette ) };
-            }
-        }
+        public static Type[] SharedArtifacts { get { return m_SharedArtifacts; } }
 
-        public override MonsterStatuetteType[] StatueTypes
-        {
-            get
-            {
-                return new MonsterStatuetteType[] { MonsterStatuetteType.OphidianArchMage, MonsterStatuetteType.OphidianWarrior, MonsterStatuetteType.OphidianMage, MonsterStatuetteType.OphidianKnight,};
-            }
-        }
+        private static Type[] m_SharedArtifacts = new Type[]
+		{
+			// Shared Artifacts
+			typeof( LieutenantOfTheBritannianRoyalGuard ),
+			typeof( TheMostKnowledgePerson ),
+			typeof( BraveKnightOfTheBritannia )
+		};
+
+        public static Type[] DecorationArtifacts { get { return m_DecorationArtifacts; } }
+
+        private static Type[] m_DecorationArtifacts = new Type[]
+		{
+			// Decoration Artifacts
+            typeof( OphidianWarriorStatuette ),
+            typeof( OphidianKnightStatuette ),
+            typeof( OphidianArchMageStatuette ),
+            typeof( OphidianMageStatuette ),
+			typeof( LavaTile )
+		};
 
 		[Constructable]
 		public Rikktor() : base( AIType.AI_Melee )
@@ -161,6 +160,167 @@ namespace Server.Mobiles
 		{
 			return 0x2CC;
 		}
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.30)
+            {
+                double random = Utility.Random(29);
+
+                if (random <= 4)
+                    GiveUniqueArtifact();
+                else if (random >= 5 && random <= 14)
+                    GiveSharedArtifact();
+                else
+                    GiveDecorationArtifact();
+            }
+        }
+
+        #region Unique Artifact
+        public void GiveUniqueArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveUniqueArtifactTo(m);
+            }
+        }
+
+        public static void GiveUniqueArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_UniqueArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
+
+        #region Shared Artifact
+        public void GiveSharedArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveSharedArtifactTo(m);
+            }
+        }
+
+        public static void GiveSharedArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_SharedArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
+
+        #region Decoration Artifact
+        public void GiveDecorationArtifact()
+        {
+            List<Mobile> toGive = new List<Mobile>();
+            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+
+            for (int i = rights.Count - 1; i >= 0; --i)
+            {
+                DamageStore ds = rights[i];
+
+                if (ds.m_HasRight)
+                    toGive.Add(ds.m_Mobile);
+            }
+
+            if (toGive.Count == 0)
+                return;
+
+            // Randomize
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < 1; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+                GiveDecorationArtifactTo(m);
+            }
+        }
+
+        public static void GiveDecorationArtifactTo(Mobile m)
+        {
+            Item item = Loot.Construct(m_DecorationArtifacts);
+
+            if (item == null || m == null)	//sanity
+                return;
+
+            // TODO: Confirm messages
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward for valor in combating the fallen beast, has been placed at your feet.");
+        }
+        #endregion
 
 		public Rikktor( Serial serial ) : base( serial )
 		{

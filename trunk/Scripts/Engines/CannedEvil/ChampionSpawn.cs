@@ -39,8 +39,6 @@ namespace Server.Engines.CannedEvil
 		private bool m_HasBeenAdvanced;
 		private bool m_ConfinedRoaming;
 
-		private Dictionary<Mobile, int> m_DamageEntries;
-
 		[CommandProperty( AccessLevel.GameMaster )]
 		public bool ConfinedRoaming
 		{
@@ -71,8 +69,6 @@ namespace Server.Engines.CannedEvil
 
 			m_ExpireDelay = TimeSpan.FromMinutes( 10.0 );
 			m_RestartDelay = TimeSpan.FromMinutes( 5.0 );
-
-			m_DamageEntries = new Dictionary<Mobile, int>();
 
 			Timer.DelayCall( TimeSpan.Zero, new TimerCallback( SetInitialSpawnArea ) );
 		}
@@ -396,14 +392,7 @@ namespace Server.Engines.CannedEvil
 			{
 				if( m_Champion.Deleted )
 				{
-					RegisterDamageTo( m_Champion );
-
-					if( m_Champion is BaseChampion )
-						AwardArtifact( ((BaseChampion)m_Champion).GetArtifact() );
-
-					m_DamageEntries.Clear();
-
-					if( m_Platform != null )
+					if ( m_Platform != null )
 						m_Platform.Hue = 0x497;
 
 					if( m_Altar != null )
@@ -437,8 +426,6 @@ namespace Server.Engines.CannedEvil
 						++m_Kills;
 
 						Mobile killer = m.FindMostRecentDamager( false );
-
-						RegisterDamageTo( m );
 
 						if( killer is BaseCreature )
 							killer = ((BaseCreature)killer).GetMaster();
@@ -935,103 +922,11 @@ namespace Server.Engines.CannedEvil
 		{
 		}
 
-		public virtual void RegisterDamageTo( Mobile m )
-		{
-			if( m == null )
-				return;
-
-			foreach( DamageEntry de in m.DamageEntries )
-			{
-				if( de.HasExpired )
-					continue;
-
-				Mobile damager = de.Damager;
-
-				Mobile master = damager.GetDamageMaster( m );
-
-				if( master != null )
-					damager = master;
-
-				RegisterDamage( damager, de.DamageGiven );
-			}
-		}
-
-		public void RegisterDamage( Mobile from, int amount )
-		{
-			if( from == null || !from.Player )
-				return;
-
-			if( m_DamageEntries.ContainsKey( from ) )
-				m_DamageEntries[from] += amount;
-			else
-				m_DamageEntries.Add( from, amount );
-		}
-
-		public void AwardArtifact( Item artifact )
-		{
-			if (artifact == null )
-				return;
-
-			int totalDamage = 0;
-
-			Dictionary<Mobile, int> validEntries = new Dictionary<Mobile, int>();
-
-			foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
-			{
-				if( IsEligable( kvp.Key, artifact ) )
-				{
-					validEntries.Add( kvp.Key, kvp.Value );
-					totalDamage += kvp.Value;
-				}
-			}
-
-			int randomDamage = Utility.RandomMinMax( 1, totalDamage );
-
-			totalDamage = 0;
-
-			foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
-			{
-				totalDamage += kvp.Value;
-
-				if( totalDamage > randomDamage )
-				{
-					GiveArtifact( kvp.Key, artifact );
-					break;
-				}
-			}
-		}
-
-		public void GiveArtifact( Mobile to, Item artifact )
-		{
-			if ( to == null || artifact == null )
-				return;
-
-			Container pack = to.Backpack;
-
-			if ( pack == null || !pack.TryDropItem( to, artifact, false ) )
-				artifact.Delete();
-			else
-				to.SendLocalizedMessage( 1062317 ); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-		}
-
-		public bool IsEligable( Mobile m, Item Artifact )
-		{
-			//return true;
-			return m.Player && m.Alive && m.Region != null && m.Region == m_Region && m.Backpack != null && m.Backpack.CheckHold( m, Artifact, false );
-		}
-
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int)5 ); // version
-
-			writer.Write( m_DamageEntries.Count );
-			foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
-			{
-				writer.Write( kvp.Key );
-				writer.Write( kvp.Value );
-			}
+			writer.Write( (int)4 ); // version
 
 			writer.Write( m_ConfinedRoaming );
 			writer.WriteItem<IdolOfTheChampion>( m_Idol );
@@ -1065,26 +960,10 @@ namespace Server.Engines.CannedEvil
 		{
 			base.Deserialize( reader );
 
-			m_DamageEntries = new Dictionary<Mobile, int>();
-
 			int version = reader.ReadInt();
 
 			switch( version )
 			{
-				case 5:
-				{
-					int entries = reader.ReadInt();
-					Mobile m;
-					int damage;
-					for( int i = 0; i < entries; ++i )
-					{
-						m = reader.ReadMobile();
-						damage = reader.ReadInt();
-						m_DamageEntries.Add( m, damage );
-					}
-
-					goto case 4;
-				}
 				case 4:
 				{
 					m_ConfinedRoaming = reader.ReadBool();

@@ -54,7 +54,7 @@ namespace Server.Mobiles
         #endregion
 
         #region Scroll of Alacrity
-        AcceleratedSkill = 0x00080000
+        AcceleratedSkill = 0x00080000,
         #endregion
     }
 
