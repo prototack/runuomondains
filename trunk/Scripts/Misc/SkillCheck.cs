@@ -198,28 +198,28 @@ namespace Server.Misc
 			if ( skill.SkillName == SkillName.Focus && from is BaseCreature )
 				return;
 
-			if ( skill.Base < skill.Cap && skill.Lock == SkillLock.Up )
-			{
-				int toGain = 1;
+            if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
+            {
+                int toGain = 1;
 
-				if ( skill.Base <= 10.0 )
-					toGain = Utility.Random( 4 ) + 1;
+                if (skill.Base <= 10.0)
+                    toGain = Utility.Random(4) + 1;
 
-				Skills skills = from.Skills;
+                Skills skills = from.Skills;
 
-				if ( !from.Player && ( skills.Total / skills.Cap ) >= Utility.RandomDouble() )//( skills.Total >= skills.Cap )
-				{
-					for ( int i = 0; i < skills.Length; ++i )
-					{
-						Skill toLower = skills[i];
+                if ((skills.Total / skills.Cap) >= Utility.RandomDouble())//( skills.Total >= skills.Cap )
+                {
+                    for (int i = 0; i < skills.Length; ++i)
+                    {
+                        Skill toLower = skills[i];
 
-						if ( toLower != skill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain )
-						{
-							toLower.BaseFixedPoint -= toGain;
-							break;
-						}
-					}
-				}
+                        if (toLower != skill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain)
+                        {
+                            toLower.BaseFixedPoint -= toGain;
+                            break;
+                        }
+                    }
+                }
 
                 #region Mondain's Legacy
                 if (from is PlayerMobile)
@@ -235,11 +235,11 @@ namespace Server.Misc
                         toGain *= Utility.RandomMinMax(2, 5);
                 #endregion
 
-				if ( !from.Player || (skills.Total + toGain) <= skills.Cap )
-				{
-					skill.BaseFixedPoint += toGain;
-				}
-			}
+                if ((skills.Total + toGain) <= skills.Cap)
+                {
+                    skill.BaseFixedPoint += toGain;
+                }
+            }
 				
 			#region Mondain's Legacy
 			if ( from is PlayerMobile )
