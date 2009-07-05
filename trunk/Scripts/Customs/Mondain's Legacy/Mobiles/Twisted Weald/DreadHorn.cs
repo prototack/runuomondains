@@ -48,8 +48,11 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Magery, 110.0 );
 			SetSkill( SkillName.EvalInt, 110.0 );
 			SetSkill( SkillName.Meditation, 110.0 );
-			
-			// TODO 1-3 spellweaving scroll
+
+            Fame = 15000;  //Guessing here
+            Karma = -15000;  //Guessing here
+
+            PackArcaneScroll(1, 3);
 			
 			PackResources( 8 );
 			PackTalismans( 5 );	

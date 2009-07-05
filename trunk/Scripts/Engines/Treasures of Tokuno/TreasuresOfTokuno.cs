@@ -411,7 +411,17 @@ namespace Server.Gumps
 				new PigmentsTileButtonInfo( PigmentType.BerserkerRed ),
 				new PigmentsTileButtonInfo( PigmentType.NoxGreen ),
 				new PigmentsTileButtonInfo( PigmentType.RumRed ),
-				new PigmentsTileButtonInfo( PigmentType.FireOrange )
+				new PigmentsTileButtonInfo( PigmentType.FireOrange ),
+				new PigmentsTileButtonInfo( PigmentType.FreshPeach ),
+				new PigmentsTileButtonInfo( PigmentType.Silver ),
+				new PigmentsTileButtonInfo( PigmentType.DeepBrown ),
+				new PigmentsTileButtonInfo( PigmentType.BurntBrown ),
+				new PigmentsTileButtonInfo( PigmentType.LightGreen ),
+				new PigmentsTileButtonInfo( PigmentType.Rose ),
+				new PigmentsTileButtonInfo( PigmentType.PaleBlue ),
+				new PigmentsTileButtonInfo( PigmentType.NobleGold ),
+				new PigmentsTileButtonInfo( PigmentType.PaleOrange ),
+				new PigmentsTileButtonInfo( PigmentType.ChaosBlue )
 			};
 
 		public static PigmentsTileButtonInfo[] PigmentRewards { get { return m_PigmentRewards; } }

@@ -5,6 +5,7 @@ using Server;
 using Server.Gumps;
 using Server.Network;
 using Server.Mobiles;
+using Server.Engines.Quests;
 
 namespace Server.Items
 {
@@ -155,13 +156,40 @@ namespace Server.Items
 
         public void Use(Mobile from, bool firstStage)
         {
+            PlayerMobile pm = from as PlayerMobile;
+
             if (Deleted)
                 return;
+
+            #region Mondain's Legacy
+            for (int i = pm.Quests.Count - 1; i >= 0; i--)
+            {
+                BaseQuest quest = pm.Quests[i];
+
+                for (int j = quest.Objectives.Count - 1; j >= 0; j--)
+                {
+                    BaseObjective objective = quest.Objectives[j];
+
+                    if (objective is ApprenticeObjective)
+                    {
+                        from.SendMessage("You are already under the effect of an enhanced skillgain quest.");
+                        return;
+                    }
+                }
+            }
+            #endregion
 
             if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
+            #region Acroll of Alacrity
+            else if (pm.AcceleratedStart > DateTime.Now)
+            {
+                from.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                return;
+            }
+            #endregion
             else
             {
                 if (firstStage)
@@ -169,7 +197,9 @@ namespace Server.Items
                     from.CloseGump(typeof(StatCapScroll.InternalGump));
                     from.CloseGump(typeof(PowerScroll.InternalGump));
                     from.CloseGump(typeof(ScrollofTranscendence.InternalGump));
+                    #region Scroll of Alacrity
                     from.CloseGump(typeof(ScrollofAlacrity.InternalGump));
+                    #endregion
                     from.SendGump(new InternalGump(from, this));
                 }
                 else
@@ -177,18 +207,11 @@ namespace Server.Items
                     double tskill = from.Skills[m_Skill].Base;
                     double tcap = from.Skills[m_Skill].Cap;
                     bool canGain = true;
-                    PlayerMobile pm = from as PlayerMobile;
 
                     if (tskill >= tcap || from.Skills[m_Skill].Lock == SkillLock.Locked || from.Skills[m_Skill].Lock == SkillLock.Down)
                     {
                         from.SendLocalizedMessage(1094935); /*You cannot increase this skill at this time. The skill may be locked or set to lower in your skill menu.
                                                              *If you are at your total skill cap, you must use a Powerscroll to increase your current skill cap.*/
-                        return;
-                    }
-
-                    else if (pm.AcceleratedStart > DateTime.Now)
-                    {
-                        from.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                         return;
                     }
 

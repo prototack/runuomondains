@@ -1,5 +1,4 @@
 using System;
-using Server;
 using System.Collections;
 using Server.Items;
 using Server.Targeting;
@@ -7,14 +6,14 @@ using Server.Misc;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a minotaur captain corpse" )]
-	public class MinotaurCaptain : Minotaur
+	[CorpseName( "a minotaur corpse" )]
+	public class MinotaurCaptain : BaseCreature
 	{
 		[Constructable]
-		public MinotaurCaptain() : base()
+		public MinotaurCaptain() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
 		{
 			Name = "a minotaur captain";
-			Body = 0x118;
+			Body = 280;
 
 			SetStr( 401, 425 );
 			SetDex( 91, 110 );
@@ -22,7 +21,7 @@ namespace Server.Mobiles
 
 			SetHits( 401, 440 );
 
-			SetDamage( 4, 7 );
+			SetDamage( 11, 20 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -49,7 +48,33 @@ namespace Server.Mobiles
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich, 2 );  // Need to verify
+			AddLoot( LootPack.Rich );  // Need to verify
+		}
+
+		// Using Tormented Minotaur sounds - Need to veryfy
+		public override int GetAngerSound()
+		{
+			return 0x597;
+		}
+
+		public override int GetIdleSound()
+		{
+			return 0x596;
+		}
+
+		public override int GetAttackSound()
+		{
+			return 0x599;
+		}
+
+		public override int GetHurtSound()
+		{
+			return 0x59a;
+		}
+
+		public override int GetDeathSound()
+		{
+			return 0x59c;
 		}
 
 		public MinotaurCaptain( Serial serial ) : base( serial )
@@ -59,14 +84,12 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadInt();
 		}
 	}

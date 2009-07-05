@@ -75,7 +75,7 @@ namespace Server.Engines.CannedEvil
 			new SpawnRecord( 0xff, 382, 328, -30 ), // Valor
 			new SpawnRecord( 0xff, 462, 926, -67 ), // Humility
 		    new SpawnRecord( (int)ChampionSpawnType.ForestLord, 1645, 1107, 8 ), // Spirituality
-		    new SpawnRecord( (int)ChampionSpawnType.TwistedGlade, 2212, 1260, 25 ), // Twisted Glade
+		    new SpawnRecord( (int)ChampionSpawnType.Glade, 2212, 1260, 25 ), // Twisted Glade
         };
 
         private SpawnRecord[] m_Tokuno = new SpawnRecord[]
@@ -85,7 +85,7 @@ namespace Server.Engines.CannedEvil
 
         private SpawnRecord[] m_Malas = new SpawnRecord[]
 		{
-			new SpawnRecord( (int)ChampionSpawnType.Pestilence, 174, 1629, 8 ), // Pestilence
+			new SpawnRecord( (int)ChampionSpawnType.Corrupt, 174, 1629, 8 ), // Bedlam
 		};
 
         [CommandProperty(AccessLevel.GameMaster)]

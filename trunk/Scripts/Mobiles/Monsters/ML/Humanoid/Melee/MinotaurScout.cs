@@ -1,5 +1,4 @@
 using System;
-using Server;
 using System.Collections;
 using Server.Items;
 using Server.Targeting;
@@ -7,23 +6,23 @@ using Server.Misc;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a minotaur scout corpse" )]	
-	public class MinotaurScout : Minotaur
+	[CorpseName( "a minotaur corpse" )]
+	public class MinotaurScout : BaseCreature
 	{
 
 		[Constructable]
-		public MinotaurScout() : base()
+		public MinotaurScout() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
 		{
 			Name = "a minotaur scout";
-			Body = 0x119;
-
-			SetStr( 352, 375 );
+			Body = 281;
+		   
+			SetStr( 353, 375 );
 			SetDex( 111, 130 );
-			SetInt( 32, 50 );
+			SetInt( 34, 50 );
 
 			SetHits( 354, 383 );
 
-			SetDamage( 4, 7 );
+			SetDamage( 11, 20 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -38,8 +37,8 @@ namespace Server.Mobiles
 			//SetSkill( SkillName.Magery, Unknown );
 			//SetSkill( SkillName.Poisoning, Unknown );
 			SetSkill( SkillName.Anatomy, 0 );
-			SetSkill( SkillName.MagicResist, 60.6, 69.5 );
-			SetSkill( SkillName.Tactics, 86.9, 103.9 );
+			SetSkill( SkillName.MagicResist, 60.6, 67.5 );
+			SetSkill( SkillName.Tactics, 86.9, 103.6 );
 			SetSkill( SkillName.Wrestling, 85.6, 104.5 );
 
 			Fame = 5000;
@@ -53,6 +52,32 @@ namespace Server.Mobiles
 			AddLoot( LootPack.Rich );  // Need to verify
 		}
 
+		// Using Tormented Minotaur sounds - Need to veryfy
+		public override int GetAngerSound()
+		{
+			return 0x597;
+		}
+
+		public override int GetIdleSound()
+		{
+			return 0x596;
+		}
+
+		public override int GetAttackSound()
+		{
+			return 0x599;
+		}
+
+		public override int GetHurtSound()
+		{
+			return 0x59a;
+		}
+
+		public override int GetDeathSound()
+		{
+			return 0x59c;
+		}
+
 		public MinotaurScout( Serial serial ) : base( serial )
 		{
 		}
@@ -60,14 +85,12 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadInt();
 		}
 	}

@@ -1841,9 +1841,6 @@ namespace Server.Multis
 				item.PublicOverheadMessage( Server.Network.MessageType.Label, 0x3B2, 501657 );//[no longer locked down]
 				SetLockdown( item, false );
 				//TidyItemList( m_LockDowns );
-
-				if ( item is RewardBrazier )
-					((RewardBrazier) item).TurnOff();
 			}
 			else if ( IsSecure( item ) )
 			{

@@ -50,8 +50,8 @@ namespace Server.Mobiles
 			PackItem( new Arrow( 35 ) );
 			PackItem( new Bolt( 25 ) );			
 			PackGem( 2 );
-			
-			// TODO 0-1 spellweaving scroll
+
+            PackArcaneScroll(0, 1);
 		}
 
 		public Changeling( Serial serial ) : base( serial )

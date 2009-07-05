@@ -23,7 +23,7 @@ namespace Server.Engines.Quests
 		public override object Description{ get{ return 1078217; } }
 		
 		/* Farewell, friend. Be careful out here. If you change your mind and want to learn Tracking come back and talk to me.*/
-        public override object Refuse { get { return 1078218; } }
+		public override object Refuse{ get{ return 1078218; } }
 		
 		/* So far so good, kid. You are still alive, and you are getting the hang of Tracking. There are many more animals, monsters, 
 		and people to track. Come back to me once you have tracked them. */

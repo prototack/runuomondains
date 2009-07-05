@@ -393,7 +393,17 @@ namespace Server.Items
 		BerserkerRed,
 		NoxGreen,
 		RumRed,
-		FireOrange
+		FireOrange,
+        FreshPeach,
+        Silver,
+        DeepBrown,
+        BurntBrown,
+        LightGreen,
+        Rose,
+        PaleBlue,
+        NobleGold,
+        PaleOrange,
+        ChaosBlue
 	}
 
 	public class PigmentsOfTokuno : Item, IUsesRemaining
@@ -425,7 +435,17 @@ namespace Server.Items
 					new PigmentInfo( /*PigmentType.BerserkerRed,*/ 0x21, 1070993 ),
 					new PigmentInfo( /*PigmentType.NoxGreen,*/ 0x58C, 1070994 ),
 					new PigmentInfo( /*PigmentType.RumRed,*/ 0x66C, 1070995 ),
-					new PigmentInfo( /*PigmentType.FireOrange,*/ 0x54F, 1070996 )
+					new PigmentInfo( /*PigmentType.FireOrange,*/ 0x54F, 1070996 ),
+					new PigmentInfo( /*PigmentType.FreshPeach,*/ 0x145, 1071450 ),  //Guess
+					new PigmentInfo( /*PigmentType.Silver,*/ 0x3AD, 1071451 ),      //Guess
+					new PigmentInfo( /*PigmentType.DeepBrown,*/ 0x73E, 1071452 ),   //Guess
+					new PigmentInfo( /*PigmentType.BurntBrown,*/ 0x759, 1071453 ),  //Guess
+					new PigmentInfo( /*PigmentType.LightGreen,*/ 0x28F, 1071454 ),  //Guess
+					new PigmentInfo( /*PigmentType.Rose,*/ 0x846, 1071455 ),        //Guess
+					new PigmentInfo( /*PigmentType.PaleBlue,*/ 0x254, 1071456 ),    //Guess
+					new PigmentInfo( /*PigmentType.NobleGold,*/ 0x28B, 1071457 ),   //Guess
+					new PigmentInfo( /*PigmentType.PaleOrange,*/ 0x2E, 1071458 ),  //Guess
+					new PigmentInfo( /*PigmentType.ChaosBlue,*/ 0x69, 1071459 )    //Guess
 				};
 
 			public static PigmentInfo GetInfo( PigmentType type )

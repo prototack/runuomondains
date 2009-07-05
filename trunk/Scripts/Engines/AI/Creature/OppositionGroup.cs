@@ -108,7 +108,7 @@ namespace Server
 					typeof( Wisp ),
 					#region Mondain's Legacy
 					typeof( Treefellow ),
-				    typeof( DryadA ),
+				    typeof( MLDryad ),
 				    #endregion
                     typeof( Twaulo ),
                     typeof( FeralTreefellow )

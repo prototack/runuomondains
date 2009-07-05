@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Server;
 using Server.Items;
 using Server.Gumps;
 using Server.Network;
 using Server.Mobiles;
+using Server.Targeting;
 using Server.Spells.Fifth;
 using Server.Spells.Seventh;
 
@@ -201,12 +203,14 @@ namespace Server.Spells.Ninjitsu
 				mod.ObeyCap = true;
 				m.AddSkillMod( mod );
 			}
+
+			m.Target = null;
 			#endregion
 
 			Timer timer = new AnimalFormTimer( m, entry.BodyMod, entry.HueMod );
 			timer.Start();
 
-			AddContext( m, new AnimalFormContext( timer, mod, entry.SpeedBoost, entry.Type ) );
+			AddContext( m, new AnimalFormContext( timer, mod, entry.SpeedBoost, entry.Type, entry.StealingBonus ) );
 			return MorphResult.Success;
 		}
 
@@ -299,7 +303,7 @@ namespace Server.Spells.Ninjitsu
 			public int BodyMod{ get{ return m_BodyMod; } }
 			public int HueMod{ get{ return m_HueMod; } }
 			public bool StealthBonus{ get{ return m_StealthBonus; } }
-			public bool SpeedBoost{ get{ return m_SpeedBoost; }	}
+			public bool SpeedBoost{ get{ return m_SpeedBoost; } }
 
 			#region Heritage Items
 			private int m_X, m_Y;
@@ -307,7 +311,7 @@ namespace Server.Spells.Ninjitsu
 
 			public int X{ get{ return m_X; } }
 			public int Y{ get{ return m_Y; } }
-			public bool StealingBonus{ get{ return m_StealingBonus; } }
+			public bool StealingBonus { get{ return m_StealingBonus; } }
 			#endregion
 
 			/*
@@ -340,24 +344,25 @@ namespace Server.Spells.Ninjitsu
 
 		private static AnimalFormEntry[] m_Entries = new AnimalFormEntry[]
 			{
-				new AnimalFormEntry( typeof( Kirin ),					1029632,	9632,    0,  6, 10, 1070811, 100.0, 0x84, false,  true, false ),
-				new AnimalFormEntry( typeof( Unicorn ),					1018214,	9678,    0, 20, 10, 1070812, 100.0, 0x7A, false,  true, false ),
-				new AnimalFormEntry( typeof( BakeKitsune ),				1030083,   10083,    0, 15, 15, 1070810,	 82.5, 0xF6, false,  true, false ),
-				new AnimalFormEntry( typeof( GreyWolf ),				1028482,	9681, 2309, 25, 10, 1070810,  82.5, 0x19, false,  true, false ),
-				new AnimalFormEntry( typeof( Llama ),					1028438,	8438,    0, 15,  8, 1070809,  70.0, 0xDC, false,  true, false ),
-				new AnimalFormEntry( typeof( ForestOstard ),			1018273,	8503, 2212, 12, 10, 1070809,  70.0, 0xDA, false,  true, false ),
-				new AnimalFormEntry( typeof( BullFrog ),				1028496,	8496, 2003, 15, 20, 1070807,  50.0, 0x51, 0x5A3, false, false, false ),
-				new AnimalFormEntry( typeof( GiantSerpent ),			1018114,	9663, 2009,  8,  7, 1070808,  50.0, 0x15, false, false, false ),
-				new AnimalFormEntry( typeof( Dog ),						1018280,	8476, 2309, 16, 17, 1070806,  40.0, 0xD9, false, false, false ),
-				new AnimalFormEntry( typeof( Cat ),						1018264,	8475, 2309, 18, 17, 1070806,  40.0, 0xC9, false, false, false ),
-				new AnimalFormEntry( typeof( Rat ),						1018294,	8483, 2309, 15, 20, 1070805,  20.0, 0xEE,  true, false, false ),
-				new AnimalFormEntry( typeof( Rabbit ),					1028485,	8485, 2309, 19, 20, 1070805,  20.0, 0xCD,  true, false, false ),
-
+				#region Mondain's Legacy
+				new AnimalFormEntry( typeof( Kirin ),			1029632,	9632,    0,  6, 10, 1070811, 100.0, 0x84, false,  true, false ),
+				new AnimalFormEntry( typeof( Unicorn ),			1018214,	9678,    0, 20, 10, 1070812, 100.0, 0x7A, false,  true, false ),
+				new AnimalFormEntry( typeof( BakeKitsune ),		1030083,   10083,    0, 15, 15, 1070810,	 82.5, 0xF6, false,  true, false ),
+				new AnimalFormEntry( typeof( GreyWolf ),		1028482,	9681, 2309, 25, 10, 1070810,  82.5, 0x19, false,  true, false ),
+				new AnimalFormEntry( typeof( Llama ),			1028438,	8438,    0, 15,  8, 1070809,  70.0, 0xDC, false,  true, false ),
+				new AnimalFormEntry( typeof( ForestOstard ),	1018273,	8503, 2212, 12, 10, 1070809,  70.0, 0xDA, false,  true, false ),
+				new AnimalFormEntry( typeof( BullFrog ),		1028496,	8496, 2003, 15, 20, 1070807,  50.0, 0x51, /*0x5A3,*/ false, false, false ),
+				new AnimalFormEntry( typeof( GiantSerpent ),	1018114,	9663, 2009,  8,  7, 1070808,  50.0, 0x15, false, false, false ),
+				new AnimalFormEntry( typeof( Dog ),				1018280,	8476, 2309, 16, 17, 1070806,  40.0, 0xD9, false, false, false ),
+				new AnimalFormEntry( typeof( Cat ),				1018264,	8475, 2309, 18, 17, 1070806,  40.0, 0xC9, false, false, false ),
+				new AnimalFormEntry( typeof( Rat ),				1018294,	8483, 2309, 15, 20, 1070805,  20.0, 0xEE,  true, false, false ),
+				new AnimalFormEntry( typeof( Rabbit ),			1028485,	8485, 2309, 19, 20, 1070805,  20.0, 0xCD,  true, false, false ),
 				#region Heritage Items
 				new AnimalFormEntry( typeof( SquirrelFormTalisman ),	1031671,  0x2D97,   0, 15, 15,        0,  20.0, 0x116,  false, false, false ), // squirrel
 				new AnimalFormEntry( typeof( FerretFormTalisman ),		1031672,  0x2D98,   0, 15, 15,	1075220,  40.0, 0x117,  false, false, true ), // ferret
 				new AnimalFormEntry( typeof( CuSidheFormTalisman ),		1031670,  0x2D96,   0, 19, 12,  1075221,  60.0, 0x115,  false, false, false ), // cu sidhe
 				new AnimalFormEntry( typeof( ReptalonFormTalisman ),	1075202,  0x2D95,   0, -2,  0,  1075222,  90.0, 0x114,  false, false, false ), // reptalon
+				#endregion
 				#endregion
 			};
 
@@ -464,12 +469,22 @@ namespace Server.Spells.Ninjitsu
 		public bool SpeedBoost{ get{ return m_SpeedBoost; } }
 		public Type Type{ get{ return m_Type; } }
 
-		public AnimalFormContext( Timer timer, SkillMod mod, bool speedBoost, Type type )
+		#region Mondain's Legacy
+		private bool m_StealingBonus;
+
+		public bool StealingBonus{ get{ return m_StealingBonus; } }
+		#endregion
+
+		public AnimalFormContext( Timer timer, SkillMod mod, bool speedBoost, Type type, bool stealingBonus )
 		{
 			m_Timer = timer;
 			m_Mod = mod;
 			m_SpeedBoost = speedBoost;
 			m_Type = type;
+
+			#region Mondain's Legacy
+			m_StealingBonus = stealingBonus;
+			#endregion
 		}
 	}
 

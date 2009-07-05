@@ -1261,6 +1261,7 @@ namespace Server.Mobiles
         {
         }
 
+        // Mondain's Legacy mod
         public virtual void OnCarve(Mobile from, Corpse corpse, Item with)
         {
             int feathers = Feathers;
@@ -4509,48 +4510,6 @@ namespace Server.Mobiles
                             QuestHelper.CheckCreature(pm, this);
                             #endregion
                         }
-
-                        #region Scroll of Transcendence Edit 1
-                        if (Region is ChampionSpawnRegion)
-                        {
-                            double random = Utility.RandomDouble();
-
-                            #region Felucca Ruleset Transcendence and 105 Power Scrolls Edit 1
-                            if (Map == Map.Felucca)
-                            {
-                                    if (Utility.RandomDouble() < 0.005)
-                                    {
-                                        double random1 = Utility.Random(49);
-
-                                        if (random1 <= 24)
-                                        {
-                                            ScrollofTranscendence st = CreateRandomFelTranscendenceScroll();
-
-                                            GiveFelTranscendenceScrollTo(pm, st);
-                                        }
-                                        else
-                                        {
-                                            PowerScroll ps = CreateFelPowerScroll();
-
-                                            GiveFelPowerScrollTo(pm, ps);
-                                        }
-                                    }
-                            }
-                            #endregion
-
-                            #region Trammel Ruleset Transcendence Scroll Edit 1
-                            if (Map == Map.Ilshenar || Map == Map.Tokuno)
-                            {
-                                if (0.005 >= random)
-                                {
-                                    ScrollofTranscendence st = CreateRandomTramTranscendenceScroll();
-
-                                    GiveTramTranscendenceScrollTo(pm, st);
-                                }
-                            }
-                            #endregion
-                        }
-                        #endregion
                     }
                 }
 
@@ -4560,197 +4519,6 @@ namespace Server.Mobiles
                     c.Delete();
             }
         }
-
-        #region 105 Power Scroll Edit 2
-        private PowerScroll CreateFelPowerScroll()
-        {
-            int level;
-
-            level = 5;
-
-            return PowerScroll.CreateRandomNoCraft(level, level);
-        }
-
-        public static void GiveFelPowerScrollTo(Mobile m, PowerScroll ps)
-        {
-            if (ps == null || m == null)	//sanity
-                return;
-
-            m.SendLocalizedMessage(1049524); // You have received a scroll of power!
-
-            if (!Core.SE || m.Alive)
-                m.AddToBackpack(ps);
-            else
-            {
-                if (m.Corpse != null && !m.Corpse.Deleted)
-                    m.Corpse.DropItem(ps);
-                else
-                    m.AddToBackpack(ps);
-            }
-        }
-        #endregion
-
-        #region Scroll of Transcendence Edit 2
-
-        #region Feluca Ruleset Transcendence Scroll Edit 2
-
-        public static void GiveFelTranscendenceScrollTo(Mobile m, ScrollofTranscendence st)
-        {
-            if (st == null || m == null)	//sanity
-                return;
-
-            m.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
-
-            if (!Core.SE || m.Alive)
-                m.AddToBackpack(st);
-            else
-            {
-                if (m.Corpse != null && !m.Corpse.Deleted)
-                    m.Corpse.DropItem(st);
-                else
-                    m.AddToBackpack(st);
-            }
-
-            if (m is PlayerMobile)
-            {
-                PlayerMobile pm = (PlayerMobile)m;
-
-                for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
-                {
-                    Mobile prot = pm.JusticeProtectors[j];
-
-                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
-                        continue;
-
-                    int chance = 0;
-
-                    switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
-                    {
-                        case VirtueLevel.Seeker: chance = 60; break;
-                        case VirtueLevel.Follower: chance = 80; break;
-                        case VirtueLevel.Knight: chance = 100; break;
-                    }
-
-                    if (chance > Utility.Random(100))
-                    {
-                        ScrollofTranscendence scrollofTranscendence = new ScrollofTranscendence(st.Skill, st.Value);
-
-                        prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
-
-                        if (!Core.SE || prot.Alive)
-                            prot.AddToBackpack(scrollofTranscendence);
-                        else
-                        {
-                            if (prot.Corpse != null && !prot.Corpse.Deleted)
-                                prot.Corpse.DropItem(scrollofTranscendence);
-                            else
-                                prot.AddToBackpack(scrollofTranscendence);
-                        }
-                    }
-                }
-            }
-        }
-
-        private ScrollofTranscendence CreateRandomFelTranscendenceScroll()
-        {
-            int level;
-            double random = Utility.RandomDouble();
-
-            if (0.05 >= random)
-                level = 10;
-            else if (0.09 >= random)
-                level = 9;
-            else if (0.2 >= random)
-                level = 8;
-            else if (0.4 >= random)
-                level = 7;
-            else
-                level = 6;
-
-            return ScrollofTranscendence.CreateRandom(level, level);
-        }
-        #endregion
-
-        #region Trammel Ruleset Transcendence Scroll Edit 2
-
-        public static void GiveTramTranscendenceScrollTo(Mobile m, ScrollofTranscendence st)
-        {
-            if (st == null || m == null)	//sanity
-                return;
-
-            m.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
-
-            if (!Core.SE || m.Alive)
-                m.AddToBackpack(st);
-            else
-            {
-                if (m.Corpse != null && !m.Corpse.Deleted)
-                    m.Corpse.DropItem(st);
-                else
-                    m.AddToBackpack(st);
-            }
-
-            if (m is PlayerMobile)
-            {
-                PlayerMobile pm = (PlayerMobile)m;
-
-                for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
-                {
-                    Mobile prot = pm.JusticeProtectors[j];
-
-                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
-                        continue;
-
-                    int chance = 0;
-
-                    switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
-                    {
-                        case VirtueLevel.Seeker: chance = 60; break;
-                        case VirtueLevel.Follower: chance = 80; break;
-                        case VirtueLevel.Knight: chance = 100; break;
-                    }
-
-                    if (chance > Utility.Random(100))
-                    {
-                        ScrollofTranscendence scrollofTranscendence = new ScrollofTranscendence(st.Skill, st.Value);
-
-                        prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
-
-                        if (!Core.SE || prot.Alive)
-                            prot.AddToBackpack(scrollofTranscendence);
-                        else
-                        {
-                            if (prot.Corpse != null && !prot.Corpse.Deleted)
-                                prot.Corpse.DropItem(scrollofTranscendence);
-                            else
-                                prot.AddToBackpack(scrollofTranscendence);
-                        }
-                    }
-                }
-            }
-        }
-
-        private ScrollofTranscendence CreateRandomTramTranscendenceScroll()
-        {
-            int level;
-            double random = Utility.RandomDouble();
-
-            if (0.05 >= random)
-                level = 5;
-            else if (0.09 >= random)
-                level = 4;
-            else if (0.2 >= random)
-                level = 3;
-            else if (0.4 >= random)
-                level = 2;
-            else
-                level = 1;
-
-            return ScrollofTranscendence.CreateRandom(level, level);
-        }
-        #endregion
-
-        #endregion
 
         /* To save on cpu usage, RunUO creatures only reacquire creatures under the following circumstances:
          *  - 10 seconds have elapsed since the last time it tried
@@ -5198,9 +4966,7 @@ namespace Server.Mobiles
             {
                 double healing = Skills.Healing.Value;
                 double anatomy = Skills.Anatomy.Value;
-                #region Mondain's Legacy mod
-                double chance = (healing - 30.0) / 50.0 - patient.Poison.RealLevel * 0.1;
-                #endregion
+                double chance = (healing - 30.0) / 50.0 - patient.Poison.Level * 0.1;
 
                 if ((healing >= 60.0 && anatomy >= 60.0) && chance > Utility.RandomDouble())
                 {

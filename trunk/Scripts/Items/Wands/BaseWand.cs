@@ -36,6 +36,10 @@ namespace Server.Items
 		public override int OldMinDamage { get { return 2; } }
 		public override int OldMaxDamage { get { return 6; } }
 		public override int OldSpeed { get { return 35; } }
+		
+		#region Mondain's Legacy
+		public override float MlSpeed{ get{ return 2.75f; } }
+		#endregion
 
 		public override int InitMinHits { get { return 31; } }
 		public override int InitMaxHits { get { return 110; } }

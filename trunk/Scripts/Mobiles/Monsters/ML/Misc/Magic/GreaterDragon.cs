@@ -4,24 +4,26 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a greater dragon corpse" )]
+	[CorpseName( "a dragon corpse" )]
 	public class GreaterDragon : BaseCreature
 	{
+		public override bool StatLossAfterTame { get { return true; } }
+
 		[Constructable]
-		public GreaterDragon () : base( AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public GreaterDragon () : base( AIType.AI_Mage, FightMode.Closest, 10, 1, 0.3, 0.5 )
 		{
 			Name = "a greater dragon";
 			Body = Utility.RandomList( 12, 59 );
 			BaseSoundID = 362;
 
-			SetStr( 1000, 1425 );
+			SetStr( 1025, 1425 );
 			SetDex( 81, 148 );
 			SetInt( 475, 675 );
 
 			SetHits( 1000, 2000 );
-            SetStam( 120, 135 );
+			SetStam( 120, 135 );
 
-			SetDamage( 5, 6 );
+			SetDamage( 24, 33 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -31,11 +33,11 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Poison, 40, 60 );
 			SetResistance( ResistanceType.Energy, 50, 75 );
 
-            SetSkill( SkillName.Meditation, 0 );
+			SetSkill( SkillName.Meditation, 0 );
 			SetSkill( SkillName.EvalInt, 110.0, 140.0 );
 			SetSkill( SkillName.Magery, 110.0, 140.0 );
-            SetSkill( SkillName.Poisoning, 0 );
-            SetSkill( SkillName.Anatomy, 0 );
+			SetSkill( SkillName.Poisoning, 0 );
+			SetSkill( SkillName.Anatomy, 0 );
 			SetSkill( SkillName.MagicResist, 110.0, 140.0 );
 			SetSkill( SkillName.Tactics, 110.0, 140.0 );
 			SetSkill( SkillName.Wrestling, 115.0, 145.0 );
@@ -61,15 +63,14 @@ namespace Server.Mobiles
 		public override bool AutoDispel{ get{ return !Controlled; } }
 		public override int TreasureMapLevel{ get{ return 5; } }
 		public override int Meat{ get{ return 19; } }
-		public override int Hides{ get{ return 31; } }
+		public override int Hides{ get{ return 20; } }
 		public override HideType HideType{ get{ return HideType.Barbed; } }
 		public override int Scales{ get{ return 7; } }
 		public override ScaleType ScaleType{ get{ return ( Body == 12 ? ScaleType.Yellow : ScaleType.Red ); } }
 		public override FoodType FavoriteFood{ get{ return FoodType.Meat; } }
 		public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame{ get{ return true; } }
 
-        public override WeaponAbility GetWeaponAbility()
+		public override WeaponAbility GetWeaponAbility()
 		{
 			return WeaponAbility.BleedAttack;
 		}
@@ -81,13 +82,22 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			writer.Write( (int) 0 );
+			writer.Write( (int) 1 );
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 			int version = reader.ReadInt();
+
+			SetDamage( 24, 33 );
+
+			if( version == 0 )
+			{
+				Server.SkillHandlers.AnimalTaming.ScaleStats( this, 0.50 );
+				Server.SkillHandlers.AnimalTaming.ScaleSkills( this, 0.80, 0.90 ); // 90% * 80% = 72% of original skills trainable to 90%
+				Skills[SkillName.Magery].Base = Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+			}
 		}
 	}
 }
