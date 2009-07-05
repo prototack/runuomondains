@@ -65,7 +65,7 @@ namespace Server.SkillHandlers
 						BaseWeapon weapon = (BaseWeapon)targeted;
 
 						if ( Core.AOS )
-						{							
+						{
 							startTimer = ( weapon.PrimaryAbility == WeaponAbility.InfectiousStrike || weapon.SecondaryAbility == WeaponAbility.InfectiousStrike /* Mondain's Legacy Mod */ || weapon.SecondaryAbility == WeaponAbility.SerpentArrow /* End*/ );
 						}
 						else if ( weapon.Layer == Layer.OneHanded )
@@ -128,7 +128,7 @@ namespace Server.SkillHandlers
 							}
 							else if ( m_Target is FukiyaDarts )
 							{
-								((FukiyaDarts) m_Target ).Poison = m_Poison;
+								((FukiyaDarts)m_Target).Poison = m_Poison;
 
 								#region Mondain's Legacy mod
 								((FukiyaDarts)m_Target).PoisonCharges = Math.Min( 18 - (m_Poison.RealLevel * 2), ((FukiyaDarts)m_Target).UsesRemaining );

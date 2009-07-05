@@ -5,7 +5,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
 	[CorpseName( "an insane dryad corpse" )]
-	public class InsaneDryad : DryadA
+	public class InsaneDryad : MLDryad
 	{
 		public override bool InitialInnocent{ get{ return false; } }
 

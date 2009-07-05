@@ -39,6 +39,11 @@ namespace Server.Engines.Craft
 			if ( craftItem == null || craftItem.Ressources.Count == 0 )
 				return EnhanceResult.BadItem;
 
+			#region Mondain's Legacy
+			if ( craftItem.ForceNonExceptional )
+				return EnhanceResult.BadItem;
+			#endregion
+
 			bool allRequiredSkills = false;
 			if( craftItem.GetSuccessChance( from, resType, craftSystem, false, ref allRequiredSkills ) <= 0.0 )
 				return EnhanceResult.NoSkill;

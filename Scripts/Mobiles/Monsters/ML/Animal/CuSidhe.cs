@@ -29,7 +29,7 @@ namespace Server.Mobiles
 			SetDex( 151, 170 );
 			SetInt( 251, 282 );
 
-			SetDamage( 4, 5 );
+			SetDamage( 21, 28 );
 
 			SetDamageType( ResistanceType.Physical, 0 );
 			SetDamageType( ResistanceType.Cold, 50 );
@@ -46,11 +46,10 @@ namespace Server.Mobiles
 			SetSkill( SkillName.MagicResist, 75.3, 90.0 );
 			SetSkill( SkillName.Anatomy, 65.5, 69.4 );
 			SetSkill( SkillName.Healing, 72.2, 98.9 );
-			
-			Fame = 10000;
-			Karma = -10000;
-			
-			
+
+			Fame = 5000;  //Guessing here
+			Karma = 5000;  //Guessing here
+
 			Tamable = true;
 			ControlSlots = 4;
 			MinTameSkill = 101.1;					
@@ -64,7 +63,8 @@ namespace Server.Mobiles
 			PackGold( 500, 800 );
 
 			PackItem( new Bandage( 10 ) );
-			// TODO 0-2 spellweaving scroll
+
+            PackArcaneScroll(0, 2);
 		}	
 
 		public override void GenerateLoot()
@@ -79,7 +79,7 @@ namespace Server.Mobiles
 				Item pads = from.FindItemOnLayer( Layer.Shoes );
 				
 				if ( pads is PadsOfTheCuSidhe )
-					from.SendMessage( "Your boots allow you to mount the Cu Sidhe", null, 0x3B2 );
+					from.SendLocalizedMessage( 1071981 ); // Your boots allow you to mount the Cu Sidhe.
 				else
 				{
 					from.SendLocalizedMessage( 1072203 ); // Only Elves may use this.

@@ -51,14 +51,10 @@ namespace Server.Mobiles
 
 		public override void OnThink()
 		{
-			bool expired;
+            if (m_Owner == null)
+                return;
 
-			expired = ( DateTime.Now >= m_ExpireTime );
-
-			if ( !expired && m_Owner != null )
-				expired = m_Owner.Deleted || Map != m_Owner.Map || !InRange( m_Owner, 16 );
-
-			if ( expired )
+			if ( m_Owner != null && ( DateTime.Now >= m_ExpireTime || m_Owner.Deleted || Map != m_Owner.Map || !InRange( m_Owner, 16 ) ) )
 			{
 				PlaySound( GetIdleSound() );
 				Delete();
@@ -75,7 +71,7 @@ namespace Server.Mobiles
 			m_ExpireTime = DateTime.Now + TimeSpan.FromMinutes( 1.0 );
 
 			Name = "a plague spawn";
-			Hue = Utility.Random( 0x11, 15 );
+			Hue = Utility.RandomList( 0x11, 0x12, 0x13, 0x14, 0x15, 0x263, 0x268 );
 
 			switch ( Utility.Random( 12 ) )
 			{
@@ -98,8 +94,16 @@ namespace Server.Mobiles
 					Body = 0x15;
 					BaseSoundID = 0xDB;
 					break;
+                case 5: // Skittering Hopper
+                    Body = 302;
+                    BaseSoundID = 959;
+                    break;
+                case 6: // Giant Toad
+                    Body = 80;
+                    BaseSoundID = 0x26B;
+                    break;
 				default:
-				case 5: // slime
+				case 7: // slime
 					Body = 51;
 					BaseSoundID = 456;
 					break;

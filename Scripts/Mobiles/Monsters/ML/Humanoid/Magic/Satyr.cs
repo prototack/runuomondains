@@ -49,7 +49,7 @@ namespace Server.Mobiles
 
 			SetHits(353, 399);
 
-			SetDamage(6, 11);
+			SetDamage(13, 24);
 
 			SetDamageType(ResistanceType.Physical, 100);
 

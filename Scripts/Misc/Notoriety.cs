@@ -113,8 +113,6 @@ namespace Server.Misc
 			#region Mondain's Legacy
 			if ( target is Gregorio )
 			{
-				Gregorio gregorio = (Gregorio) target;
-
 				if ( Gregorio.IsMurderer( from ) )
 					return true;
 				

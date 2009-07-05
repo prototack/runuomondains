@@ -198,19 +198,24 @@ namespace Server.Items
 			}
 		}
 		
+		#region Mondain's Legacy ICraftable
 		public override int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
 		{
 			Quality = (ArmorQuality)quality;
 
 			if ( makersMark )
 				Crafter = from;
+			
+			if ( craftItem.ForceNonExceptional )
+			{
+				Type resourceType = typeRes;
+	
+				if ( resourceType == null )
+					resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+	
+				Resource = CraftResources.GetFromType( resourceType );
+			}
 
-			Type resourceType = typeRes;
-
-			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
-
-			Resource = CraftResources.GetFromType( resourceType );
 			PlayerConstructed = true;
 
 			CraftContext context = craftSystem.GetContext( from );
@@ -257,5 +262,6 @@ namespace Server.Items
 			
 			return quality;
 		}
+		#endregion
 	}
 }

@@ -1103,7 +1103,7 @@ namespace Server.Mobiles
                     strBase = this.Str;	//this.Str already includes GetStatOffset/str
                     strOffs = AosAttributes.GetValue(this, AosAttribute.BonusHits);
 
-                    if (Core.ML && strOffs > 25)
+                    if (Core.ML && strOffs > 25 && AccessLevel <= AccessLevel.Player)
                         strOffs = 25;
 
                     if (AnimalForm.UnderTransformation(this, typeof(BakeKitsune)) || AnimalForm.UnderTransformation(this, typeof(GreyWolf)))
@@ -1267,17 +1267,15 @@ namespace Server.Mobiles
                 {
                     if (m_AnimalFormRestrictedSkills[i] == skill)
                     {
-                        #region Talisman of the Fey (Ferret Form) Unofficial Fix
-                        if (SkillName.Stealing == skill && this.BodyValue == 0x117)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            SendLocalizedMessage(1070771); // You cannot use that skill in this form.
-                            return false;
-                        }
+                        #region Mondain's Legacy
+                        AnimalFormContext context = AnimalForm.GetContext(this);
+
+                        if (skill == SkillName.Stealing && context.StealingBonus)
+                            continue;
                         #endregion
+
+                        SendLocalizedMessage(1070771); // You cannot use that skill in this form.
+                        return false;
                     }
                 }
             }
@@ -4071,10 +4069,10 @@ namespace Server.Mobiles
 
             #region Mondain's Legacy Peerless Champion
             [CommandProperty(AccessLevel.GameMaster)]
-            public int TwistedGlade { get { return GetValue(ChampionSpawnType.TwistedGlade); } set { SetValue(ChampionSpawnType.TwistedGlade, value); } }
+            public int Glade { get { return GetValue(ChampionSpawnType.Glade); } set { SetValue(ChampionSpawnType.Glade, value); } }
 
             [CommandProperty(AccessLevel.GameMaster)]
-            public int Pestilence { get { return GetValue(ChampionSpawnType.Pestilence); } set { SetValue(ChampionSpawnType.Pestilence, value); } }
+            public int Corrupt { get { return GetValue(ChampionSpawnType.Corrupt); } set { SetValue(ChampionSpawnType.Corrupt, value); } }
             #endregion
 
             public ChampionTitleInfo()

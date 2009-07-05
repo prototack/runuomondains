@@ -137,7 +137,7 @@ namespace Server.Items
 			return ( CouldFit( p, map, null, ref h ) == AddonFitResult.Valid );
 		}
 
-		public virtual AddonFitResult CouldFit( IPoint3D p, Map map, Mobile from, ref BaseHouse house )
+		public AddonFitResult CouldFit( IPoint3D p, Map map, Mobile from, ref BaseHouse house )
 		{
 			if ( Deleted )
 				return AddonFitResult.Blocked;

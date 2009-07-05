@@ -13,8 +13,8 @@ namespace Server.Engines.CannedEvil
 		VerminHorde,
 		UnholyTerror,
 		SleepingDragon,
-        TwistedGlade,
-        Pestilence
+        Glade,
+        Corrupt
 	}
 
 	public class ChampionSpawnInfo
@@ -93,16 +93,16 @@ namespace Server.Engines.CannedEvil
 					new Type[]{ typeof( LesserHiryu ), typeof( RevenantLion ) },
 					new Type[]{ typeof( Hiryu ), typeof( Oni ) }
 				} ),
-                new ChampionSpawnInfo( "Twisted Glade", typeof( Twaulo ), new string[]{ "Banisher of the Glade", "Subjugator of the Glade ", "Enforcer of the Glade" } , new Type[][]
-				{																											// Twisted Glade
+                new ChampionSpawnInfo( "Glade", typeof( Twaulo ), new string[]{ "Banisher", "Enforcer", "Eradicator" } , new Type[][]
+				{																											// Glade
 					new Type[]{ typeof( Pixie ), typeof( ShadowWisp ) },
-					new Type[]{ typeof( Centaur ), typeof( DryadA ) },
+					new Type[]{ typeof( Centaur ), typeof( MLDryad ) },
 					new Type[]{ typeof( Satyr ), typeof( CuSidhe ) },
 					new Type[]{ typeof( FeralTreefellow ), typeof( RagingGrizzlyBear ) }
 				} ),
-				new ChampionSpawnInfo( "Pestilence", typeof( Ilhenir ), new string[]{ "Cleanser of the Corrupt", "Expunger of the Corrupt", "Annihilater of the Corrupt" } , new Type[][]
-				{																											// Pestilence
-					new Type[]{ typeof( ChampPlagueSpawn ), typeof( Bogling ) },
+				new ChampionSpawnInfo( "Corrupt", typeof( Ilhenir ), new string[]{ "Cleanser", "Expunger", "Depurator" } , new Type[][]
+				{																											// Corrupt
+					new Type[]{ typeof( PlagueSpawn ), typeof( Bogling ) },
 					new Type[]{ typeof( PlagueBeast ), typeof( BogThing ) },
 					new Type[]{ typeof( PlagueBeastLord ), typeof( InterredGrizzle ) },
 					new Type[]{ typeof( FetidEssence ), typeof( PestilentBandage ) }

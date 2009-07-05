@@ -1480,9 +1480,13 @@ namespace Server.Mobiles
 					Mobile newCombatant = null;
 					double newScore = 0.0;
 
-					foreach( Mobile aggr in m_Mobile.GetMobilesInRange( m_Mobile.RangePerception ) )
+					List<AggressorInfo> list = m_Mobile.Aggressors;
+
+					for( int i = 0; i < list.Count; ++i )
 					{
-						if( !m_Mobile.CanSee( aggr ) || aggr.Combatant != m_Mobile )
+						Mobile aggr = list[i].Attacker;
+
+						if( aggr.Map != m_Mobile.Map || !aggr.InRange( m_Mobile.Location, m_Mobile.RangePerception ) || !m_Mobile.CanSee( aggr ) )
 							continue;
 
 						if( aggr.IsDeadBondedPet || !aggr.Alive )

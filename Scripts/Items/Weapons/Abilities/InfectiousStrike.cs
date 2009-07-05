@@ -52,7 +52,6 @@ namespace Server.Items
 
 			// Infectious strike special move now uses poisoning skill to help determine potency 
 			int maxLevel = attacker.Skills[SkillName.Poisoning].Fixed / 200;
-
 			if ( maxLevel < 0 ) maxLevel = 0;
 
 			#region Mondain's Legacy

@@ -1887,12 +1887,18 @@ namespace Server.Items
 			if ( makersMark )
 				Crafter = from;
 
-			Type resourceType = typeRes;
+			#region Mondain's Legacy
+			if ( !craftItem.ForceNonExceptional )
+			{
+				Type resourceType = typeRes;
 
-			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+				if ( resourceType == null )
+					resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
 
-			Resource = CraftResources.GetFromType( resourceType );
+				Resource = CraftResources.GetFromType( resourceType );
+			}
+			#endregion
+
 			PlayerConstructed = true;
 
 			CraftContext context = craftSystem.GetContext( from );
@@ -1923,39 +1929,42 @@ namespace Server.Items
 					from.CheckSkill( SkillName.ArmsLore, 0, 100 );
 				}
 			}
-
-			if ( Core.AOS && tool is BaseRunicTool )
-				((BaseRunicTool)tool).ApplyAttributesTo( this );
 			
 			#region Mondain's Legacy	
 			if ( craftItem != null && !craftItem.ForceNonExceptional )
-			{	
-				CraftResourceInfo resInfo = CraftResources.GetInfo( m_Resource );
-	
-				if ( resInfo == null )
-					return quality;
-	
-				CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
-	
-				if ( attrInfo == null )
-					return quality;		
-					
-				if ( m_Resource != CraftResource.Heartwood )
+			{
+				if ( Core.AOS && tool is BaseRunicTool )
+					( (BaseRunicTool) tool ).ApplyAttributesTo( this );
+
+				if ( Core.ML )
 				{
-					m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
-					m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
-					m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;				
-					m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
-				}
-				else
-				{
-					switch ( Utility.Random( 5 ) )
+					CraftResourceInfo resInfo = CraftResources.GetInfo( m_Resource );
+
+					if ( resInfo == null )
+						return quality;
+
+					CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
+
+					if ( attrInfo == null )
+						return quality;
+
+					if ( m_Resource != CraftResource.Heartwood )
 					{
-						case 0: m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage; break;
-						case 1: m_AosAttributes.AttackChance += attrInfo.ArmorHitChance; break;
-						case 2: m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage; break;			 
-						case 3: m_AosAttributes.Luck += attrInfo.ArmorLuck; break;
-						case 4: m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements; break;
+						m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
+						m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
+						m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
+						m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
+					}
+					else
+					{
+						switch ( Utility.Random( 5 ) )
+						{
+							case 0: m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage; break;
+							case 1: m_AosAttributes.AttackChance += attrInfo.ArmorHitChance; break;
+							case 2: m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage; break;
+							case 3: m_AosAttributes.Luck += attrInfo.ArmorLuck; break;
+							case 4: m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements; break;
+						}
 					}
 				}
 			}

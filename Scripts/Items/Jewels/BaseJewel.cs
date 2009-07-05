@@ -263,20 +263,20 @@ namespace Server.Items
 
 				from.CheckStatTimers();
 
-                #region Mondain's Legacy Sets
-                if (IsSetItem)
-                {
-                    m_SetEquipped = SetHelper.FullSetEquipped(from, SetID, Pieces);
-
-                    if (m_SetEquipped)
-                    {
-                        m_LastEquipped = true;
-                        SetHelper.AddSetBonus(from, SetID);
-                    }
-                }
-                #endregion
-            }
-        }
+				#region Mondain's Legacy Sets
+				if ( IsSetItem )
+				{
+					m_SetEquipped = SetHelper.FullSetEquipped( from, SetID, Pieces );
+				
+					if ( m_SetEquipped )
+					{
+						m_LastEquipped = true;							
+						SetHelper.AddSetBonus( from, SetID );
+					}
+				}
+				#endregion
+			}
+		}
 
 		public override void OnRemoved( object parent )
 		{
@@ -408,13 +408,6 @@ namespace Server.Items
 
 			base.AddResistanceProperties( list );
 
-			#region Sets
-			if ( IsSetItem && !m_SetEquipped )
-			{
-				list.Add( 1072378 ); // <br>Only when full set is present:
-				SetHelper.GetSetProperties( list, this );
-			}
-			#endregion
 			if ( m_HitPoints >= 0 && m_MaxHitPoints > 0 )
 				list.Add( 1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints ); // durability ~1_val~ / ~2_val~
 		}
@@ -569,7 +562,10 @@ namespace Server.Items
 			if ( resourceType == null )
 				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
 
-			Resource = CraftResources.GetFromType( resourceType );
+			#region Mondain's Legacy
+			if ( !craftItem.ForceNonExceptional )
+				Resource = CraftResources.GetFromType( resourceType );
+			#endregion
 
 			CraftContext context = craftSystem.GetContext( from );
 

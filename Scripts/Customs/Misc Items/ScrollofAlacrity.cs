@@ -173,7 +173,9 @@ namespace Server.Items
                 {
                     from.CloseGump(typeof(StatCapScroll.InternalGump));
                     from.CloseGump(typeof(PowerScroll.InternalGump));
+                    #region Scroll of Transcendence
                     from.CloseGump(typeof(ScrollofTranscendence.InternalGump));
+                    #endregion
                     from.CloseGump(typeof(ScrollofAlacrity.InternalGump));
                     from.SendGump(new InternalGump(from, this));
                 }

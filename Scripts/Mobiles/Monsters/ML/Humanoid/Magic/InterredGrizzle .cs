@@ -21,7 +21,7 @@ namespace Server.Mobiles
 			SetHits( 1500 );
 			SetStam( 150 );
 
-			SetDamage( 5, 6 );
+			SetDamage( 16, 19 );
 
 			SetDamageType( ResistanceType.Physical, 30 );
 			SetDamageType( ResistanceType.Fire, 70 );
@@ -41,8 +41,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 104.5, 105.1 );
 			SetSkill( SkillName.Wrestling, 105.1, 109.4 );
 
-			Fame = 18000;
-			Karma = -18000;
+			Fame = 3700;  // Guessed
+			Karma = -3700;  // Guessed
 		}
 
 		public override void GenerateLoot() //-- Need to verify

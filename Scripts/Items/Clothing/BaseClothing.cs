@@ -42,7 +42,7 @@ namespace Server.Items
 		}
 		#endregion
 
-		public virtual bool CanFortify{ get{ return false; } }
+		public virtual bool CanFortify{ get{ return true; } }
 
 		private int m_MaxHitPoints;
 		private int m_HitPoints;
@@ -1250,19 +1250,24 @@ namespace Server.Items
 			if ( makersMark )
 				Crafter = from;
 
-			if ( DefaultResource != CraftResource.None )
+			#region Mondain's Legacy
+			if ( !craftItem.ForceNonExceptional )
 			{
-				Type resourceType = typeRes;
+				if ( DefaultResource != CraftResource.None )
+				{
+					Type resourceType = typeRes;
 
-				if ( resourceType == null )
-					resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+					if ( resourceType == null )
+						resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
 
-				Resource = CraftResources.GetFromType( resourceType );
+					Resource = CraftResources.GetFromType( resourceType );
+				}
+				else
+				{
+					Hue = resHue;
+				}
 			}
-			else
-			{
-				Hue = resHue;
-			}
+			#endregion
 
 			PlayerConstructed = true;
 

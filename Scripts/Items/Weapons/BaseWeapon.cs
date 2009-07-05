@@ -894,7 +894,12 @@ namespace Server.Items
                 if (defValue <= -20.0)
                     defValue = -19.9;
 
-                bonus += AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
+                // Hit Chance Increase = 45%
+                int atkChance = AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
+                if (atkChance > 45)
+                    atkChance = 45;
+
+                bonus += atkChance;
 
                 if (Spells.Chivalry.DivineFurySpell.UnderEffect(attacker))
                     bonus += 10; // attacker gets 10% bonus when they're under divine fury
@@ -1302,7 +1307,10 @@ namespace Server.Items
                         BaseWeapon weapon = defender.Weapon as BaseWeapon;
 
                         if (weapon != null)
+                        {
+                            defender.FixedParticles(0x3779, 1, 15, 0x158B, 0x0, 0x3, EffectLayer.Waist);
                             weapon.OnSwing(defender, attacker);
+                        }
 
                         CounterAttack.StopCountering(defender);
                     }
@@ -2345,8 +2353,8 @@ namespace Server.Items
         {
             if (checkSkills)
             {
-                attacker.CheckSkill(SkillName.Tactics, 0.0, 120.0); // Passively check tactics for gain
-                attacker.CheckSkill(SkillName.Anatomy, 0.0, 120.0); // Passively check Anatomy for gain
+                attacker.CheckSkill(SkillName.Tactics, 0.0, attacker.Skills[SkillName.Tactics].Cap); // Passively check tactics for gain
+                attacker.CheckSkill(SkillName.Anatomy, 0.0, attacker.Skills[SkillName.Anatomy].Cap); // Passively check Anatomy for gain
 
                 if (Type == WeaponType.Axe)
                     attacker.CheckSkill(SkillName.Lumberjacking, 0.0, 100.0); // Passively check Lumberjacking for gain
@@ -2413,8 +2421,8 @@ namespace Server.Items
         {
             if (checkSkills)
             {
-                attacker.CheckSkill(SkillName.Tactics, 0.0, 120.0); // Passively check tactics for gain
-                attacker.CheckSkill(SkillName.Anatomy, 0.0, 120.0); // Passively check Anatomy for gain
+                attacker.CheckSkill(SkillName.Tactics, 0.0, attacker.Skills[SkillName.Tactics].Cap); // Passively check tactics for gain
+                attacker.CheckSkill(SkillName.Anatomy, 0.0, attacker.Skills[SkillName.Anatomy].Cap); // Passively check Anatomy for gain
 
                 if (Type == WeaponType.Axe)
                     attacker.CheckSkill(SkillName.Lumberjacking, 0.0, 100.0); // Passively check Lumberjacking for gain
@@ -3773,7 +3781,10 @@ namespace Server.Items
 
             if (Core.AOS)
             {
-                Resource = CraftResources.GetFromType(resourceType);
+                #region Mondain's Legacy
+                if (!craftItem.ForceNonExceptional)
+                    Resource = CraftResources.GetFromType(resourceType);
+                #endregion
 
                 CraftContext context = craftSystem.GetContext(from);
 

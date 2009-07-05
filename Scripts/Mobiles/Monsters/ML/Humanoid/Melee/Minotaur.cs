@@ -13,7 +13,7 @@ namespace Server.Mobiles
 		public Minotaur() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
 		{
 			Name = "a minotaur";
-			Body = 0x107;			
+			Body = 0x107;
 
 			SetStr( 301, 340 );
 			SetDex( 91, 110 );
@@ -21,7 +21,7 @@ namespace Server.Mobiles
 
 			SetHits( 301, 340 );
 
-			SetDamage( 5, 8 );
+			SetDamage( 11, 20 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -82,14 +82,12 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadInt();
 		}
 	}

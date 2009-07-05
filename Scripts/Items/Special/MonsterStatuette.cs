@@ -43,7 +43,10 @@ namespace Server.Items
 		Spider,
 		OphidianArchMage,
 		OphidianWarrior,
-		DreadHorn
+		DreadHorn,
+        OphidianMage,
+        OphidianKnight,
+        Minotaur
 	}
 
 	public class MonsterStatuetteInfo
@@ -107,7 +110,10 @@ namespace Server.Items
 				/* Spider */			new MonsterStatuetteInfo( 1029668, 0x25C4, 1170 ),
 				/* OphidianArchMage */	new MonsterStatuetteInfo( 1029641, 0x25A9, 639 ),
 				/* OphidianWarrior */	new MonsterStatuetteInfo( 1029645, 0x25AD, 634 ),
-				/* DreadHorn */			new MonsterStatuetteInfo( 1031651, 0x2D83, 0xA8 )
+				/* DreadHorn */			new MonsterStatuetteInfo( 1031651, 0x2D83, 0xA8 ),
+                /* OphidianMage */      new MonsterStatuetteInfo( 1029643, 0x25AB, 639 ),
+                /* OphidianKnight */    new MonsterStatuetteInfo( 1029642, 0x25AA, 634 ),
+                /* Minotaur */          new MonsterStatuetteInfo( 1031657, 0x2D89, new int[] { 0x596, 0x597, 0x598, 0x599, 0x59A, 0x59B, 0x59C, 0x59D } )
 			};
 
 		public static MonsterStatuetteInfo GetInfo( MonsterStatuetteType type )

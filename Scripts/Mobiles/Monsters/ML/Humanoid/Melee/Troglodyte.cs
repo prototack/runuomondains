@@ -14,8 +14,7 @@ namespace Server.Mobiles
 		public Troglodyte() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4 ) // NEED TO CHECK
 		{
 			Name = "a troglodyte";
-			Body = 0x10B;
-
+			Body = 267;
 			BaseSoundID = 0x59F; 
 
 			SetStr( 148, 217 );
@@ -24,7 +23,7 @@ namespace Server.Mobiles
 
 			SetHits( 302, 340 );
 
-			SetDamage( 5, 6 );
+			SetDamage( 11, 14 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
@@ -50,13 +49,13 @@ namespace Server.Mobiles
 			PackItem( new TreasureMap( 2, Map.Trammel ) );
 		}
 
-		public override bool CanHeal{ get{ return true; } }		
+		public override bool CanHeal{ get{ return true; } }
 		public override double MinHealDelay{ get{ return 4.0; } }
 		public override int Meat{ get{ return 1; } }
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosRich, 3 );  // Need to verify
+			AddLoot( LootPack.Rich );  // Need to verify
 		}
 
 		public Troglodyte( Serial serial ) : base( serial )
@@ -74,8 +73,7 @@ namespace Server.Mobiles
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
 		public override void Deserialize( GenericReader reader )
