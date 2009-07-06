@@ -209,12 +209,6 @@ namespace Server.SkillHandlers
                 {
                     m_Thief.SendLocalizedMessage(502710); // You can't steal that!
                 }
-                #region Talisman of the Fey (Ferret Form) Unofficial Fix
-                else if (AnimalForm.UnderTransformation(m_Thief) && m_Thief.BodyValue != 0x117)
-                {
-                    m_Thief.SendLocalizedMessage(1070771); // You cannot use that skill in this form.
-                }
-                #endregion
                 else
                 {
                     double w = toSteal.Weight + toSteal.TotalWeight;
