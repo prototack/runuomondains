@@ -42,7 +42,11 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Magery, 100.0 );
 			SetSkill( SkillName.EvalInt, 100 );
 			SetSkill( SkillName.Meditation, 100 );
-			
+
+			Fame = 24000;
+			Karma = -24000;
+
+			VirtualArmor = 80;
 			PackResources( 8 );
 			PackTalismans( 5 );
 		}

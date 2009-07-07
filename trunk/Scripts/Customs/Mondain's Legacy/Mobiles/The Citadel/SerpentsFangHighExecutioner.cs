@@ -6,12 +6,14 @@ namespace Server.Mobiles
 {
 	[CorpseName( "a black order high executioner corpse" )] 
 	public class SerpentsFangHighExecutioner : SerpentsFangAssassin
-	{	
+	{
+		public override bool AlwaysMurderer{ get{ return true; } }
+		public override bool ShowFameTitle{ get{ return false; } }
 		[Constructable]
 		public SerpentsFangHighExecutioner() : base()
 		{
-			Name = "black order high executioner";
-			Title = "of the serpent's fang sect";
+			Name = "Black Order High Executioner";
+			Title = "of the Serpent's Fang Sect";
 		}
 
 		public SerpentsFangHighExecutioner( Serial serial ) : base( serial )

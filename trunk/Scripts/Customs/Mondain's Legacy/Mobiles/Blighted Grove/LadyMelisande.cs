@@ -49,7 +49,7 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Meditation, 120 );
 			SetSkill( SkillName.Necromancy, 120 );
 			SetSkill( SkillName.SpiritSpeak, 120 );
-			
+
 			PackResources( 8 );
 			PackTalismans( 5 );
 
@@ -57,8 +57,10 @@ namespace Server.Mobiles
 
 			Fame = 25000;
 			Karma = -25000;
-		}	
-		
+
+			VirtualArmor = 50;
+		}
+
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.SuperBoss, 8 );
