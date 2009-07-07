@@ -6,12 +6,15 @@ namespace Server.Mobiles
 {
 	[CorpseName( "a black order master corpse" )] 
 	public class TigersClawMaster : TigersClawThief
-	{	
+	{
+		public override bool AlwaysMurderer{ get{ return true; } }
+		public override bool ShowFameTitle{ get{ return false; } }
+
 		[Constructable]
 		public TigersClawMaster() : base()
 		{
-			Name = "black order master";
-			Title = "of the serpent's fang sect";
+			Name = "Black Order Master";
+			Title = "of the Serpent's Fang Sect";
 		}
 
 		public TigersClawMaster( Serial serial ) : base( serial )

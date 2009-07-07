@@ -1,8 +1,3 @@
-//Yrenwick Dragon Ultima IX pack, MiniQuest System & IceHound.cs created by Yrenwick Dragon (G. Younk)
-//From the Ultima: Britannia shard  http://www.mac512.com/ultima/britannia/
-//This script was created on 6/02/04
-
-
 using System;
 using System.Collections;
 using Server.Items;
@@ -24,6 +19,7 @@ namespace Server.Mobiles
 			Name = "an ice hound";
 			Body = 98;
 			BaseSoundID = 229;
+			Hue = 1153;
 
 			SetStr( 102, 150 );
 			SetDex( 81, 105 );
@@ -51,7 +47,6 @@ namespace Server.Mobiles
 			Tamable = true;
 			ControlSlots = 1;
 			MinTameSkill = 85.5;
-
 		}
 
 		public override void GenerateLoot()

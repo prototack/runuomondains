@@ -7,12 +7,15 @@ namespace Server.Mobiles
 {
 	[CorpseName( "a black order grand mage corpse" )] 
 	public class DragonsFlameGrandMage : DragonsFlameMage
-	{	
+	{
+		public override bool AlwaysMurderer{ get{ return true; } }
+		public override bool ShowFameTitle{ get{ return false; } }
+
 		[Constructable]
 		public DragonsFlameGrandMage() : base()
 		{
-			Name = "black order grand mage";
-			Title = "of the dragon's flame sect";
+			Name = "Black Order Grand Mage";
+			Title = "of the Dragon's Flame Sect";
 		}
 
 		public DragonsFlameGrandMage( Serial serial ) : base( serial )
