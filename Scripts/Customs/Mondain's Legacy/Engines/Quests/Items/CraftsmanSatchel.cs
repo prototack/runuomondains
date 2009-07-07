@@ -24,17 +24,17 @@ namespace Server.Items
 			{				
 				if ( 0.25 > Utility.RandomDouble() && !talisman )
 				{
-					AddItem( new RandomTalisman() );
+					DropItem( new RandomTalisman() );
 					talisman = true;					
 				}
 				else if ( 0.4 > Utility.RandomDouble() && !equipment )
 				{
-					AddItem( RandomItem() );		
+					DropItem( RandomItem() );		
 					equipment = true;		
 				}
 				else if ( 0.88 > Utility.RandomDouble() && !jewlery )
 				{
-					AddItem( Reward.Jewlery() );
+					DropItem( Reward.Jewlery() );
 					jewlery = true;
 				}
 			}
@@ -71,10 +71,10 @@ namespace Server.Items
 		public FletcherCraftsmanSatchel() : base()
 		{			
 			if ( Items.Count < 2 && 0.5 > Utility.RandomDouble() )
-				AddItem( Reward.FletcherRecipe() );
+				DropItem( Reward.FletcherRecipe() );
 				
 			if ( 0.01 > Utility.RandomDouble() )
-				AddItem( Reward.FletcherRunic() );
+				DropItem( Reward.FletcherRunic() );
 		}
 		
 		public FletcherCraftsmanSatchel( Serial serial ) : base( serial )
@@ -107,7 +107,7 @@ namespace Server.Items
 		public TailorsCraftsmanSatchel() : base()
 		{			
 			if ( Items.Count < 2 && 0.5 > Utility.RandomDouble() )
-				AddItem( Reward.TailorRecipe() );
+				DropItem( Reward.TailorRecipe() );
 		}
 		
 		public TailorsCraftsmanSatchel( Serial serial ) : base( serial )
@@ -140,7 +140,7 @@ namespace Server.Items
 		public SmithsCraftsmanSatchel() : base()
 		{			
 			if ( Items.Count < 2 && 0.5 > Utility.RandomDouble() )
-				AddItem( Reward.SmithRecipe() );
+				DropItem( Reward.SmithRecipe() );
 		}
 		
 		public SmithsCraftsmanSatchel( Serial serial ) : base( serial )
@@ -173,7 +173,7 @@ namespace Server.Items
 		public TinkersCraftsmanSatchel() : base()
 		{			
 			if ( Items.Count < 2 && 0.5 > Utility.RandomDouble() )
-				AddItem( Reward.TinkerRecipe() );
+				DropItem( Reward.TinkerRecipe() );
 		}
 		
 		public TinkersCraftsmanSatchel( Serial serial ) : base( serial )
@@ -206,10 +206,10 @@ namespace Server.Items
 		public CarpentersCraftsmanSatchel() : base()
 		{			
 			if ( Items.Count < 2 && 0.5 > Utility.RandomDouble() )
-				AddItem( Reward.CarpRecipe() );				
+				DropItem( Reward.CarpRecipe() );				
 			
 			if ( 0.01 > Utility.RandomDouble() )
-				AddItem( Reward.CarpRunic() );
+				DropItem( Reward.CarpRunic() );
 		}
 		
 		public CarpentersCraftsmanSatchel( Serial serial ) : base( serial )
