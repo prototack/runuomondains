@@ -16,15 +16,15 @@ namespace Server.Items
 			while ( Items.Count < ItemAmount )
 			{				
 				if ( 0.05 > Utility.RandomDouble() ) // check
-					AddItem( new RandomTalisman() );
+					DropItem( new RandomTalisman() );
 				else 
 				{
 					switch ( Utility.Random( 4 ) )
 					{
-						case 0: AddItem( Reward.Armor() ); break;	
-						case 1: AddItem( Reward.RangedWeapon() ); break;
-						case 2: AddItem( Reward.Weapon() ); break;
-						case 3: AddItem( Reward.Jewlery() ); break;
+						case 0: DropItem( Reward.Armor() ); break;	
+						case 1: DropItem( Reward.RangedWeapon() ); break;
+						case 2: DropItem( Reward.Weapon() ); break;
+						case 3: DropItem( Reward.Jewlery() ); break;
 					}
 				}
 			}
