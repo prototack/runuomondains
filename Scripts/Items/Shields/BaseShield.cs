@@ -205,14 +205,14 @@ namespace Server.Items
 
 			if ( makersMark )
 				Crafter = from;
-			
-			if ( craftItem.ForceNonExceptional )
+
+			if ( !craftItem.ForceNonExceptional )
 			{
 				Type resourceType = typeRes;
-	
+
 				if ( resourceType == null )
 					resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
-	
+
 				Resource = CraftResources.GetFromType( resourceType );
 			}
 
