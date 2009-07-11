@@ -11,6 +11,7 @@ using Server.Factions;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using Server.Spells;
+using Server.Engines.Quests;
 
 namespace Server.Misc
 {
@@ -301,7 +302,9 @@ namespace Server.Misc
 				if ( Core.ML && master != null )
 				{
 					if( source == master && CheckAggressor( target.Aggressors, source ) )
-						return Notoriety.CanBeAttacked;
+                        return Notoriety.CanBeAttacked;
+                    else if (bc is BaseEscortable || bc is BaseEscort)
+                        return Notoriety.Innocent;
 					else
 						return MobileNotoriety( source, master );
 				}

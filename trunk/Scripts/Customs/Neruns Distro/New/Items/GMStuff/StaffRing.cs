@@ -21,8 +21,8 @@ namespace Server.Items
 			Attributes.RegenStam = 200;
 			Attributes.RegenMana = 200;
 			Attributes.SpellDamage = 500;
-			Attributes.CastRecovery = 12;
-			Attributes.CastSpeed = 12;
+			Attributes.CastRecovery = 100;
+			Attributes.CastSpeed = 100;
 			LootType = LootType.Blessed;
 		}
 

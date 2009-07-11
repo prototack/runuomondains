@@ -93,7 +93,12 @@ namespace Server.Engines.Quests
 			base.OnThink();
 			
 			CheckAtDestination();
-		}
+        }
+
+        public override bool CanBeDamaged()
+        {
+            return true;
+        }
 
 		public override void InitBody()
 		{
