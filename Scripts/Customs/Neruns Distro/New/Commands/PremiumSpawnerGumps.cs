@@ -1,3 +1,5 @@
+// By Nerun
+// Engine 5.1.5
 using System;
 using System.Collections;
 using System.IO;
@@ -80,8 +82,8 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 170, 210, 5054 );
 
-			AddTextEntry( 15, 30, 120, 20, 0, 0, @"region to save");
 			AddImageTiled( 15, 30, 120, 20, 3004 );
+			AddTextEntry( 15, 30, 120, 20, 0, 0, @"region to save");
 			AddLabel( 15, 10, 52, "Enter a Region:" );
 			AddButton( 140, 32, 0x15E1, 0x15E5, 101, GumpButtonType.Reply, 0 );
 
@@ -136,8 +138,8 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 170, 210, 5054 );
 
-			AddTextEntry( 15, 30, 120, 20, 0, 0, @"region to remove");
 			AddImageTiled( 15, 30, 120, 20, 3004 );
+			AddTextEntry( 15, 30, 120, 20, 0, 0, @"region to remove");
 			AddLabel( 15, 10, 52, "Enter a Region:" );
 			AddButton( 140, 32, 0x15E1, 0x15E5, 101, GumpButtonType.Reply, 0 );
 
@@ -192,8 +194,8 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 170, 210, 5054 );
 
-			AddTextEntry( 15, 30, 120, 20, 0, 0, @"SpawnID to remove");
 			AddImageTiled( 15, 30, 120, 20, 3004 );
+			AddTextEntry( 15, 30, 120, 20, 0, 0, @"SpawnID to remove");
 			AddLabel( 15, 10, 52, "Enter a SpawnID:" );
 			AddButton( 140, 32, 0x15E1, 0x15E5, 101, GumpButtonType.Reply, 0 );
 
@@ -259,17 +261,17 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 170, 235, 5054 );
 
-			AddTextEntry( 15, 30, 37, 20, 0, 0, @"X1");
 			AddImageTiled( 15, 30, 37, 20, 3004 );
+			AddTextEntry( 15, 30, 37, 20, 0, 0, @"X1");
 
-			AddTextEntry( 57, 30, 37, 20, 0, 1, @"Y1");
 			AddImageTiled( 57, 30, 37, 20, 3004 );
+			AddTextEntry( 57, 30, 37, 20, 0, 1, @"Y1");
 
-			AddTextEntry( 15, 55, 37, 20, 0, 2, @"X2");
 			AddImageTiled( 15, 55, 37, 20, 3004 );
+			AddTextEntry( 15, 55, 37, 20, 0, 2, @"X2");
 
-			AddTextEntry( 57, 55, 37, 20, 0, 3, @"Y2");
 			AddImageTiled( 57, 55, 37, 20, 3004 );
+			AddTextEntry( 57, 55, 37, 20, 0, 3, @"Y2");
 
 			AddLabel( 15, 10, 52, "Enter Coordinates:" );
 			AddButton( 140, 32, 0x15E1, 0x15E5, 101, GumpButtonType.Reply, 0 );
@@ -345,17 +347,17 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 170, 235, 5054 );
 
-			AddTextEntry( 15, 30, 37, 20, 0, 0, @"X1");
 			AddImageTiled( 15, 30, 37, 20, 3004 );
+			AddTextEntry( 15, 30, 37, 20, 0, 0, @"X1");
 
-			AddTextEntry( 57, 30, 37, 20, 0, 1, @"Y1");
 			AddImageTiled( 57, 30, 37, 20, 3004 );
+			AddTextEntry( 57, 30, 37, 20, 0, 1, @"Y1");
 
-			AddTextEntry( 15, 55, 37, 20, 0, 2, @"X2");
 			AddImageTiled( 15, 55, 37, 20, 3004 );
+			AddTextEntry( 15, 55, 37, 20, 0, 2, @"X2");
 
-			AddTextEntry( 57, 55, 37, 20, 0, 3, @"Y2");
 			AddImageTiled( 57, 55, 37, 20, 3004 );
+			AddTextEntry( 57, 55, 37, 20, 0, 3, @"Y2");
 
 			AddLabel( 15, 10, 52, "Enter Coordinates:" );
 			AddButton( 140, 32, 0x15E1, 0x15E5, 101, GumpButtonType.Reply, 0 );

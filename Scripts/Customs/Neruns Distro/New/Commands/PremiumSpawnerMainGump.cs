@@ -53,7 +53,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.1.3", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.1.5", true, false );
 
 
 			AddBlackAlpha( 8, 58, 250, 50 );
@@ -108,7 +108,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.1.3", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.1.5", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 110 );
 
@@ -166,7 +166,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.1.3", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.1.5", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 50 );
 
@@ -372,7 +372,7 @@ namespace Server.Gumps
 				case 10301:
 				{
 					string prefix = Server.Commands.CommandSystem.Prefix;
-					CommandSystem.Handle( from, String.Format( "{0}global set smartprs 1 where premiumspawner", prefix ) );
+					CommandSystem.Handle( from, String.Format( "{0}global set smartprs true where premiumspawner", prefix ) );
 					CommandSystem.Handle( from, String.Format( "{0}spawner", prefix ) );
 
 					ArrayList pri = new ArrayList();
@@ -395,7 +395,7 @@ namespace Server.Gumps
 				case 10302:
 				{
 					string prefix = Server.Commands.CommandSystem.Prefix;
-					CommandSystem.Handle( from, String.Format( "{0}global set smartprs 0 where premiumspawner", prefix ) );
+					CommandSystem.Handle( from, String.Format( "{0}global set smartprs false where premiumspawner", prefix ) );
 					CommandSystem.Handle( from, String.Format( "{0}spawner", prefix ) );
 
 					ArrayList pri = new ArrayList();

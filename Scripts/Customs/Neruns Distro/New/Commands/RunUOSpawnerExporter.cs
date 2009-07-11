@@ -32,10 +32,10 @@ namespace Server.Commands
 			ArrayList list = new ArrayList();
 			ArrayList entries = new ArrayList();
 
-			if ( !Directory.Exists( @".\Spawnexport\" ) )
-				Directory.CreateDirectory( @".\Spawnexport\" );
+			if ( !Directory.Exists( @".\Export\" ) )
+				Directory.CreateDirectory( @".\Export\" );
 
-			using ( StreamWriter op = new StreamWriter( String.Format( @".\Spawnexport\{0}.map", map ) ) )
+			using ( StreamWriter op = new StreamWriter( String.Format( @".\Export\{0}.map", map ) ) )
 			{
 
 				if ( map == null || map == Map.Internal )

@@ -122,18 +122,15 @@ namespace Server.Commands
 							Spellbook book2 = new NecromancerSpellbook( (ulong)0xffff );
 							Spellbook book3 = new BookOfChivalry();
 							Spellbook book4 = new BookOfBushido();
-							Spellbook book5 = new BookOfNinjitsu();
+                            Spellbook book5 = new BookOfNinjitsu();
+
+                            PackItem(new GMHidingStone());
 
 							PackItem( book1 );
 							PackItem( book2 );
 							PackItem( book3 );
 							PackItem( book4 );
 							PackItem( book5 );
-							PackItem( new PropsStone() );
-							PackItem( new TeleportStone() );
-							PackItem( new GoStone() );
-							PackItem( new GMHidingStone() );
-							PackItem( new SpeedStone() );
 							from.RawStr = 100;
 							from.RawDex = 100;
 							from.RawInt = 100;
@@ -154,7 +151,6 @@ namespace Server.Commands
 
 						if(from.AccessLevel == AccessLevel.GameMaster)
 						{
-							PackItem( new RemoveStone() );
 							EquipItem( new GMRobe() );
 							EquipItem( new ThighBoots( 39 ) );
 							from.Title = "[GM]";
@@ -162,7 +158,6 @@ namespace Server.Commands
 
 						if(from.AccessLevel == AccessLevel.Seer)
 						{
-							PackItem( new RemoveStone() );
 							EquipItem( new SeerRobe() );
 							EquipItem( new ThighBoots( 467 ) );
 							from.Title = "[Seer]";
@@ -170,9 +165,6 @@ namespace Server.Commands
 
 						if(from.AccessLevel == AccessLevel.Administrator)
 						{
-							PackItem( new RemoveStone() );
-							PackItem( new PremiumStone() );
-							PackItem( new AdminStone() );
 							EquipItem( new AdminRobe() );
 							EquipItem( new ThighBoots( 1001 ) );
 							from.Title = "[Admin]";
@@ -180,9 +172,6 @@ namespace Server.Commands
 
 						if(from.AccessLevel == AccessLevel.Developer)
 						{
-							PackItem( new RemoveStone() );
-							PackItem( new PremiumStone() );
-							PackItem( new AdminStone() );
 							EquipItem( new AdminRobe() );
 							EquipItem( new ThighBoots( 1001 ) );
 							from.Title = "[Developer]";
@@ -190,9 +179,6 @@ namespace Server.Commands
 
 						if(from.AccessLevel == AccessLevel.Owner)
 						{
-							PackItem( new RemoveStone() );
-							PackItem( new PremiumStone() );
-							PackItem( new AdminStone() );
 							EquipItem( new AdminRobe() );
 							EquipItem( new ThighBoots( 1001 ) );
 							from.Title = "[Owner]";

@@ -1,6 +1,6 @@
 ///////////////////////////
 //       By Nerun        //
-//    Engine v5.0.6      //
+//    Engine v5.1.4      //
 ///////////////////////////
 
 using System;
@@ -17,8 +17,6 @@ namespace Server.Mobiles
 		private int m_HomeRange;
 		private int m_SpawnRange;
 		private int m_SpawnID;
-		private int m_DeSpawn;
-		private int m_PlayerRangeSensitive;
 		private int m_Count;
 		private int m_SubCountA;
 		private int m_SubCountB;
@@ -43,6 +41,8 @@ namespace Server.Mobiles
 		private InternalTimer m_Timer;
 		private bool m_Running;
 		private bool m_Group;
+		private bool m_PlayerRangeSensitive;
+		private bool m_DeSpawn;
 		private WayPoint m_WayPoint;
 
 		public bool IsFull{ get{ return ( m_Creatures != null && m_Creatures.Count >= m_Count ); } }
@@ -223,14 +223,14 @@ namespace Server.Mobiles
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int DeSpawned
+		public bool DeSpawned
 		{
 			get { return m_DeSpawn; }
 			set { m_DeSpawn = value; InvalidateProperties(); }
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int SmartPRS
+		public bool SmartPRS
 		{
 			get { return m_PlayerRangeSensitive; }
 			set { m_PlayerRangeSensitive = value; InvalidateProperties(); }
@@ -357,7 +357,7 @@ namespace Server.Mobiles
 			m_HomeRange = homeRange;
 			m_SpawnRange = ((spawnRange > homeRange)? homeRange : spawnRange);
 			m_SpawnID = spawnID;
-			m_PlayerRangeSensitive = 1;
+			m_PlayerRangeSensitive = false; //SmartPRS
 			m_CreaturesName = creaturesName;
 			m_SubSpawnerA = subSpawnerAA;
 			m_SubSpawnerB = subSpawnerBB;
@@ -760,7 +760,7 @@ namespace Server.Mobiles
 // SMART PLAYER RANGE SENSITIVE
 		public void Spawn()
 		{
-			if ( this.SmartPRS != 0 )
+			if ( this.SmartPRS == true ) // SmartPRS on
 			{
 				ArrayList mobs = new ArrayList();
 				ArrayList mobsdel = new ArrayList();
@@ -768,7 +768,7 @@ namespace Server.Mobiles
 
 				int SpawnerAppear = this.SpawnRange + 60; //60 = squares traveled to horse in 5 seconds
 
-				// Disable/Uncomment: Vendors (125, 225, 312, 405, 504), TownsPeople (123, 223)
+				// If They are not Vendors (125, 225, 312, 405, 504) or TownsPeople (123, 223)
 
 				if ( this.SpawnID != 125 && this.SpawnID != 225 && this.SpawnID != 312 && this.SpawnID != 405 && this.SpawnID != 504 && this.SpawnID != 123 && this.SpawnID != 223 )
 				{ 
@@ -782,9 +782,9 @@ namespace Server.Mobiles
 
 					if ( mobs.Count > 0 ) //there is somebody in the SpawnerAppear range
 					{
-						if( this.DeSpawned == 1 ) // there isn't creature spawned, spawn all
+						if( this.DeSpawned == true ) // there isn't creature spawned, spawn all
 						{
-							this.DeSpawned = 0;
+							this.DeSpawned = false;
 
 							for ( int i = 0; i <= this.Count; ++i ) // while i <= number of creatures to spawn, do what has in the brackets
 							{
@@ -823,9 +823,9 @@ namespace Server.Mobiles
 					{
 						this.NextSpawn = TimeSpan.FromSeconds( 5 );
 
-						if ( this.DeSpawned != 1 ) // there is creature spawned
+						if ( this.DeSpawned == false ) // there is creature spawned
 						{
-							this.DeSpawned = 1; // seted to "no one"
+							this.DeSpawned = true; // set to "no one"
 
 							foreach ( Mobile m in this.GetMobilesInRange( SpawnerAppear ) )
 							{
@@ -911,7 +911,7 @@ namespace Server.Mobiles
 					}
 				}
 
-				else
+				else // They are Vendors (125, 225, 312, 405, 504) or TownsPeople (123, 223)
 				{
 					if ( m_CreaturesName.Count > 0)
 						Spawn( Utility.Random( m_CreaturesName.Count ) );
@@ -928,9 +928,9 @@ namespace Server.Mobiles
 				}
 			}
 
-			else
+			else  // SmartPRS off
 			{
-				this.SmartPRS = 0;
+				this.SmartPRS = false;
 
 				if ( m_CreaturesName.Count > 0 )
 					Spawn( Utility.Random( m_CreaturesName.Count ) );
@@ -2127,8 +2127,8 @@ namespace Server.Mobiles
 				{
 					m_SpawnRange = reader.ReadInt();
 					m_SpawnID = reader.ReadInt();
-					m_DeSpawn = reader.ReadInt();
-					m_PlayerRangeSensitive = reader.ReadInt();
+					m_DeSpawn = reader.ReadBool();
+					m_PlayerRangeSensitive = reader.ReadBool();
 					m_SubCountA = reader.ReadInt();
 					m_SubCountB = reader.ReadInt();
 					m_SubCountC = reader.ReadInt();
