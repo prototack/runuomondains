@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class NecromancerShroud : BaseArmor
+    public class NecromancerShroud : BaseArmor, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094913; } } // A Necromancer Shroud [Replica]
 

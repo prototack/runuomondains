@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class ShroudOfDeceit : BoneChest
+    public class ShroudOfDeceit : BoneChest, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094914; } } // Shroud of Deceit [Replica]
 

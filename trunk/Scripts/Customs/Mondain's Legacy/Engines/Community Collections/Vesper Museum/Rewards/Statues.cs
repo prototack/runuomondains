@@ -20,7 +20,7 @@ namespace Server.Items
 		{
 			if ( TurnedOn && IsLockedDown && (!m.Hidden || m.AccessLevel == AccessLevel.Player) && Utility.InRange( m.Location, this.Location, 2 ) && !Utility.InRange( oldLocation, this.Location, 2 ) )
 			{
-				PublicOverheadMessage( MessageType.Regular, 0x3B2, Utility.RandomMinMax( 1073266, 1073286 ) );
+				PublicOverheadMessage( MessageType.Regular, 0x3B2, Utility.RandomMinMax( 1073266, 1073285 ) );
 				Effects.PlaySound( Location, Map, Utility.Random( 0x17 ) );
 			}
 				

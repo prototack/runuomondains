@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class HelmOfSwiftness : WingedHelm
+    public class HelmOfSwiftness : WingedHelm, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075037; } } // Helm of Swiftness
 		

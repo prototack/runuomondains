@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class BraveKnight : Katana
+    public class BraveKnight : Katana, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094909; } } // Brave Knight of The Britannia [Replica]
 

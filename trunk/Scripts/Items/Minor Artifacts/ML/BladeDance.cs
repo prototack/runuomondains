@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class BladeDance : RuneBlade
+    public class BladeDance : RuneBlade, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075033; } } // Blade Dance
 

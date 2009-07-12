@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class LegendaryDetectiveBoots : Boots
+    public class LegendaryDetectiveBoots : Boots, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094894; } } // Legendary Detective of the Royal Guard [Replica]
 
@@ -32,7 +32,7 @@ namespace Server.Items
 		}
 	}
 
-    public class ElderDetectiveBoots : Boots
+    public class ElderDetectiveBoots : Boots, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094895; } } // Elder Detective of the Royal Guard [Replica]
 
@@ -62,7 +62,7 @@ namespace Server.Items
         }
     }
 
-    public class MythicalDetectiveBoots : Boots
+    public class MythicalDetectiveBoots : Boots, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094896; } } // Mythical Detective of the Royal Guard [Replica]
 

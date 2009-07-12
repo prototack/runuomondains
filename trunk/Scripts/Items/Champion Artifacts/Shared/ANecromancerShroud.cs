@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class ANecromancerShroud : Robe
+    public class ANecromancerShroud : Robe, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094913; } } // A Necromancer Shroud [Replica]
 
@@ -17,7 +17,7 @@ namespace Server.Items
 		[Constructable]
 		public ANecromancerShroud()
 		{
-			Hue = 0x1;
+            Hue = 0x7E3;
 		}
 
 		public ANecromancerShroud( Serial serial ) : base( serial )

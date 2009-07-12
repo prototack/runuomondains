@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class QuiverOfRage : BaseQuiver
+    public class QuiverOfRage : BaseQuiver, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075038; } } // Quiver of Rage
 

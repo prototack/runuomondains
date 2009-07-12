@@ -13,7 +13,7 @@ namespace Server.Items
         public HitchingRope()
             : base(0x14F8)
         {
-            Hue = 0x41F;
+            Hue = 0x41F; // guessed
 
             Weight = 5;
         }

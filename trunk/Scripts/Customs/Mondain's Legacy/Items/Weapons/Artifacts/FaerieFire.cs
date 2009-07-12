@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class FaerieFire : ElvenCompositeLongbow
+    public class FaerieFire : ElvenCompositeLongbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072908; } } // Faerie Fire
 

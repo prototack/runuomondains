@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class Calm : Halberd
+    public class Calm : Halberd, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094915; } } // Calm [Replica]
 

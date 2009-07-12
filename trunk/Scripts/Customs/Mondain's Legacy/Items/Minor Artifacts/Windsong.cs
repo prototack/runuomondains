@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class Windsong : MagicalShortbow
+    public class Windsong : MagicalShortbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075031; } } // Windsong
 

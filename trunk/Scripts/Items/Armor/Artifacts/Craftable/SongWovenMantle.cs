@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class SongWovenMantle : LeafArms
+    public class SongWovenMantle : LeafArms, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072931; } } // Song Woven Mantle
 

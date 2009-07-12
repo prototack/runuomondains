@@ -78,7 +78,9 @@ namespace Server
 					typeof( OrcCaptain ),
 					typeof( OrcishLord ),
 					typeof( OrcishMage ),
-					typeof( SpawnedOrcishLord )
+					typeof( SpawnedOrcishLord ),
+					typeof( OrcChopper ),
+					typeof( OrcScout )
 				},
 				new Type[]
 				{

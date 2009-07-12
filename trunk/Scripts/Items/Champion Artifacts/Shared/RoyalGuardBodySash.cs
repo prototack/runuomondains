@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class RoyalGuardBodySash : BaseArmor
+    public class RoyalGuardBodySash : BaseArmor, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094910; } } // Lieutenant of the Britannian Royal Guard [Replica]
 

@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class MarkOfTravesty : SavageMask
+    public class MarkOfTravesty : SavageMask, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1074493; } } // Mark of Travesty
 		

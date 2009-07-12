@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-	public class CrystallineRing : GoldRing
+    public class CrystallineRing : GoldRing, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075096; } } // Crystalline Ring
 

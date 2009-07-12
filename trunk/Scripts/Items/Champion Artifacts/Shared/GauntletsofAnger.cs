@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class GauntletsofAnger : PlateGloves
+    public class GauntletsofAnger : PlateGloves, ITokunoDyable
 	{
         public override int LabelNumber { get { return 1094902; } } // Gauntlets of Anger [Replica]
 

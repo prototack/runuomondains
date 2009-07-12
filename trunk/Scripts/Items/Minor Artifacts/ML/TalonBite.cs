@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class TalonBite : OrnateAxe
+    public class TalonBite : OrnateAxe, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075029; } } // Talon Bite
 

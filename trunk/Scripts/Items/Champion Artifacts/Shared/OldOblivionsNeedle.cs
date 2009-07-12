@@ -5,7 +5,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class OblivionsNeedle : Dagger
+    public class OblivionsNeedle : Dagger, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094916; } } // Oblivion's Needle [Replica]
 

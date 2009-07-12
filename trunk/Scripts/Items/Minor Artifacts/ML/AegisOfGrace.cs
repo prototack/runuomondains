@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class AegisOfGrace : DragonHelm
+    public class AegisOfGrace : DragonHelm, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075047; } } // Aegis of Grace
 

@@ -12,20 +12,20 @@ using Server.Multis;
 
 namespace Server.Items
 {
-    [FlipableAttribute( 0x14E7, 0x14E8 )]
+    [FlipableAttribute(0x14E7, 0x14E8)]
     public class HitchingPost : Item, ISecurable
     {
         public override int LabelNumber { get { return 1071127; } } // hitching post (replica)
 
         private int m_UsesRemaining;
         private int m_Charges;
-        private SecureLevel m_Level = SecureLevel.Owner;
+        private SecureLevel m_Level;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
             get { return m_Level; }
-            set { m_Level = value; InvalidateProperties(); }
+            set { m_Level = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -46,17 +46,19 @@ namespace Server.Items
         public HitchingPost()
             : base(0x14E7)
         {
-            Movable = true;
+            Weight = 10;
 
             Charges = 2;
             UsesRemaining = 15;
+
+            m_Level = SecureLevel.CoOwners;
         }
 
-        public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
-	    {
-		base.GetContextMenuEntries( from, list );
-		SetSecureLevelEntry.AddTo( from, this, list );
-	    }
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+            SetSecureLevelEntry.AddTo(from, this, list);
+        }
 
         public HitchingPost(Serial serial)
             : base(serial)
@@ -414,18 +416,18 @@ namespace Server.Items
 
             return (house != null && house.IsOwner(mob));
         }
-		public bool CheckAccess( Mobile m )
-		{
-			if ( !IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster )
-				return true;
+        public bool CheckAccess(Mobile m)
+        {
+            if (!IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster)
+                return true;
 
-			BaseHouse house = BaseHouse.FindHouseAt( this );
+            BaseHouse house = BaseHouse.FindHouseAt(this);
 
-			if ( house != null && house.IsAosRules && (house.Public ? house.IsBanned( m ) : !house.HasAccess( m )) )
-				return false;
+            if (house != null && house.IsAosRules && (house.Public ? house.IsBanned(m) : !house.HasAccess(m)))
+                return false;
 
-			return ( house != null && house.HasSecureAccess( m, m_Level ) );
-		}
+            return (house != null && house.HasSecureAccess(m, m_Level));
+        }
 
         public override bool HandlesOnSpeech { get { return true; } }
 
@@ -459,7 +461,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)3); // version
-	
+
             writer.Write((int)m_Level);
             writer.Write((int)m_UsesRemaining);
             writer.Write((int)m_Charges);
@@ -470,6 +472,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Weight == 1)
+                Weight = 10;
 
             switch (version)
             {

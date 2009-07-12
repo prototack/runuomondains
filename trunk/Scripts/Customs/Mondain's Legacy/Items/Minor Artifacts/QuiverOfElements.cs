@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class QuiverOfElements : BaseQuiver
+    public class QuiverOfElements : BaseQuiver, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075040; } } // Quiver of the Elements
 
