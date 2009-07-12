@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class GladiatorsCollar : PlateGorget
+    public class GladiatorsCollar : PlateGorget, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094917; } } // Gladiator's Collar [Replica]
 

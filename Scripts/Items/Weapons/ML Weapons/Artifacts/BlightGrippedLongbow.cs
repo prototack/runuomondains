@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class BlightGrippedLongbow : ElvenCompositeLongbow
+    public class BlightGrippedLongbow : ElvenCompositeLongbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072907; } } // Blight Gripped Longbow
 

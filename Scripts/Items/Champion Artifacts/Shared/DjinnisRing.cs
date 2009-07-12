@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class NewDjinnisRing : SilverRing
+    public class NewDjinnisRing : SilverRing, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094927; } } // Djinni's Ring [Replica]
 

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-	public class EssenceOfBattle : GoldRing
+    public class EssenceOfBattle : GoldRing, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072935; } } // Essence of Battle
 

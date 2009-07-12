@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class NewRoyalGuardSurvivalKnife : SkinningKnife
+    public class NewRoyalGuardSurvivalKnife : SkinningKnife, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094918; } } // Royal Guard Survival Knife [Replica]
 

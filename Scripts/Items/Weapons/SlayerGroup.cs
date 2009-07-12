@@ -67,11 +67,11 @@ namespace Server.Items
 
 			humanoid.Opposition = new SlayerGroup[]{ undead };
 			humanoid.FoundOn = new Type[]{ typeof( BoneKnight ), typeof( Lich ), typeof( LichLord ) };
-			humanoid.Super = new SlayerEntry( SlayerName.Repond, typeof( ArcticOgreLord ), typeof( Cyclops ), typeof( Ettin ), typeof( EvilMage ), typeof( EvilMageLord ), typeof( FrostTroll ), typeof( MeerCaptain ), typeof( MeerEternal ), typeof( MeerMage ), typeof( MeerWarrior ), typeof( Ogre ), typeof( OgreLord ), typeof( Orc ), typeof( OrcBomber ), typeof( OrcBrute ), typeof( OrcCaptain ), /*typeof( OrcChopper ), typeof( OrcScout ),*/ typeof( OrcishLord ), typeof( OrcishMage ), typeof( Ratman ), typeof( RatmanArcher ), typeof( RatmanMage ), typeof( SavageRider ), typeof( SavageShaman ), typeof( Savage ), typeof( Titan ), typeof( Troll ), /* Mondain's Legacy */ typeof( Troglodyte ), typeof( MougGuur ), typeof( Chiikkaha ), typeof( Minotaur ) /* End */ );
+			humanoid.Super = new SlayerEntry( SlayerName.Repond, typeof( ArcticOgreLord ), typeof( Cyclops ), typeof( Ettin ), typeof( EvilMage ), typeof( EvilMageLord ), typeof( FrostTroll ), typeof( MeerCaptain ), typeof( MeerEternal ), typeof( MeerMage ), typeof( MeerWarrior ), typeof( Ogre ), typeof( OgreLord ), typeof( Orc ), typeof( OrcBomber ), typeof( OrcBrute ), typeof( OrcCaptain ), typeof( OrcChopper ), typeof( OrcScout ), typeof( OrcishLord ), typeof( OrcishMage ), typeof( Ratman ), typeof( RatmanArcher ), typeof( RatmanMage ), typeof( SavageRider ), typeof( SavageShaman ), typeof( Savage ), typeof( Titan ), typeof( Troll ), /* Mondain's Legacy */ typeof( Troglodyte ), typeof( MougGuur ), typeof( Chiikkaha ), typeof( Minotaur ) /* End */ );
 			humanoid.Entries = new SlayerEntry[]
 				{
 					new SlayerEntry( SlayerName.OgreTrashing, typeof( Ogre ), typeof( OgreLord ), typeof( ArcticOgreLord ) ),
-					new SlayerEntry( SlayerName.OrcSlaying, typeof( Orc ), typeof( OrcBomber ), typeof( OrcBrute ), typeof( OrcCaptain ),/* typeof( OrcChopper ), typeof( OrcScout ),*/ typeof( OrcishLord ), typeof( OrcishMage ) ),
+					new SlayerEntry( SlayerName.OrcSlaying, typeof( Orc ), typeof( OrcBomber ), typeof( OrcBrute ), typeof( OrcCaptain ), typeof( OrcChopper ), typeof( OrcScout ), typeof( OrcishLord ), typeof( OrcishMage ) ),
 					new SlayerEntry( SlayerName.TrollSlaughter, typeof( Troll ), typeof( FrostTroll ) )
 				};
 

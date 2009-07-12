@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class Pacify : Pike
+    public class Pacify : Pike, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094929; } } // Pacify [Replica]
 

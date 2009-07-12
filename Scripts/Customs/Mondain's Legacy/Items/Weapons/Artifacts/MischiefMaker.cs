@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class MischiefMaker : MagicalShortbow
+    public class MischiefMaker : MagicalShortbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072910; } } // Mischief Maker
 

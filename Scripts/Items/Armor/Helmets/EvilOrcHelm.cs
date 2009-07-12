@@ -1,0 +1,46 @@
+using System;
+using Server;
+
+namespace Server.Items
+{
+	public class EvilOrcHelm : OrcHelm
+	{
+        public override int LabelNumber { get { return 1062021; } } //an Evil Orc Helm
+
+		public override int BasePhysicalResistance{ get{ return 3; } }
+		public override int BaseFireResistance{ get{ return 1; } }
+		public override int BaseColdResistance{ get{ return 3; } }
+		public override int BasePoisonResistance{ get{ return 3; } }
+		public override int BaseEnergyResistance{ get{ return 5; } }
+        
+		[Constructable]
+		public EvilOrcHelm()
+		{
+			Hue = 0x96D;
+			Attributes.BonusStr = 10;
+            Attributes.BonusDex = -10;
+            Attributes.BonusInt = -10;
+			
+		}
+
+        //Todo Karma Loss?
+
+		public EvilOrcHelm( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 );
+		}
+		
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+}

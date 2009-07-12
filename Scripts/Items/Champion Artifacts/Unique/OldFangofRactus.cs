@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class FangofRactus : Kryss
+    public class FangofRactus : Kryss, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094892; } } // Fang of Ractus [Replica]
 

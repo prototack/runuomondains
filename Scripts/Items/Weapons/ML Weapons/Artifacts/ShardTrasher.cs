@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class ShardThrasher : DiamondMace
+    public class ShardThrasher : DiamondMace, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072918; } } // Shard Thrasher
 

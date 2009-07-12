@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class TheRobeOfBritanniaAri : BaseOuterTorso
+    public class TheRobeOfBritanniaAri : BaseOuterTorso, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094931; } } // The Robe of Britannia "Ari" [Replica]
 

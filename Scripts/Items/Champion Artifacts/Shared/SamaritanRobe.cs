@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class SamaritanRobe : Robe
+    public class SamaritanRobe : Robe, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094926; } } // Good Samaritan of Britannia [Replica]
 

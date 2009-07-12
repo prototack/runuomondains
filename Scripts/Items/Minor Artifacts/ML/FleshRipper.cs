@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class FleshRipper : AssassinSpike
+    public class FleshRipper : AssassinSpike, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075045; } } // Flesh Ripper
 

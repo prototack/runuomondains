@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class PadsOfTheCuSidhe : FurBoots
+    public class PadsOfTheCuSidhe : FurBoots, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075048; } } // Pads of the Cu Sidhe
 

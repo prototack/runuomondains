@@ -234,7 +234,7 @@ namespace Server.Items
     }
 
     [FlipableAttribute(0x3BB6, 0x3BB7)]
-    public class MapofKnownWorld : Item, ISecurable, ITokunoDyable
+    public class MapofKnownWorld : Item, ISecurable
     {
         private SecureLevel m_Level;
 

@@ -4,9 +4,11 @@ using Server;
 namespace Server.Items
 {
 	[Flipable( 0x1F03, 0x1F04 )]
-	public class RobeOfTheEquinox : BaseOuterTorso
+    public class RobeOfTheEquinox : BaseOuterTorso, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075042; } } // Robe of the Equinox
+
+        public override Race RequiredRace { get { return Race.Elf; } }
 
 		[Constructable]
 		public RobeOfTheEquinox() : base( 0x1F04, 0xD6 )
@@ -16,7 +18,6 @@ namespace Server.Items
 			Attributes.Luck = 95;
 
 			// TODO: Supports arcane?
-			// TODO: Elves Only
 		}
 
 		public RobeOfTheEquinox( Serial serial ) : base( serial )

@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class CrownofTalKeesh : Bandana
+    public class CrownofTalKeesh : Bandana, ITokunoDyable
 	{
         public override int LabelNumber { get { return 1094903; } } // Crown of Tal'Keesh [Replica]
 

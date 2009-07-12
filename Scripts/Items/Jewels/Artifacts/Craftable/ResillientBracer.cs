@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-	public class ResilientBracer : GoldBracelet
+    public class ResilientBracer : GoldBracelet, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072933; } } // Resillient Bracer
 

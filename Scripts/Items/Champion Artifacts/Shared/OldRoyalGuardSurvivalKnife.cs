@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class RoyalGuardSurvivalKnife : ButcherKnife
+    public class RoyalGuardSurvivalKnife : ButcherKnife, ITokunoDyable
     {
         public override int LabelNumber { get { return 1094918; } } // Royal Guard Survival Knife [Replica]
 

@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class BrightsightLenses : Glasses
+    public class BrightsightLenses : Glasses, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075039; } } // Brightsight Lenses
 	

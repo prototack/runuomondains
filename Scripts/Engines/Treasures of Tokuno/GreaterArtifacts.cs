@@ -549,6 +549,8 @@ namespace Server.Items
 
 				if( --pigment.UsesRemaining <= 0 )
 					pigment.Delete();
+
+                from.PlaySound(0x23E);
 			}
 		}
 
@@ -587,7 +589,8 @@ namespace Server.Items
 				|| IsInTypeList( t, Paragon.Artifacts )
 				|| IsInTypeList( t, Leviathan.Artifacts )
 				|| IsInTypeList( t, TreasureMapChest.Artifacts )
-				);
+				|| IsInTypeList( t, VirtueArtifactSystem.VirtueArtifacts )
+                );
 		}
 
 		private static bool IsInTypeList( Type t, Type[] list )

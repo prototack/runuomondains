@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class DreadsRevenge : Kryss
+    public class DreadsRevenge : Kryss, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072092; } } // Dread's Revenge
 

@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class SilvanisFeywoodBow : ElvenCompositeLongbow
+    public class SilvanisFeywoodBow : ElvenCompositeLongbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072955; } } // Silvani's Feywood Bow
 

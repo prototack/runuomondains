@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class NewEmbroideredOakLeafCloak : BaseOuterTorso
+    public class NewEmbroideredOakLeafCloak : BaseOuterTorso, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094901; } } // Embroidered Oak Leaf Cloak [Replica]
 

@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class RaedsGlory : WarCleaver
+    public class RaedsGlory : WarCleaver, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075036; } } // Raed's Glory
 

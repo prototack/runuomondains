@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class Bonesmasher : DiamondMace
+    public class Bonesmasher : DiamondMace, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075030; } } // Bonesmasher
 

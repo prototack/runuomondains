@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class ScepterOfTheChief : Scepter
+    public class ScepterOfTheChief : Scepter, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072080; } } // Scepter of the Chief
 

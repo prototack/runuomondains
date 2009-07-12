@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class PhantomStaff : WildStaff
+    public class PhantomStaff : WildStaff, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072919; } } // Phantom Staff
 

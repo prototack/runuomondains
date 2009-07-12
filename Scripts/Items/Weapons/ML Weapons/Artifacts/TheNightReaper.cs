@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class TheNightReaper : RepeatingCrossbow
+    public class TheNightReaper : RepeatingCrossbow, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072912; } } // The Night Reaper
 

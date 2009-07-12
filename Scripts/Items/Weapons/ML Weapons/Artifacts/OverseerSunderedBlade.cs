@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class OverseerSunderedBlade : RadiantScimitar
+    public class OverseerSunderedBlade : RadiantScimitar, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1072920; } } // Overseer Sundered Blade
 

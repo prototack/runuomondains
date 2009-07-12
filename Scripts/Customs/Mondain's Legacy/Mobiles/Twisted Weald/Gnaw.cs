@@ -1,14 +1,15 @@
 using System;
-using Server;
+using System.Collections;
 using Server.Items;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a Gnaw corpse" )]
+    [CorpseName("The remains of Gnaw")]
 	public class Gnaw : BaseCreature
 	{
 		[Constructable]
-		public Gnaw() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.075, 0.015 )
+        public Gnaw()
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
 		{
 			Name = "Gnaw";
 			Body = 23;
@@ -27,22 +28,88 @@ namespace Server.Mobiles
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
-			SetResistance( ResistanceType.Physical, 64, 69 );
-			SetResistance( ResistanceType.Fire, 53, 56 );
-			SetResistance( ResistanceType.Cold, 22, 27 );
-			SetResistance( ResistanceType.Poison, 27, 30 );
-			SetResistance( ResistanceType.Energy, 21, 34 );
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 30, 40);
+            
+            SetSkill(SkillName.MagicResist, 93.6, 112.8);
+            SetSkill(SkillName.Tactics, 89.5, 107.7);
+            SetSkill(SkillName.Wrestling, 117.4, 119.7);
 
-			SetSkill( SkillName.Wrestling, 113.6, 116.5 );
-			SetSkill( SkillName.Tactics, 84.1, 103.2 );
-			SetSkill( SkillName.MagicResist, 96.8, 110.7 );
+            Fame = 12500;
+            Karma = 12500;
+            
+            VirtualArmor = 54;
 		}
-		
+
+        public static double SpeedBuff = 1.20;
+
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.AosFilthyRich, 3 );
 		}
 		
+        		public void SpawnDireWolves( Mobile target )
+		{
+			Map map = this.Map;
+
+			if ( map == null )
+				return;
+
+			int newDireWolves = Utility.RandomMinMax( 3, 5 );
+
+			for ( int i = 0; i < newDireWolves; ++i )
+			{
+				DireWolf DireWolf = new DireWolf();
+
+				DireWolf.Team = this.Team;
+				DireWolf.FightMode = FightMode.Closest;
+
+				bool validLocation = false;
+				Point3D loc = this.Location;
+
+				for ( int j = 0; !validLocation && j < 10; ++j )
+				{
+					int x = X + Utility.Random( 3 ) - 1;
+					int y = Y + Utility.Random( 3 ) - 1;
+					int z = map.GetAverageZ( x, y );
+
+					if ( validLocation = map.CanFit( x, y, this.Z, 16, false, false ) )
+						loc = new Point3D( x, y, Z );
+					else if ( validLocation = map.CanFit( x, y, z, 16, false, false ) )
+						loc = new Point3D( x, y, z );
+				}
+
+				DireWolf.MoveToWorld( loc, map );
+				DireWolf.Combatant = target;
+			}
+		}
+
+		public override void AlterDamageScalarFrom( Mobile caster, ref double scalar )
+		{
+			if ( 0.1 >= Utility.RandomDouble() )
+				SpawnDireWolves( caster );
+		}
+
+		public override void OnGaveMeleeAttack( Mobile defender )
+		{
+			base.OnGaveMeleeAttack( defender );
+
+			defender.Damage( Utility.Random( 20, 10 ), this );
+			defender.Stam -= Utility.Random( 20, 10 );
+			defender.Mana -= Utility.Random( 20, 10 );
+		}
+
+		public override void OnGotMeleeAttack( Mobile attacker )
+		{
+			base.OnGotMeleeAttack( attacker );
+
+			if ( 0.1 >= Utility.RandomDouble() )
+				SpawnDireWolves( attacker );
+		}
+
 		public override bool GivesMinorArtifact{ get{ return true; } }
 		public override int Hides{ get{ return 28; } }	
 		public override int Meat{ get{ return 4; } }	

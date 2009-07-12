@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Items
 {
-	public class FeyLeggings : ChainLegs
+    public class FeyLeggings : ChainLegs, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1075041; } } // Fey Leggings
 
