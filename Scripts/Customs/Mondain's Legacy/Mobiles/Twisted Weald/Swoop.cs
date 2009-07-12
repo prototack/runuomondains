@@ -54,12 +54,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override int GetIdleSound() { return 0x2EF; }
-        public override int GetAttackSound() { return 0x2EE; }
-        public override int GetAngerSound() { return 0x2EF; }
-        public override int GetHurtSound() { return 0x2F1; }
-        public override int GetDeathSound() { return 0x2F2; }
-
         public override bool GivesMinorArtifact { get { return true; } }
         public override int Feathers { get { return 72; } }
         public override int Meat { get { return 1; } }
