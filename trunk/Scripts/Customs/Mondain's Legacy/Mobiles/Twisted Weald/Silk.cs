@@ -27,20 +27,25 @@ namespace Server.Mobiles
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
-			SetResistance( ResistanceType.Physical, 40, 50 );
-			SetResistance( ResistanceType.Fire, 32, 39 );
-			SetResistance( ResistanceType.Cold, 30, 40 );
-			SetResistance( ResistanceType.Poison, 70, 76 );
-			SetResistance( ResistanceType.Energy, 33, 35 );
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 34, 44);
+            SetResistance(ResistanceType.Cold, 36, 46);
+            SetResistance(ResistanceType.Poison, 80, 90);
+            SetResistance(ResistanceType.Energy, 38, 48);
 
 			SetSkill( SkillName.Wrestling, 114.1, 123.7 );
 			SetSkill( SkillName.Tactics, 102.6, 118.3 );
 			SetSkill( SkillName.MagicResist, 78.6, 94.8 );
 			SetSkill( SkillName.Anatomy, 81.3, 105.7 );
 			SetSkill( SkillName.Poisoning, 106.0, 119.2 );
-			
-			PackItem( new SpidersSilk( 5 ) );
-			PackItem( new LesserPoisonPotion() );
+
+            Fame = 7500;
+            Karma = -7500;
+
+            VirtualArmor = 54;
+
+            PackItem(new SpidersSilk(5));
+            PackItem(new GreaterPoisonPotion());
 			PackItem( new LesserPoisonPotion() );
 		}
 

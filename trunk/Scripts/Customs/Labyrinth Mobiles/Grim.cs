@@ -27,6 +27,11 @@ namespace Server.Mobiles
 
 			SetHits( 1762, 2502 );
 
+            SetDamage(17, 25);
+
+            SetDamageType(ResistanceType.Physical, 80);
+            SetDamageType(ResistanceType.Fire, 20);
+
 			SetResistance( ResistanceType.Physical, 55, 60 );
 			SetResistance( ResistanceType.Fire, 62, 68 );
 			SetResistance( ResistanceType.Cold, 52, 57 );
@@ -37,7 +42,17 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 102.8, 120.8 );
 			SetSkill( SkillName.Wrestling, 111.7, 119.2 );
 			SetSkill( SkillName.Anatomy, 105.0, 128.4 );
+
+            Fame = 17500;
+            Karma = -5500;
+            
+            VirtualArmor = 54;
 		}
+        
+        public override bool ReacquireOnMovement{ get{ return true; } }
+		public override bool HasBreath{ get{ return true; } } // fire breath enabled
+		public override int Meat{ get{ return 10; } }
+		public override int Hides{ get{ return 20; } }
 
 		public Grim( Serial serial ) : base( serial )
 		{

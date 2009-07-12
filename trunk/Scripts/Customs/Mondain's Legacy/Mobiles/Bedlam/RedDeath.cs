@@ -17,7 +17,7 @@ namespace Server.Mobiles
 			SetDex( 241, 244 );
 			SetInt( 242, 255 );
 
-			SetHits( 1540, 1605 );
+            SetHits(1520, 1615);
 
 			SetDamage( 25, 29 );
 
@@ -31,8 +31,11 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Wrestling, 121.4, 143.7 );
 			SetSkill( SkillName.Tactics, 120.9, 142.2 );
 			SetSkill( SkillName.MagicResist, 120.1, 142.3 );
-			SetSkill( SkillName.Anatomy, 120.2, 144.0 );	
-			
+			SetSkill( SkillName.Anatomy, 120.2, 144.0 );
+
+            Fame = 12500;
+            Karma = 12500;
+
 			for ( int i = 0; i < 1; i ++ )
 				if ( Utility.RandomBool() )
 					PackNecroScroll( Utility.RandomMinMax( 5, 9 ) );
@@ -59,7 +62,7 @@ namespace Server.Mobiles
 		
 		public override bool GivesMinorArtifact{ get{ return true; } }
 		public override Poison PoisonImmune{ get{ return Poison.Deadly; } }
-		public override bool HasBreath{ get{ return true; } }
+        public override bool HasBreath { get { return true; } }// Change to chaso breath later
 	
 		public RedDeath( Serial serial ) : base( serial )
 		{
