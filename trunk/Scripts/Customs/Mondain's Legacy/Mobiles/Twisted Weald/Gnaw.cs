@@ -5,144 +5,144 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("The remains of Gnaw")]
-	public class Gnaw : BaseCreature
-	{
-		[Constructable]
+    public class Gnaw : BaseCreature
+    {
+        [Constructable]
         public Gnaw()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
-		{
-			Name = "Gnaw";
-			Body = 23;
-			Hue = 0x130;
-			BaseSoundID = 0xE5;
+        {
+            Name = "Gnaw";
+            Body = 23;
+            Hue = 0x130;
+            BaseSoundID = 0xE5;
 
-			SetStr( 151, 172 );
-			SetDex( 124, 145 );
-			SetInt( 60, 86 );
+            SetStr(151, 172);
+            SetDex(124, 145);
+            SetInt(60, 86);
 
-			SetHits( 817, 857 );
-			SetStam( 124, 145 );
-			SetMana( 60, 86 );
+            SetHits(817, 857);
+            SetStam(124, 145);
+            SetMana(60, 86);
 
-			SetDamage( 20, 25 );
+            SetDamage(20, 25);
 
-			SetDamageType( ResistanceType.Physical, 100 );
+            SetDamageType(ResistanceType.Physical, 100);
 
             SetResistance(ResistanceType.Physical, 60, 70);
             SetResistance(ResistanceType.Fire, 50, 60);
             SetResistance(ResistanceType.Cold, 20, 30);
             SetResistance(ResistanceType.Poison, 20, 30);
             SetResistance(ResistanceType.Energy, 30, 40);
-            
+
             SetSkill(SkillName.MagicResist, 93.6, 112.8);
             SetSkill(SkillName.Tactics, 89.5, 107.7);
             SetSkill(SkillName.Wrestling, 117.4, 119.7);
 
             Fame = 12500;
             Karma = 12500;
-            
+
             VirtualArmor = 54;
-		}
+        }
 
         public static double SpeedBuff = 1.20;
 
-		public override void GenerateLoot()
-		{
-			AddLoot( LootPack.AosFilthyRich, 3 );
-		}
-		
-        		public void SpawnDireWolves( Mobile target )
-		{
-			Map map = this.Map;
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.AosFilthyRich, 3);
+        }
 
-			if ( map == null )
-				return;
+        public void SpawnDireWolves(Mobile target)
+        {
+            Map map = this.Map;
 
-			int newDireWolves = Utility.RandomMinMax( 3, 5 );
+            if (map == null)
+                return;
 
-			for ( int i = 0; i < newDireWolves; ++i )
-			{
-				DireWolf DireWolf = new DireWolf();
+            int newDireWolves = Utility.RandomMinMax(3, 5);
 
-				DireWolf.Team = this.Team;
-				DireWolf.FightMode = FightMode.Closest;
+            for (int i = 0; i < newDireWolves; ++i)
+            {
+                DireWolf DireWolf = new DireWolf();
 
-				bool validLocation = false;
-				Point3D loc = this.Location;
+                DireWolf.Team = this.Team;
+                DireWolf.FightMode = FightMode.Closest;
 
-				for ( int j = 0; !validLocation && j < 10; ++j )
-				{
-					int x = X + Utility.Random( 3 ) - 1;
-					int y = Y + Utility.Random( 3 ) - 1;
-					int z = map.GetAverageZ( x, y );
+                bool validLocation = false;
+                Point3D loc = this.Location;
 
-					if ( validLocation = map.CanFit( x, y, this.Z, 16, false, false ) )
-						loc = new Point3D( x, y, Z );
-					else if ( validLocation = map.CanFit( x, y, z, 16, false, false ) )
-						loc = new Point3D( x, y, z );
-				}
+                for (int j = 0; !validLocation && j < 10; ++j)
+                {
+                    int x = X + Utility.Random(3) - 1;
+                    int y = Y + Utility.Random(3) - 1;
+                    int z = map.GetAverageZ(x, y);
 
-				DireWolf.MoveToWorld( loc, map );
-				DireWolf.Combatant = target;
-			}
-		}
+                    if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
+                        loc = new Point3D(x, y, Z);
+                    else if (validLocation = map.CanFit(x, y, z, 16, false, false))
+                        loc = new Point3D(x, y, z);
+                }
 
-		public override void AlterDamageScalarFrom( Mobile caster, ref double scalar )
-		{
-			if ( 0.1 >= Utility.RandomDouble() )
-				SpawnDireWolves( caster );
-		}
+                DireWolf.MoveToWorld(loc, map);
+                DireWolf.Combatant = target;
+            }
+        }
 
-		public override void OnGaveMeleeAttack( Mobile defender )
-		{
-			base.OnGaveMeleeAttack( defender );
+        public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
+        {
+            if (0.1 >= Utility.RandomDouble())
+                SpawnDireWolves(caster);
+        }
 
-			defender.Damage( Utility.Random( 20, 10 ), this );
-			defender.Stam -= Utility.Random( 20, 10 );
-			defender.Mana -= Utility.Random( 20, 10 );
-		}
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
 
-		public override void OnGotMeleeAttack( Mobile attacker )
-		{
-			base.OnGotMeleeAttack( attacker );
+            defender.Damage(Utility.Random(20, 10), this);
+            defender.Stam -= Utility.Random(20, 10);
+            defender.Mana -= Utility.Random(20, 10);
+        }
 
-			if ( 0.1 >= Utility.RandomDouble() )
-				SpawnDireWolves( attacker );
-		}
+        public override void OnGotMeleeAttack(Mobile attacker)
+        {
+            base.OnGotMeleeAttack(attacker);
 
-		public override bool GivesMinorArtifact{ get{ return true; } }
-		public override int Hides{ get{ return 28; } }	
-		public override int Meat{ get{ return 4; } }	
-	
-		public Gnaw( Serial serial ) : base( serial )
-		{
-		}
-		
-		public override void OnDeath( Container c )
-		{
-			base.OnDeath( c );		
-			
-			if ( Utility.RandomDouble() < 0.3 )
-				c.DropItem( new GnawsFang() );
-		}
-            public override OppositionGroup OppositionGroup
-		{
-			get{ return OppositionGroup.FeyAndUndead; }
-		}
+            if (0.1 >= Utility.RandomDouble())
+                SpawnDireWolves(attacker);
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
-		}
+        public override bool GivesMinorArtifact { get { return true; } }
+        public override int Hides { get { return 28; } }
+        public override int Meat { get { return 4; } }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			
-			int version = reader.ReadInt();
-		}
-	}
+        public Gnaw(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.3)
+                c.DropItem(new GnawsFang());
+        }
+        public override OppositionGroup OppositionGroup
+        {
+            get { return OppositionGroup.FeyAndUndead; }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 }
-
