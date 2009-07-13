@@ -10,6 +10,9 @@ namespace Server.Items
 		public override int BaseFireResistance{ get{ return 15; } }
 		public override int BasePoisonResistance{ get{ return 16; } }
 
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
 		[Constructable]
 		public SpellWovenBritches()
 		{

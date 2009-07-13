@@ -11,7 +11,7 @@ namespace Server.Items
 		{
 			Hue = 0x485;
 			
-			Attributes.BonusStr = 5;
+			Attributes.BonusDex = 5;
 			Attributes.BonusHits = 10;
 			Attributes.RegenHits = 2;
 		}
