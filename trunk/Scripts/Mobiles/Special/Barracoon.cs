@@ -229,7 +229,7 @@ namespace Server.Mobiles
 			DoSpecialAbility( defender );
 		}
 
-        public Barracoon( Serial serial ) : base( serial )
+		public Barracoon( Serial serial ) : base( serial )
 		{
 		}
 

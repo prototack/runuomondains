@@ -125,22 +125,27 @@ namespace Server.Gumps
 			AddHtmlLocalized( 35, 130, 270, 20, 1072840, 0x1, false, false ); // Donations Accepted:
 			
 			// donations
-			int offset = 160;
+			int offset = 150;
 			int next = 0;
 			
-			while ( offset + next + 10 < 310 && m_Index < m_Collection.Donations.Count )
+			while ( offset + next < 330 && m_Index < m_Collection.Donations.Count )
 			{
 				CollectionItem item = m_Collection.Donations[ m_Index ];
-				
-				int height = item.Height > 20 ? item.Height : 20;
+
+				int height = Math.Max( item.Height, 20 );
 				
 				if ( m_Owner.Backpack != null && m_Owner.Backpack.FindItemByType( item.Type, true ) != null )
 				{
 					AddButton( 35, offset + (int) ( height / 2 ) - 5, 0x837, 0x838, 300 + m_Index, GumpButtonType.Reply, 0 );
 					AddTooltip( item.Tooltip );
 				}
+
+				int y = offset - item.Y;
+
+				if ( item.Height < 20 )
+					y += ( 20 - item.Height ) / 2;
 					
-				AddItem( 55 - item.X + m_Max / 2 - item.Width / 2, offset - item.Y, item.ItemID, item.Hue );
+				AddItem( 55 - item.X + m_Max / 2 - item.Width / 2, y, item.ItemID, item.Hue );
 				AddTooltip( item.Tooltip );
 				
 				if ( item.Points < 1 && item.Points > 0 )
@@ -150,9 +155,13 @@ namespace Server.Gumps
 					
 				AddTooltip( item.Tooltip );
 				
-				offset += 10 + height;
-				next = m_Collection.Donations.Count < m_Index + 1 ? m_Collection.Donations[ m_Index + 1 ].Height : 0;
+				offset += 5 + height;
 				m_Index += 1;
+
+				if ( m_Index < m_Collection.Donations.Count )
+					next = Math.Max( m_Collection.Donations[ m_Index ].Height, 20 );
+				else
+					next = 0;
 			}
 			
 			// buttons
@@ -190,26 +199,35 @@ namespace Server.Gumps
 			int offset = 110;
 			int next = 0;
 			
-			while ( offset + next < 295 && m_Index < m_Collection.Rewards.Count )
+			while ( offset + next < 300 && m_Index < m_Collection.Rewards.Count )
 			{
 				CollectionItem item = m_Collection.Rewards[ m_Index ];
-				
-				int height = item.Height > 20 ? item.Height : 20;
+
+				int height = Math.Max( item.Height, 20 );
 				
 				if ( points >= item.Points )
 				{
 					AddButton( 35, offset + (int) ( height / 2 ) - 5, 0x837, 0x838, 200 + m_Index, GumpButtonType.Reply, 0 );
 					AddTooltip( item.Tooltip );
 				}
+
+				int y = offset - item.Y;
+
+				if ( item.Height < 20 )
+					y += ( 20 - item.Height ) / 2;
 				
-				AddItem( 55 - item.X + m_Max / 2 - item.Width / 2, offset - item.Y, item.ItemID, points >= item.Points ? item.Hue : 0x3E9 );
+				AddItem( 55 - item.X + m_Max / 2 - item.Width / 2, y, item.ItemID, points >= item.Points ? item.Hue : 0x3E9 );
 				AddTooltip( item.Tooltip );
 				AddLabel( 65 + m_Max, offset + (int) ( height / 2 ) - 10, points >= item.Points ? 0x64 : 0x21, item.Points.ToString() );
 				AddTooltip( item.Tooltip );
 				
-				offset += 10 + item.Height;
-				next = m_Collection.Rewards.Count < m_Index + 1 ? m_Collection.Rewards[ m_Index + 1 ].Height : 0;
+				offset += 5 + height;
 				m_Index += 1;
+
+				if ( m_Index < m_Collection.Donations.Count )
+					next = Math.Max( m_Collection.Donations[ m_Index ].Height, 20 );
+				else
+					next = 0;
 			}
 			
 			// buttons
@@ -244,19 +262,20 @@ namespace Server.Gumps
 			AddImageTiled( 35, 85, 270, 2, 0x23C5 );
 			
 			AddHtmlLocalized( 35, 90, 270, 20, 1074255, 0x1, false, false ); // Please select a hue for your Reward:
-			
+
 			// hues
+			int height = Math.Max( m_Item.Height, 20 );
 			int offset = 110;
-			
-			while ( offset + m_Item.Height < 290 && m_Index < m_Item.Hues.Length )
-			{				
-				AddButton( 35, offset + (int) ( m_Item.Height / 2 ) - 5, 0x837, 0x838, 100 + m_Index, GumpButtonType.Reply, 0 );
+
+			while ( offset + height < 290 && m_Index < m_Item.Hues.Length )
+			{
+				AddButton( 35, offset + (int) ( height / 2 ) - 5, 0x837, 0x838, 100 + m_Index, GumpButtonType.Reply, 0 );
 				AddTooltip( m_Item.Tooltip );					
 				
 				AddItem( 55 - m_Item.X, offset - m_Item.Y, m_Item.ItemID, m_Item.Hues[ m_Index ] );
 				AddTooltip( m_Item.Tooltip );
-				
-				offset += 10 + m_Item.Height;
+
+				offset += 5 + height;
 				m_Index += 1;
 			}
 			

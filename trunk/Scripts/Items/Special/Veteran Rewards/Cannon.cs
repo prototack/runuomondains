@@ -298,7 +298,7 @@ namespace Server.Items
 								break;
 						}
 						
-						if ( allow )
+						if ( allow && Utility.InRange( new Point3D( p ), m_Cannon.Location, 14 ) )
 							m_Cannon.DoFireEffect( p );
 						else
 							from.SendLocalizedMessage( 1076203 ); // Target out of range.							
@@ -405,8 +405,8 @@ namespace Server.Items
 		public CannonDeed( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );			
 			
@@ -414,21 +414,21 @@ namespace Server.Items
 				list.Add( 1076223 ); // 7th Year Veteran Reward
 			
 			list.Add( 1076207, m_Charges.ToString() ); // Remaining Charges: ~1_val~
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {        	
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{        	
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-        
-        	if ( IsChildOf( from.Backpack ) )
-        	{
-        		from.CloseGump( typeof( RewardOptionGump ) );
-        		from.SendGump( new RewardOptionGump( this ) );
-        	}
-        	else
+		
+			if ( IsChildOf( from.Backpack ) )
+			{
+				from.CloseGump( typeof( RewardOptionGump ) );
+				from.SendGump( new RewardOptionGump( this ) );
+			}
+			else
 				from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.          	
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -439,8 +439,8 @@ namespace Server.Items
 			writer.Write( (int) m_Charges );
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 

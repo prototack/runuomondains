@@ -17,14 +17,6 @@ namespace Server.Items
 		public RideablePolarBear( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
-			
-			if ( IsRewardItem )
-				list.Add( 1076225 ); // 9th Year Veteran Reward			
-        }
 
 		public override void Serialize( GenericWriter writer )
 		{

@@ -1,5 +1,4 @@
 using System;
-
 using Server;
 using Server.Gumps;
 using Server.Multis;
@@ -60,12 +59,16 @@ namespace Server.Items
  
 			m_Fire.ItemID = 0x19AB;
 			m_Fire.Movable = false;
-			m_Fire.MoveToWorld( new Point3D( X, Y, Z + ItemData.Height ), Map );
+			m_Fire.MoveToWorld( new Point3D( X, Y, Z + ItemData.Height + 2 ), Map );
 		}
 
 		public override void OnDoubleClick( Mobile from )
 		{
-			if ( IsLockedDown )
+			if ( !from.InRange( this.GetWorldLocation(), 2 ) )
+			{
+				from.LocalOverheadMessage( MessageType.Regular, 0x3B2, 1019045 ); // I can't reach that.
+			}
+			else if ( IsLockedDown )
 			{
 				BaseHouse house = BaseHouse.FindHouseAt( from );
 
@@ -88,14 +91,14 @@ namespace Server.Items
 			if ( m_Fire != null )
 				m_Fire.MoveToWorld( new Point3D( X, Y, Z + ItemData.Height ), Map );
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076222 ); // 6th Year Veteran Reward
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -106,8 +109,8 @@ namespace Server.Items
 			writer.Write( (bool) m_IsRewardItem );
 			writer.Write( (Item) m_Fire );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 

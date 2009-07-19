@@ -77,6 +77,7 @@ namespace Server.Spells.Ninjitsu
 		public override bool CheckFizzle()
 		{
 			// Spell is initially always successful, and with no skill gain.
+
 			return true;
 		}
 
@@ -100,7 +101,8 @@ namespace Server.Spells.Ninjitsu
 
 				if ( context != null )
 				{
-					RemoveContext( Caster, context, true );
+					if( ConsumeMana() )
+						RemoveContext( Caster, context, true );
 				}
 				else if ( Caster is PlayerMobile )
 				{
@@ -111,18 +113,33 @@ namespace Server.Spells.Ninjitsu
 					}
 					else
 					{
-						if ( Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
+						if ( ConsumeMana() && Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
 							DoFizzle();
 					}
 				}
 				else
 				{
-					if ( Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
+					if ( ConsumeMana() && Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
 						DoFizzle();
 				}
 			}
 
 			FinishSequence();
+		}
+
+		public bool ConsumeMana()
+		{
+			int mana = ScaleMana( RequiredMana );
+
+			if ( Caster.Mana < mana )
+			{
+				Caster.SendLocalizedMessage( 1060174, mana.ToString() ); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+				return false;
+			}
+
+			Caster.Mana -= mana;
+
+			return true;
 		}
 
 		private static Hashtable m_LastAnimalForms = new Hashtable();

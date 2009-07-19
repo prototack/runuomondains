@@ -16,14 +16,6 @@ namespace Server.Items
 		public EtherealCuSidhe( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
-		{
-			base.GetProperties( list );
-			
-			if ( IsRewardItem )
-				list.Add( 1080457 ); // 10th Year Veteran Reward
-        }
 
 		public override void Serialize( GenericWriter writer )
 		{

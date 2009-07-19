@@ -1,5 +1,4 @@
 using System;
-
 using Server;
 using Server.Gumps;
 using Server.Network;
@@ -43,8 +42,8 @@ namespace Server.Items
 
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -129,10 +128,10 @@ namespace Server.Items
 		{			
 			private PottedCactusDeed m_Cactus;
 			
-            public InternalGump( PottedCactusDeed cactus ) : base( 100, 200 )
-            {
-            	m_Cactus = cactus;
-            	
+			public InternalGump( PottedCactusDeed cactus ) : base( 100, 200 )
+			{
+				m_Cactus = cactus;
+
 				Closable = true;
 				Disposable = true;
 				Dragable = true;

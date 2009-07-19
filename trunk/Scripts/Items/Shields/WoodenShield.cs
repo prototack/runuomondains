@@ -5,6 +5,14 @@ namespace Server.Items
 {
 	public class WoodenShield : BaseShield
 	{
+        #region Mondain's Legacy
+        public override int PhysicalResistance { get { return BasePhysicalResistance + GetProtOffset() + GetResourceAttrs().ShieldPhysicalResist + PhysicalBonus + (SetEquipped ? SetPhysicalBonus : 0); } }
+        public override int FireResistance { get { return BaseFireResistance + GetProtOffset() + GetResourceAttrs().ShieldFireResist + FireBonus + (SetEquipped ? SetFireBonus : 0); } }
+        public override int ColdResistance { get { return BaseColdResistance + GetProtOffset() + GetResourceAttrs().ShieldColdResist + ColdBonus + (SetEquipped ? SetColdBonus : 0); } }
+        public override int PoisonResistance { get { return BasePoisonResistance + GetProtOffset() + GetResourceAttrs().ShieldPoisonResist + PoisonBonus + (SetEquipped ? SetPoisonBonus : 0); } }
+        public override int EnergyResistance { get { return BaseEnergyResistance + GetProtOffset() + GetResourceAttrs().ShieldEnergyResist + EnergyBonus + (SetEquipped ? SetEnergyBonus : 0); } }
+        #endregion
+
 		public override int BasePhysicalResistance{ get{ return 0; } }
 		public override int BaseFireResistance{ get{ return 0; } }
 		public override int BaseColdResistance{ get{ return 0; } }

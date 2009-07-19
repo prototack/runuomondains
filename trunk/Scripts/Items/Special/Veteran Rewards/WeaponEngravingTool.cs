@@ -310,7 +310,7 @@ namespace Server.Items
 				{
 					AddHtmlLocalized( 9, 9, 272, 100, 1076176, 0x7FFF, false, false ); // You will need a blue diamond to repair the tip of the engraver.  A successful repair will give the engraver 10 charges.
 					AddHtmlLocalized( 195, 109, 120, 20, 1076177, 0x7FFF, false, false ); // Replace the tip.
-				}								
+				}
 				
 				AddButton( 160, 107, 0xFB7, 0xFB8, (int) Buttons.Confirm, GumpButtonType.Reply, 0 );				
 				AddButton( 5, 107, 0xFB1, 0xFB2, (int) Buttons.Cancel, GumpButtonType.Reply, 0 );

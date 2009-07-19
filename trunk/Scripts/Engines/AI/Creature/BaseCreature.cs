@@ -243,8 +243,6 @@ namespace Server.Mobiles
 
         private bool m_IsPrisoner;
 
-        private Timer m_GhostDeletionTimer;
-
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -252,11 +250,7 @@ namespace Server.Mobiles
         public bool IsStabled
         {
             get { return m_IsStabled; }
-            set
-            {
-                m_IsStabled = value;
-                SetGhostDeletionTimer(!m_IsStabled);
-            }
+            set { m_IsStabled = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1797,8 +1791,6 @@ namespace Server.Mobiles
 
             if (IsAnimatedDead)
                 Spells.Necromancy.AnimateDeadSpell.Register(m_SummonMaster, this);
-
-            SetGhostDeletionTimer(true);
         }
 
         public virtual bool IsHumanInTown()
@@ -1995,7 +1987,7 @@ namespace Server.Mobiles
 
                             if (master != null && master == from)	//So friends can't start the bonding process
                             {
-                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill || GetControlChance(master, true) >= 1.0)
+                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill || (this is LesserHiryu && master.Skills[SkillName.Bushido].Base >= 90.0))
                                 {
                                     if (BondingBegin == DateTime.MinValue)
                                     {
@@ -4450,8 +4442,6 @@ namespace Server.Mobiles
                 GiftOfLifeSpell.HandleDeath(this);
 
                 CheckStatTimers();
-
-                SetGhostDeletionTimer(true);
             }
             else
             {
@@ -5285,25 +5275,7 @@ namespace Server.Mobiles
             }
 
             CheckStatTimers();
-
-            SetGhostDeletionTimer(false);
         }
-
-        private void SetGhostDeletionTimer(bool running)
-        {
-            if (running && (!IsDeadBondedPet || !Core.ML))
-                return;
-
-            if (m_GhostDeletionTimer != null)
-                m_GhostDeletionTimer.Stop();
-
-            if (!running)
-                return;
-
-            m_GhostDeletionTimer = new GhostDeletionTimer(this, TimeSpan.FromMinutes(120 + Utility.Random(120)));
-            m_GhostDeletionTimer.Start();
-        }
-
 
         public override bool CanBeDamaged()
         {
@@ -5341,27 +5313,6 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int RemoveStep { get { return m_RemoveStep; } set { m_RemoveStep = value; } }
-
-        private class GhostDeletionTimer : Timer
-        {
-            private BaseCreature m_Creature;
-
-            public GhostDeletionTimer(BaseCreature Creature, TimeSpan delay)
-                : base(delay)
-            {
-                Priority = TimerPriority.FiveSeconds;
-                m_Creature = Creature;
-            }
-
-            protected override void OnTick()
-            {
-                if (Core.ML && m_Creature.IsDeadBondedPet)
-                {
-                    m_Creature.Delete();
-                }
-                Stop();
-            }
-        }
     }
 
     public class LoyaltyTimer : Timer

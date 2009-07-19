@@ -11,7 +11,7 @@ namespace Server.Items
 	public class FlamingHead : StoneFaceTrapNoDamage, IAddon, IRewardItem
 	{
 		public override int LabelNumber{ get{ return 1041266; } } // Flaming Head
-        public override bool ForceShowProperties{ get{ return ObjectPropertyList.Enabled; } }
+		public override bool ForceShowProperties{ get{ return ObjectPropertyList.Enabled; } }
 
 		public Item Deed
 		{ 
@@ -49,32 +49,32 @@ namespace Server.Items
 		public FlamingHead( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
-			if ( m_IsRewardItem )
+			if ( Core.ML && m_IsRewardItem )
 				list.Add( 1076218 ); // 2nd Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {
-        	if ( from.InRange( Location, 2 ) )
-        	{
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{
+			if ( from.InRange( Location, 2 ) )
+			{
 				BaseHouse house = BaseHouse.FindHouseAt( this );  
 				
-            	if ( house != null && house.IsOwner( from ) )
-            	{
-	        		from.CloseGump( typeof( RewardDemolitionGump ) );
-	        		from.SendGump( new RewardDemolitionGump( this, 1018329 ) ); // Do you wish to re-deed this skull?
-	        	}
-	        	else
+				if ( house != null && house.IsOwner( from ) )
+				{
+					from.CloseGump( typeof( RewardDemolitionGump ) );
+					from.SendGump( new RewardDemolitionGump( this, 1018329 ) ); // Do you wish to re-deed this skull?
+				}
+				else
 					from.SendLocalizedMessage( 1018328 ); // You can only re-deed a skull if you placed it or you are the owner of the house.
-        	}
-            else
+			}
+			else
 				from.Say( 1019045 ); // I can't reach that.
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -84,8 +84,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -133,35 +133,35 @@ namespace Server.Items
 		public FlamingHeadDeed( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076218 ); // 2nd Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {        	
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{        	
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-        
-        	if ( IsChildOf( from.Backpack ) )
-        	{					
+		
+			if ( IsChildOf( from.Backpack ) )
+			{					
 				BaseHouse house = BaseHouse.FindHouseAt( from );
 
 				if ( house != null && house.IsOwner( from ) )
 				{
 					from.SendLocalizedMessage( 1042264 ); // Where would you like to place this head?
-        			from.Target = new InternalTarget( this );
+					from.Target = new InternalTarget( this );
 				}
 				else
 					from.SendLocalizedMessage( 502115 ); // You must be in your house to do this.
-        	}
-        	else
+			}
+			else
 				from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.          	
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -171,8 +171,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -249,7 +249,7 @@ namespace Server.Items
 					else
 						from.SendLocalizedMessage( 502115 ); // You must be in your house to do this.
 				}
-        		else
+				else
 					from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.     
 			}
 		}

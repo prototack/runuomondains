@@ -20,16 +20,16 @@ namespace Server.Items
 	public class MiningCart : BaseAddon, IRewardItem
 	{
 		public override BaseAddonDeed Deed
-		{ 
+		{
 			get
-			{ 
+			{
 				MiningCartDeed deed = new MiningCartDeed();
 				deed.IsRewardItem = m_IsRewardItem;
 				deed.Gems = m_Gems;
 				deed.Ore = m_Ore;
 
-				return deed; 
-			} 
+				return deed;
+			}
 		}
 
 		private bool m_IsRewardItem;
@@ -257,8 +257,8 @@ namespace Server.Items
 			else
 				writer.Write( (DateTime) DateTime.Now + TimeSpan.FromDays( 1 ) );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -347,21 +347,21 @@ namespace Server.Items
 			
 			if ( m_IsRewardItem )
 				list.Add( 1080457 ); // 10th Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {        	
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{        	
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-        
-        	if ( IsChildOf( from.Backpack ) )
-        	{
-        		from.CloseGump( typeof( RewardOptionGump ) );
-        		from.SendGump( new RewardOptionGump( this ) );
-        	}
-        	else
+		
+			if ( IsChildOf( from.Backpack ) )
+			{
+				from.CloseGump( typeof( RewardOptionGump ) );
+				from.SendGump( new RewardOptionGump( this ) );
+			}
+			else
 				from.SendLocalizedMessage( 1062334 ); // This item must be in your backpack to be used.       	
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{

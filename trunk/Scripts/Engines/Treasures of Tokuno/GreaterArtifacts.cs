@@ -18,7 +18,7 @@ namespace Server.Items
 			WeaponAttributes.HitLightning = 60;
 			Attributes.WeaponSpeed = 25;
 			Attributes.WeaponDamage = 50;
-        }
+		}
 
 		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
@@ -190,7 +190,7 @@ namespace Server.Items
 			WeaponAttributes.HitHarm = 100;
 			Attributes.AttackChance = 10;
 			Attributes.WeaponDamage = 60;
-        }
+		}
 
 		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
@@ -234,7 +234,7 @@ namespace Server.Items
 			Attributes.SpellChanneling = 1;
 			Attributes.CastSpeed = 1;
 			Attributes.Luck = 200;
-        }
+		}
 
 		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
@@ -349,7 +349,7 @@ namespace Server.Items
 			Attributes.WeaponDamage = 50;
 			Attributes.WeaponSpeed = 50;
 			Attributes.DefendChance = 10;
-        }
+		}
 
 		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
@@ -384,6 +384,18 @@ namespace Server.Items
 	public enum PigmentType
 	{
 		None,
+        #region Greater Metallic PoTs
+        FadedCoal,
+		Coal,
+		FadedGold,
+		StormBronze,
+		Rose,
+		MidnightCoal,
+		FadedBronze,
+        FadedRose,
+		DeepRose,
+        #endregion
+        #region Greater Neon PoTs
 		ParagonGold,
 		VioletCouragePurple,
 		InvulnerabilityBlue,
@@ -394,16 +406,7 @@ namespace Server.Items
 		NoxGreen,
 		RumRed,
 		FireOrange,
-        FreshPeach,
-        Silver,
-        DeepBrown,
-        BurntBrown,
-        LightGreen,
-        Rose,
-        PaleBlue,
-        NobleGold,
-        PaleOrange,
-        ChaosBlue
+        #endregion
 	}
 
 	public class PigmentsOfTokuno : Item, IUsesRemaining
@@ -426,6 +429,19 @@ namespace Server.Items
 			private static PigmentInfo[] m_Table = new PigmentInfo[]
 				{
 					new PigmentInfo( /*PigmentType.None,*/ 0, -1 ),
+#region Greater Metallic PoTs
+                    new PigmentInfo( /*PigmentType.Fadedcoal,*/ 0x96A, 1079579 ),
+                    new PigmentInfo( /*PigmentType.Coal,*/ 0x96B, 1079580 ),
+                    new PigmentInfo( /*PigmentType.FadedGold,*/ 0x972, 1079581 ),
+                    new PigmentInfo( /*PigmentType.StormBronze,*/ 0x977, 1079582 ),
+                    new PigmentInfo( /*PigmentType.Rose,*/ 0x97C, 1079583 ),
+                    new PigmentInfo( /*PigmentType.MidnightCoal,*/ 0x96C, 1079584 ),
+                    new PigmentInfo( /*PigmentType.FadedBronze,*/ 0x975, 1079585 ),
+                    new PigmentInfo( /*PigmentType.FadedRose,*/ 0x97B, 1079586 ),
+                    new PigmentInfo( /*PigmentType.DeepRose,*/ 0x97E, 1079587 ),
+#endregion
+
+#region Greater Neons PoTs
 					new PigmentInfo( /*PigmentType.ParagonGold,*/ 0x501, 1070987 ),
 					new PigmentInfo( /*PigmentType.VioletCouragePurple,*/ 0x486, 1070988 ),
 					new PigmentInfo( /*PigmentType.InvulnerabilityBlue,*/ 0x4F2, 1070989 ),
@@ -436,16 +452,7 @@ namespace Server.Items
 					new PigmentInfo( /*PigmentType.NoxGreen,*/ 0x58C, 1070994 ),
 					new PigmentInfo( /*PigmentType.RumRed,*/ 0x66C, 1070995 ),
 					new PigmentInfo( /*PigmentType.FireOrange,*/ 0x54F, 1070996 ),
-					new PigmentInfo( /*PigmentType.FreshPeach,*/ 0x145, 1071450 ),  //Guess
-					new PigmentInfo( /*PigmentType.Silver,*/ 0x3AD, 1071451 ),      //Guess
-					new PigmentInfo( /*PigmentType.DeepBrown,*/ 0x73E, 1071452 ),   //Guess
-					new PigmentInfo( /*PigmentType.BurntBrown,*/ 0x759, 1071453 ),  //Guess
-					new PigmentInfo( /*PigmentType.LightGreen,*/ 0x28F, 1071454 ),  //Guess
-					new PigmentInfo( /*PigmentType.Rose,*/ 0x846, 1071455 ),        //Guess
-					new PigmentInfo( /*PigmentType.PaleBlue,*/ 0x254, 1071456 ),    //Guess
-					new PigmentInfo( /*PigmentType.NobleGold,*/ 0x28B, 1071457 ),   //Guess
-					new PigmentInfo( /*PigmentType.PaleOrange,*/ 0x2E, 1071458 ),  //Guess
-					new PigmentInfo( /*PigmentType.ChaosBlue,*/ 0x69, 1071459 )    //Guess
+#endregion
 				};
 
 			public static PigmentInfo GetInfo( PigmentType type )
@@ -485,7 +492,7 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public PigmentsOfTokuno( PigmentType type ) : this( type, (type == PigmentType.None)? 10 : 50 )
+		public PigmentsOfTokuno( PigmentType type ) : this( type, (type >= PigmentType.ParagonGold)? 10 : 50 )
 		{
 		}
 
@@ -576,7 +583,7 @@ namespace Server.Items
 				return true;
 			#endregion
 
-			return ( 
+			return( 
 				IsInTypeList( t, TreasuresOfTokuno.LesserArtifacts )
 				|| IsInTypeList( t, TreasuresOfTokuno.GreaterArtifacts ) 
 				#region Mondain's Legacy
@@ -590,7 +597,7 @@ namespace Server.Items
 				|| IsInTypeList( t, Leviathan.Artifacts )
 				|| IsInTypeList( t, TreasureMapChest.Artifacts )
 				|| IsInTypeList( t, VirtueArtifactSystem.VirtueArtifacts )
-                );
+				);
 		}
 
 		private static bool IsInTypeList( Type t, Type[] list )

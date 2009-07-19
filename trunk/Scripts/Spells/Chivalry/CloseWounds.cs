@@ -62,7 +62,7 @@ namespace Server.Spells.Chivalry
 				 */
 
 				int toHeal = ComputePowerValue( 6 ) + Utility.RandomMinMax( 0, 2 );
-					
+
 				#region Mondain's Legacy
 				if ( Core.ML )
 					Server.Spells.Spellweaving.ArcaneEmpowermentSpell.AddHealBonus( Caster, ref toHeal );

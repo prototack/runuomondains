@@ -25,8 +25,8 @@ namespace Server.Items
 
 			writer.WriteEncodedInt( 0 ); // version
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -112,8 +112,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -164,14 +164,14 @@ namespace Server.Items
 
 			base.OnDoubleClick( from );
 		}		
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076221 ); // 5th Year Veteran Reward
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{

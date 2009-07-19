@@ -47,32 +47,32 @@ namespace Server.Items
 		public Banner( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
-			if ( m_IsRewardItem )
+			if ( Core.ML && m_IsRewardItem )
 				list.Add( 1076218 ); // 2nd Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {
-        	if ( from.InRange( Location, 2 ) )
-        	{
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{
+			if ( from.InRange( Location, 2 ) )
+			{
 				BaseHouse house = BaseHouse.FindHouseAt( this );  
 				
-            	if ( house != null && house.IsOwner( from ) )
-            	{
-	        		from.CloseGump( typeof( RewardDemolitionGump ) );
-	        		from.SendGump( new RewardDemolitionGump( this, 1018318 ) ); // Do you wish to re-deed this banner?
-	        	}
-	        	else
+				if ( house != null && house.IsOwner( from ) )
+				{
+					from.CloseGump( typeof( RewardDemolitionGump ) );
+					from.SendGump( new RewardDemolitionGump( this, 1018318 ) ); // Do you wish to re-deed this banner?
+				}
+				else
 					from.SendLocalizedMessage( 1018330 ); // You can only re-deed a banner if you placed it or you are the owner of the house.
-        	}
-            else
+			}
+			else
 				from.LocalOverheadMessage( MessageType.Regular, 0x3B2, 1019045 ); // I can't reach that.
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -82,8 +82,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -136,35 +136,35 @@ namespace Server.Items
 		public BannerDeed( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076218 ); // 2nd Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {        	
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{        	
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-        
-        	if ( IsChildOf( from.Backpack ) )
-        	{
+		
+			if ( IsChildOf( from.Backpack ) )
+			{
 				BaseHouse house = BaseHouse.FindHouseAt( from );
 
 				if ( house != null && house.IsOwner( from ) )
 				{
-        			from.CloseGump( typeof( InternalGump ) );
-        			from.SendGump( new InternalGump( this ) );
+					from.CloseGump( typeof( InternalGump ) );
+					from.SendGump( new InternalGump( this ) );
 				}
 				else
 					from.SendLocalizedMessage( 502092 ); // You must be in your house to do this.
-        	}
-        	else
+			}
+			else
 				from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.          	
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -174,8 +174,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -191,10 +191,10 @@ namespace Server.Items
 			
 			private BannerDeed m_Banner;
 			
-            public InternalGump( BannerDeed banner ) : base( 100, 200 )
-            {
-            	m_Banner = banner;
-            	
+			public InternalGump( BannerDeed banner ) : base( 100, 200 )
+			{
+				m_Banner = banner;
+				
 				Closable = true;
 				Disposable = true;
 				Dragable = true;
@@ -202,7 +202,7 @@ namespace Server.Items
 				
 				AddPage( 0 );
 
-				AddBackground( 25, 0, 500, 230, 0xA28 );				
+				AddBackground( 25, 0, 520, 230, 0xA28 );				
 				AddLabel( 70, 12, 0x3E3, "Choose a Banner:" );
 
 				
@@ -214,15 +214,15 @@ namespace Server.Items
 
 					for ( int j = 0; j < 8; j++, itemID += 2 )
 					{
-						AddItem( 40 + 60 * j, 70, itemID );
-						AddButton( 40 + 60 * j, 50, 0x845, 0x846, itemID, GumpButtonType.Reply, 0 );
+						AddItem( 50 + 60 * j, 70, itemID );
+						AddButton( 50 + 60 * j, 50, 0x845, 0x846, itemID, GumpButtonType.Reply, 0 );
 					}
 
 					if ( i > 1 )
-						AddButton( 25, 198, 0x8AF, 0x8AF, 0, GumpButtonType.Page, i - 1 );
+						AddButton( 75, 198, 0x8AF, 0x8AF, 0, GumpButtonType.Page, i - 1 );
 
 					if ( i < 4 )
-						AddButton( 455, 198, 0x8B0, 0x8B0, 0, GumpButtonType.Page, i + 1 );
+						AddButton( 475, 198, 0x8B0, 0x8B0, 0, GumpButtonType.Page, i + 1 );
 				}			
 			}
 			
@@ -317,7 +317,7 @@ namespace Server.Items
 					else
 						from.SendLocalizedMessage( 502092 ); // You must be in your house to do this.
 				}
-        		else
+				else
 					from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.     
 			}
 			
@@ -341,7 +341,7 @@ namespace Server.Items
 					m_ItemID = itemID;
 					m_Location = location;
 					m_House = house;
-            	
+				
 					Closable = true;
 					Disposable = true;
 					Dragable = true;
