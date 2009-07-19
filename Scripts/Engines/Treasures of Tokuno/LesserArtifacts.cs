@@ -1,5 +1,7 @@
 using Server;
 using System;
+using Server.Misc;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -49,7 +51,7 @@ namespace Server.Items
 		}
 	}
 
-	public class AncientSamuraiDo : PlateDo 
+	public class AncientSamuraiDo : PlateDo
 	{
 		public override int LabelNumber { get { return 1070926; } } // Ancient Samurai Do
 
@@ -297,13 +299,14 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 20;
 		}
 
-		#region Mondain's Legacy
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
-		{
-			phys = fire = cold = pois = chaos = direct = 0;
-			nrgy = 100;
-		}
-		#endregion
+        #region Mondain's Legacy
+        public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
+        {
+            phys = fire = cold = pois = chaos = direct = 0;
+            nrgy = 100;
+        }
+        #endregion
+
 
 		public Exiler( Serial serial ) : base( serial )
 		{
@@ -782,4 +785,253 @@ namespace Server.Items
 				Slayer = SlayerGroup.Groups[Utility.Random( SlayerGroup.Groups.Length - 1 )].Super.Name;
 		}
 	}
+
+    public enum LesserPigmentType
+    {
+        None,
+        FreshPlum,
+        Silver,
+        DeepBrown,
+        BurntBrown,
+        LightGreen,
+        FreshRose,
+        PaleBlue,
+        NobleGold,
+        PaleOrange,
+        ChaosBlue
+    }
+
+    public class LesserPigmentsOfTokuno : Item, IUsesRemaining
+    {
+        public class PigmentInfo
+        {
+            //private LesserPigmentType m_LesserPigmentType;
+            private int m_Hue;
+            private TextDefinition m_Label;
+
+            public int Hue { get { return m_Hue; } }
+            public TextDefinition Label { get { return m_Label; } }
+
+            public PigmentInfo(int hue, TextDefinition label)
+            {
+                m_Hue = hue;
+                m_Label = label;
+            }
+
+            private static PigmentInfo[] m_Table = new PigmentInfo[]
+				{
+					new PigmentInfo( /*LesserPigmentType.None,*/ 0, -1 ),
+                    new PigmentInfo( /*LesserPigmentType.FreshPeach,*/ 0x145, 1071450 ),
+                    new PigmentInfo( /*LesserPigmentType.Silver,*/ 0x3E9, 1071451 ),
+                    new PigmentInfo( /*LesserPigmentType.DeepBrown,*/ 0x3F0, 1071452 ),
+                    new PigmentInfo( /*LesserPigmentType.BurntBrown,*/ 0x41A, 1071453 ),
+                    new PigmentInfo( /*LesserPigmentType.LightGreen,*/ 0x1C8, 1071454 ),
+                    new PigmentInfo( /*LesserPigmentType.FreshRose,*/ 0x4B9, 1071455 ),
+                    new PigmentInfo( /*LesserPigmentType.PaleBlue,*/ 0x24F, 1071456 ),
+                    new PigmentInfo( /*LesserPigmentType.NobleGold,*/ 0x227, 1071457 ),
+                    new PigmentInfo( /*LesserPigmentType.PaleOrange,*/ 0x02E, 1071458 ),
+                    new PigmentInfo( /*LesserPigmentType.ChaosBlue,*/ 0x005, 1071459 )
+				};
+
+            public static PigmentInfo GetInfo(LesserPigmentType type)
+            {
+                int v = (int)type;
+
+                if (v < 0 || v >= m_Table.Length)
+                    v = 0;
+
+                return m_Table[v];
+            }
+        }
+
+        private LesserPigmentType m_Type;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public LesserPigmentType Type
+        {
+            get { return m_Type; }
+            set
+            {
+                m_Type = value;
+
+                PigmentInfo p = PigmentInfo.GetInfo(m_Type);
+                Hue = p.Hue;
+                InvalidateProperties();
+            }
+        }
+
+        private int m_UsesRemaining;
+
+        public override int LabelNumber { get { return 1070933; } } // Pigments of Tokuno
+
+        [Constructable]
+        public LesserPigmentsOfTokuno()
+            : this(LesserPigmentType.None, 10)
+        {
+        }
+
+        [Constructable]
+        public LesserPigmentsOfTokuno(LesserPigmentType type)
+            : this(type, (type == LesserPigmentType.None) ? 10 : 50)
+        {
+        }
+
+        [Constructable]
+        public LesserPigmentsOfTokuno(LesserPigmentType type, int uses)
+            : base(0xEFF)
+        {
+            Weight = 1.0;
+            m_UsesRemaining = uses;
+            Type = type;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (m_Type != LesserPigmentType.None)
+            {
+                PigmentInfo p = PigmentInfo.GetInfo(m_Type);
+                TextDefinition.AddTo(list, p.Label);
+            }
+
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsAccessibleTo(from) && from.InRange(GetWorldLocation(), 3))
+            {
+                from.SendLocalizedMessage(1070929); // Select the artifact or enhanced magic item to dye.
+                from.BeginTarget(3, false, Server.Targeting.TargetFlags.None, new TargetStateCallback(InternalCallback), this);
+            }
+            else
+                from.SendLocalizedMessage(502436); // That is not accessible.
+        }
+
+        private void InternalCallback(Mobile from, object targeted, object state)
+        {
+            LesserPigmentsOfTokuno pigment = (LesserPigmentsOfTokuno)state;
+
+            if (pigment.Deleted || pigment.UsesRemaining <= 0 || !from.InRange(pigment.GetWorldLocation(), 3) || !pigment.IsAccessibleTo(from))
+                return;
+
+            Item i = targeted as Item;
+
+            if (i == null)
+                from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.
+            else if (!from.InRange(i.GetWorldLocation(), 3) || !IsAccessibleTo(from))
+                from.SendLocalizedMessage(502436); // That is not accessible.
+            else if (from.Items.Contains(i))
+                from.SendLocalizedMessage(1070930); // Can't dye artifacts or enhanced magic items that are being worn.
+            else if (i.IsLockedDown)
+                from.SendLocalizedMessage(1070932); // You may not dye artifacts and enhanced magic items which are locked down.
+            else if (i is PigmentsOfTokuno || i is LesserPigmentsOfTokuno)
+                from.SendLocalizedMessage(1042417); // You cannot dye that.
+            else if (!IsValidItem(i))
+                from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.	//Yes, it says tub on OSI.  Don't ask me why ;p
+            else
+            {
+                //Notes: on OSI there IS no hue check to see if it's already hued.  and no messages on successful hue either
+                i.Hue = PigmentInfo.GetInfo(pigment.Type).Hue;
+
+                if (--pigment.UsesRemaining <= 0)
+                    pigment.Delete();
+
+                from.PlaySound(0x23E);
+            }
+        }
+
+        public static bool IsValidItem(Item i)
+        {
+            if (i is PigmentsOfTokuno || i is LesserPigmentsOfTokuno)
+                return false;
+
+            Type t = i.GetType();
+
+            CraftResource resource = CraftResource.None;
+
+            if (i is BaseWeapon)
+                resource = ((BaseWeapon)i).Resource;
+            else if (i is BaseArmor)
+                resource = ((BaseArmor)i).Resource;
+
+            if (!CraftResources.IsStandard(resource))
+                return true;
+
+            #region Heritage Items
+            if (i is ITokunoDyable)
+                return true;
+            #endregion
+
+            return (
+                IsInTypeList(t, TreasuresOfTokuno.LesserArtifacts)
+                || IsInTypeList(t, TreasuresOfTokuno.GreaterArtifacts)
+            #region Mondain's Legacy
+ || IsInTypeList(t, MondainsLegacy.PigmentList)
+            #endregion
+ || IsInTypeList(t, DemonKnight.ArtifactRarity10)
+                || IsInTypeList(t, DemonKnight.ArtifactRarity11)
+                || IsInTypeList(t, DemonKnight.ArtifactRarity10)
+                || IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires)
+                || IsInTypeList(t, Paragon.Artifacts)
+                || IsInTypeList(t, Leviathan.Artifacts)
+                || IsInTypeList(t, TreasureMapChest.Artifacts)
+                || IsInTypeList(t, VirtueArtifactSystem.VirtueArtifacts)
+                );
+        }
+
+        private static bool IsInTypeList(Type t, Type[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                if (list[i] == t) return true;
+            }
+
+            return false;
+        }
+
+        public LesserPigmentsOfTokuno(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0);
+
+            writer.WriteEncodedInt((int)m_Type);
+            writer.WriteEncodedInt(m_UsesRemaining);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            m_Type = (LesserPigmentType)reader.ReadEncodedInt();
+            m_UsesRemaining = reader.ReadEncodedInt();
+        }
+
+        #region IUsesRemaining Members
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining
+        {
+            get { return m_UsesRemaining; }
+            set { m_UsesRemaining = value; InvalidateProperties(); }
+        }
+
+        public bool ShowUsesRemaining
+        {
+            get { return true; }
+            set { }
+        }
+
+
+        #endregion
+    }
 }

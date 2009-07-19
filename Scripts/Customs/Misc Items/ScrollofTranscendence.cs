@@ -91,7 +91,7 @@ namespace Server.Items
         public ScrollofTranscendence(SkillName skill, double value)
             : base(0x14EF)
         {
-            base.Hue = 0x7E;
+            base.Hue = 0x490;
             base.Weight = 1.0;
 
             m_Skill = skill;

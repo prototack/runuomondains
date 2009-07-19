@@ -57,32 +57,32 @@ namespace Server.Items
 		public DecorativeShield( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
-			if ( m_IsRewardItem )
+			if ( Core.ML && m_IsRewardItem )
 				list.Add( 1076220 ); // 4th Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {
-        	if ( from.InRange( Location, 2 ) )
-        	{
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{
+			if ( from.InRange( Location, 2 ) )
+			{
 				BaseHouse house = BaseHouse.FindHouseAt( this );  
 				
-            	if ( house != null && house.IsOwner( from ) )
-            	{
-	        		from.CloseGump( typeof( RewardDemolitionGump ) );
-	        		from.SendGump( new RewardDemolitionGump( this, 1049783 ) ); // Do you wish to re-deed this decoration?
-	        	}
-	        	else
+				if ( house != null && house.IsOwner( from ) )
+				{
+					from.CloseGump( typeof( RewardDemolitionGump ) );
+					from.SendGump( new RewardDemolitionGump( this, 1049783 ) ); // Do you wish to re-deed this decoration?
+				}
+				else
 					from.SendLocalizedMessage( 1049784 ); // You can only re-deed this decoration if you are the house owner or originally placed the decoration.
-        	}
-            else
+			}
+			else
 				from.LocalOverheadMessage( MessageType.Regular, 0x3B2, 1019045 ); // I can't reach that.
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -92,8 +92,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -137,28 +137,28 @@ namespace Server.Items
 		public DecorativeShieldDeed( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076220 ); // 4th Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {        	
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{        	
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-        
-        	if ( IsChildOf( from.Backpack ) )
-        	{
-        		from.CloseGump( typeof( InternalGump ) );
-        		from.SendGump( new InternalGump( this ) );
-        	}
-        	else
+		
+			if ( IsChildOf( from.Backpack ) )
+			{
+				from.CloseGump( typeof( InternalGump ) );
+				from.SendGump( new InternalGump( this ) );
+			}
+			else
 				from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.          	
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -168,8 +168,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -202,11 +202,11 @@ namespace Server.Items
 			{
 			}
 			
-            public InternalGump( DecorativeShieldDeed shield, int page ) : base( 150, 50 )
-            {
-            	m_Shield = shield;
-            	m_Page = page;
-            	
+			public InternalGump( DecorativeShieldDeed shield, int page ) : base( 150, 50 )
+			{
+				m_Shield = shield;
+				m_Page = page;
+				
 				Closable = true;
 				Disposable = true;
 				Dragable = true;
@@ -332,7 +332,7 @@ namespace Server.Items
 					else
 						from.SendLocalizedMessage( 502092 ); // You must be in your house to do this.
 				}
-        		else
+				else
 					from.SendLocalizedMessage( 1042038 ); // You must have the object in your backpack to use it.    
 			}
 			
@@ -356,7 +356,7 @@ namespace Server.Items
 					m_ItemID = itemID;
 					m_Location = location;
 					m_House = house;
-            	
+				
 					Closable = true;
 					Disposable = true;
 					Dragable = true;

@@ -10,15 +10,15 @@ namespace Server.Items
 	public class TreeStump : BaseAddon, IRewardItem
 	{
 		public override BaseAddonDeed Deed
-		{ 
+		{
 			get
-			{ 
+			{
 				TreeStumpDeed deed = new TreeStumpDeed();
 				deed.IsRewardItem = m_IsRewardItem;
 				deed.Logs = m_Logs;
 
 				return deed; 
-			} 
+			}
 		}
 
 		private bool m_IsRewardItem;
@@ -30,7 +30,7 @@ namespace Server.Items
 			set{ m_IsRewardItem = value; InvalidateProperties(); }
 		}
 
-		private int m_Logs;		
+		private int m_Logs;
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int Logs
@@ -115,8 +115,8 @@ namespace Server.Items
 			else
 				writer.Write( (DateTime) DateTime.Now + TimeSpan.FromDays( 1 ) );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -139,15 +139,15 @@ namespace Server.Items
 		public override int LabelNumber{ get{ return 1080406; } } // a deed for a tree stump decoration
 
 		public override BaseAddon Addon
-		{ 
+		{
 			get
-			{ 
+			{
 				TreeStump addon = new TreeStump( m_ItemID );
 				addon.IsRewardItem = m_IsRewardItem;
 				addon.Logs = m_Logs;
 
-				return addon; 
-			} 
+				return addon;
+			}
 		}
 		
 		private int m_ItemID;
@@ -158,7 +158,7 @@ namespace Server.Items
 		{
 			get{ return m_IsRewardItem; }
 			set{ m_IsRewardItem = value; InvalidateProperties(); }
-		}		
+		}
 
 		private int m_Logs;		
 
@@ -185,21 +185,21 @@ namespace Server.Items
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076223 ); // 7th Year Veteran Reward
-        }
-        
-        public override void OnDoubleClick( Mobile from )
-        {        	
+		}
+		
+		public override void OnDoubleClick( Mobile from )
+		{        	
 			if ( m_IsRewardItem && !RewardSystem.CheckIsUsableBy( from, this, null ) )
 				return;
-        
-        	if ( IsChildOf( from.Backpack ) )
-        	{
-        		from.CloseGump( typeof( RewardOptionGump ) );
-        		from.SendGump( new RewardOptionGump( this ) );
-        	}
-        	else
+		
+			if ( IsChildOf( from.Backpack ) )
+			{
+				from.CloseGump( typeof( RewardOptionGump ) );
+				from.SendGump( new RewardOptionGump( this ) );
+			}
+			else
 				from.SendLocalizedMessage( 1062334 ); // This item must be in your backpack to be used.          	
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{

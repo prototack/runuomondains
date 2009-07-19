@@ -107,8 +107,8 @@ namespace Server.Items
 		{
 			base.GetProperties( list );
 			
-			if ( m_IsRewardItem )
-				list.Add( 1076223 ); // 7th Year Veteran Reward
+			if ( Core.ML && m_IsRewardItem )
+				list.Add( 1076217 ); // 1st Year Veteran Reward
 		}
 
 		public override void Serialize( GenericWriter writer )

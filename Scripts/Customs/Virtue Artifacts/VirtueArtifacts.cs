@@ -17,8 +17,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 120; } }
         public override int InitMaxHits { get { return 120; } }
 
-        public override bool CanFortify { get { return false; } }
-
         [Constructable]
         public KatrinasCrook()
             : base()
@@ -59,8 +57,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 120; } }
         public override int InitMaxHits { get { return 120; } }
 
-        public override bool CanFortify { get { return false; } }
-
         [Constructable]
         public JaanasStaff()
             : base()
@@ -100,10 +96,8 @@ namespace Server.Items
 
         public override int ArtifactRarity { get { return 11; } }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
-
-        public override bool CanFortify { get { return false; } }
+        public override int InitMinHits { get { return 120; } }
+        public override int InitMaxHits { get { return 120; } }
 
         [Constructable]
         public DragonsEnd()
@@ -160,8 +154,6 @@ namespace Server.Items
         public override int InitMinHits { get { return 150; } }
         public override int InitMaxHits { get { return 150; } }
 
-        public override bool CanFortify { get { return false; } }
-
         [Constructable]
         public SentinelsGuard()
             : base()
@@ -203,8 +195,6 @@ namespace Server.Items
 
         public override int InitMinHits { get { return 150; } }
         public override int InitMaxHits { get { return 150; } }
-
-        public override bool CanFortify { get { return false; } }
 
         [Constructable]
         public LordBlackthornsExemplar()

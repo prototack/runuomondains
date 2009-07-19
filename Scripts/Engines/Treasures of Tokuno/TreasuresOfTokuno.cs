@@ -21,7 +21,7 @@ namespace Server.Misc
 				typeof( AncientFarmersKasa ), typeof( AncientSamuraiDo ), typeof( ArmsOfTacticalExcellence ), typeof( BlackLotusHood ),
 				typeof( DaimyosHelm ), typeof( DemonForks ), typeof( DragonNunchaku ), typeof( Exiler ), typeof( GlovesOfTheSun ),
 				typeof( HanzosBow ), typeof( LegsOfStability ), typeof( PeasantsBokuto ), typeof( PilferedDancerFans ), typeof( TheDestroyer ),
-				typeof( TomeOfEnlightenment ), typeof( AncientUrn ), typeof( HonorableSwords ), typeof( PigmentsOfTokuno ), typeof( FluteOfRenewal ) //TODO: Chest of heirlooms
+				typeof( TomeOfEnlightenment ), typeof( AncientUrn ), typeof( HonorableSwords ), typeof( LesserPigmentsOfTokuno ), typeof( FluteOfRenewal ) //TODO: Chest of heirlooms
 			};
 
 		public static Type[] LesserArtifacts { get { return m_LesserArtifacts; } }
@@ -402,6 +402,18 @@ namespace Server.Gumps
 
 		private static PigmentsTileButtonInfo[] m_PigmentRewards = new PigmentsTileButtonInfo[]
 			{
+#region Greater Metallic PoTs
+                new PigmentsTileButtonInfo( PigmentType.FadedCoal ),
+				new PigmentsTileButtonInfo( PigmentType.Coal ),
+				new PigmentsTileButtonInfo( PigmentType.FadedGold ),
+				new PigmentsTileButtonInfo( PigmentType.StormBronze ),
+				new PigmentsTileButtonInfo( PigmentType.Rose ),
+				new PigmentsTileButtonInfo( PigmentType.MidnightCoal ),
+				new PigmentsTileButtonInfo( PigmentType.FadedBronze ),
+				new PigmentsTileButtonInfo( PigmentType.FadedRose ),
+				new PigmentsTileButtonInfo( PigmentType.DeepRose ),
+#endregion
+#region Greater Neon PoTs
 				new PigmentsTileButtonInfo( PigmentType.ParagonGold ),
 				new PigmentsTileButtonInfo( PigmentType.VioletCouragePurple ),
 				new PigmentsTileButtonInfo( PigmentType.InvulnerabilityBlue ),
@@ -411,17 +423,8 @@ namespace Server.Gumps
 				new PigmentsTileButtonInfo( PigmentType.BerserkerRed ),
 				new PigmentsTileButtonInfo( PigmentType.NoxGreen ),
 				new PigmentsTileButtonInfo( PigmentType.RumRed ),
-				new PigmentsTileButtonInfo( PigmentType.FireOrange ),
-				new PigmentsTileButtonInfo( PigmentType.FreshPeach ),
-				new PigmentsTileButtonInfo( PigmentType.Silver ),
-				new PigmentsTileButtonInfo( PigmentType.DeepBrown ),
-				new PigmentsTileButtonInfo( PigmentType.BurntBrown ),
-				new PigmentsTileButtonInfo( PigmentType.LightGreen ),
-				new PigmentsTileButtonInfo( PigmentType.Rose ),
-				new PigmentsTileButtonInfo( PigmentType.PaleBlue ),
-				new PigmentsTileButtonInfo( PigmentType.NobleGold ),
-				new PigmentsTileButtonInfo( PigmentType.PaleOrange ),
-				new PigmentsTileButtonInfo( PigmentType.ChaosBlue )
+				new PigmentsTileButtonInfo( PigmentType.FireOrange )
+#endregion
 			};
 
 		public static PigmentsTileButtonInfo[] PigmentRewards { get { return m_PigmentRewards; } }

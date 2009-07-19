@@ -19,14 +19,14 @@ namespace Server.Items
 		public StoneAnkhComponent( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( Addon is StoneAnkh && ((StoneAnkh) Addon).IsRewardItem )
 				list.Add( 1076221 ); // 5th Year Veteran Reward
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -34,8 +34,8 @@ namespace Server.Items
 
 			writer.WriteEncodedInt( 0 ); // version
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -88,32 +88,38 @@ namespace Server.Items
 		public StoneAnkh( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void OnChop( Mobile from )
+		{
+			from.SendLocalizedMessage( 500489 ); // You can't use an axe on that.
+			return;
+		}
+
+			public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
-			if ( m_IsRewardItem )
+			if ( Core.ML && m_IsRewardItem )
 				list.Add( 1076221 ); // 5th Year Veteran Reward
 		}
 
 		public override void OnComponentUsed( AddonComponent c, Mobile from )
-        {
-        	if ( from.InRange( Location, 2 ) )
-        	{
+			{
+				if ( from.InRange( Location, 2 ) )
+				{
 				BaseHouse house = BaseHouse.FindHouseAt( this );  
 				
-            	if ( house != null && house.IsOwner( from ) )
-            	{
-	        		from.CloseGump( typeof( RewardDemolitionGump ) );
-	        		from.SendGump( new RewardDemolitionGump( this, 1049783 ) ); // Do you wish to re-deed this decoration?
-	        	}
-	        	else
+						if ( house != null && house.IsOwner( from ) )
+						{
+						from.CloseGump( typeof( RewardDemolitionGump ) );
+						from.SendGump( new RewardDemolitionGump( this, 1049783 ) ); // Do you wish to re-deed this decoration?
+					}
+					else
 					from.SendLocalizedMessage( 1049784 ); // You can only re-deed this decoration if you are the house owner or originally placed the decoration.
-        	}
-            else
+				}
+				else
 				from.Say( 1019045 ); // I can't reach that.
-        }
+			}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -123,8 +129,8 @@ namespace Server.Items
 			
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+			public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
@@ -137,7 +143,6 @@ namespace Server.Items
 	public class StoneAnkhDeed : BaseAddonDeed, IRewardItem
 	{
 		public override int LabelNumber{ get{ return 1049773; } } // deed for a stone ankh
-		public override BaseAddon Addon{ get{ return new StoneAnkh( m_East ); } }
 		
 		private bool m_East;
 		private bool m_IsRewardItem;
@@ -147,6 +152,17 @@ namespace Server.Items
 		{
 			get{ return m_IsRewardItem; }
 			set{ m_IsRewardItem = value; InvalidateProperties(); }
+		}
+
+		public override BaseAddon Addon
+		{ 
+			get
+			{ 
+				StoneAnkh addon = new StoneAnkh( m_East );
+				addon.IsRewardItem = m_IsRewardItem;
+
+				return addon; 
+			} 
 		}
 
 		[Constructable]
@@ -177,14 +193,14 @@ namespace Server.Items
 		{
 			base.OnDoubleClick( m );
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076221 ); // 5th Year Veteran Reward
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -218,7 +234,7 @@ namespace Server.Items
 			public InternalGump( StoneAnkhDeed deed ) : base( 150, 50 )
 			{
 				m_Deed = deed;				
-            	
+				
 				Closable = true;
 				Disposable = true;
 				Dragable = true;

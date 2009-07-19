@@ -4,6 +4,7 @@ using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {	
+	[Furniture]
 	public class CommodityDeedBox : BaseContainer, IRewardItem
 	{
 		public override int LabelNumber{ get { return 1080523; } } // Commodity Deed Box
@@ -28,14 +29,14 @@ namespace Server.Items
 		public CommodityDeedBox( Serial serial ) : base( serial )
 		{
 		}
-        
-        public override void GetProperties( ObjectPropertyList list )
+		
+		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 			
 			if ( m_IsRewardItem )
 				list.Add( 1076217 ); // 1st Year Veteran Reward		
-        }
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
@@ -45,8 +46,8 @@ namespace Server.Items
 
 			writer.Write( (bool) m_IsRewardItem );
 		}
-            
-        public override void Deserialize( GenericReader reader )
+			
+		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 

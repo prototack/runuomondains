@@ -19,11 +19,11 @@ namespace Server.Items
 			Hue = 0x495;
 			
 			Attributes.BonusMana = 8;
-			Attributes.RegenHits = 3;
+            //Attributes.RegenHits = 3;
 			
 			ClothingAttributes.SelfRepair = 3;
 			
-			switch( Utility.Random( 14 ) )
+			switch( Utility.Random( 15 ) )
 			{
 				case 0: 
 					SkillBonuses.SetValues( 0, SkillName.EvalInt, 10 );
@@ -80,7 +80,11 @@ namespace Server.Items
 				case 13: 
 					SkillBonuses.SetValues( 0, SkillName.Peacemaking, 10 );
 					SkillBonuses.SetValues( 1, SkillName.Musicianship, 10 );
-					break;
+                    break;
+                case 14:
+                    SkillBonuses.SetValues(0, SkillName.Provocation, 10);
+                    SkillBonuses.SetValues(1, SkillName.Musicianship, 10);
+                    break;
 			}
 		}
 
