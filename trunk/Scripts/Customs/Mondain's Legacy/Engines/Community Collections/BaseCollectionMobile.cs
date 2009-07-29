@@ -15,7 +15,7 @@ namespace Server.Mobiles
 
 		public override bool IsActiveVendor{ get{ return false; } }
 	
-		#region IComunityCollection		
+		#region IComunityCollection
 		public abstract Collection CollectionID{ get; }
 		public abstract int MaxTier{ get; }
 		

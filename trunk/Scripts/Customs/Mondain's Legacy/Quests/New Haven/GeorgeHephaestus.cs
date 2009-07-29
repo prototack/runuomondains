@@ -99,13 +99,13 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public GeorgeHephaestus() : base( "George Hephaestus", "The Blacksmith Instructor" )
 		{   
-			SetSkill( SkillName.ArmsLore, 65.0, 90.0 );
-			SetSkill( SkillName.Blacksmith, 65.0, 90.0 );
-			SetSkill( SkillName.Magery, 65.0, 90.0 );
-			SetSkill( SkillName.Tactics, 65.0, 90.0 );
-			SetSkill( SkillName.Swords, 65.0, 90.0 );
-			SetSkill( SkillName.Tinkering, 65.0, 90.0 );
-			SetSkill( SkillName.Mining, 65.0, 90.0 );
+			SetSkill( SkillName.ArmsLore, 120.0, 120.0 );
+			SetSkill( SkillName.Blacksmith, 120.0, 120.0 );
+			SetSkill( SkillName.Magery, 120.0, 120.0 );
+			SetSkill( SkillName.Tactics, 120.0, 120.0 );
+			SetSkill( SkillName.Swords, 120.0, 120.0 );
+			SetSkill( SkillName.Tinkering, 120.0, 120.0 );
+			SetSkill( SkillName.Mining, 120.0, 120.0 );
 		}
 		
 		public GeorgeHephaestus( Serial serial ) : base( serial )

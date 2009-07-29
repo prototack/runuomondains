@@ -89,6 +89,13 @@ namespace Server
 				return damage;
 			}
 
+			#region Mondain's Legacy
+			BaseTalisman talisman = m.Talisman as BaseTalisman;
+
+			if ( talisman != null && talisman.Protection != null )
+				damage = talisman.Protection.ScaleDamage( from, damage );
+			#endregion
+
 			Fix( ref phys );
 			Fix( ref fire );
 			Fix( ref cold );
@@ -150,7 +157,7 @@ namespace Server
 			#endregion
 
 			#region Dragon Barding
-			if( (from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
+			if( (!Core.AOS || from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
 			{
 				SwampDragon pet = m.Mount as SwampDragon;
 
@@ -378,6 +385,42 @@ namespace Server
 		{
 			return "...";
 		}
+
+		#region Mondain's Legacy
+		public void AddStatBonuses( Mobile to )
+		{
+			int strBonus = BonusStr;
+			int dexBonus = BonusDex;
+			int intBonus = BonusInt;
+
+			if ( strBonus != 0 || dexBonus != 0 || intBonus != 0 )
+			{
+				string modName = Owner.Serial.ToString();
+
+				if ( strBonus != 0 )
+					to.AddStatMod( new StatMod( StatType.Str, modName + "Str", strBonus, TimeSpan.Zero ) );
+
+				if ( dexBonus != 0 )
+					to.AddStatMod( new StatMod( StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero ) );
+
+				if ( intBonus != 0 )
+					to.AddStatMod( new StatMod( StatType.Int, modName + "Int", intBonus, TimeSpan.Zero ) );
+			}
+
+			to.CheckStatTimers();
+		}
+
+		public void RemoveStatBonuses( Mobile from )
+		{
+			string modName = Owner.Serial.ToString();
+
+			from.RemoveStatMod( modName + "Str" );
+			from.RemoveStatMod( modName + "Dex" );
+			from.RemoveStatMod( modName + "Int" );
+
+			from.CheckStatTimers();
+		}
+		#endregion
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int RegenHits { get { return this[AosAttribute.RegenHits]; } set { this[AosAttribute.RegenHits] = value; } }

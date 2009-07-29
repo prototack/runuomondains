@@ -1911,8 +1911,9 @@ namespace Server.Mobiles
             if (this.Alive && !wasAlive)
             {
                 Item deathRobe = new DeathRobe();
-
-                if (!EquipItem(deathRobe))
+                if (!this.Backpack.CheckHold(this, deathRobe, false, true))
+                    deathRobe.Delete();
+                else if (!EquipItem(deathRobe))
                     deathRobe.Delete();
             }
         }
@@ -2359,21 +2360,6 @@ namespace Server.Mobiles
                 amount = (int)(amount * 1.1);
                 from.Damage(amount, from);
             }
-
-            #region Mondain's Legacy
-            if (from != null && Talisman is BaseTalisman)
-            {
-                BaseTalisman talisman = (BaseTalisman)Talisman;
-
-                if (talisman.Protection != null && talisman.Protection.Type != null)
-                {
-                    Type type = talisman.Protection.Type;
-
-                    if (type == from.GetType())
-                        amount *= 1 - (int)(((double)talisman.Protection.Amount) / 100);
-                }
-            }
-            #endregion
 
             base.Damage(amount, from);
         }
@@ -3098,6 +3084,22 @@ namespace Server.Mobiles
                         list.Add(1060776, "{0}\t{1}", pl.Rank.Title, faction.Definition.PropName); // ~1_val~, ~2_val~
                 }
             }
+
+            #region Mondain's Legacy
+            if (Core.ML)
+            {
+                for (int i = AllFollowers.Count - 1; i >= 0; i--)
+                {
+                    BaseCreature c = AllFollowers[i] as BaseCreature;
+
+                    if (c != null && c.ControlOrder == OrderType.Guard)
+                    {
+                        list.Add(501129); // guarded
+                        break;
+                    }
+                }
+            }
+            #endregion
         }
 
         public override void OnSingleClick(Mobile from)

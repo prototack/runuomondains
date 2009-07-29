@@ -1,19 +1,20 @@
 using System;
-using Server;
 
-namespace Server.Mobiles
+namespace Server.Items
 {
-	public class SummonedCow : BaseTalismanSummon
+	public class RingOfArcaneTactics : GoldRing
 	{
 		[Constructable]
-		public SummonedCow() : base()
+        public RingOfArcaneTactics()
+            : base()
 		{
-			Name = "a cow";
-			Body = Utility.RandomList( 0xD8, 0xE7 );
-			BaseSoundID = 0x78;
+            Name = "Ring of Arcane Tactics";
+            Attributes.CastRecovery = 3;
+            Attributes.CastSpeed = 1;
 		}
 
-		public SummonedCow( Serial serial ) : base( serial )
+        public RingOfArcaneTactics(Serial serial)
+            : base(serial)
 		{
 		}
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Server;
+using Server.Network;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -18,6 +19,8 @@ namespace Server.Mobiles
 			SetStr( 186, 230 );
 			SetDex( 51, 75 );
 			SetInt( 41, 55 );
+
+            SetMana(30);
 
 			SetHits( 151, 180 );
 
@@ -48,29 +51,13 @@ namespace Server.Mobiles
 					case 2: PackItem( new Axle() ); break;
 				}
 			}
-
-
 		}
-
-
 
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.Meager );
 			AddLoot( LootPack.Average );
 		}
-
-		public override int Meat{ get{ return 1; } }
-		public override int Hides{ get{ return 10; } }
-		public override HideType HideType{ get{ return HideType.Spined; } }
-
-		// TODO: Soul Sap
-		/*
-		 * Message: 1070820
-		 * Spits pool of acid (blood, hue 0x3F), hits lost 6-10 per second/step
-		 * Damage is resistable (physical)
-		 * Acid last 10 seconds
-		 */
 		 
 		public override int GetAngerSound()
 		{
@@ -101,12 +88,13 @@ namespace Server.Mobiles
  		{
 			base.OnGaveMeleeAttack (defender);
 
-			if ( 0.1 > Utility.RandomDouble() )
+            if (0.5 > Utility.RandomDouble())
 			{
-				if ( !IsBeingDrained( defender ) )
+                if (!IsBeingDrained(defender) && Mana > 9)
 				{
 					defender.SendLocalizedMessage( 1070848 ); // You feel your life force being stolen away.
 					BeginLifeDrain( defender, this );
+                    Mana -= 15;
 				}
 			}
 		}
@@ -135,7 +123,7 @@ namespace Server.Mobiles
 		{
 			if ( m.Alive )
 			{
-				int damageGiven = AOS.Damage( m, from, 5, 100, 0, 0, 0, 0 );
+                int damageGiven = AOS.Damage(m, from, 5, 0, 0, 0, 0, 100);
 
 				from.Hits += damageGiven;
 			}
@@ -157,14 +145,62 @@ namespace Server.Mobiles
 			m.SendLocalizedMessage( 1070849 ); // The drain on your life force is gone.
 		}
 
-		/*
-		public override bool OnBeforeDeath()
-		{
-			SpillAcid( 1, 4, 10, 6, 10 );
-
-			return base.OnBeforeDeath();
+		public override void OnDamage( int amount, Mobile from, bool willKill )
+ 		{
+			if ( from != null && from.Map != null )
+			{
+				if ( willKill )
+				{
+					int tmp = Utility.Random( 1, 4 );
+					if ( tmp < 3 )
+						tmp = 3;
+					SpillAcidSlime( this, tmp, true );
+					from.SendLocalizedMessage( 1070820 ); 
+				} 
+				if ( (Hits < 100 ) && (Utility.Random( 1, 100 ) < 21) ) 
+				{
+					if( Utility.Random( 1, 200 ) < 101 )
+						SpillAcidSlime( this, 1, false );
+					else
+						SpillAcidSlime( from, 1, false );
+					if ( Mana >= 15)
+						Mana -= 15;
+					from.SendLocalizedMessage( 1070820 ); 
+				} 
+			}
+			base.OnDamage( amount, from, willKill );
 		}
-		*/
+
+        private void SpillAcidSlime(Mobile target, int pools, bool IsRandLoc)
+        {
+            if (this.Map == null)
+                return;
+
+            Point3D loc = target.Location;
+            Map map = target.Map;
+
+            for (int i = 0; i < pools; ++i)
+            {
+                PoolOfAcid acid = new PoolOfAcid(TimeSpan.FromSeconds(10), 5, 10, 3, true);
+                acid.Name = "slime";
+                bool validLocation = false;
+                if (IsRandLoc)
+                {
+                    for (int j = 0; !validLocation && j < 10; ++j)
+                    {
+                        int x = X + Utility.Random(3) - 1;
+                        int y = Y + Utility.Random(3) - 1;
+                        int z = map.GetAverageZ(x, y);
+
+                        if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
+                            loc = new Point3D(x, y, Z);
+                        else if (validLocation = map.CanFit(x, y, z, 16, false, false))
+                            loc = new Point3D(x, y, z);
+                    }
+                }
+                acid.MoveToWorld(loc, map);
+            }
+        }
 
 		public Kappa( Serial serial ) : base( serial )
 		{

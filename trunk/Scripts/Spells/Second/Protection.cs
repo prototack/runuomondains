@@ -44,7 +44,7 @@ namespace Server.Spells.Second
 			return true;
 		}
 
-		public static Hashtable m_Table = new Hashtable();
+		private static Hashtable m_Table = new Hashtable();
 
 		public static void Toggle( Mobile caster, Mobile target )
 		{
@@ -166,5 +166,23 @@ namespace Server.Spells.Second
 				DefensiveSpell.Nullify( m_Caster );
 			}
 		}
+
+		#region Mondain's Legacy
+		public static void EndProtection( Mobile m )
+		{
+			if ( m_Table.Contains( m ) )
+			{
+				object[] mods = (object[]) m_Table[ m ];
+
+				m_Table.Remove( m );
+				Registry.Remove( m );
+
+				m.RemoveResistanceMod( (ResistanceMod) mods[ 0 ] );
+				m.RemoveSkillMod( (SkillMod) mods[ 1 ] );
+
+				BuffInfo.RemoveBuff( m, BuffIcon.Protection );
+			}
+		}
+		#endregion
 	}
 }

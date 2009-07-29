@@ -33,10 +33,10 @@ namespace Server.Misc
             if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 
-            if (r.IsPartOf("Deciet") || r.IsPartOf("Despise") || r.IsPartOf("Destard") || r.IsPartOf("Hyloth") || r.IsPartOf("Shame") || r.IsPartOf("Covetous") || r.IsPartOf("Wrong"))
+            if (r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") || r.IsPartOf("Hythloth") || r.IsPartOf("Shame") || r.IsPartOf("Covetous") || r.IsPartOf("Wrong"))
                 return true;
 
-            return (r.IsPartOf("Deciet") || r.IsPartOf("Despise") || r.IsPartOf("Destard") || r.IsPartOf("Hyloth") || r.IsPartOf("Shame") || r.IsPartOf("Covetous") || r.IsPartOf("Wrong"));
+            return (r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") || r.IsPartOf("Hythloth") || r.IsPartOf("Shame") || r.IsPartOf("Covetous") || r.IsPartOf("Wrong"));
         }
 
         public static void HandleKill(Mobile victim, Mobile killer)

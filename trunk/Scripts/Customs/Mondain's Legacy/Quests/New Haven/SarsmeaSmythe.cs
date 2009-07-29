@@ -97,12 +97,12 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public SarsmeaSmythe() : base( "Sarsmea Smythe", "The Focus Instructor" )
 		{   			
-			SetSkill( SkillName.Anatomy, 65.0, 90.0 );
-			SetSkill( SkillName.Parry, 65.0, 90.0 );
-			SetSkill( SkillName.Healing, 65.0, 90.0 );
-			SetSkill( SkillName.Tactics, 65.0, 90.0 );
-			SetSkill( SkillName.Swords, 65.0, 90.0 );
-			SetSkill( SkillName.Focus, 65.0, 90.0 );
+			SetSkill( SkillName.Anatomy, 120.0, 120.0 );
+			SetSkill( SkillName.Parry, 120.0, 120.0 );
+			SetSkill( SkillName.Healing, 120.0, 120.0 );
+			SetSkill( SkillName.Tactics, 120.0, 120.0 );
+			SetSkill( SkillName.Swords, 120.0, 120.0 );
+			SetSkill( SkillName.Focus, 120.0, 120.0 );
 		}
 		
 		public SarsmeaSmythe( Serial serial ) : base( serial )

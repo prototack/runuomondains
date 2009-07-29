@@ -217,40 +217,6 @@ namespace Server.Items
 			
 			if ( Core.AOS && tool is BaseRunicTool )
 				((BaseRunicTool)tool).ApplyAttributesTo( this );
-				
-			switch ( Resource )
-			{
-				case CraftResource.AshWood: 
-					ArmorAttributes.LowerStatReq += 20; 
-					break;
-					
-				case CraftResource.YewWood: 
-					Attributes.RegenHits += 1; 
-					break;
-					
-				case CraftResource.Heartwood:
-					switch ( Utility.Random( 7 ) )
-					{
-						case 0: Attributes.BonusDex += 2; break;
-						case 1: Attributes.BonusStr += 2; break; 
-						case 2: Attributes.ReflectPhysical += 5; break;
-						case 3: Attributes.SpellChanneling = 1; Attributes.CastSpeed = -1; break;
-						case 4: ArmorAttributes.SelfRepair += 2; break;			
-						case 5: PhysicalBonus += 5; break;
-						case 6: ColdBonus += 3; break;
-					}
-					break;
-					
-				case CraftResource.Bloodwood: 
-					Attributes.RegenHits += 2;
-					Attributes.Luck += 40;
-					break;
-					
-				case CraftResource.Frostwood:
-					Attributes.SpellChanneling = 1; 
-					Attributes.CastSpeed = -1;
-					break;
-			}
 			
 			return quality;
 		}

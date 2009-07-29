@@ -152,11 +152,13 @@ namespace Server.Items
 					
 					// silver wire
 					c = new Static( 0x1EB7 );
+					c.Weight = 5.0;
 					c.MoveToWorld( new Point3D( 1417, 1592, 46 ), Map );
 					list.Add( c );
 					
 					// gold wire
 					c = new Static( 0x1EB7 );
+					c.Weight = 5.0;
 					c.MoveToWorld( new Point3D( 1417, 1592, 47 ), Map );
 					list.Add( c );
 					

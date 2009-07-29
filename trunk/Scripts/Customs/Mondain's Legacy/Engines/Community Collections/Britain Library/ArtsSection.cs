@@ -163,6 +163,7 @@ namespace Server.Items
 					c = new Static( 0xFBE );
 					c.MoveToWorld( new Point3D( 1418, 1606, 42 ), Map );
 					c.Name = "A Cookbook";
+					c.Weight = 5.0;
 					list.Add( c );
 					break;				
 			}			

@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
+using Server;
 using Server.Items;
-using Server.Targeting;
 
 namespace Server.Mobiles
 {
@@ -13,7 +12,6 @@ namespace Server.Mobiles
 		{
 			Name = "an ant lion";
 			Body = 787;
-			BaseSoundID = 1006;
 
 			SetStr( 296, 320 );
 			SetDex( 81, 105 );
@@ -51,32 +49,34 @@ namespace Server.Mobiles
 				case 2: PackItem( new CopperOre( Utility.RandomMinMax( 1, 10 ) ) ); break;
 				case 3: PackItem( new BronzeOre( Utility.RandomMinMax( 1, 10 ) ) ); break;
 			}
+
+            // Todo.  Peculiar and Fragrant seeds.
 		}
 
-		public override int GetAngerSound()
-		{
-			return 0x5A;
-		}
+        public override int GetAngerSound()
+        {
+            return 0x5A;
+        }
 
-		public override int GetIdleSound()
-		{
-			return 0x5A;
-		}
+        public override int GetIdleSound()
+        {
+            return 0x5E;
+        }
 
-		public override int GetAttackSound()
-		{
-			return 0x164;
-		}
+        public override int GetAttackSound()
+        {
+            return 0x164;
+        }
 
-		public override int GetHurtSound()
-		{
-			return 0x187;
-		}
+        public override int GetHurtSound()
+        {
+            return 0x187;
+        }
 
-		public override int GetDeathSound()
-		{
-			return 0x1BA;
-		}
+        public override int GetDeathSound()
+        {
+            return 0x1BA;
+        }
 
 		public override void GenerateLoot()
 		{
@@ -98,15 +98,24 @@ namespace Server.Mobiles
 			return base.OnBeforeDeath();
 		}
 
-		public override bool HasBreath{ get{ return true; } }
-		public override int BreathEffectSpeed{ get{ return 1; } }
-		public override int BreathEffectHue{ get{ return 0x1D3; } }
-		public override int BreathEffectSound{ get{ return 0x1CC; } }
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            Mobile combatant = Combatant;
 
-		public override void BreathDealDamage( Mobile target )
-		{
-			target.ApplyPoison( this, Poison.Deadly );
-		}
+            if (combatant == null || combatant.Deleted || combatant.Map != Map || !InRange(combatant, 12) || !CanBeHarmful(combatant) || !InLOS(combatant))
+                return;
+            if (Utility.Random(1, 100) < 11)
+                PoisonAttack(combatant);
+            base.OnDamage(amount, from, willKill);
+        }
+
+        public void PoisonAttack(Mobile m)
+        {
+            DoHarmful(m);
+            this.MovingParticles(m, 0x36D4, 1, 0, false, false, 0x3F, 0, 0x1F73, 1, 0, (EffectLayer)255, 0x100);
+            m.ApplyPoison(this, Poison.Regular);
+            m.SendLocalizedMessage(1070821, this.Name); // %s spits a poisonous substance at you!
+        }
 
 		public AntLion( Serial serial ) : base( serial )
 		{

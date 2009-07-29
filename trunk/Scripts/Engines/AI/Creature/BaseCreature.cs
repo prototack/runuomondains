@@ -925,16 +925,6 @@ namespace Server.Mobiles
                 from.Damage(amount, from);
             }
 
-            #region Mondain's Legacy
-            if (from != null && from.Talisman is BaseTalisman)
-            {
-                BaseTalisman talisman = (BaseTalisman)from.Talisman;
-
-                if (talisman.Slayer != TalismanSlayerName.None && TalismanSlayer.Check(talisman.Slayer, this))
-                    amount *= 2;
-            }
-            #endregion
-
             base.Damage(amount, from);
 
             if (SubdueBeforeTame && !Controlled)
@@ -1229,20 +1219,6 @@ namespace Server.Mobiles
 
         public virtual void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            #region Mondain's Legacy
-            if (from != null && from.Talisman is BaseTalisman)
-            {
-                BaseTalisman talisman = (BaseTalisman)from.Talisman;
-
-                if (talisman.Killer != null && talisman.Killer.Type != null)
-                {
-                    Type type = talisman.Killer.Type;
-
-                    if (type == GetType())
-                        damage = (int)(damage * (1 + (double)talisman.Killer.Amount / 100));
-                }
-            }
-            #endregion
         }
 
         public virtual void AlterMeleeDamageTo(Mobile to, ref int damage)
@@ -1987,7 +1963,7 @@ namespace Server.Mobiles
 
                             if (master != null && master == from)	//So friends can't start the bonding process
                             {
-                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill || (this is LesserHiryu && master.Skills[SkillName.Bushido].Base >= 90.0))
+                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill || OverrideBondingReqs())
                                 {
                                     if (BondingBegin == DateTime.MinValue)
                                     {
@@ -2017,6 +1993,11 @@ namespace Server.Mobiles
         }
 
         #endregion
+
+        public virtual bool OverrideBondingReqs()
+        {
+            return false;
+        }
 
         public virtual bool CanAngerOnTame { get { return false; } }
 
@@ -2456,6 +2437,13 @@ namespace Server.Mobiles
 
                 if (m_AI != null)
                     m_AI.OnCurrentOrderChanged();
+
+                #region Mondain's Legacy
+                InvalidateProperties();
+
+                if (m_ControlMaster != null)
+                    m_ControlMaster.InvalidateProperties();
+                #endregion
             }
         }
 
@@ -4021,20 +4009,22 @@ namespace Server.Mobiles
             base.AddNameProperties(list);
 
             #region Mondain's Legacy
-            if (Backpack is StrongBackpack && Alive && Core.ML)
+            if (Core.ML)
             {
-                if (TotalWeight == 1)
-                    list.Add(1072788, "{0}", 1); // Weight: ~1_WEIGHT~ stone
-                else
-                    list.Add(1072789, "{0}", TotalWeight); // Weight: ~1_WEIGHT~ stones
+                if (Backpack is StrongBackpack)
+                    list.Add(TotalWeight == 1 ? 1072788 : 1072789, TotalWeight.ToString()); // Weight: ~1_WEIGHT~ stones
+
+                if (m_ControlOrder == OrderType.Guard)
+                    list.Add(1080078); // guarding
             }
+
+            if (Summoned)
+                list.Add(1049646); // (summoned)
             #endregion
 
-            if (Controlled && Commandable)
+            else if (Controlled && Commandable)
             {
-                if (Summoned)
-                    list.Add(1049646); // (summoned)
-                else if (IsBonded)	//Intentional difference (showing ONLY bonded when bonded instead of bonded & tame)
+                if (IsBonded)	//Intentional difference (showing ONLY bonded when bonded instead of bonded & tame)
                     list.Add(1049608); // (bonded)
                 else
                     list.Add(502006); // (tame)
@@ -4609,6 +4599,10 @@ namespace Server.Mobiles
 
                 Delta(MobileDelta.Noto);
             }
+
+            #region Mondain's Legacy
+            InvalidateProperties();
+            #endregion
 
             return true;
         }

@@ -14,7 +14,7 @@ namespace Server.Items
 		{
 			Hue = Reward.StrongboxHue();
 			
-			while ( Items.Count < ItemAmount )
+			while ( Items.Count < Amount )
 			{				
 				switch ( Utility.Random( 4 ) )
 				{
@@ -26,7 +26,7 @@ namespace Server.Items
 			}			
 			
 			if ( 0.25 > Utility.RandomDouble() ) // check
-				DropItem( new RandomTalisman() );
+				DropItem( Loot.RandomTalisman() );
 		}
 		
 		public RewardBox( Serial serial ) : base( serial )

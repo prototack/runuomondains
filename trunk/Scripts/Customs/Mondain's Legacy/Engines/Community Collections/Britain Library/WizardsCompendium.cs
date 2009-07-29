@@ -108,22 +108,43 @@ namespace Server.Items
 			return can;
 		}
 		
-		/*public override void IncreaseTier()
+		public override void IncreaseTier()
 		{			
 			base.IncreaseTier();
 			
 			List<object> list = new List<object>();
-			Item c;
-			
+			Item c;			
 			
 			switch ( Tier )
-			{								
-			}
-			
+			{			
+				case 1:
+					// wizard's hat
+					c = new WizardsHat();
+					c.MoveToWorld( new Point3D( 1410, 1603, 57 ), Map );
+					list.Add( c );
+
+					// crystal ball
+					c = new Static( 0xE2D );
+					c.Weight = 10.0;
+					c.MoveToWorld( new Point3D( 1410, 1604, 57 ), Map );
+					list.Add( c );
+
+					// spellbook
+					c = new Spellbook( 0x0, 0xE3B );
+					c.MoveToWorld( new Point3D( 1408, 1603, 63 ), Map );
+					list.Add( c );
+
+					// garlic
+					c = new Garlic();
+					c.MoveToWorld( new Point3D( 1408, 1603, 62 ), Map );
+					list.Add( c );
+					
+					break;					
+			}			
 			
 			if ( list.Count > 0 )
 				Tiers.Add( list );
-		}*/
+		}
 		
 		public override void Serialize( GenericWriter writer )
 		{

@@ -101,22 +101,55 @@ namespace Server.Items
 			return can;
 		}
 		
-		/*public override void IncreaseTier()
+		public override void IncreaseTier()
 		{			
 			base.IncreaseTier();
 			
 			List<object> list = new List<object>();
 			Item c;
-			
-			
+						
 			switch ( Tier )
-			{								
-			}
-			
+			{		
+				case 1: 
+					// brush
+					c = new Static( 0x1373 );
+					c.MoveToWorld( new Point3D( 1415, 1593, 67 ), Map );
+					list.Add( c );	
+					
+					// horse shoes
+					c = new Static( 0xFB6 );
+					c.MoveToWorld( new Point3D( 1415, 1595, 50 ), Map );
+					list.Add( c );			
+					
+					// bridle
+					c = new Static( 0x1375 );
+					c.MoveToWorld( new Point3D( 1416, 1593, 67 ), Map );
+					list.Add( c );	
+					
+					// brush
+					c = new Static( 0x1372 );
+					c.MoveToWorld( new Point3D( 1417, 1593, 67 ), Map );
+					list.Add( c );	
+					
+					// horse barding
+					c = new Static( 0x1378 );
+					c.MoveToWorld( new Point3D( 1417, 1595, 50 ), Map );
+					list.Add( c );	
+					
+					c = new Static( 0x1379 );
+					c.MoveToWorld( new Point3D( 1417, 1594, 50 ), Map );
+					list.Add( c );	
+					
+					// shepard's crook
+					c = new ShepherdsCrook();
+					c.MoveToWorld( new Point3D( 1417, 1597, 58 ), Map );
+					
+					break;
+			}			
 			
 			if ( list.Count > 0 )
 				Tiers.Add( list );
-		}*/
+		}
 		
 		public override void Serialize( GenericWriter writer )
 		{

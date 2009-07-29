@@ -14,8 +14,10 @@ namespace Server.Mobiles
 		public SummonedDaemon () : base( AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
 			Name = NameList.RandomName( "daemon" );
-			Body = 9;
-			BaseSoundID = 357;
+            Body = Core.AOS ? 10 : 9;
+            
+            BaseSoundID = 357;
+            Karma = -5000;
 
 			SetStr( 200 );
 			SetDex( 110 );

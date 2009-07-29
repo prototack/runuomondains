@@ -90,13 +90,13 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public Chiyo() : base( "Chiyo", "The Hiding Instructor" )
 		{   
-			SetSkill( SkillName.Hiding, 65.0, 90.0 );
-			SetSkill( SkillName.Tracking, 65.0, 90.0 );
-			SetSkill( SkillName.Healing, 65.0, 90.0 );
-			SetSkill( SkillName.Tactics, 65.0, 90.0 );
-			SetSkill( SkillName.Fencing, 65.0, 90.0 );
-			SetSkill( SkillName.Stealth, 65.0, 90.0 );
-			SetSkill( SkillName.Ninjitsu, 65.0, 90.0 );
+			SetSkill( SkillName.Hiding, 120.0, 120.0 );
+			SetSkill( SkillName.Tracking, 120.0, 120.0 );
+			SetSkill( SkillName.Healing, 120.0, 120.0 );
+			SetSkill( SkillName.Tactics, 120.0, 120.0 );
+			SetSkill( SkillName.Fencing, 120.0, 120.0 );
+			SetSkill( SkillName.Stealth, 120.0, 120.0 );
+			SetSkill( SkillName.Ninjitsu, 120.0, 120.0 );
 		}
 		
 		public Chiyo( Serial serial ) : base( serial )

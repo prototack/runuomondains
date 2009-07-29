@@ -15,8 +15,8 @@ namespace Server.Items
 			Hue = 0x2D0;
 			MaxChargeTime = 1800;
 		
-			Blessed = RandomTalisman.GetRandomBlessed();
-			Protection = RandomTalisman.GetRandomProtection();
+			Blessed = GetRandomBlessed();
+			Protection = GetRandomProtection();
 			
 			Attributes.RegenHits = 2;
 			Attributes.LowerManaCost = 10;
@@ -26,7 +26,7 @@ namespace Server.Items
 		{
 		}
 		
-		public override Type GetSummonType()
+		public override Type GetSummoner()
 		{
 			return Utility.RandomBool() ? typeof( SummonedSkeletalKnight ) : typeof( SummonedSheep );
 		}

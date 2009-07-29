@@ -1634,8 +1634,10 @@ namespace Server.Items
             #region Mondain's Legacy
             if (Core.ML)
             {
-                if (defender is BaseCreature && TalismanSlayer.Check(m_Slayer3, (BaseCreature)defender))
-                    percentageBonus += 100;
+                BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+
+                if (talisman != null && talisman.Killer != null)
+                    percentageBonus += talisman.Killer.DamageBonus(defender);
 
                 if (this is ButchersWarCleaver)
                 {
@@ -2113,6 +2115,11 @@ namespace Server.Items
             SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkWeapon.Slayer2);
 
             if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
+                return CheckSlayerResult.Slayer;
+
+            BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+
+            if (talisman != null && TalismanSlayer.Slays(talisman.Slayer, defender))
                 return CheckSlayerResult.Slayer;
 
             if (!Core.SE)

@@ -162,7 +162,7 @@ namespace Server.Mobiles
 			int count = Utility.Random( amount );
 			
 			for ( int i = 0; i < count; i ++ )
-				PackItem( new RandomTalisman() );
+				PackItem( Loot.RandomTalisman() );
 		}
 		
 		public virtual Point3D GetSpawnPosition( int range )

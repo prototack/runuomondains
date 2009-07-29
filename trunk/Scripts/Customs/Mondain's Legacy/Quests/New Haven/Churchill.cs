@@ -94,12 +94,12 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public Churchill() : base( "Churchill", "The Mace Fighting Instructor" )
 		{   
-			SetSkill( SkillName.Anatomy, 65.0, 90.0 );
-			SetSkill( SkillName.Parry, 65.0, 90.0 );
-			SetSkill( SkillName.Healing, 65.0, 90.0 );
-			SetSkill( SkillName.Tactics, 65.0, 90.0 );
-			SetSkill( SkillName.Macing, 65.0, 90.0 );
-			SetSkill( SkillName.Focus, 65.0, 90.0 );
+			SetSkill( SkillName.Anatomy, 120.0, 120.0 );
+			SetSkill( SkillName.Parry, 120.0, 120.0 );
+			SetSkill( SkillName.Healing, 120.0, 120.0 );
+			SetSkill( SkillName.Tactics, 120.0, 120.0 );
+			SetSkill( SkillName.Macing, 120.0, 120.0 );
+			SetSkill( SkillName.Focus, 120.0, 120.0 );
 		}
 		
 		public Churchill( Serial serial ) : base( serial )

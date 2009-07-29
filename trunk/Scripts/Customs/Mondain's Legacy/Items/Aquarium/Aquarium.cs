@@ -227,13 +227,15 @@ namespace Server.Items
 				beverage.Quantity -= 1;
 						
 				from.PlaySound( 0x4E );
-				from.SendLocalizedMessage( 1074260, "" + 1 ); // ~1_NUM~ unit(s) of water have been added to the aquarium.
+                from.SendLocalizedMessage(1074260, "" + 1); // ~1_NUM~ unit(s) of water have been added to the aquarium.
+                InvalidateProperties();
+
 				return false;
 			}	
 			else if ( !AddDecoration( from, dropped ) )
 				return false;
 			
-			InvalidateProperties();				
+			InvalidateProperties();			
 			
 			from.CloseGump( typeof( AquariumGump ) );
 			

@@ -15,8 +15,8 @@ namespace Server.Items
 			MaxChargeTime = 1200;
 			
 			Removal = TalismanRemoval.Damage;
-			Blessed = RandomTalisman.GetRandomBlessed();
-			Protection = RandomTalisman.GetRandomProtection();		
+			Blessed = GetRandomBlessed();
+			Protection = GetRandomProtection();		
 						
 			SkillBonuses.SetValues( 0, SkillName.SpiritSpeak, 10.0 );
 			SkillBonuses.SetValues( 1, SkillName.Necromancy, 5.0 );
