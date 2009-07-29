@@ -1,20 +1,20 @@
 using System;
-using Server;
 
-namespace Server.Mobiles
+namespace Server.Items
 {
-	public class SummonedPanther : BaseTalismanSummon
+    public class FarmersBandOfMastery : GoldBracelet
 	{
 		[Constructable]
-		public SummonedPanther() : base()
+        public FarmersBandOfMastery()
+            : base()
 		{
-			Name = "a panther";
-			Body = 0xD6;
-			Hue = 0x901;
-			BaseSoundID = 0x462;
+            Name = "Farmer's Band of Mastery";
+            Attributes.CastRecovery = 3;
+            Attributes.CastSpeed = 1;
 		}
 
-		public SummonedPanther( Serial serial ) : base( serial )
+        public FarmersBandOfMastery(Serial serial)
+            : base(serial)
 		{
 		}
 

@@ -13,6 +13,12 @@ namespace Server.Items
 		private int m_MinDamage;
 		private int m_MaxDamage;
 
+        private bool m_AOSDmg;
+		private int m_dmg_fire;
+		private int m_dmg_phys;
+		private int m_dmg_cold;
+		private int m_dmg_pois;
+		private int m_dmg_nrgy;
 		private DateTime m_Created;
 
 		private bool m_Drying;
@@ -30,10 +36,10 @@ namespace Server.Items
 			{
 				m_Drying = value;
 
-				if( m_Drying )
-					ItemID = 0x122A;
-				else
+ 				if( m_Drying )
 					ItemID = 0x122B;
+				else
+ 					ItemID = 0x122A;
 			}
 		}
 
@@ -74,6 +80,89 @@ namespace Server.Items
 
 				m_MaxDamage = value;
 			}
+ 		}
+ 
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int dmg_phys
+		{
+			get
+			{
+				return m_dmg_phys;
+			}
+			set
+			{
+				if ( value > 100 )
+					value = 100;
+				m_dmg_phys= value;
+			}
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int dmg_fire
+		{
+			get
+			{
+				return m_dmg_fire;
+			}
+			set
+			{
+				if ( value > 100 )
+					value = 100;
+				m_dmg_fire= value;
+			}
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int dmg_cold
+		{
+			get
+			{
+				return m_dmg_cold;
+			}
+			set
+			{
+				if ( value > 100 )
+					value = 100;
+				m_dmg_cold = value;
+			}
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int dmg_pois
+		{
+			get
+			{
+				return m_dmg_pois;
+			}
+			set
+			{
+				if ( value > 100 )
+					value = 100;
+				m_dmg_pois= value;
+			}
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int dmg_nrgy
+		{
+			get
+			{
+				return m_dmg_nrgy;
+			}
+			set
+			{
+				if ( value > 100 )
+					value = 100;
+				m_dmg_nrgy= value;
+			}
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public bool AOSDmg // AOS Dmg is elemental/resistable 
+		{
+			get
+			{
+				return m_AOSDmg;
+			}
+			set
+			{
+				m_AOSDmg= value;
+			}
 		}
 
 		[Constructable]
@@ -81,12 +170,20 @@ namespace Server.Items
 		{
 		}
 
+        [Constructable]
+		public PoolOfAcid( TimeSpan duration, int minDamage, int maxDamage ) : this( duration, minDamage, maxDamage, 0, false )
+		{
+        }
+
 		public override string DefaultName { get { return "a pool of acid"; } }
 
+        /* damage type inputs for AOS damage: 			*/
+		/* 0 = phys, 1 = fire, 2 = cold, 3 = poison, 4 = energy */
+
 		[Constructable]
-		public PoolOfAcid( TimeSpan duration, int minDamage, int maxDamage )
-			: base( 0x122A )
+        public PoolOfAcid(TimeSpan duration, int minDamage, int maxDamage, int DmgType, bool AOSDmg)
 		{
+            Drying = false;
 			Hue = 0x3F;
 			Movable = false;
 
@@ -96,6 +193,22 @@ namespace Server.Items
 			m_Duration = duration;
 
 			m_Timer = Timer.DelayCall( TimeSpan.Zero, TimeSpan.FromSeconds( 1 ), new TimerCallback( OnTick ) );
+            m_AOSDmg = AOSDmg;
+			if( m_AOSDmg )
+			{
+				if ( DmgType == 0 )
+					m_dmg_phys = 100;
+				else if ( DmgType == 1 )
+					m_dmg_fire = 100;
+				else if ( DmgType == 2 )
+					m_dmg_cold = 100;
+				else if ( DmgType == 3 )
+					m_dmg_pois = 100;
+				else if ( DmgType == 4 )
+					m_dmg_nrgy = 100;
+				else 
+					m_AOSDmg = false;
+			}
 		}
 
 		public override void OnAfterDelete()
@@ -130,7 +243,6 @@ namespace Server.Items
 
 				for( int i = 0; i < toDamage.Count; i++ )
 					Damage( toDamage[i] );
-
 			}
 		}
 
@@ -143,7 +255,14 @@ namespace Server.Items
 
 		public void Damage( Mobile m )
 		{
-			m.Damage( Utility.RandomMinMax( MinDamage, MaxDamage ) );
+			if ( Core.AOS && m_AOSDmg )
+			{
+				AOS.Damage( m, Utility.RandomMinMax( MinDamage, MaxDamage ), m_dmg_phys, m_dmg_fire, m_dmg_cold, m_dmg_pois, m_dmg_nrgy );
+			}
+			else
+			{
+				m.Damage( Utility.RandomMinMax( MinDamage, MaxDamage ) );
+			}
 		}
 
 		public PoolOfAcid( Serial serial ) : base( serial )

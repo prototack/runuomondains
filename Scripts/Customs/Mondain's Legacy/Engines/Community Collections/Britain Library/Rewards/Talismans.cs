@@ -13,8 +13,8 @@ namespace Server.Items
 		public TreatiseonAlchemyTalisman() : base( 0x2F58 )
 		{			
 			Skill = SkillName.Alchemy;
-			SuccessBonus = RandomTalisman.GetRandomSuccessful();
-			Blessed = RandomTalisman.GetRandomBlessed();	
+			SuccessBonus = GetRandomSuccessful();
+			Blessed = GetRandomBlessed();	
 			
 			Attributes.EnhancePotions = 15;			
 			SkillBonuses.SetValues( 0, SkillName.Magery, 5.0 );
@@ -47,7 +47,7 @@ namespace Server.Items
 		[Constructable]
 		public PrimerOnArmsTalisman() : base( 0x2F59 )
 		{			
-			Blessed = RandomTalisman.GetRandomBlessed();	
+			Blessed = GetRandomBlessed();	
 			
 			Attributes.BonusStr = 1;			
 			Attributes.RegenHits = 2;
@@ -84,11 +84,11 @@ namespace Server.Items
 		[Constructable]
 		public MyBookTalisman() : base( 0x2F5A )
 		{			
-			Blessed = RandomTalisman.GetRandomBlessed();	
+			Blessed = GetRandomBlessed();	
 			
 			Skill = SkillName.Inscribe;
-			SuccessBonus = RandomTalisman.GetRandomSuccessful();			
-			ExceptionalBonus = RandomTalisman.GetRandomExceptional();	
+			SuccessBonus = GetRandomSuccessful();			
+			ExceptionalBonus = GetRandomExceptional();	
 			
 			Attributes.BonusInt = 5;			
 			Attributes.BonusMana = 2;
@@ -121,7 +121,7 @@ namespace Server.Items
 		[Constructable]
 		public TalkingtoWispsTalisman() : base( 0x2F5B )
 		{			
-			Blessed = RandomTalisman.GetRandomBlessed();	
+			Blessed = GetRandomBlessed();	
 			
 			SkillBonuses.SetValues( 0, SkillName.SpiritSpeak, 3.0 );
 			SkillBonuses.SetValues( 1, SkillName.EvalInt, 5.0 );
@@ -157,8 +157,8 @@ namespace Server.Items
 		[Constructable]
 		public GrammarOfOrchishTalisman() : base( 0x2F59 )
 		{			
-			Blessed = RandomTalisman.GetRandomBlessed();	
-			Protection = RandomTalisman.GetRandomProtection();
+			Blessed = GetRandomBlessed();	
+			Protection = GetRandomProtection();
 			Summoner = new TalismanAttribute( typeof( SummonedOrcBrute ), 0, 1072414 );
 			
 			SkillBonuses.SetValues( 0, SkillName.MagicResist, 5.0 );
@@ -194,7 +194,7 @@ namespace Server.Items
 		[Constructable]
 		public BirdsofBritanniaTalisman() : base( 0x2F5A )
 		{			
-			Blessed = RandomTalisman.GetRandomBlessed();	
+			Blessed = GetRandomBlessed();	
 			Slayer = TalismanSlayerName.Bird;
 			
 			SkillBonuses.SetValues( 0, SkillName.AnimalTaming, 5.0 );
@@ -203,9 +203,9 @@ namespace Server.Items
 			MaxChargeTime = 1800;
 		}
 		
-		public override Type GetSummonType()
+		public override Type GetSummoner()
 		{		
-			return RandomTalisman.GetRandomSummonType();
+			return GetRandomSummonType();
 		}
 		
 		public BirdsofBritanniaTalisman( Serial serial ) :  base( serial )
@@ -235,8 +235,8 @@ namespace Server.Items
 		[Constructable]
 		public TheLifeOfTravelingMinstrelTalisman() : base( 0x2F5B )
 		{			
-			Blessed = RandomTalisman.GetRandomBlessed();	
-			Protection = RandomTalisman.GetRandomProtection();
+			Blessed = GetRandomBlessed();	
+			Protection = GetRandomProtection();
 			
 			SkillBonuses.SetValues( 0, SkillName.Provocation, 5.0 );
 			SkillBonuses.SetValues( 1, SkillName.Musicianship, 5.0 );

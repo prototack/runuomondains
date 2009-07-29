@@ -257,7 +257,7 @@ namespace Server.Items
 		public StrongBackpack()
 		{
 			Layer = Layer.Backpack;
-			Weight = 3.0;
+			Weight = 13.0;
 		}
 
 		public override bool CheckHold( Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight )
@@ -278,20 +278,12 @@ namespace Server.Items
 		}
 		
 		#region Mondain's Legacy
-		/*public override void DropItem( Item dropped )
-		{
-			base.DropItem( dropped );
-			
-			if ( this.RootParent is Mobile )
-				((Mobile) this.RootParent).InvalidateProperties();
-		}*/
-		
 		public override void UpdateTotal( Item sender, TotalType type, int delta )
 		{
 			base.UpdateTotal( sender, type, delta );
 			
-			if ( this.RootParent is Mobile )
-				((Mobile) this.RootParent).InvalidateProperties();
+			if ( type == TotalType.Weight && RootParent is Mobile )
+				((Mobile) RootParent).InvalidateProperties();
 		}
 		#endregion
 
@@ -303,7 +295,7 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 1 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
@@ -311,6 +303,11 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+
+			#region Mondain's Legacy
+			if ( version == 0 )
+				Weight = 13.0;
+			#endregion
 		}
 	}
 

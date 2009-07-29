@@ -151,7 +151,10 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1076759, "{0}\t{1} Skill Points", GetName(), m_Value);
+            if (m_Value == 1)
+                list.Add(1076759, "{0}\t{1}.0 Skill Points", GetName(), m_Value);
+            else
+                list.Add(1076759, "{0}\t{1} Skill Points", GetName(), m_Value);
         }
 
         public void Use(Mobile from, bool firstStage)

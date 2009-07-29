@@ -51,7 +51,7 @@
 				<child name="Level 3" x="5703" y="639" z="0" />
 			</parent>
 			<parent name="Miscellaneous">
-				<child name="Hyloth Fire Pit" x="4596" y="3630" z="30" />
+				<child name="Hythloth Fire Pit" x="4596" y="3630" z="30" />
 				<child name="Yew-Britain Brigand Camp" x="885" y="1682" z="0" />
 				<child name="Yew Fort of the Damned" x="972" y="768" z="0" />
 			</parent>

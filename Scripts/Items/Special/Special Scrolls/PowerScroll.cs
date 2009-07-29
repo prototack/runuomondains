@@ -175,7 +175,8 @@ namespace Server.Items
             m_Skill = skill;
             m_Value = value;
 
-            LootType = LootType.Cursed;
+			if ( m_Value > 105.0 )
+				LootType = LootType.Cursed;
         }
 
         public PowerScroll(Serial serial)
@@ -338,11 +339,17 @@ namespace Server.Items
                     }
             }
 
-            if (LootType != LootType.Cursed)
-                LootType = LootType.Cursed;
+			if ( m_Value == 105.0 )
+			{
+				LootType = LootType.Regular;
+			}
+			else
+			{
+				LootType = LootType.Cursed;
 
-            if (Insured)
-                Insured = false;
+				if ( Insured )
+					Insured = false;
+			}
         }
 
         public class InternalGump : Gump

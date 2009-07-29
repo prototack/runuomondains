@@ -61,7 +61,7 @@ namespace Server.Spells.Fourth
 					eable.Free();
 				}
 
-				Effects.PlaySound( p, Caster.Map, 0x299 );
+                Caster.PlaySound(0x299);
 
 				if ( targets.Count > 0 )
 				{
@@ -89,7 +89,6 @@ namespace Server.Spells.Fourth
 						}
 
 						m.FixedParticles( 0x373A, 10, 15, 5012, EffectLayer.Waist );
-						m.PlaySound( 0x1E0 );
 					}
 
 					if ( cured > 0 )

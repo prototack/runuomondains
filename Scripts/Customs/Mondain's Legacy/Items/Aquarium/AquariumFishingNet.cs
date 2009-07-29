@@ -174,7 +174,8 @@ namespace Server.Items
 					{
 						bowl.AddItem( fish );
 						bowl.InvalidateProperties();
-						m_Player.SendLocalizedMessage( 1074489 ); // A live creature jumps into the fish bowl in your pack!
+                        m_Player.SendLocalizedMessage(1074489); // A live creature jumps into the fish bowl in your pack!
+                        fish.StopTimer();
 						Delete();
 						return;
 					}

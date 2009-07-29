@@ -3,6 +3,9 @@ using Server.Items;
 using Server.Network;
 using Server.Targeting;
 using Server.Engines.Craft;
+#region Combine Ore
+using Server.Mobiles;
+#endregion
 
 namespace Server.Items
 {
@@ -78,11 +81,26 @@ namespace Server.Items
 		public BaseOre( CraftResource resource ) : this( resource, 1 )
 		{
 		}
+		
+		#region Sized Ore
+		public override double DefaultWeight
+		{
+			get
+			{
+				if ( ItemID == 0x19B7 )
+					return 2.0;
+				else if ( ItemID == 0x19B9 )
+					return 12.0;
+				else
+					return 7.0;
+			}
+		}
 
-		public BaseOre( CraftResource resource, int amount ) : base( 0x19B9 )
+		#endregion
+
+		public BaseOre( CraftResource resource, int amount ) : base( 0x19B7 + Utility.Random(4) )
 		{
 			Stackable = true;
-			Weight = 12.0;
 			Amount = amount;
 			Hue = CraftResources.GetHue( resource );
 
@@ -180,6 +198,150 @@ namespace Server.Items
 					from.SendLocalizedMessage( 501976 ); // The ore is too far away.
 					return;
 				}
+				
+				#region Combine Ore
+				if ( targeted is BaseOre )
+				{
+					BaseOre ore = (BaseOre)targeted;
+					LRReason reject = LRReason.Inspecific;
+					if ( !ore.Movable || !ore.CheckLift( from, ore, ref reject ) || !m_Ore.CheckLift( from, m_Ore, ref reject ) )
+						return;
+					else if ( m_Ore == ore )
+					{
+						from.SendLocalizedMessage( 501972 ); // Select another pile or ore with which to combine this.
+						from.Target = new InternalTarget( ore );
+						return;
+					}
+					else if ( ore.Resource != m_Ore.Resource )
+					{
+						from.SendLocalizedMessage( 501979 ); // You cannot combine ores of different metals.
+						return;
+					}
+
+					int worth = ore.Amount;
+					if ( ore.ItemID == 0x19B9 )
+						worth *= 8;
+					else if ( ore.ItemID == 0x19B7 )
+						worth *= 2;
+					else 
+						worth *= 4;
+					int sourceWorth = m_Ore.Amount;
+					if ( m_Ore.ItemID == 0x19B9 )
+						sourceWorth *= 8;
+					else if ( m_Ore.ItemID == 0x19B7 )
+						sourceWorth *= 2;
+					else
+						sourceWorth *= 4;
+					worth += sourceWorth;
+
+					int plusWeight = 0;
+					int newID = ore.ItemID;
+					if ( ore.DefaultWeight != m_Ore.DefaultWeight )
+					{
+						if ( ore.ItemID == 0x19B7 || m_Ore.ItemID == 0x19B7 )
+						{
+							newID = 0x19B7;
+						}
+						else if ( ore.ItemID == 0x19B9 )
+						{
+							newID = m_Ore.ItemID;
+							plusWeight = ore.Amount * 2;
+						}
+						else
+						{
+							plusWeight = m_Ore.Amount * 2;
+						}
+					}
+
+					if ( (ore.ItemID == 0x19B9 && worth > 120000) || (( ore.ItemID == 0x19B8 || ore.ItemID == 0x19BA ) && worth > 60000) || (ore.ItemID == 0x19B7 && worth > 30000))
+					{
+						from.SendLocalizedMessage( 1062844 ); // There is too much ore to combine.
+						return;
+					}
+					else if ( ore.Parent != null && ore.Parent is Container )
+					{
+						object oreParent = ore.Parent;
+						Container oreContainer = (Container)oreParent;
+						if ( ore.RootParent != m_Ore.RootParent )
+						{
+							if ( oreContainer.IsDecoContainer )
+							{
+								return;
+							}
+							if ( !oreContainer.CheckHold( from, m_Ore, false, false, 0, plusWeight ) )
+							{
+								from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
+								return;
+							}
+						}
+						else
+						{
+							if ( oreContainer.IsDecoContainer )
+							{
+								return;
+							}
+							if ( oreContainer.MaxWeight != 0 && (oreContainer.TotalWeight + plusWeight + m_Ore.TotalWeight + m_Ore.PileWeight) > oreContainer.MaxWeight )
+							{
+								from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
+								return;
+							}
+							oreParent = oreContainer.Parent;
+							while ( !m_Ore.IsChildOf( oreParent ) )
+							{
+								if ( oreParent is Container )
+								{
+									oreContainer = (Container)oreParent;
+									if ( oreContainer.IsDecoContainer )
+									{
+										return;
+									}
+									if ( oreContainer.MaxWeight != 0 && (oreContainer.TotalWeight + plusWeight + m_Ore.TotalWeight + m_Ore.PileWeight) > oreContainer.MaxWeight )
+									{
+										from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
+										return;
+									}
+								}
+								oreParent = ((Item)oreParent).Parent;
+							}
+							while ( oreContainer.Parent is Item )
+							{
+								if ( oreParent is Container )
+								{
+									oreContainer = (Container)oreParent;
+									if ( oreContainer.IsDecoContainer )
+									{
+										return;
+									}
+									if ( oreContainer.MaxWeight != 0 && (oreContainer.TotalWeight + plusWeight ) > oreContainer.MaxWeight )
+									{
+										from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
+										return;
+									}
+								}
+								oreParent = ((Item)oreParent).Parent;
+							}
+						}
+					}
+
+					ore.ItemID = newID;
+					if ( ore.ItemID == 0x19B9 )
+					{
+						ore.Amount = worth / 8;
+						m_Ore.Delete();
+					}
+					else if ( ore.ItemID == 0x19B7 )
+					{
+						ore.Amount = worth / 2;
+						m_Ore.Delete();
+					}
+					else
+					{
+						ore.Amount = worth / 4;
+						m_Ore.Delete();
+					}	
+					return;
+				}
+				#endregion
 
 				if ( IsForge( targeted ) )
 				{
@@ -210,6 +372,11 @@ namespace Server.Items
 					if ( from.CheckTargetSkill( SkillName.Mining, targeted, minSkill, maxSkill ) )
 					{
 						int toConsume = m_Ore.Amount;
+						
+						#region Sized Ore
+						if ( m_Ore.ItemID == 0x19B7 && (toConsume / 2 == 0 || toConsume != (toConsume / 2) * 2) ) // I predict here, that unpair int halfed returns 0.
+							--toConsume;
+						#endregion
 
 						if ( toConsume <= 0 )
 						{
@@ -217,11 +384,20 @@ namespace Server.Items
 						}
 						else
 						{
-							if ( toConsume > 30000 )
+							if ( toConsume > 30000 && m_Ore.ItemID == 0x19B9 )
 								toConsume = 30000;
 
 							BaseIngot ingot = m_Ore.GetIngot();
-							ingot.Amount = toConsume * 2;
+							
+							#region Sized Ore
+							int amount = toConsume;
+							if ( m_Ore.ItemID == 0x19B7 )
+								amount /= 2;
+							else if ( m_Ore.ItemID == 0x19B9 )
+								amount *= 2;
+
+							ingot.Amount = amount;
+							#endregion
 
 							m_Ore.Consume( toConsume );
 							from.AddToBackpack( ingot );

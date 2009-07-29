@@ -92,12 +92,12 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public Jun() : base( "Jun", "The Stealth Instructor" )
 		{   
-			SetSkill( SkillName.Hiding, 65.0, 90.0 );
-			SetSkill( SkillName.Tactics, 65.0, 90.0 );
-			SetSkill( SkillName.Tracking, 65.0, 90.0 );
-			SetSkill( SkillName.Fencing, 65.0, 90.0 );
-			SetSkill( SkillName.Stealth, 65.0, 90.0 );
-			SetSkill( SkillName.Ninjitsu, 65.0, 90.0 );
+			SetSkill( SkillName.Hiding, 120.0, 120.0 );
+			SetSkill( SkillName.Tactics, 120.0, 120.0 );
+			SetSkill( SkillName.Tracking, 120.0, 120.0 );
+			SetSkill( SkillName.Fencing, 120.0, 120.0 );
+			SetSkill( SkillName.Stealth, 120.0, 120.0 );
+			SetSkill( SkillName.Ninjitsu, 120.0, 120.0 );
 		}
 		
 		public Jun( Serial serial ) : base( serial )

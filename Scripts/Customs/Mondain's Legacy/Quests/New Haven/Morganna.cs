@@ -97,12 +97,12 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public Morganna() : base( "Morganna", "The Spirit Speak Instructor" )
 		{   
-			SetSkill( SkillName.Magery, 65.0, 90.0 );
-			SetSkill( SkillName.MagicResist, 65.0, 90.0 );
-			SetSkill( SkillName.SpiritSpeak, 65.0, 90.0 );
-			SetSkill( SkillName.Swords, 65.0, 90.0 );
-			SetSkill( SkillName.Meditation, 65.0, 90.0 );
-			SetSkill( SkillName.Necromancy, 65.0, 90.0 );
+			SetSkill( SkillName.Magery, 120.0, 120.0 );
+			SetSkill( SkillName.MagicResist, 120.0, 120.0 );
+			SetSkill( SkillName.SpiritSpeak, 120.0, 120.0 );
+			SetSkill( SkillName.Swords, 120.0, 120.0 );
+			SetSkill( SkillName.Meditation, 120.0, 120.0 );
+			SetSkill( SkillName.Necromancy, 120.0, 120.0 );
 		}
 		
 		public Morganna( Serial serial ) : base( serial )

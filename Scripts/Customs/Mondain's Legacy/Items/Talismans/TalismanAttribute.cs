@@ -7,8 +7,8 @@ namespace Server.Items
 	public class TalismanAttribute
 	{
 		private Type m_Type;
+		private TextDefinition m_Name;
 		private int m_Amount;
-		private object m_Name;
 		
 		[CommandProperty( AccessLevel.GameMaster )]
 		public Type Type
@@ -18,33 +18,78 @@ namespace Server.Items
 		}
 		
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int Amount
-		{
-			get{ return m_Amount; }
-			set{ m_Amount = value; }
-		}
-		
-		[CommandProperty( AccessLevel.GameMaster )]
-		public object Name
+		public TextDefinition Name
 		{
 			get{ return m_Name; }
 			set{ m_Name = value; }
-		}		
-		
-		public TalismanAttribute()
+		}
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int Amount
 		{
+			get { return m_Amount; }
+			set { m_Amount = value; }
+		}
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public bool IsEmpty
+		{
+			get { return m_Type == null; }
+		}
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public bool IsItem
+		{
+			get { return m_Type != null && m_Type.Namespace.Equals( "Server.Items" ); }
 		}
 		
-		public TalismanAttribute( Type type, int amount, object name )
+		public TalismanAttribute() : this( null, 0, 0 )
+		{
+		}
+
+		public TalismanAttribute( TalismanAttribute copy )
+		{
+			if ( copy != null )
+			{
+				m_Type = copy.Type;
+				m_Name = copy.Name;
+				m_Amount = copy.Amount;
+			}
+		}
+
+		public TalismanAttribute( Type type, TextDefinition name ) : this( type, name, 0 )
+		{
+		}
+
+		public TalismanAttribute( Type type, TextDefinition name, int amount )
 		{
 			m_Type = type;
-			m_Amount = amount;
 			m_Name = name;
+			m_Amount = amount;
+		}
+
+		public TalismanAttribute( GenericReader reader )
+		{
+			int version = reader.ReadInt();
+
+			SaveFlag flags = (SaveFlag) reader.ReadEncodedInt();
+
+			if ( GetSaveFlag( flags, SaveFlag.Type ) )
+				m_Type = ScriptCompiler.FindTypeByFullName( reader.ReadString(), false );
+
+			if ( GetSaveFlag( flags, SaveFlag.Name ) )
+				m_Name = new TextDefinition( reader );
+
+			if ( GetSaveFlag( flags, SaveFlag.Amount ) )
+				m_Amount = reader.ReadEncodedInt();
 		}
 		
 		public override string ToString()
 		{
-			return "...";
+			if ( m_Type != null )
+				return m_Type.Name;
+
+			return "None";
 		}
 		
 		private static void SetSaveFlag( ref SaveFlag flags, SaveFlag toSet, bool setIf )
@@ -83,48 +128,26 @@ namespace Server.Items
 				writer.Write( m_Type.FullName );
 
 			if ( GetSaveFlag( flags, SaveFlag.Name ) )
-			{
-				if ( m_Name is int )
-				{
-					writer.WriteEncodedInt( 0x1 );
-					writer.WriteEncodedInt( (int) m_Name );
-				}
-				else if ( m_Name is String )
-				{
-					writer.WriteEncodedInt( 0x2 );
-					writer.Write( (String) m_Name );
-				}
-				else
-					writer.WriteEncodedInt( 0x0 );
-			}
+				m_Name.Serialize( writer );
 				
 			if ( GetSaveFlag( flags, SaveFlag.Amount ) )				
 				writer.WriteEncodedInt( m_Amount );			
-		}	
-		
-		public virtual void Deserialize( GenericReader reader )
+		}
+
+		public int DamageBonus( Mobile to )
 		{
-			int version = reader.ReadInt();
-			
-			SaveFlag flags = (SaveFlag) reader.ReadEncodedInt();
-			
-			if ( GetSaveFlag( flags, SaveFlag.Type ) )
-				m_Type = ScriptCompiler.FindTypeByFullName( reader.ReadString(), false );
-				
-			if ( GetSaveFlag( flags, SaveFlag.Name ) )
-			{
-				int nameType = reader.ReadEncodedInt();
-			
-				switch ( nameType )
-				{
-					case 0x0: break;
-					case 0x1: m_Name = reader.ReadEncodedInt(); break;
-					case 0x2: m_Name = reader.ReadString(); break;
-				}
-			}
-				
-			if ( GetSaveFlag( flags, SaveFlag.Amount ) )
-				m_Amount = reader.ReadEncodedInt();
+			if ( to != null && to.GetType() == m_Type )
+				return m_Amount;
+
+			return 0;
+		}
+
+		public int ScaleDamage( Mobile from, int damage )
+		{
+			if ( from != null && from.GetType() == m_Type )
+				return (int) ( damage * ( 1 - m_Amount / 100.0 ) );
+
+			return damage;
 		}
 	}
 }

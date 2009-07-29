@@ -216,12 +216,14 @@ namespace Server.Items
 				new DualWield(),
 				new DoubleShot(),
 				new ArmorPierce(),
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+
+				new Bladeweave(),
+				new ForceArrow(),
+				new LightningArrow(),
+				new PsychicAttack(),
+				new SerpentArrow(),
+				new ForceOfNature(),
+
 				new Disrobe()
 			};
 

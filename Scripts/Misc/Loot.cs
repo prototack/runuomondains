@@ -734,6 +734,47 @@ namespace Server
 		{
 			return Construct( m_LibraryBookTypes ) as BaseBook;
 		}
+
+		#region Mondain's Legacy
+		public static BaseTalisman RandomTalisman()
+		{
+			BaseTalisman talisman = new BaseTalisman( BaseTalisman.GetRandomItemID() );
+
+			talisman.MaxCharges = BaseTalisman.GetRandomCharges();
+			talisman.Summoner = BaseTalisman.GetRandomSummoner();
+
+			if ( talisman.Summoner.IsEmpty )
+			{
+				talisman.Removal = BaseTalisman.GetRandomRemoval();
+
+				if ( talisman.Removal != TalismanRemoval.None )
+					talisman.MaxChargeTime = 1200;
+				else
+					talisman.MaxCharges = 0;
+			}
+			else if ( talisman.MaxCharges > 0 )
+			{
+				if ( talisman.Summoner.IsItem )
+					talisman.MaxChargeTime = 60;
+				else
+					talisman.MaxChargeTime = 1800;
+			}
+			else
+				talisman.MaxChargeTime = 1800;
+
+			talisman.Blessed = BaseTalisman.GetRandomBlessed();
+			talisman.Slayer = BaseTalisman.GetRandomSlayer();
+			talisman.Protection = BaseTalisman.GetRandomProtection();
+			talisman.Killer = BaseTalisman.GetRandomKiller();
+			talisman.Skill = BaseTalisman.GetRandomSkill();
+			talisman.ExceptionalBonus = BaseTalisman.GetRandomExceptional();
+			talisman.SuccessBonus = BaseTalisman.GetRandomSuccessful();
+			talisman.Charges = talisman.MaxCharges;
+
+			return talisman;
+		}
+		#endregion
+
 		#endregion
 
 		#region Construction methods

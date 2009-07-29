@@ -92,12 +92,12 @@ namespace Server.Engines.Quests
 		[Constructable]
 		public Mithneral() : base( "Mithneral", "The Evaluating Intelligence Instructor" )
 		{   
-			SetSkill( SkillName.EvalInt, 65.0, 90.0 );
-			SetSkill( SkillName.Inscribe, 65.0, 90.0 );
-			SetSkill( SkillName.Magery, 65.0, 90.0 );
-			SetSkill( SkillName.MagicResist, 65.0, 90.0 );
-			SetSkill( SkillName.Wrestling, 65.0, 90.0 );
-			SetSkill( SkillName.Meditation, 65.0, 90.0 );
+			SetSkill( SkillName.EvalInt, 120.0, 120.0 );
+			SetSkill( SkillName.Inscribe, 120.0, 120.0 );
+			SetSkill( SkillName.Magery, 120.0, 120.0 );
+			SetSkill( SkillName.MagicResist, 120.0, 120.0 );
+			SetSkill( SkillName.Wrestling, 120.0, 120.0 );
+			SetSkill( SkillName.Meditation, 120.0, 120.0 );
 		}
 		
 		public Mithneral( Serial serial ) : base( serial )

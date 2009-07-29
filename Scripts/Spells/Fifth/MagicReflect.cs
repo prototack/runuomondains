@@ -42,7 +42,7 @@ namespace Server.Spells.Fifth
 			return true;
 		}
 
-		public static Hashtable m_Table = new Hashtable();
+		private static Hashtable m_Table = new Hashtable();
 
 		public override void OnCast()
 		{
@@ -134,5 +134,24 @@ namespace Server.Spells.Fifth
 				FinishSequence();
 			}
 		}
+
+		#region Mondain's Legacy
+		public static void EndReflect( Mobile m )
+		{
+			if ( m_Table.Contains( m ) )
+			{
+				ResistanceMod[] mods = (ResistanceMod[]) m_Table[ m ];
+
+				if ( mods != null )
+				{
+					for ( int i = 0; i < mods.Length; ++i )
+						m.RemoveResistanceMod( mods[ i ] );
+				}
+
+				m_Table.Remove( m );
+				BuffInfo.RemoveBuff( m, BuffIcon.MagicReflection );
+			}
+		}
+		#endregion
 	}
 }
