@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class NewOblivionsNeedle : Dagger, ITokunoDyable
+	public class OblivionsNeedle : Dagger, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094916; } } // Oblivion's Needle [Replica]
 
@@ -13,7 +13,7 @@ namespace Server.Items
 		public override bool CanFortify{ get{ return false; } }
 
 		[Constructable]
-		public NewOblivionsNeedle()
+		public OblivionsNeedle()
 		{
 			Attributes.BonusStam = 20;
 			Attributes.AttackChance = 20;
@@ -23,7 +23,7 @@ namespace Server.Items
 			WeaponAttributes.HitLeechStam = 50;
 		}
 
-		public NewOblivionsNeedle( Serial serial ) : base( serial )
+		public OblivionsNeedle( Serial serial ) : base( serial )
 		{
 		}
 

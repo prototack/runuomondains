@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class AcidProofRobe : Robe, ITokunoDyable
+	public class AcidProofRobe : Robe, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1095236; } } // Acid-Proof Robe [Replica]
 

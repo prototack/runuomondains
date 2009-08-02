@@ -295,7 +295,7 @@ namespace Server.SkillHandlers
 
 			AddHtmlLocalized( 153, 222, 160, 18, 1044061, LabelColor, false, false ); // Anatomy
 			AddHtml( 320, 222, 35, 18, FormatSkill( c, SkillName.Anatomy ), false, false );
-			
+
 			#region Mondain's Legacy
 			if ( c is CuSidhe )
 			{
@@ -308,7 +308,7 @@ namespace Server.SkillHandlers
 				AddHtml( 320, 240, 35, 18, FormatSkill( c, SkillName.Poisoning ), false, false );
 			}
 			#endregion
-			
+
 			AddImage( 128, 260, 2086 );
 			AddHtmlLocalized( 147, 258, 160, 18, 3001032, 200, false, false ); // Lore & Knowledge
 

@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class ANecromancerShroud : Robe, ITokunoDyable
+	public class ANecromancerShroud : Robe, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094913; } } // A Necromancer Shroud [Replica]
 
@@ -28,10 +28,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
-		public override void Deserialize( GenericReader reader )
+		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize( reader );
 

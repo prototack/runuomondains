@@ -19,18 +19,19 @@ namespace Server.Mobiles
         public override Type[] SharedArtifacts{ get { return new Type[] {
 			typeof( ANecromancerShroud ),
 			typeof( LieutenantOfTheBritannianRoyalGuard ),
-			typeof( NewOblivionsNeedle ),
+			typeof( OblivionsNeedle ),
 			typeof( TheRobeOfBritanniaAri ) }; } }
 
         public override Type[] DecorationArtifacts{ get { return new Type[] {
             typeof( MonsterStatuette ),
-			typeof( PlagueBeastStatuette ),
+            typeof( MonsterStatuette ),
             typeof( Pier ),
             typeof( SmallRockWater ),
             typeof( SmallRocksWater ) }; } }
 
         public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { 	
-            MonsterStatuetteType.RedDeath }; } }
+            MonsterStatuetteType.RedDeath,
+            MonsterStatuetteType.PlagueBeast }; } }
 
         [Constructable]
         public Ilhenir()

@@ -1,12 +1,11 @@
 using System;
-using Server.Network;
-using Server.Items;
+using Server;
 
 namespace Server.Items
 {
-    public class Calm : Halberd, ITokunoDyable
-    {
-        public override int LabelNumber { get { return 1094915; } } // Calm [Replica]
+	public class Calm : Halberd, ITokunoDyable
+	{
+		public override int LabelNumber{ get{ return 1094915; } } // Calm [Replica]
 
 		public override int InitMinHits{ get{ return 150; } }
 		public override int InitMaxHits{ get{ return 150; } }
@@ -15,16 +14,16 @@ namespace Server.Items
 
 		[Constructable]
 		public Calm()
-        {
-            WeaponAttributes.HitLeechMana = 100;
-            Attributes.WeaponSpeed = 20;
-            Attributes.SpellChanneling = 1;
-            Attributes.WeaponDamage = 50;
-            WeaponAttributes.UseBestSkill = 1;
+		{
+			Attributes.SpellChanneling = 1;
+			Attributes.WeaponSpeed = 20;
+			Attributes.WeaponDamage = 50;
+
+			WeaponAttributes.HitLeechMana = 100;
+			WeaponAttributes.UseBestSkill = 1;
 		}
 
-        public Calm(Serial serial)
-            : base(serial)
+		public Calm( Serial serial ) : base( serial )
 		{
 		}
 
@@ -32,10 +31,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
-		public override void Deserialize( GenericReader reader )
+		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize( reader );
 

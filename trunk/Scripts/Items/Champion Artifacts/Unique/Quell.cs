@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class Quell : Bardiche, ITokunoDyable
+	public class Quell : Bardiche, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094928; } } // Quell [Replica]
 

@@ -145,8 +145,8 @@ namespace Server.Mobiles
 			m.SendLocalizedMessage( 1070849 ); // The drain on your life force is gone.
 		}
 
-		public override void OnDamage( int amount, Mobile from, bool willKill )
- 		{
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
 			if ( from != null && from.Map != null )
 			{
 				if ( willKill )
@@ -171,36 +171,36 @@ namespace Server.Mobiles
 			base.OnDamage( amount, from, willKill );
 		}
 
-        private void SpillAcidSlime(Mobile target, int pools, bool IsRandLoc)
-        {
-            if (this.Map == null)
-                return;
+        private void SpillAcidSlime( Mobile target, int pools, bool IsRandLoc )
+		{
+			if ( this.Map == null )
+				return;
 
-            Point3D loc = target.Location;
-            Map map = target.Map;
+			Point3D loc = target.Location;
+			Map map = target.Map;
 
-            for (int i = 0; i < pools; ++i)
-            {
-                PoolOfAcid acid = new PoolOfAcid(TimeSpan.FromSeconds(10), 5, 10, 3, true);
-                acid.Name = "slime";
-                bool validLocation = false;
-                if (IsRandLoc)
-                {
-                    for (int j = 0; !validLocation && j < 10; ++j)
-                    {
-                        int x = X + Utility.Random(3) - 1;
-                        int y = Y + Utility.Random(3) - 1;
-                        int z = map.GetAverageZ(x, y);
+			for ( int i = 0; i < pools; ++i )
+			{
+				PoolOfAcid acid = new PoolOfAcid(TimeSpan.FromSeconds( 10 ), 5, 10, 3, true );
+				acid.Name = "slime";
+				bool validLocation = false;
+				if ( IsRandLoc )
+				{
+					for ( int j = 0; !validLocation && j < 10; ++j )
+					{
+						int x = X + Utility.Random( 3 ) - 1;
+						int y = Y + Utility.Random( 3 ) - 1;
+						int z = map.GetAverageZ( x, y );
 
-                        if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                            loc = new Point3D(x, y, Z);
-                        else if (validLocation = map.CanFit(x, y, z, 16, false, false))
-                            loc = new Point3D(x, y, z);
-                    }
-                }
-                acid.MoveToWorld(loc, map);
-            }
-        }
+						if ( validLocation = map.CanFit( x, y, this.Z, 16, false, false ) )
+							loc = new Point3D( x, y, Z );
+						else if ( validLocation = map.CanFit( x, y, z, 16, false, false ) )
+							loc = new Point3D( x, y, z );
+					}
+				}
+				acid.MoveToWorld( loc, map );
+			}
+ 		}
 
 		public Kappa( Serial serial ) : base( serial )
 		{

@@ -15,9 +15,7 @@ namespace Server.Mobiles
 			typeof( ShroudOfDeceit ) }; } }
 
          public override Type[] SharedArtifacts{ get { return new Type[] {
-			typeof( LegendaryDetectiveBoots ),
-			typeof( ElderDetectiveBoots ),
-			typeof( MythicalDetectiveBoots ),
+			typeof( DetectiveBoots ),
 			typeof( CaptainJohnsHat ),
 			typeof( ANecromancerShroud ) }; } }
 
