@@ -1,5 +1,3 @@
-/*Created by Shai'Tan Malkier (Modified PowerScroll.cs with additions/modifications)*/
-
 using System;
 using Server;
 using Server.Gumps;
@@ -91,8 +89,8 @@ namespace Server.Items
         public ScrollofTranscendence(SkillName skill, double value)
             : base(0x14EF)
         {
-            base.Hue = 0x490;
-            base.Weight = 1.0;
+            Hue = 0x490;
+            Weight = 1.0;
 
             m_Skill = skill;
             m_Value = value;
@@ -301,6 +299,9 @@ namespace Server.Items
                 if (Insured)
                     Insured = false;
             }
+
+            if (Hue == 0x7E)
+                Hue = 0x490;
         }
 
         public class InternalGump : Gump

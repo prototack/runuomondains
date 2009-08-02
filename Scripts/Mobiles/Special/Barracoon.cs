@@ -17,11 +17,9 @@ namespace Server.Mobiles
 			typeof( FangOfRactus ) }; } }
 
         public override Type[] SharedArtifacts{ get { return new Type[] {
-			typeof( NewEmbroideredOakLeafCloak ),
-			typeof( NewDjinnisRing ),
-			typeof( LegendaryDetectiveBoots ),
-			typeof( ElderDetectiveBoots ),
-			typeof( MythicalDetectiveBoots ),
+			typeof( EmbroideredOakLeafCloak ),
+			typeof( DjinnisRing ),
+			typeof( DetectiveBoots ),
 			typeof( GauntletsOfAnger ) }; } }
 
         public override Type[] DecorationArtifacts{ get { return new Type[] {

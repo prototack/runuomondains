@@ -17,12 +17,10 @@ namespace Server.Mobiles
 			typeof( OrcChieftainHelm ) }; } }
 
         public override Type[] SharedArtifacts{ get { return new Type[] {
-			typeof( NewRoyalGuardSurvivalKnife ),
-			typeof( NewDjinnisRing ),
+			typeof( RoyalGuardSurvivalKnife ),
+			typeof( DjinnisRing ),
 			typeof( LieutenantOfTheBritannianRoyalGuard ),
-			typeof( LegendaryDetectiveBoots ),
-			typeof( ElderDetectiveBoots ),
-			typeof( MythicalDetectiveBoots ),
+			typeof( DetectiveBoots ),
 			typeof( TheMostKnowledgePerson ),
 			typeof( SamaritanRobe ) }; } }
 

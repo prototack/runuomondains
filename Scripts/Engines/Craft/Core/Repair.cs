@@ -213,7 +213,7 @@ namespace Server.Engines.Craft
 							}
 						}
 					}
-                }
+				}
 				else if ( targeted is BaseWeapon )
 				{
 					BaseWeapon weapon = (BaseWeapon)targeted;
@@ -251,33 +251,33 @@ namespace Server.Engines.Craft
 					else if ( weapon.MaxHitPoints <= toWeaken )
 					{
 						number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
-                    }
+					}
                     else if (targeted is DragonsEnd || targeted is KatrinasCrook || targeted is JaanasStaff) // Quick fix
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
-                    else
-                    {
-                        if (CheckWeaken(from, skill, weapon.HitPoints, weapon.MaxHitPoints))
-                        {
-                            weapon.MaxHitPoints -= toWeaken;
-                            weapon.HitPoints = Math.Max(0, weapon.HitPoints - toWeaken);
-                        }
+					else
+					{
+						if ( CheckWeaken( from, skill, weapon.HitPoints, weapon.MaxHitPoints ) )
+						{
+							weapon.MaxHitPoints -= toWeaken;
+							weapon.HitPoints = Math.Max( 0, weapon.HitPoints - toWeaken );
+						}
 
-                        if (CheckRepairDifficulty(from, skill, weapon.HitPoints, weapon.MaxHitPoints))
-                        {
-                            number = 1044279; // You repair the item.
-                            m_CraftSystem.PlayCraftEffect(from);
-                            weapon.HitPoints = weapon.MaxHitPoints;
-                        }
-                        else
-                        {
-                            number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
-                            m_CraftSystem.PlayCraftEffect(from);
-                        }
+						if ( CheckRepairDifficulty( from, skill, weapon.HitPoints, weapon.MaxHitPoints ) )
+						{
+							number = 1044279; // You repair the item.
+							m_CraftSystem.PlayCraftEffect( from );
+							weapon.HitPoints = weapon.MaxHitPoints;
+						}
+						else
+						{
+							number = (usingDeed)? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+							m_CraftSystem.PlayCraftEffect( from );
+						}
 
-                        toDelete = true;
-                    }
+						toDelete = true;
+					}
 				}
 				else if ( targeted is BaseArmor )
 				{
@@ -316,7 +316,7 @@ namespace Server.Engines.Craft
 					else if ( armor.MaxHitPoints <= toWeaken )
 					{
 						number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
-                    }
+					}
                     else if (armor is LordBlackthornsExemplar || armor is SentinelsGuard)// quick fix
                     {
                         number = 1044277; // That item cannot be repaired.
@@ -344,7 +344,7 @@ namespace Server.Engines.Craft
 						toDelete = true;
 					}
 				}
-				else if ( targeted is BaseClothing )
+				else if ( (targeted is BaseClothing) )
 				{
 					BaseClothing clothing = (BaseClothing)targeted;
 					SkillName skill = m_CraftSystem.MainSkill;
@@ -366,7 +366,7 @@ namespace Server.Engines.Craft
 							toWeaken = 3;
 					}
 
-					if ( m_CraftSystem.CraftItems.SearchForSubclass( clothing.GetType() ) == null && !IsSpecialClothing( clothing ))
+					if (m_CraftSystem.CraftItems.SearchForSubclass(clothing.GetType()) == null && !IsSpecialClothing(clothing) && !((targeted is TribalMask) || (targeted is HornedTribalMask) || targeted.GetType().IsSubclassOf(typeof(HornedTribalMask)) || targeted.GetType().IsSubclassOf(typeof(TribalMask))))
 					{
 						number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
 					}

@@ -16,10 +16,8 @@ namespace Server.Mobiles
 
         public override Type[] SharedArtifacts{ get { return new Type[] {
 			typeof( BraveKnightOfTheBritannia ),
-			typeof( NewEmbroideredOakLeafCloak ),
-			typeof( LegendaryDetectiveBoots ),
-			typeof( ElderDetectiveBoots ),
-			typeof( MythicalDetectiveBoots ),
+			typeof( EmbroideredOakLeafCloak ),
+			typeof( DetectiveBoots ),
 			typeof( LieutenantOfTheBritannianRoyalGuard ) }; } }
 
         public override Type[] DecorationArtifacts{ get { return new Type[] {

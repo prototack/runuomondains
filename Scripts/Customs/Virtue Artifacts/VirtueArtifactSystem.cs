@@ -61,9 +61,9 @@ namespace Server.Misc
             int x = pm.VASTotalMonsterFame;
 
             //const double A = 8.63316841 * Math.Pow( 10, -4 );
-            const double A = 0.000863316841;
+            const double A = 0.000000316841;
             //const double B = 4.25531915 * Math.Pow( 10, -6 );
-            const double B = 0.00000425531915;
+            const double B = 0.00000000531915;
 
             double chance = A * Math.Pow(10, B * x);
 

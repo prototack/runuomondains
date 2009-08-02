@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class NewRoyalGuardSurvivalKnife : SkinningKnife, ITokunoDyable
+	public class RoyalGuardSurvivalKnife : SkinningKnife, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094918; } } // Royal Guard Survival Knife [Replica]
 
@@ -13,7 +13,7 @@ namespace Server.Items
 		public override bool CanFortify{ get{ return false; } }
 
 		[Constructable]
-		public NewRoyalGuardSurvivalKnife()
+		public RoyalGuardSurvivalKnife()
 		{
 			Attributes.SpellChanneling = 1;
 			Attributes.Luck = 140;
@@ -23,7 +23,7 @@ namespace Server.Items
 			WeaponAttributes.LowerStatReq = 50;
 		}
 
-		public NewRoyalGuardSurvivalKnife( Serial serial ) : base( serial )
+		public RoyalGuardSurvivalKnife( Serial serial ) : base( serial )
 		{
 		}
 

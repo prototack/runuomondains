@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class NewEmbroideredOakLeafCloak : BaseOuterTorso, ITokunoDyable
+	public class EmbroideredOakLeafCloak : BaseOuterTorso, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094901; } } // Embroidered Oak Leaf Cloak [Replica]
 
@@ -13,7 +13,7 @@ namespace Server.Items
 		public override bool CanFortify{ get{ return false; } }
 
 		[Constructable]
-		public NewEmbroideredOakLeafCloak() : base( 0x2684 )
+		public EmbroideredOakLeafCloak() : base( 0x2684 )
 		{
 			Hue = 0x557;
 			StrRequirement = 0;
@@ -22,7 +22,7 @@ namespace Server.Items
 			SkillBonuses.Skill_1_Value = 5;
 		}
 
-		public NewEmbroideredOakLeafCloak( Serial serial ) : base( serial )
+		public EmbroideredOakLeafCloak( Serial serial ) : base( serial )
 		{
 		}
 		

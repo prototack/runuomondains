@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class FangOfRactus : Kryss, ITokunoDyable
+	public class FangOfRactus : Kryss, ITokunoDyable
 	{
 		public override int LabelNumber{ get{ return 1094892; } } // Fang of Ractus [Replica]
 

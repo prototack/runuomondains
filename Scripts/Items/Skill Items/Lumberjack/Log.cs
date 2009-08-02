@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Items
 {
 	[FlipableAttribute( 0x1bdd, 0x1be0 )]
-	public class Log : Item, ICommodity
+	public class Log : Item, ICommodity, IAxe
 	{
 		private CraftResource m_Resource;
 
@@ -99,6 +99,22 @@ namespace Server.Items
 			if ( version == 0 )
 				m_Resource = CraftResource.RegularWood;
 		}
+		
+		public virtual bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 0.0 &&
+			    from.Skills.Lumberjacking.Value < 0.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new Board(), 1, false );
+
+			return true;
+		}
 	}
 
 	public class HeartwoodLog : Log
@@ -130,6 +146,22 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+		}
+		
+		public override bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 100.0 &&
+			    from.Skills.Lumberjacking.Value < 100.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new HeartwoodBoard(), 1, false );
+
+			return true;
 		}
 	}
 
@@ -165,6 +197,22 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
+		
+		public override bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 100.0 &&
+			    from.Skills.Lumberjacking.Value < 100.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new BloodwoodBoard(), 1, false );
+
+			return true;
+		}
 	}
 
 	public class FrostwoodLog : Log
@@ -198,6 +246,22 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+		}
+		
+		public override bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 100.0 &&
+			    from.Skills.Lumberjacking.Value < 100.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new FrostwoodBoard(), 1, false );
+
+			return true;
 		}
 	}
 
@@ -233,6 +297,22 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
+		
+		public override bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 65.0 &&
+			    from.Skills.Lumberjacking.Value < 65.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new OakBoard(), 1, false );
+
+			return true;
+		}
 	}
 
 	public class AshLog : Log
@@ -267,6 +347,22 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
+		
+		public override bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 80.0 &&
+			    from.Skills.Lumberjacking.Value < 80.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new AshBoard(), 1, false );
+
+			return true;
+		}
 	}
 
 	public class YewLog : Log
@@ -300,6 +396,22 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+		}
+		
+		public override bool Axe( Mobile from, BaseAxe baseaxe )
+		{
+			if ( Deleted || !from.CanSee( this ) ) 
+				return false;
+			else if ( from.Skills.Carpentry.Value < 95.0 &&
+			    from.Skills.Lumberjacking.Value < 95.0 )
+			{
+				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
+				return false;
+			}
+
+			base.ScissorHelper( from, new YewBoard(), 1, false );
+
+			return true;
 		}
 	}
 }

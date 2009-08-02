@@ -98,8 +98,20 @@ namespace Server.Items
 
 		#endregion
 
-		public BaseOre( CraftResource resource, int amount ) : base( 0x19B7 + Utility.Random(4) )
+		public BaseOre( CraftResource resource, int amount ) : base( Utility.Random( 4 ) )
 		{
+			{
+				double random = Utility.RandomDouble();
+				if ( 0.12 >= random )
+					ItemID = 0x19B7;
+				else if ( 0.18 >= random )
+					ItemID = 0x19B8;
+				else if ( 0.25 >= random )
+					ItemID = 0x19BA;
+				else
+					ItemID = 0x19B9;
+			}
+			
 			Stackable = true;
 			Amount = amount;
 			Hue = CraftResources.GetHue( resource );
@@ -407,10 +419,15 @@ namespace Server.Items
 							from.SendLocalizedMessage( 501988 ); // You smelt the ore removing the impurities and put the metal in your backpack.
 						}
 					}
-					else if ( m_Ore.Amount < 2 )
+					else if ( m_Ore.Amount < 2 && m_Ore.ItemID == 0x19B9 )
 					{
-						from.SendLocalizedMessage( 501989 ); // You burn away the impurities but are left with no useable metal.
-						m_Ore.Delete();
+						from.SendLocalizedMessage( 501990 ); // You burn away the impurities but are left with less useable metal.
+						m_Ore.ItemID = 0x19B8;
+					}
+					else if ( m_Ore.Amount < 2 && m_Ore.ItemID == 0x19B8 || m_Ore.ItemID == 0x19BA )
+					{
+						from.SendLocalizedMessage( 501990 ); // You burn away the impurities but are left with less useable metal.
+						m_Ore.ItemID = 0x19B7;
 					}
 					else
 					{

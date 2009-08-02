@@ -11,17 +11,14 @@ namespace Server.Mobiles
 		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Pain; } }
 
         public override Type[] UniqueArtifacts{ get { return new Type[] {
-			// Unique Artifacts
 			typeof( GladiatorsCollar ) }; } }
 
         public override Type[] SharedArtifacts{ get { return new Type[] {
-			// Shared Artifacts
 			typeof( LieutenantOfTheBritannianRoyalGuard ),
 			typeof( ANecromancerShroud ),
-            typeof( NewRoyalGuardSurvivalKnife ) }; } }
+            typeof( RoyalGuardSurvivalKnife ) }; } }
 
         public override Type[] DecorationArtifacts{ get { return new Type[] {
-			// Decoration Artifacts
             typeof( DemonSkull ),
 			typeof( LavaTile ) }; } }
 
