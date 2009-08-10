@@ -77,7 +77,6 @@ namespace Server.Spells.Ninjitsu
 		public override bool CheckFizzle()
 		{
 			// Spell is initially always successful, and with no skill gain.
-
 			return true;
 		}
 
@@ -99,10 +98,15 @@ namespace Server.Spells.Ninjitsu
 			{
 				AnimalFormContext context = GetContext( Caster );
 
-				if ( context != null )
+				int mana = ScaleMana( RequiredMana );
+				if ( mana > Caster.Mana )
 				{
-					if( ConsumeMana() )
+					Caster.SendLocalizedMessage( 1060174, mana.ToString() ); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+				}
+				else if ( context != null )
+				{
 						RemoveContext( Caster, context, true );
+						Caster.Mana -= mana;
 				}
 				else if ( Caster is PlayerMobile )
 				{
@@ -113,33 +117,22 @@ namespace Server.Spells.Ninjitsu
 					}
 					else
 					{
-						if ( ConsumeMana() && Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
+						if ( Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
 							DoFizzle();
+						else
+							Caster.Mana -= mana;
 					}
 				}
 				else
 				{
-					if ( ConsumeMana() && Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
+					if ( Morph( Caster, GetLastAnimalForm( Caster ) ) == MorphResult.Fail )
 						DoFizzle();
+					else
+						Caster.Mana -= mana;
 				}
 			}
 
 			FinishSequence();
-		}
-
-		public bool ConsumeMana()
-		{
-			int mana = ScaleMana( RequiredMana );
-
-			if ( Caster.Mana < mana )
-			{
-				Caster.SendLocalizedMessage( 1060174, mana.ToString() ); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
-				return false;
-			}
-
-			Caster.Mana -= mana;
-
-			return true;
 		}
 
 		private static Hashtable m_LastAnimalForms = new Hashtable();
@@ -253,7 +246,7 @@ namespace Server.Spells.Ninjitsu
 		public static void RemoveContext( Mobile m, AnimalFormContext context, bool resetGraphics )
 		{
 			m_Table.Remove( m );
-			
+
 			#region Mondain's Legacy
 			if ( context.SpeedBoost )
 			{
@@ -274,6 +267,8 @@ namespace Server.Spells.Ninjitsu
 				m.HueMod = -1;
 				m.BodyMod = 0;
 			}
+
+			m.FixedParticles( 0x3728, 10, 13, 2023, EffectLayer.Waist );
 
 			context.Timer.Stop();
 		}
@@ -459,17 +454,30 @@ namespace Server.Spells.Ninjitsu
 
 			public override void OnResponse( NetState sender, RelayInfo info )
 			{
-				if ( info.ButtonID >= 100 && info.ButtonID <= 100 + m_Entries.Length )
-				{
-					int entryID = info.ButtonID - 100;
-					
-					if ( AnimalForm.Morph( m_Caster, entryID ) == MorphResult.Fail )
-					{
-						m_Caster.LocalOverheadMessage( MessageType.Regular, 0x3B2, 502632 ); // The spell fizzles.
-						m_Caster.FixedParticles( 0x3735, 1, 30, 9503, EffectLayer.Waist );
-						m_Caster.PlaySound( 0x5C );
-					}
-				}
+                if (info.ButtonID >= 100 && info.ButtonID <= 100 + m_Entries.Length)
+                {
+                    int mana = m_Spell.ScaleMana(m_Spell.RequiredMana);
+
+                    if (mana > m_Caster.Mana)
+                    {
+                        m_Caster.SendLocalizedMessage(1060174, mana.ToString()); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
+                    }
+                    else
+                    {
+                        int entryID = info.ButtonID - 100;
+
+                        if (AnimalForm.Morph(m_Caster, entryID) == MorphResult.Fail)
+                        {
+                            m_Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502632); // The spell fizzles.
+                            m_Caster.FixedParticles(0x3735, 1, 30, 9503, EffectLayer.Waist);
+                            m_Caster.PlaySound(0x5C);
+                        }
+                        else
+                        {
+                            m_Caster.Mana -= mana;
+                        }
+                    }
+                }
 			}
 		}
 	}

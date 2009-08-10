@@ -7,6 +7,7 @@ namespace Server.Items
 {
 	public class RandomTalisman : BaseTalisman
 	{
+		[Constructable]
 		public RandomTalisman() : base( GetRandomItemID() )
 		{
 			MaxCharges = GetRandomCharges();		

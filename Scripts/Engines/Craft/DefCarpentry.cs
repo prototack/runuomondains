@@ -119,8 +119,11 @@ namespace Server.Engines.Craft
 			int index = -1;
 
 			// Other Items
-			index =	AddCraft( typeof( Board ),				1044294, 1027127,	 0.0,   0.0,	typeof( Log ), 1044466,  1, 1044465 );
-			SetUseAllRes( index, true );
+			if ( Core.Expansion == Expansion.AOS || Core.Expansion == Expansion.SE )
+			{
+				index =	AddCraft( typeof( Board ),				1044294, 1027127,	 0.0,   0.0,	typeof( Log ), 1044466,  1, 1044465 );
+				SetUseAllRes( index, true );
+			}
 
 			AddCraft( typeof( BarrelStaves ),				1044294, 1027857,	00.0,  25.0,	typeof( Log ), 1044041,  5, 1044351 );
 			AddCraft( typeof( BarrelLid ),					1044294, 1027608,	11.0,  36.0,	typeof( Log ), 1044041,  4, 1044351 );
@@ -379,7 +382,7 @@ namespace Server.Engines.Craft
 				index = AddCraft( typeof( DecorativeBox ), 1044292, 1073403, 80.0, 105.0, typeof( Log ), 1044041, 25, 1044351 );
 				SetNeededExpansion( index, Expansion.ML );	
 			}
-			#endregion			
+			#endregion
 
 			// Weapons
 			AddCraft( typeof( ShepherdsCrook ), 1044566, 1023713, 78.9, 103.9, typeof( Log ), 1044041, 7, 1044351 );

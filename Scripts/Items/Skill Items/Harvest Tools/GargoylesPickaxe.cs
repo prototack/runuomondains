@@ -45,27 +45,6 @@ namespace Server.Items
 		public GargoylesPickaxe( Serial serial ) : base( serial )
 		{
 		}
-		
-		public override void OnDoubleClick( Mobile from )
-		{
-			Point3D loc = this.GetWorldLocation();
-			
-			if ( HarvestSystem == null || Deleted )
-				return;
-			
-			if ( !from.InLOS( loc ) || !from.InRange( loc, 2 ) )
-			{
-				from.LocalOverheadMessage( Server.Network.MessageType.Regular, 0x3E9, 1019045 ); // I can't reach that
-				return;
-			}
-			else if ( !this.IsAccessibleTo( from ) )
-			{
-				this.PublicOverheadMessage( Server.Network.MessageType.Regular, 0x3E9, 1061637 ); // You are not allowed to access this.
-				return;
-			}
-
-			HarvestSystem.BeginHarvesting( from, this );
-		}
 
 		public override void Serialize( GenericWriter writer )
 		{

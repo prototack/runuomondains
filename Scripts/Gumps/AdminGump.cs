@@ -409,18 +409,18 @@ namespace Server.Gumps
 
                         AddButtonLabeled(20, 150, GetButtonID(3, 200), "Save");
 
-                        if (!Core.Service)
-                        {
-                            AddButtonLabeled(20, 180, GetButtonID(3, 201), "Shutdown (With Save)");
-                            AddButtonLabeled(20, 200, GetButtonID(3, 202), "Shutdown (Without Save)");
+                        /*if ( !Core.Service )
+                        {*/
+                        AddButtonLabeled(20, 180, GetButtonID(3, 201), "Shutdown (With Save)");
+                        AddButtonLabeled(20, 200, GetButtonID(3, 202), "Shutdown (Without Save)");
 
-                            AddButtonLabeled(20, 230, GetButtonID(3, 203), "Shutdown & Restart (With Save)");
-                            AddButtonLabeled(20, 250, GetButtonID(3, 204), "Shutdown & Restart (Without Save)");
-                        }
+                        AddButtonLabeled(20, 230, GetButtonID(3, 203), "Shutdown & Restart (With Save)");
+                        AddButtonLabeled(20, 250, GetButtonID(3, 204), "Shutdown & Restart (Without Save)");
+                        /*}
                         else
                         {
-                            AddLabel(20, 215, LabelHue, "Shutdown/Restart not available.");
-                        }
+                            AddLabel( 20, 215, LabelHue, "Shutdown/Restart not available." );
+                        }*/
 
                         AddHtml(10, 295, 400, 20, Color(Center("Broadcast"), LabelColor32), false, false);
 
@@ -739,8 +739,8 @@ namespace Server.Gumps
                     {
                         if (m_List == null)
                         {
-                            m_List = new ArrayList((ICollection)Accounts.GetAccounts());
-                            m_List.Sort(AccountComparer.Instance);
+                            m_List = new ArrayList(); // new ArrayList( (ICollection)Accounts.GetAccounts() );
+                            // m_List.Sort( AccountComparer.Instance );
                         }
 
                         ArrayList rads = (state as ArrayList);
@@ -2392,7 +2392,7 @@ namespace Server.Gumps
                                 {
                                     ArrayList results = new ArrayList();
 
-                                    DateTime minTime = DateTime.Now - TimeSpan.FromDays(30.0);
+                                    DateTime minTime = DateTime.Now - Account.InactiveDuration;
 
                                     foreach (Account acct in Accounts.GetAccounts())
                                     {

@@ -1327,7 +1327,7 @@
 			<smartNoHousing active="true" />
 			<region type="GuardedRegion" name="New Haven Moongate">
 			<rect x="3446" y="2674" width="10" height="10" />
-        	</region>
+			</region>
 			<!--Mondain's Legacy-->
       <region type="ApprenticeRegion" name="Enhanced Tracking Skill">
         <rect x="3314" y="2345" width="500" height="750" />
@@ -1347,14 +1347,17 @@
         <region type="ApprenticeRegion" name="Haven Mountains">
           <rect x="3426" y="2732" width="110" height="50" />
         </region>
-        <region type="GuardedRegion" name="Haven Moongate">
-          <rect x="3755" y="2763" width="17" height="13" />
-        </region>
 			<region type="TownRegion" name="New Haven">
 				<rune name="New Haven City" />
 				<rect x="3423" y="2480" width="111" height="143" />
 				<go x="3503" y="2574" z="14" />
 				<music name="Ocllo" />
+				<region name="Gentle Rest Inn">
+					<rune name="The Gentle Rest Inn in New Haven" />
+					<rect x="3493" y="2513" width="10" height="10"/>
+					<rect x="3503" y="2513" width="7" height="17" />
+					<logoutDelay active="false" />
+				</region>
           <region name="the New Haven Alchemist">
             <rect x="3457" y="2564" width="9" height="9" />
           </region>
@@ -1375,12 +1378,6 @@
           <region name="the New Haven Mage">
             <rect x="2464" y="2488" width="27" height="16" />
           </region>
-          		<region name="Gentle Rest Inn">
-		  			<rune name="The Gentle Rest Inn in New Haven" />
-					<rect x="3493" y="2513" width="10" height="10"/>
-            		<rect x="3503" y="2513" width="7" height="17" />
-		  			<logoutDelay active="false" />
-				</region>
           <region name="the New Haven Docks">
             <rect x="3501" y="2587" width="26" height="30" />
             <rect x="3512" y="2581" width="7" height="12" />

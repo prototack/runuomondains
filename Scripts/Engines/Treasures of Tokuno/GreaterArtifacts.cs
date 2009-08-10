@@ -632,6 +632,14 @@ namespace Server.Items
 
 			m_Type = (PigmentType)reader.ReadEncodedInt();
 			m_UsesRemaining = reader.ReadEncodedInt();
+
+            // After you compile the server save it and comment out the next section then restart server again. Or you can just remove this section entirely or leave it.
+
+            PigmentInfo p = PigmentInfo.GetInfo(m_Type);
+            if (Hue != p.Hue)
+                Hue = p.Hue;
+
+            // This will revert all the hues back to the hue that they should be.
 		}
 
 		#region IUsesRemaining Members

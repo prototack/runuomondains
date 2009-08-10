@@ -1911,9 +1911,8 @@ namespace Server.Mobiles
             if (this.Alive && !wasAlive)
             {
                 Item deathRobe = new DeathRobe();
-                if (!this.Backpack.CheckHold(this, deathRobe, false, true))
-                    deathRobe.Delete();
-                else if (!EquipItem(deathRobe))
+
+                if (!EquipItem(deathRobe))
                     deathRobe.Delete();
             }
         }
@@ -3085,7 +3084,6 @@ namespace Server.Mobiles
                 }
             }
 
-            #region Mondain's Legacy
             if (Core.ML)
             {
                 for (int i = AllFollowers.Count - 1; i >= 0; i--)
@@ -3099,7 +3097,6 @@ namespace Server.Mobiles
                     }
                 }
             }
-            #endregion
         }
 
         public override void OnSingleClick(Mobile from)
@@ -4306,7 +4303,7 @@ namespace Server.Mobiles
                 {
                     BaseCreature pet = AllFollowers[i] as BaseCreature;
 
-                    if (pet == null || pet.ControlMaster == null || (pet.Summoned && !Core.ML))
+                    if (pet == null || pet.ControlMaster == null || pet.Summoned)
                         continue;
 
                     if (pet is IMount && ((IMount)pet).Rider != null)

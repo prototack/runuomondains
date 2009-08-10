@@ -10,9 +10,9 @@ namespace Server.Items
 {
 	public interface IAxe
 	{
-		bool Axe( Mobile from, BaseAxe baseaxe );
+		bool Axe( Mobile from, BaseAxe axe );
 	}
-	
+
 	public abstract class BaseAxe : BaseMeleeWeapon
 	{
 		public override int DefHitSound{ get{ return 0x232; } }
@@ -80,10 +80,10 @@ namespace Server.Items
 
 		public override void OnDoubleClick( Mobile from )
 		{
-			Point3D loc = this.GetWorldLocation();
-			
 			if ( HarvestSystem == null || Deleted )
 				return;
+
+			Point3D loc = this.GetWorldLocation();
 
 			if ( !from.InLOS( loc ) || !from.InRange( loc, 2 ) )
 			{
@@ -96,7 +96,9 @@ namespace Server.Items
 				return;
 			}
 			
-			from.SendLocalizedMessage( 1010018 ); // What do you want to use this item on?
+			if ( !(this.HarvestSystem is Mining) )
+				from.SendLocalizedMessage( 1010018 ); // What do you want to use this item on?
+
 			HarvestSystem.BeginHarvesting( from, this );
 		}
 

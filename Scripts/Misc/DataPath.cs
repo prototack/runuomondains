@@ -61,7 +61,7 @@ namespace Server.Misc
 				String keyString;
 
 				if( Core.Is64Bit )
-					keyString = @"SOFTWARE\Wow6432Node\Origin Worlds Online\{0}\KR Legacy Beta";
+                    keyString = @"SOFTWARE\Wow6432Node\Origin Worlds Online\{0}\1.0";
 				else
 					keyString = @"SOFTWARE\Origin Worlds Online\{0}\1.0";
 
