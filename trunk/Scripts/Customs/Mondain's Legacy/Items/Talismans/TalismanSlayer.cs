@@ -28,7 +28,7 @@ namespace Server.Items
 		{			
 			m_Table[ TalismanSlayerName.Bear ] = new Type[] 
 			{ 
-				typeof( GrizzlyBear ), typeof( BlackBear ), typeof( BrownBear ), typeof( PolarBear ) //, typeof( Grobu )
+				typeof( GrizzlyBear ), typeof( BlackBear ), typeof( BrownBear ), typeof( PolarBear ), typeof( Grobu )
 			};
 			
 			m_Table[ TalismanSlayerName.Vermin ] = new Type[] 
@@ -58,7 +58,7 @@ namespace Server.Items
 			{ 
 				typeof( Bird ), typeof( TropicalBird ), typeof( Chicken ), typeof( Crane ), 
 				typeof( DesertOstard ), typeof( Eagle ), typeof( ForestOstard ), typeof( FrenziedOstard ), 
-				typeof( Phoenix ), /*typeof( Pyre ), typeof( Swoop ), typeof( Saliva ),*/ typeof( Harpy ), 
+				typeof( Phoenix ), typeof( Pyre ), typeof( Swoop ), typeof( Saliva ), typeof( Harpy ), 
 				typeof( StoneHarpy ) // ?????
 			};
 			
@@ -84,8 +84,8 @@ namespace Server.Items
 			
 			m_Table[ TalismanSlayerName.Bovine ] = new Type[] 
 			{ 
-				typeof( Cow ), typeof( Bull ), typeof( Gaman ) /*, typeof( MinotaurCaptain ), 
-				typeof( MinotaurScout ), typeof( Minotaur )*/
+				typeof( Cow ), typeof( Bull ), typeof( Gaman ) , typeof( MinotaurCaptain ), 
+				typeof( MinotaurScout ), typeof( Minotaur )
 				
 				// TODO TormentedMinotaur
 			};

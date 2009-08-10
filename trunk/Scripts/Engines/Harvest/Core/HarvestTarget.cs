@@ -55,7 +55,7 @@ namespace Server.Engines.Harvest
 
 			if ( m_System is Lumberjacking && targeted is IChopable )
 				((IChopable)targeted).OnChop( from );
-			else if ( m_System is Lumberjacking && targeted is IAxe )
+			else if ( m_System is Lumberjacking && targeted is IAxe && m_Tool is BaseAxe )
 			{
 				IAxe obj = (IAxe)targeted;
 				Item item = (Item)targeted;

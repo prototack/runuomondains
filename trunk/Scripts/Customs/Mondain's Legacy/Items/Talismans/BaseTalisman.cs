@@ -489,9 +489,15 @@ namespace Server.Items
 			
 			if ( m_MaxCharges > 0 )
 				list.Add( 1060741, m_Charges.ToString() ); // charges: ~1_val~
-				
-			if ( m_Slayer != TalismanSlayerName.None )
-				list.Add( 1072503 + (int) m_Slayer );
+
+            if (m_Slayer != TalismanSlayerName.None)
+            {
+                if (m_Slayer != TalismanSlayerName.Wolf)
+                    list.Add(1072503 + (int)m_Slayer);
+                else
+                    list.Add(1075462);
+            }
+
 		}
 		
 		private static void SetSaveFlag( ref SaveFlag flags, SaveFlag toSet, bool setIf )
@@ -826,7 +832,7 @@ namespace Server.Items
 
 		public static TalismanAttribute GetRandomSummoner()
 		{
-			if ( 0.025 > Utility.RandomDouble() )
+			if ( 0.925 > Utility.RandomDouble() )
 			{
 				int num = Utility.Random( m_Summons.Length );
 
@@ -836,7 +842,8 @@ namespace Server.Items
 					return new TalismanAttribute( m_Summons[ num ], m_SummonLabels[ num ] );
 			}
 
-			return new TalismanAttribute();
+            //return new TalismanAttribute();
+            return null;
 		}
 
 		public static TalismanRemoval GetRandomRemoval()

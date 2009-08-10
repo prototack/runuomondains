@@ -1126,7 +1126,7 @@ namespace Server.Engines.CannedEvil
 
             foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
             {
-                if (IsEligable(kvp.Key, artifact))
+                if (IsEligible(kvp.Key, artifact))
                 {
                     validEntries.Add(kvp.Key, kvp.Value);
                     totalDamage += kvp.Value;
@@ -1162,7 +1162,7 @@ namespace Server.Engines.CannedEvil
                 to.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
         }
 
-        public bool IsEligable(Mobile m, Item Artifact)
+        public bool IsEligible(Mobile m, Item Artifact)
         {
             return m.Player && m.Alive && m.Region != null && m.Region == m_Region && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
         }

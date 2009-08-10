@@ -31,7 +31,7 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public Log( int amount ) : this( CraftResource.RegularWood )
+		public Log( int amount ) : this( CraftResource.RegularWood, amount )
 		{
 		}
 
@@ -99,20 +99,26 @@ namespace Server.Items
 			if ( version == 0 )
 				m_Resource = CraftResource.RegularWood;
 		}
-		
-		public virtual bool Axe( Mobile from, BaseAxe baseaxe )
+
+		public virtual bool TryCreateBoards( Mobile from, double skill, Item item )
 		{
 			if ( Deleted || !from.CanSee( this ) ) 
 				return false;
-			else if ( from.Skills.Carpentry.Value < 0.0 &&
-			    from.Skills.Lumberjacking.Value < 0.0 )
+			else if ( from.Skills.Carpentry.Value < skill &&
+				from.Skills.Lumberjacking.Value < skill )
 			{
 				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
 				return false;
 			}
+			base.ScissorHelper( from, item, 1, false );
+			return true;
+		}
 
-			base.ScissorHelper( from, new Board(), 1, false );
-
+		public virtual bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 0, new Board() ) )
+				return false;
+			
 			return true;
 		}
 	}
@@ -129,7 +135,7 @@ namespace Server.Items
 			: base( CraftResource.Heartwood, amount )
 		{
 		}
-		
+
 		public HeartwoodLog( Serial serial ) : base( serial )
 		{
 		}
@@ -147,19 +153,11 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
-		public override bool Axe( Mobile from, BaseAxe baseaxe )
-		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			else if ( from.Skills.Carpentry.Value < 100.0 &&
-			    from.Skills.Lumberjacking.Value < 100.0 )
-			{
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
 
-			base.ScissorHelper( from, new HeartwoodBoard(), 1, false );
+		public override bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 100, new HeartwoodBoard() ) )
+				return false;
 
 			return true;
 		}
@@ -197,19 +195,11 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
-		public override bool Axe( Mobile from, BaseAxe baseaxe )
-		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			else if ( from.Skills.Carpentry.Value < 100.0 &&
-			    from.Skills.Lumberjacking.Value < 100.0 )
-			{
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
 
-			base.ScissorHelper( from, new BloodwoodBoard(), 1, false );
+		public override bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 100, new BloodwoodBoard() ) )
+				return false;
 
 			return true;
 		}
@@ -247,19 +237,11 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
-		public override bool Axe( Mobile from, BaseAxe baseaxe )
-		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			else if ( from.Skills.Carpentry.Value < 100.0 &&
-			    from.Skills.Lumberjacking.Value < 100.0 )
-			{
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
 
-			base.ScissorHelper( from, new FrostwoodBoard(), 1, false );
+		public override bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 100, new FrostwoodBoard() ) )
+				return false;
 
 			return true;
 		}
@@ -297,19 +279,11 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
-		public override bool Axe( Mobile from, BaseAxe baseaxe )
-		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			else if ( from.Skills.Carpentry.Value < 65.0 &&
-			    from.Skills.Lumberjacking.Value < 65.0 )
-			{
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
 
-			base.ScissorHelper( from, new OakBoard(), 1, false );
+		public override bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 65, new OakBoard() ) )
+				return false;
 
 			return true;
 		}
@@ -347,19 +321,11 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
-		public override bool Axe( Mobile from, BaseAxe baseaxe )
-		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			else if ( from.Skills.Carpentry.Value < 80.0 &&
-			    from.Skills.Lumberjacking.Value < 80.0 )
-			{
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
 
-			base.ScissorHelper( from, new AshBoard(), 1, false );
+		public override bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 80, new AshBoard() ) )
+				return false;
 
 			return true;
 		}
@@ -397,19 +363,11 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
-		public override bool Axe( Mobile from, BaseAxe baseaxe )
-		{
-			if ( Deleted || !from.CanSee( this ) ) 
-				return false;
-			else if ( from.Skills.Carpentry.Value < 95.0 &&
-			    from.Skills.Lumberjacking.Value < 95.0 )
-			{
-				from.SendLocalizedMessage( 1072652 ); // You cannot work this strange and unusual wood.
-				return false;
-			}
 
-			base.ScissorHelper( from, new YewBoard(), 1, false );
+		public override bool Axe( Mobile from, BaseAxe axe )
+		{
+			if ( !TryCreateBoards( from , 95, new YewBoard() ) )
+				return false;
 
 			return true;
 		}
