@@ -563,6 +563,26 @@ namespace Server.Items
 			return ( m_AosAttributes.SpellChanneling != 0 );
 		}
 
+        public void UnscaleDurability()
+		{
+			int scale = 100 + m_AosClothingAttributes.DurabilityBonus;
+
+			m_HitPoints = ( ( m_HitPoints * 100 ) + ( scale - 1 ) ) / scale;
+			m_MaxHitPoints = ( ( m_MaxHitPoints * 100 ) + ( scale - 1 ) ) / scale;
+
+			InvalidateProperties();
+		}
+
+		public void ScaleDurability()
+		{
+			int scale = 100 + m_AosClothingAttributes.DurabilityBonus;
+
+			m_HitPoints = ( ( m_HitPoints * scale ) + 99 ) / 100;
+			m_MaxHitPoints = ( ( m_MaxHitPoints * scale ) + 99 ) / 100;
+
+			InvalidateProperties();
+		}
+
 		public override bool CheckPropertyConfliction( Mobile m )
 		{
 			if ( base.CheckPropertyConfliction( m ) )
