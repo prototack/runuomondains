@@ -26,7 +26,7 @@ namespace Server.Mobiles
          public override MonsterStatuetteType[] StatueTypes { get { return new MonsterStatuetteType[] { }; } }
 
 		[Constructable]
-		public Neira() : base( AIType.AI_Mage )
+		public Neira() : base( AIType.AI_NecroMage )
 		{
 			Name = "Neira";
 			Title = "the necromancer";
@@ -53,6 +53,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.EvalInt, 120.0 );
 			SetSkill( SkillName.Magery, 120.0 );
 			SetSkill( SkillName.Meditation, 120.0 );
+            SetSkill( SkillName.Necromancy, 120.0 );
+            SetSkill (SkillName.SpiritSpeak, 120.0 );
 			SetSkill( SkillName.MagicResist, 150.0 );
 			SetSkill( SkillName.Tactics, 97.6, 100.0 );
 			SetSkill( SkillName.Wrestling, 97.6, 100.0 );
@@ -107,8 +109,8 @@ namespace Server.Mobiles
 			CheckSpeedBoost();
 			base.OnDamage( amount, from, willKill );
 		}
-		
-		private const double SpeedBoostScalar = 1.2;
+
+        private const double SpeedBoostScalar = 2;
 		
 		private void CheckSpeedBoost()
 		{
@@ -118,6 +120,7 @@ namespace Server.Mobiles
 				{
 					ActiveSpeed /= SpeedBoostScalar;
 					PassiveSpeed /= SpeedBoostScalar;
+                    CurrentSpeed /= SpeedBoostScalar;
 					m_SpeedBoost = true;
 				}				
 			}
@@ -125,8 +128,15 @@ namespace Server.Mobiles
 			{
 					ActiveSpeed *= SpeedBoostScalar;
 					PassiveSpeed *= SpeedBoostScalar;
+                    CurrentSpeed *= SpeedBoostScalar;
 					m_SpeedBoost = false;
 			}
+		}
+ 
+		public void ChangeCombatant()
+		{
+			ForceReacquire();
+			BeginFlee( TimeSpan.FromSeconds( 2.5 ) );
 		}
 
 		private class VirtualMount : IMount

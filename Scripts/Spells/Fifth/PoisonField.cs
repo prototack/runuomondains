@@ -4,6 +4,7 @@ using Server.Targeting;
 using Server.Network;
 using Server.Misc;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Spells.Fifth
 {
@@ -84,7 +85,7 @@ namespace Server.Spells.Fifth
 		}
 
 		[DispellableField]
-		private class InternalItem : Item
+		public class InternalItem : Item
 		{
 			private Timer m_Timer;
 			private DateTime m_End;
@@ -183,7 +184,9 @@ namespace Server.Spells.Fifth
 					p = Poison.Regular;
 				}
 
-				m.ApplyPoison( m_Caster, p );
+				if ( m.ApplyPoison( m_Caster, p ) == ApplyPoisonResult.Poisoned )
+					if ( SpellHelper.CanRevealCaster( m ) )
+						m_Caster.RevealingAction();
 			}
 
 			public override bool OnMoveOver( Mobile m )

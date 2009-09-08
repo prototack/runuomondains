@@ -59,7 +59,7 @@ namespace Server.Spells.Fourth
 
 				int toHeal = (int)(Caster.Skills[SkillName.Magery].Value * 0.4);
 				toHeal += Utility.Random( 1, 10 );
-				
+
 				#region Mondain's Legacy
 				if ( Core.ML )
 					Server.Spells.Spellweaving.ArcaneEmpowermentSpell.AddHealBonus( Caster, ref toHeal );

@@ -87,7 +87,7 @@ namespace Server.Items
 			Type resourceType = typeRes;
 
 			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+				resourceType = craftItem.Resources.GetAt( 0 ).ItemType;
 
 			Resource = CraftResources.GetFromType( resourceType );
 
@@ -136,8 +136,6 @@ namespace Server.Items
 						from.SendLocalizedMessage( 500269 ); // You cannot build that there.
 					else if ( res == AddonFitResult.NotInHouse )
 						from.SendLocalizedMessage( 500274 ); // You can only place this in a house that you own!
-					else if ( res == AddonFitResult.DoorsNotClosed )
-						from.SendMessage( "You must close all house doors before placing this." );
 					else if ( res == AddonFitResult.DoorTooClose )
 						from.SendLocalizedMessage( 500271 ); // You cannot build near the door.
 					else if ( res == AddonFitResult.NoWall )

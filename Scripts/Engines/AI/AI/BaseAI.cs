@@ -28,7 +28,7 @@ namespace Server.Mobiles
 		AI_Berserk,
 		AI_Predator,
 		AI_Thief,
-		AI_Necromage,
+		AI_NecroMage,
 // >>>>>>>>>> ERICA'S ORC SCOUT
 		AI_OrcScout
 	}
@@ -2485,7 +2485,7 @@ namespace Server.Mobiles
 							continue;
 
 						// Animated creatures cannot attack players directly.
-						if ( m is PlayerMobile && m_Mobile.IsAnimatedDead )
+                        if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
 							continue;
 					}
 

@@ -60,8 +60,8 @@ namespace Server.Mobiles
 		#region mod by Dies Irae
 		public override void OnDeath( Container c )
 		{
-			base.OnDeath( c );		
-			
+			base.OnDeath( c );
+
 			if( Utility.RandomDouble() < 0.05 )
 			{
 				if( IsParagon )
@@ -76,7 +76,7 @@ namespace Server.Mobiles
 			}
 		}
 		#endregion
-		
+
 		public override int GetDeathSound()
 		{
 			return 0x423;

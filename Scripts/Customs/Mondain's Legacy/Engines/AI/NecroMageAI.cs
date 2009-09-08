@@ -21,7 +21,7 @@ using Server.SkillHandlers;
 
 namespace Server.Mobiles
 {
-	public class NecromageAI : BaseAI
+	public class NecroMageAI : BaseAI
 	{
 		private Mobile m_Animated;
 
@@ -34,7 +34,7 @@ namespace Server.Mobiles
 		private DateTime m_NextCastTime;
 		
 
-		public NecromageAI( BaseCreature m ) : base( m )
+		public NecroMageAI( BaseCreature m ) : base( m )
 		{
 		}
 
@@ -226,7 +226,7 @@ namespace Server.Mobiles
 				}
 			}
 			else
-			{			
+			{
 				switch ( Utility.Random( mage ) )
 				{
 					case 0: return new MagicArrowSpell( m_Mobile, null );
@@ -300,7 +300,7 @@ namespace Server.Mobiles
 			if ( damage > c.Hits )
 				return new PainSpikeSpell( m_Mobile, null );
 
-			switch ( Utility.Random( 20 ) )
+			switch ( Utility.Random( 25 ) )
 			{
 				case 0:
 				case 1:
@@ -843,7 +843,9 @@ namespace Server.Mobiles
 
 		public bool CanDispel( Mobile m )
 		{
-			return ( m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful( m, false ) && !((BaseCreature)m).IsAnimatedDead );
+			BaseCreature c = m as BaseCreature;
+
+			return c != null && c.Summoned && c.SummonMaster != m_Mobile && m_Mobile.CanBeHarmful( m, false ) && !c.IsAnimatedDead;
 		}
 
 		private static int[] m_Offsets = new int[]

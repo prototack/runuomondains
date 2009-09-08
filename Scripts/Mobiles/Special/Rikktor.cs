@@ -111,12 +111,12 @@ namespace Server.Mobiles
 			{
 				Mobile m = (Mobile)targets[i];
 
-				double damage = m.Hits * 0.6;
+                double damage = m.Hits * 1.5;
 
 				if ( damage < 10.0 )
 					damage = 10.0;
-				else if ( damage > 75.0 )
-					damage = 75.0;
+                else if (damage > 100.0)
+                    damage = 100.0;
 
 				DoHarmful( m );
 

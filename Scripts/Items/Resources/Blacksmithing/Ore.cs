@@ -3,9 +3,7 @@ using Server.Items;
 using Server.Network;
 using Server.Targeting;
 using Server.Engines.Craft;
-#region Combine Ore
 using Server.Mobiles;
-#endregion
 
 namespace Server.Items
 {
@@ -81,22 +79,6 @@ namespace Server.Items
 		public BaseOre( CraftResource resource ) : this( resource, 1 )
 		{
 		}
-		
-		#region Sized Ore
-		public override double DefaultWeight
-		{
-			get
-			{
-				if ( ItemID == 0x19B7 )
-					return 2.0;
-				else if ( ItemID == 0x19B9 )
-					return 12.0;
-				else
-					return 7.0;
-			}
-		}
-
-		#endregion
 
 		public BaseOre( CraftResource resource, int amount ) : base( Utility.Random( 4 ) )
 		{
@@ -161,8 +143,13 @@ namespace Server.Items
 		{
 			if ( !Movable )
 				return;
-
-			if ( from.InRange( this.GetWorldLocation(), 2 ) )
+			
+			if ( RootParent is BaseCreature )
+			{
+				from.SendLocalizedMessage( 500447 ); // That is not accessible
+				return;
+			}
+			else if ( from.InRange( this.GetWorldLocation(), 2 ) )
 			{
 				from.SendLocalizedMessage( 501971 ); // Select the forge on which to smelt the ore, or another pile of ore with which to combine it.
 				from.Target = new InternalTarget( this );
@@ -215,8 +202,7 @@ namespace Server.Items
 				if ( targeted is BaseOre )
 				{
 					BaseOre ore = (BaseOre)targeted;
-					LRReason reject = LRReason.Inspecific;
-					if ( !ore.Movable || !ore.CheckLift( from, ore, ref reject ) || !m_Ore.CheckLift( from, m_Ore, ref reject ) )
+					if ( !ore.Movable )
 						return;
 					else if ( m_Ore == ore )
 					{
@@ -270,69 +256,10 @@ namespace Server.Items
 						from.SendLocalizedMessage( 1062844 ); // There is too much ore to combine.
 						return;
 					}
-					else if ( ore.Parent != null && ore.Parent is Container )
-					{
-						object oreParent = ore.Parent;
-						Container oreContainer = (Container)oreParent;
-						if ( ore.RootParent != m_Ore.RootParent )
-						{
-							if ( oreContainer.IsDecoContainer )
-							{
-								return;
-							}
-							if ( !oreContainer.CheckHold( from, m_Ore, false, false, 0, plusWeight ) )
-							{
-								from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
-								return;
-							}
-						}
-						else
-						{
-							if ( oreContainer.IsDecoContainer )
-							{
-								return;
-							}
-							if ( oreContainer.MaxWeight != 0 && (oreContainer.TotalWeight + plusWeight + m_Ore.TotalWeight + m_Ore.PileWeight) > oreContainer.MaxWeight )
-							{
-								from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
-								return;
-							}
-							oreParent = oreContainer.Parent;
-							while ( !m_Ore.IsChildOf( oreParent ) )
-							{
-								if ( oreParent is Container )
-								{
-									oreContainer = (Container)oreParent;
-									if ( oreContainer.IsDecoContainer )
-									{
-										return;
-									}
-									if ( oreContainer.MaxWeight != 0 && (oreContainer.TotalWeight + plusWeight + m_Ore.TotalWeight + m_Ore.PileWeight) > oreContainer.MaxWeight )
-									{
-										from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
-										return;
-									}
-								}
-								oreParent = ((Item)oreParent).Parent;
-							}
-							while ( oreContainer.Parent is Item )
-							{
-								if ( oreParent is Container )
-								{
-									oreContainer = (Container)oreParent;
-									if ( oreContainer.IsDecoContainer )
-									{
-										return;
-									}
-									if ( oreContainer.MaxWeight != 0 && (oreContainer.TotalWeight + plusWeight ) > oreContainer.MaxWeight )
-									{
-										from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
-										return;
-									}
-								}
-								oreParent = ((Item)oreParent).Parent;
-							}
-						}
+					else if ( ore.RootParent is Mobile && (plusWeight + ((Mobile)ore.RootParent).Backpack.TotalWeight) > ((Mobile)ore.RootParent).Backpack.MaxWeight )
+					{ 
+						from.SendLocalizedMessage( 501978 ); // The weight is too great to combine in a container.
+						return;
 					}
 
 					ore.ItemID = newID;
@@ -385,10 +312,8 @@ namespace Server.Items
 					{
 						int toConsume = m_Ore.Amount;
 						
-						#region Sized Ore
 						if ( m_Ore.ItemID == 0x19B7 && (toConsume / 2 == 0 || toConsume != (toConsume / 2) * 2) ) // I predict here, that unpair int halfed returns 0.
 							--toConsume;
-						#endregion
 
 						if ( toConsume <= 0 )
 						{
@@ -401,7 +326,6 @@ namespace Server.Items
 
 							BaseIngot ingot = m_Ore.GetIngot();
 							
-							#region Sized Ore
 							int amount = toConsume;
 							if ( m_Ore.ItemID == 0x19B7 )
 								amount /= 2;
@@ -409,7 +333,6 @@ namespace Server.Items
 								amount *= 2;
 
 							ingot.Amount = amount;
-							#endregion
 
 							m_Ore.Consume( toConsume );
 							from.AddToBackpack( ingot );

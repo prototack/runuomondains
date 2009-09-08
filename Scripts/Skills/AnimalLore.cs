@@ -269,7 +269,7 @@ namespace Server.SkillHandlers
 				if ( Core.ML )
 				{
 					AddHtmlLocalized( 153, 258, 160, 18, 1076750, LabelColor, false, false ); // Base Damage
-					AddHtml( 320, 258, 35, 18, FormatDamage( c.DamageMin, c.DamageMax ), false, false );
+					AddHtml( 300, 258, 55, 18, FormatDamage( c.DamageMin, c.DamageMax ), false, false );
 				}
 				#endregion
 

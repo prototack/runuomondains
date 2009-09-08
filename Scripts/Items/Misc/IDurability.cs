@@ -5,7 +5,7 @@ namespace Server.Items
 {
 	interface IDurability
 	{
-        bool CanFortify { get; }
+		bool CanFortify { get; }
 
 		int InitMinHits { get; }
 		int InitMaxHits { get; }

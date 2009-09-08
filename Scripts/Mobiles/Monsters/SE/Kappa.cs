@@ -20,7 +20,7 @@ namespace Server.Mobiles
 			SetDex( 51, 75 );
 			SetInt( 41, 55 );
 
-            SetMana( 30 );
+			SetMana ( 30 );
 
 			SetHits( 151, 180 );
 
@@ -51,6 +51,8 @@ namespace Server.Mobiles
 					case 2: PackItem( new Axle() ); break;
 				}
 			}
+			if ( Core.ML && Utility.RandomDouble() < .33 )
+				PackItem( Engines.Plants.Seed.RandomPeculiarSeed(4) );
 		}
 
 		public override void GenerateLoot()
@@ -124,11 +126,10 @@ namespace Server.Mobiles
 			if ( m.Alive )
 			{
 				int damageGiven = AOS.Damage( m, from, 5, 0, 0, 0, 0, 100 );
-
 				from.Hits += damageGiven;
 			}
 			else
-		{
+			{
 				EndLifeDrain( m );
 			}
 		}
@@ -163,7 +164,7 @@ namespace Server.Mobiles
 				}
 				if ( amt > 0 )
 				{
-					SpillAcid( target, amt, "slime" );
+					SpillAcid( target, amt );
 					from.SendLocalizedMessage( 1070820 ); 
 					if ( Mana > 14)
 						Mana -= 15;
@@ -171,6 +172,11 @@ namespace Server.Mobiles
 				}
 			}
 			base.OnDamage( amount, from, willKill );
+		}
+
+		public override Item NewHarmfulItem()
+		{
+			return new AcidSlime( TimeSpan.FromSeconds(10), 5, 10 );
 		}
 
 		public Kappa( Serial serial ) : base( serial )

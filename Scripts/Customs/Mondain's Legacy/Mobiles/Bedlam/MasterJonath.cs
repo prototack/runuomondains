@@ -8,7 +8,7 @@ namespace Server.Mobiles
 	public class MasterJonath : BaseCreature
 	{
 		[Constructable]
-		public MasterJonath() : base( AIType.AI_Necromage, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public MasterJonath() : base( AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
 			Name = "a master jonath";
 			Title = "the necromancer";
