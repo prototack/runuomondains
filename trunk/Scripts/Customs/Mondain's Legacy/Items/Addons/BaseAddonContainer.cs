@@ -196,9 +196,6 @@ namespace Server.Items
                 {
                     BaseDoor door = doors[i] as BaseDoor;
 
-                    if (door != null && door.Open)
-                        return AddonFitResult.DoorsNotClosed;
-
                     Point3D doorLoc = door.GetWorldLocation();
                     int doorHeight = door.ItemData.CalcHeight;
 

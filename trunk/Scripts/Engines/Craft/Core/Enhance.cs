@@ -36,7 +36,7 @@ namespace Server.Engines.Craft
 
 			CraftItem craftItem = craftSystem.CraftItems.SearchFor( item.GetType() );
 
-			if ( craftItem == null || craftItem.Ressources.Count == 0 )
+			if ( craftItem == null || craftItem.Resources.Count == 0 )
 				return EnhanceResult.BadItem;
 
 			#region Mondain's Legacy
@@ -237,11 +237,11 @@ namespace Server.Engines.Craft
 							case CraftResource.AshWood: 
 								shield.ArmorAttributes.LowerStatReq += 20; 
 								break;
-								
+
 							case CraftResource.YewWood: 
 								shield.Attributes.RegenHits += 1; 
 								break;
-								
+
 							case CraftResource.Heartwood:
 								switch ( Utility.Random( 7 ) )
 								{
@@ -254,12 +254,12 @@ namespace Server.Engines.Craft
 									case 6: shield.ColdBonus += 3; break;
 								}
 								break;
-								
+
 							case CraftResource.Bloodwood: 
 								shield.Attributes.RegenHits += 2;
 								shield.Attributes.Luck += 40;
 								break;
-								
+
 							case CraftResource.Frostwood:
 								shield.Attributes.SpellChanneling = 1; 
 								shield.Attributes.CastSpeed = -1;

@@ -58,7 +58,7 @@ namespace Server.Spells.Spellweaving
 
 					int hitsPerRound = 5 + (int)(skill / 24) + FocusLevel;
 					TimeSpan duration = TimeSpan.FromSeconds( 30 + (FocusLevel * 10) );
-					
+
 					#region Mondain's Legacy
 					ArcaneEmpowermentSpell.AddHealBonus( Caster, ref hitsPerRound );
 					#endregion

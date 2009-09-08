@@ -152,6 +152,14 @@ namespace Server.Items
 			return true;
 		}
 
+		public override void UpdateTotal( Item sender, TotalType type, int delta )
+		{
+			base.UpdateTotal( sender, type, delta );
+
+			if ( type == TotalType.Weight && RootParent is Mobile )
+				((Mobile) RootParent).InvalidateProperties();
+		}
+
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( from.AccessLevel > AccessLevel.Player || from.InRange( this.GetWorldLocation(), 2 ) || this.RootParent is PlayerVendor )
@@ -237,7 +245,7 @@ namespace Server.Items
 			Type resourceType = typeRes;
 
 			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+				resourceType = craftItem.Resources.GetAt( 0 ).ItemType;
 
 			Resource = CraftResources.GetFromType( resourceType );
 
@@ -304,10 +312,8 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 
-			#region Mondain's Legacy
 			if ( version == 0 )
 				Weight = 13.0;
-			#endregion
 		}
 	}
 

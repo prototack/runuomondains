@@ -53,12 +53,12 @@ namespace Server.Mobiles
 			if ( 0.4 > Utility.RandomDouble() )
 				PackItem( new ClockworkAssembly() );
 		}
-		
+
 		#region mod by Dies Irae
 		public override void OnDeath( Container c )
 		{
-			base.OnDeath( c );		
-			
+			base.OnDeath( c );
+
 			if( Utility.RandomDouble() < 0.05 )
 			{
 				if( IsParagon )
@@ -73,7 +73,7 @@ namespace Server.Mobiles
 			}
 		}
 		#endregion
-		
+
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.Rich );

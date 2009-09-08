@@ -83,15 +83,15 @@ namespace Server.Mobiles
 			ControlSlots = 2;
 			MinTameSkill = 95.1;
 		}
-		
+
 		public override void OnDeath( Container c )
 		{
-			base.OnDeath( c );	
-				
+			base.OnDeath( c );
+
 			#region Mondain's Legacy
-			if ( IsBonded )	
+			if ( IsBonded )
 				return;
-				
+
 			if ( Utility.RandomDouble() < 0.3 )
 				c.DropItem( new KirinBrains() );
 			#endregion

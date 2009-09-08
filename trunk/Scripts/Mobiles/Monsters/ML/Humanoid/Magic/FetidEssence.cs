@@ -5,7 +5,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-	[CorpseName( "a fetid essence corpse" )]
+	[CorpseName("a fetid essence corpse")]
 	public class FetidEssence : BaseCreature
 	{
 		[Constructable]
@@ -14,11 +14,11 @@ namespace Server.Mobiles
 			Name = "a fetid essence";
 			Body = 273;
 
-			SetStr( 100, 150 );
-			SetDex( 200, 250 );
-			SetInt( 450, 550 );
+			SetStr( 101, 150 );
+			SetDex( 210, 250 );
+			SetInt( 451, 550 );
 
-			SetHits( 550, 650 );
+			SetHits( 551, 650 );
 			
 			SetDamage( 21, 25 );
 
@@ -92,21 +92,19 @@ namespace Server.Mobiles
 		public override Poison HitPoison{ get{ return Poison.Deadly; } }
 		public override Poison PoisonImmune{ get{ return Poison.Deadly; } }
 
-		public FetidEssence( Serial serial ) : base( serial )
+		public  FetidEssence ( Serial serial ) : base( serial )
 		{
 		}
 
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
-
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 0 );
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-
 			int version = reader.ReadInt();
 		}
 

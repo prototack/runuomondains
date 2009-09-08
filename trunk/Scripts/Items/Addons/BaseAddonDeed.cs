@@ -13,7 +13,7 @@ namespace Server.Items
 		public abstract BaseAddon Addon{ get;
 		}
 
-		#region Mondain's Legacy		
+		#region Mondain's Legacy
 		private CraftResource m_Resource;
 
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -26,7 +26,7 @@ namespace Server.Items
 				{
 					m_Resource = value;
 					Hue = CraftResources.GetHue( m_Resource );
-					
+
 					InvalidateProperties();
 				}
 			}
@@ -95,7 +95,7 @@ namespace Server.Items
 
 			if ( !CraftResources.IsStandard( m_Resource ) )
 				list.Add( CraftResources.GetLocalizationNumber( m_Resource ) );
-		}		
+		}
 
 		#region ICraftable
 		public virtual int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
@@ -103,7 +103,7 @@ namespace Server.Items
 			Type resourceType = typeRes;
 
 			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+				resourceType = craftItem.Resources.GetAt( 0 ).ItemType;
 
 			Resource = CraftResources.GetFromType( resourceType );
 
@@ -152,15 +152,13 @@ namespace Server.Items
 						from.SendLocalizedMessage( 500269 ); // You cannot build that there.
 					else if ( res == AddonFitResult.NotInHouse )
 						from.SendLocalizedMessage( 500274 ); // You can only place this in a house that you own!
-					else if ( res == AddonFitResult.DoorsNotClosed )
-						from.SendMessage( "You must close all house doors before placing this." );
 					else if ( res == AddonFitResult.DoorTooClose )
 						from.SendLocalizedMessage( 500271 ); // You cannot build near the door.
 					else if ( res == AddonFitResult.NoWall )
 						from.SendLocalizedMessage( 500268 ); // This object needs to be mounted on something.
 					
 					if ( res == AddonFitResult.Valid )
-					{						
+					{
 						#region Mondain's Legacy
 						if ( addon != null )
 						{
@@ -169,10 +167,10 @@ namespace Server.Items
 							if ( addon.RetainDeedHue )
 								addon.Hue = m_Deed.Hue;
 						}
-							
+
 						m_Deed.DeleteDeed();
 						#endregion
-						
+
 						house.Addons.Add( addon );
 					}
 					else

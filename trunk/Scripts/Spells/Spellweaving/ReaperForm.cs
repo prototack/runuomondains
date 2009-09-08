@@ -51,11 +51,11 @@ namespace Server.Spells.Spellweaving
 		}
 
 		public override void RemoveEffect( Mobile m )
-		{			
+		{
 			#region Mondain's Legacy
 			if ( !( m.Region is Server.Regions.TwistedWealdDesert ) )
 				m.Send( SpeedControl.Disable );
-			#endregion			
+			#endregion
 		}
 	}
 }

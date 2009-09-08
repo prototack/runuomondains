@@ -8,7 +8,7 @@ namespace Server.Mobiles
 	public class MasterMikael : BaseCreature
 	{
 		[Constructable]
-		public MasterMikael() : base( AIType.AI_Necromage, FightMode.Closest, 10, 1, 0.015, 0.075 )
+		public MasterMikael() : base( AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.015, 0.075 )
 		{
 			Name = "a master mikael";
 			Hue = 0x8FD;

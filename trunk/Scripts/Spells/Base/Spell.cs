@@ -692,7 +692,7 @@ namespace Server.Spells
 
 			if ( delay < CastDelayMinimum )
 				delay = CastDelayMinimum;
-				
+
 			#region Mondain's Legacy
 			if ( DreadHorn.IsUnderInfluence( m_Caster ) )
 				delay.Add( delay );

@@ -331,7 +331,7 @@ namespace Server.Spells.Necromancy
 
 			if ( creature != null )
 			{
-				if ( creature.AIObject is NecromageAI )
+				if ( creature.AIObject is NecroMageAI )
 					toSummon = typeof( FleshGolem );
 			}
 			#endregion
@@ -396,8 +396,8 @@ namespace Server.Spells.Necromancy
 			#region Mondain's Legacy
 			if ( creature != null )
 			{
-				if ( creature.AIObject is NecromageAI )
-					((NecromageAI) creature.AIObject).Animated = summoned;
+				if ( creature.AIObject is NecroMageAI )
+					((NecroMageAI) creature.AIObject).Animated = summoned;
 			}
 			#endregion
 		}
@@ -417,7 +417,7 @@ namespace Server.Spells.Necromancy
 			bc.Hits = bc.Hits; // refresh hits
 		}
 
-		public class InternalTarget : Target
+        public class InternalTarget : Target
 		{
 			private AnimateDeadSpell m_Owner;
 

@@ -31,11 +31,11 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Camping, 80.0, 100.0 );
 			SetSkill( SkillName.Forensics, 80.0, 100.0 );
 			SetSkill( SkillName.SpiritSpeak, 80.0, 100.0 );
-			
-			#region Mondain's Legacy			
+
+			#region Mondain's Legacy
 			if ( Utility.RandomDouble() < 0.25 )
 				PackItem( new MapFragment() );
-				
+
 			if ( Utility.RandomDouble() < 0.75 )
 				PackItem( new SeveredHumanEars() );
 			#endregion
@@ -46,6 +46,12 @@ namespace Server.Mobiles
 
 		public override bool CheckResurrect( Mobile m )
 		{
+			if ( Core.AOS && m.Criminal )
+			{
+				Say( 501222 ); // Thou art a criminal.  I shall not resurrect thee.
+				return false;
+			}
+
 			return true;
 		}
 

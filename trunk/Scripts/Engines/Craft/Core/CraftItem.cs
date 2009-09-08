@@ -278,7 +278,7 @@ namespace Server.Engines.Craft
             get { return m_NameNumber; }
         }
 
-        public CraftResCol Ressources
+        public CraftResCol Resources
         {
             get { return m_arCraftRes; }
         }
@@ -366,7 +366,7 @@ namespace Server.Engines.Craft
         private static Type[][] m_TypesTable = new Type[][]
 			{
 				new Type[]{ typeof( Log ), typeof( Board ) },
-				
+
 				#region Mondain's Legacy
 				new Type[]{ typeof( OakLog ), typeof( OakBoard ) },
 				new Type[]{ typeof( AshLog ), typeof( AshBoard ) },
@@ -392,7 +392,7 @@ namespace Server.Engines.Craft
 				#region Mondain's Legacy
 				typeof( BaseContainer ), typeof( ParrotPerchAddonDeed ),
 				#endregion
-				
+
 				typeof( BaseWeapon ), typeof( BaseArmor ), typeof( BaseClothing ),
 				typeof( BaseJewel ), typeof( DragonBardingDeed )
 			};
@@ -402,7 +402,7 @@ namespace Server.Engines.Craft
 				#region Mondain's Legacy
 				typeof( Board ), typeof( Log ),
 				#endregion
-			
+
 				typeof( BaseIngot ), typeof( BaseOre ),
 				typeof( BaseLeather ), typeof( BaseHides ),
 				typeof( UncutCloth ), typeof( Cloth ),
@@ -418,7 +418,7 @@ namespace Server.Engines.Craft
 					typeof( TurqouiseRing ), typeof( WhitePearlBracelet ), 
 					typeof( BaseContainer ), typeof( CraftableFurniture ),
 					#endregion
-				
+
 					typeof( BaseArmor ),
 					typeof( BaseWeapon ),
 					typeof( BaseClothing ),
@@ -1248,7 +1248,7 @@ namespace Server.Engines.Craft
                         Type resourceType = typeRes;
 
                         if (resourceType == null)
-                            resourceType = Ressources.GetAt(0).ItemType;
+                            resourceType = Resources.GetAt(0).ItemType;
 
                         CraftResource thisResource = CraftResources.GetFromType(resourceType);
 

@@ -18,7 +18,7 @@ namespace Server.Mobiles
 		}
 
 		[Constructable]
-		public LadyMelisande() : base( AIType.AI_Necromage, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public LadyMelisande() : base( AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
 			Name = "a lady melisande";
 			Body = 0x102;

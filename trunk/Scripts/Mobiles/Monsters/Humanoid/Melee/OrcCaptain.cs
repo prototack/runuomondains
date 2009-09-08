@@ -58,12 +58,12 @@ namespace Server.Mobiles
 			if ( Core.AOS )
 				PackItem( Loot.RandomNecromancyReagent() );
 		}
-		
+
 		public override void OnDeath( Container c )
 		{
-			base.OnDeath( c );		
-				
-			#region Mondain's Legacy				
+			base.OnDeath( c );
+
+			#region Mondain's Legacy
 			if ( Utility.RandomDouble() < 0.05 )
 				c.DropItem( new StoutWhip() );
 			#endregion

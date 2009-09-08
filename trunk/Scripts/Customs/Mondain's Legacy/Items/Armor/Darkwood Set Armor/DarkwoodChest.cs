@@ -65,7 +65,7 @@ namespace Server.Items
 			Type resourceType = typeRes;
 
 			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+				resourceType = craftItem.Resources.GetAt( 0 ).ItemType;
 
 			Resource = CraftResources.GetFromType( resourceType );
 			

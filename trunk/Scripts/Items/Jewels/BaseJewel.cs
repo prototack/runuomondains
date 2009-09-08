@@ -560,7 +560,7 @@ namespace Server.Items
 			Type resourceType = typeRes;
 
 			if ( resourceType == null )
-				resourceType = craftItem.Ressources.GetAt( 0 ).ItemType;
+				resourceType = craftItem.Resources.GetAt( 0 ).ItemType;
 
 			#region Mondain's Legacy
 			if ( !craftItem.ForceNonExceptional )
@@ -572,9 +572,9 @@ namespace Server.Items
 			if ( context != null && context.DoNotColor )
 				Hue = 0;
 
-			if ( 1 < craftItem.Ressources.Count )
+			if ( 1 < craftItem.Resources.Count )
 			{
-				resourceType = craftItem.Ressources.GetAt( 1 ).ItemType;
+				resourceType = craftItem.Resources.GetAt( 1 ).ItemType;
 
 				if ( resourceType == typeof( StarSapphire ) )
 					GemType = GemType.StarSapphire;

@@ -101,7 +101,7 @@ namespace Server
 			Fix( ref cold );
 			Fix( ref pois );
 			Fix( ref nrgy );
-			
+
 			#region Mondain's Legacy
 			Fix( ref chaos );
 			Fix( ref direct );
@@ -117,7 +117,7 @@ namespace Server
 					case 4: nrgy += chaos; break;
 				}
 			}
-			
+
 			damage += (int) ( damage * direct / (double) 100 );
 			#endregion
 
@@ -151,13 +151,13 @@ namespace Server
 			{
 				totalDamage = damage;
 			}
-			
+
 			#region Mondain's Legacy
 			totalDamage += (int) ( totalDamage * damageIncrease / (double) 100 );
 			#endregion
 
 			#region Dragon Barding
-			if( (!Core.AOS || from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
+			if( (from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
 			{
 				SwampDragon pet = m.Mount as SwampDragon;
 
@@ -563,7 +563,7 @@ namespace Server
 					if( attrs != null )
 						value += attrs[attribute];
 				}
-				
+
 				#region Mondain's Legacy
 				else if ( obj is Glasses )
 				{
@@ -571,7 +571,7 @@ namespace Server
 
 					if( attrs != null )
 						value += attrs[attribute];
-				}			
+				}
 				#endregion
 			}
 
@@ -977,20 +977,20 @@ namespace Server
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int Energy { get { return this[AosElementAttribute.Energy]; } set { this[AosElementAttribute.Energy] = value; } }
-		
+
 		#region Mondain's Legacy
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int Chaos 
-		{ 
-			get { return this[ AosElementAttribute.Chaos ]; } 
-			set { this[ AosElementAttribute.Chaos ] = value; } 
+		public int Chaos
+		{
+			get { return this[ AosElementAttribute.Chaos ]; }
+			set { this[ AosElementAttribute.Chaos ] = value; }
 		}
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int Direct 
-		{ 
-			get { return this[ AosElementAttribute.Direct ]; } 
-			set { this[ AosElementAttribute.Direct ] = value; } 
+		public int Direct
+		{
+			get { return this[ AosElementAttribute.Direct ]; }
+			set { this[ AosElementAttribute.Direct ] = value; }
 		}
 		#endregion
 	}

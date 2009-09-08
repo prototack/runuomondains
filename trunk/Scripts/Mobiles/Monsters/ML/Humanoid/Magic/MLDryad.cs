@@ -10,7 +10,7 @@ namespace Server.Mobiles
 	[CorpseName("a dryad corpse")]
 	public class MLDryad : BaseCreature
 	{
-        public override bool InitialInnocent { get { return true; } }
+		public override bool InitialInnocent { get { return true; } }
         public virtual int PeaceMinDelay { get { return 50; } }
         public virtual int PeaceMaxDelay { get { return 75; } }
 
@@ -57,6 +57,9 @@ namespace Server.Mobiles
 			VirtualArmor = 28; // Don't know what it should be
 
             m_NextPeaceTime = DateTime.Now;
+
+			if ( Core.ML && Utility.RandomDouble() < .33 )
+				PackItem( Engines.Plants.Seed.RandomPeculiarSeed(1) );
 		}
 
 		public override void GenerateLoot()

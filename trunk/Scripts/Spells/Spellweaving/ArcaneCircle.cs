@@ -49,7 +49,7 @@ namespace Server.Spells.Spellweaving
 				List<Mobile> Arcanists = GetArcanists();
 
 				TimeSpan duration = TimeSpan.FromHours( Math.Max( 1, (int)(Caster.Skills.Spellweaving.Value / 24) ) );
-				
+
 				#region Mondain's Legacy
 				duration += TimeSpan.FromHours( Math.Min( 5, Arcanists.Count ) );
 				#endregion
