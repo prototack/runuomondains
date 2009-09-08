@@ -236,8 +236,7 @@ namespace Server.Factions
 		{
 			Members.Insert( ZeroRankOffset, new PlayerState( mob, this, Members ) );
 
-            mob.AddToBackpack(FactionItem.Imbue(new Robe(), this, false, Definition.HuePrimary));
-            mob.AddToBackpack(FactionItem.Imbue(new CheckBook(), this, false, Definition.HuePrimary));
+			mob.AddToBackpack( FactionItem.Imbue( new Robe(), this, false, Definition.HuePrimary ) );
 			mob.SendLocalizedMessage( 1010374 ); // You have been granted a robe which signifies your faction
 
 			mob.InvalidateProperties();
