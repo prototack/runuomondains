@@ -76,6 +76,20 @@ namespace Server.Mobiles
 
 			if ( Utility.RandomDouble() < 0.025 )
 				c.DropItem( new CrimsonCincture() );
+
+            if (Utility.RandomDouble() < 0.025)
+            {
+                switch (Utility.Random(7))
+                {
+                    case 0: c.DropItem(new AssassinLegs()); break;
+                    case 1: c.DropItem(new AssassinArms()); break;
+                    case 2: c.DropItem(new AssassinGloves()); break;
+                    case 3: c.DropItem(new MalekisHonor()); break;
+                    case 4: c.DropItem(new JusticeBreastplate()); break;
+                    case 5: c.DropItem(new CompassionArms()); break;
+                    case 6: c.DropItem(new ValorGauntlets()); break;
+                }
+            }
 		}
 
 		public override bool CanRummageCorpses{ get{ return true; } }
