@@ -1916,9 +1916,9 @@
 				<rect x="2139" y="1187" width="13" height="7" />
 				<rect x="2152" y="1164" width="38" height="30" />
 				<rect x="2190" y="1164" width="35" height="48" />
-				<!--<spawning>
-					<object id="500" type="ThornyBriar" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="1" />
-				</spawning>-->
+				<spawning>
+					<object id="999" type="ThornyBriar" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="1" />
+				</spawning>
 			</region>
 		</region>
 		<region priority="50" name="Sheep Farm">
