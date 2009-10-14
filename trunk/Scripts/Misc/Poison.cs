@@ -49,7 +49,7 @@ namespace Server
 		}
 
 		public static Poison IncreaseLevel( Poison oldPoison )
-		{		
+		{
 			Poison newPoison = ( oldPoison == null ? null : GetPoison( oldPoison.Level + 1 ) );
 
 			return ( newPoison == null ? oldPoison : newPoison );

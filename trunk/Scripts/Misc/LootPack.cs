@@ -490,7 +490,7 @@ namespace Server
 			{
 				new LootPackEntry( false, PotionItems,		100.00, 1 )
 			} );
-			
+
 		#region Mondain's Legacy
 		public static readonly LootPackItem[] ParrotItem = new LootPackItem[]
 			{
@@ -567,34 +567,34 @@ namespace Server
 		{
 			if ( m == null ) 
 				return false;
-			
+
 			if ( m.Region.IsPartOf( "Twisted Weald" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Sanctuary" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Prism of Light" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Citadel" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Bedlam" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Blighted Grove" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Painted Caves" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Palace of Paroxysmus" ) )
 				return true;
-				
+
 			if ( m.Region.IsPartOf( "Painted Caves" ) )
 				return true;
-				
+
 			return false;
 		}
 		#endregion
