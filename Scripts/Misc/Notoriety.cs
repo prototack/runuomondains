@@ -302,7 +302,7 @@ namespace Server.Misc
 				if ( Core.ML && master != null )
 				{
 					if( source == master && CheckAggressor( target.Aggressors, source ) )
-                        return Notoriety.CanBeAttacked;
+						return Notoriety.CanBeAttacked;
                     else if (bc is BaseEscortable || bc is BaseEscort)
                         return Notoriety.Innocent;
 					else

@@ -9,7 +9,7 @@ namespace Server
 	public class Loot
 	{
 		#region List definitions
-			
+
 		#region Mondain's Legacy
 		private static Type[] m_MLWeaponTypes = new Type[]
 			{
@@ -18,16 +18,16 @@ namespace Server
 				typeof( RadiantScimitar ),		typeof( RuneBlade ),			typeof( WarCleaver ),
 				typeof( WildStaff )
 			};
-		
+
 		public static Type[] MLWeaponTypes{ get{ return m_MLWeaponTypes; } }
-		
+
 		private static Type[] m_MLRangedWeaponTypes = new Type[]
 			{
-				typeof( ElvenCompositeLongbow ),								typeof( MagicalShortbow ),				
+				typeof( ElvenCompositeLongbow ), typeof( MagicalShortbow )
 			};
-		
+
 		public static Type[] MLRangedWeaponTypes{ get{ return m_MLRangedWeaponTypes; } }
-		
+
 		private static Type[] m_MLArmorTypes = new Type[]
 			{
 				typeof( Circlet ),				typeof( GemmedCirclet ),		typeof( LeafTonlet ),
@@ -37,21 +37,21 @@ namespace Server
 				typeof( WoodlandArms ),			typeof( WoodlandChest ),		typeof( WoodlandGloves ),
 				typeof( WoodlandGorget ),		typeof( WoodlandLegs ),			typeof( HideChest ),
 				typeof( HideGloves ),			typeof( HideGorget ),			typeof( HidePants ),
-				typeof( HidePauldrons )			
+				typeof( HidePauldrons )
 			};
-		
+
 		public static Type[] MLArmorTypes{ get{ return m_MLArmorTypes; } }
-		
+
 		private static Type[] m_MLClothingTypes = new Type[]
 			{
 				typeof( MaleElvenRobe ),		typeof( FemaleElvenRobe ),		typeof( ElvenPants ),
 				typeof( ElvenShirt ),			typeof( ElvenDarkShirt ),		typeof( ElvenBoots ),			
 				typeof( VultureHelm ),			typeof( WoodlandBelt )
 			};
-		
+
 		public static Type[] MLClothingTypes{ get{ return m_MLClothingTypes; } }
 		#endregion
-		
+
 		private static Type[] m_SEWeaponTypes = new Type[]
 			{
 				typeof( Bokuto ),				typeof( Daisho ),				typeof( Kama ),
@@ -266,7 +266,7 @@ namespace Server
 		};
 
 		private static Type[] m_PaladinScrollTypes = new Type[0];
-		
+
 		#region Mondain's Legacy
 		private static Type[] m_ArcanistScrollTypes = new Type[]
 		{
@@ -281,7 +281,7 @@ namespace Server
 		public static Type[] NecromancyScrollTypes{ get{ return m_NecromancyScrollTypes; } }
 		public static Type[] SENecromancyScrollTypes{ get{ return m_SENecromancyScrollTypes; } }
 		public static Type[] PaladinScrollTypes{ get{ return m_PaladinScrollTypes; } }
-		
+
 		#region Mondain's Legacy
 		public static Type[] ArcanistScrollTypes{ get{ return m_ArcanistScrollTypes; } }
 		#endregion
@@ -420,7 +420,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLClothingTypes, m_AosClothingTypes, m_ClothingTypes ) as BaseClothing;
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEClothingTypes, m_AosClothingTypes, m_ClothingTypes ) as BaseClothing;				
 
@@ -446,7 +446,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLRangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes ) as BaseWeapon;
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SERangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes ) as BaseWeapon;
 
@@ -472,7 +472,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLWeaponTypes, m_AosWeaponTypes, m_WeaponTypes ) as BaseWeapon;
 			#endregion
-		
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEWeaponTypes, m_AosWeaponTypes, m_WeaponTypes ) as BaseWeapon;
 
@@ -493,7 +493,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes );
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes );
 
@@ -524,7 +524,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLArmorTypes, m_ArmorTypes ) as BaseArmor;
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEArmorTypes, m_ArmorTypes ) as BaseArmor;
 
@@ -558,7 +558,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes );
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEArmorTypes, m_ArmorTypes, m_SEHatTypes, m_AosHatTypes, m_HatTypes );
 
@@ -587,7 +587,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLArmorTypes, m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes ) as BaseArmor;
 			#endregion
-		
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEArmorTypes, m_ArmorTypes, m_AosShieldTypes, m_ShieldTypes ) as BaseArmor;
 
@@ -608,7 +608,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes );
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEArmorTypes, m_ArmorTypes, m_SEHatTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes );
 
@@ -629,7 +629,7 @@ namespace Server
 			if ( Core.ML && isMondain )
 				return Construct( m_MLWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_MLRangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes, m_MLArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes );
 			#endregion
-			
+
 			if ( Core.SE && inTokuno )
 				return Construct( m_SEWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_SERangedWeaponTypes, m_AosRangedWeaponTypes, m_RangedWeaponTypes, m_SEArmorTypes, m_ArmorTypes, m_SEHatTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes );
 
@@ -706,7 +706,7 @@ namespace Server
 				case SpellbookType.Regular: types = m_RegularScrollTypes; break;
 				case SpellbookType.Necromancer: types = (Core.SE ? m_SENecromancyScrollTypes : m_NecromancyScrollTypes ); break;
 				case SpellbookType.Paladin: types = m_PaladinScrollTypes; break;
-				
+
 				#region Mondain's Legacy
 				case SpellbookType.Arcanist: types = m_ArcanistScrollTypes; break;
 				#endregion
