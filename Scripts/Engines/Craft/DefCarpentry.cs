@@ -391,13 +391,13 @@ namespace Server.Engines.Craft
 
 			if( Core.SE )
 			{
-				index = AddCraft( typeof( Bokuto ), 1044295, 1030227, 70.0, 95.0, typeof( Log ), 1044041, 6, 1044351 );
+				index = AddCraft( typeof( Bokuto ), 1044566, 1030227, 70.0, 95.0, typeof( Log ), 1044041, 6, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 
-				index = AddCraft( typeof( Fukiya ), 1044295, 1030229, 60.0, 85.0, typeof( Log ), 1044041, 6, 1044351 );
+				index = AddCraft( typeof( Fukiya ), 1044566, 1030229, 60.0, 85.0, typeof( Log ), 1044041, 6, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 
-				index = AddCraft( typeof( Tetsubo ), 1044295, 1030225, 85.0, 110.0, typeof( Log ), 1044041, 8, 1044351 );
+				index = AddCraft( typeof( Tetsubo ), 1044566, 1030225, 85.0, 110.0, typeof( Log ), 1044041, 8, 1044351 );
 				AddSkill( index, SkillName.Tinkering, 40.0, 45.0 );
 				AddRes( index, typeof( IronIngot ), 1044036, 5, 1044037 );
 				SetNeededExpansion( index, Expansion.SE );

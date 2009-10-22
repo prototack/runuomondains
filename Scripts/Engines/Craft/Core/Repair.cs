@@ -436,6 +436,7 @@ namespace Server.Engines.Craft
 				}
 				else if( toDelete )
 				{
+					from.SendLocalizedMessage( number );
 					m_Deed.Delete();
 				}
 			}
