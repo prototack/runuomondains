@@ -107,7 +107,7 @@ namespace Server.Items
         private int m_StrReq, m_DexReq, m_IntReq;
         private int m_MinDamage, m_MaxDamage;
         private int m_HitSound, m_MissSound;
-        private int m_Speed;
+        private float m_Speed;
         private int m_MaxRange;
         private SkillName m_Skill;
         private WeaponType m_Type;
@@ -125,16 +125,13 @@ namespace Server.Items
         public virtual WeaponType DefType { get { return WeaponType.Slashing; } }
         public virtual WeaponAnimation DefAnimation { get { return WeaponAnimation.Slash1H; } }
 
-        #region Mondain's Legacy
-        public virtual float MlSpeed { get { return 0.0f; } }
-        #endregion
-
         public virtual int AosStrengthReq { get { return 0; } }
         public virtual int AosDexterityReq { get { return 0; } }
         public virtual int AosIntelligenceReq { get { return 0; } }
         public virtual int AosMinDamage { get { return 0; } }
         public virtual int AosMaxDamage { get { return 0; } }
         public virtual int AosSpeed { get { return 0; } }
+        public virtual float MlSpeed { get { return 0.0f; } }
         public virtual int AosMaxRange { get { return DefMaxRange; } }
         public virtual int AosHitSound { get { return DefHitSound; } }
         public virtual int AosMissSound { get { return DefMissSound; } }
@@ -434,9 +431,20 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Speed
+        public float Speed
         {
-            get { return (m_Speed == -1 ? Core.AOS ? AosSpeed : OldSpeed : m_Speed); }
+            get
+            {
+                if (m_Speed != -1)
+                    return m_Speed;
+
+                if (Core.ML)
+                    return MlSpeed;
+                else if (Core.AOS)
+                    return AosSpeed;
+
+                return m_Speed;
+            }
             set { m_Speed = value; InvalidateProperties(); }
         }
 
@@ -982,18 +990,21 @@ namespace Server.Items
 
         public virtual TimeSpan GetDelay(Mobile m)
         {
-            int speed = this.Speed;
+            double speed = this.Speed;
 
             if (speed == 0)
                 return TimeSpan.FromHours(1.0);
 
             double delayInSeconds;
 
-            #region Mondain's Legacy
-            if (Core.ML)
+            if (Core.SE)
             {
-                float ticks = MlSpeed * 4;
-                int stamTicks = m.Stam / 30;
+                /*
+                 * This is likely true for Core.AOS as well... both guides report the same
+                 * formula, and both are wrong.
+                 * The old formula left in for AOS for legacy & because we aren't quite 100%
+                 * Sure that AOS has THIS formula
+                 */
 
                 // Swing speed bonus
                 int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
@@ -1027,54 +1038,24 @@ namespace Server.Items
                 if (bonus > 60)
                     bonus = 60;
 
-                delayInSeconds = Math.Max(((ticks - stamTicks) * (100.0 / (100 + bonus))) / 4, 1.25);
-            }
-            #endregion
-            else if (Core.SE)
-            {
-                /*
-                 * This is likely true for Core.AOS as well... both guides report the same
-                 * formula, and both are wrong.
-                 * The old formula left in for AOS for legacy & because we aren't quite 100%
-                 * Sure that AOS has THIS formula
-                 */
-                int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
+                double ticks;
 
-                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
-                    bonus += 10;
+                if (Core.ML)
+                {
+                    int stamTicks = m.Stam / 30;
 
-                // Bonus granted by successful use of Honorable Execution.
-                bonus += HonorableExecution.GetSwingBonus(m);
+                    ticks = speed * 4;
+                    ticks = Math.Floor((ticks - stamTicks) * (100.0 / (100 + bonus)));
+                }
+                else
+                {
+                    speed = Math.Floor(speed * (bonus + 100.0) / 100.0);
 
-                if (DualWield.Registry.Contains(m))
-                    bonus += ((DualWield.DualWieldTimer)DualWield.Registry[m]).BonusSwingSpeed;
+                    if (speed <= 0)
+                        speed = 1;
 
-                if (Feint.Registry.Contains(m))
-                    bonus -= ((Feint.FeintTimer)Feint.Registry[m]).SwingSpeedReduction;
-
-                TransformContext context = TransformationSpellHelper.GetContext(m);
-
-                if (context != null && context.Spell is ReaperFormSpell)
-                    bonus += ((ReaperFormSpell)context.Spell).SwingSpeedBonus;
-
-                int discordanceEffect = 0;
-
-                // Discordance gives a malus of -0/-28% to swing speed.
-                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
-                    bonus -= discordanceEffect;
-
-                if (EssenceOfWindSpell.IsDebuffed(m))
-                    bonus -= EssenceOfWindSpell.GetSSIMalus(m);
-
-                if (bonus > 60)
-                    bonus = 60;
-
-                speed = (int)Math.Floor(speed * (bonus + 100.0) / 100.0);
-
-                if (speed <= 0)
-                    speed = 1;
-
-                int ticks = (int)Math.Floor((80000.0 / ((m.Stam + 100) * speed)) - 2);
+                    ticks = Math.Floor((80000.0 / ((m.Stam + 100) * speed)) - 2);
+                }
 
                 // Swing speed currently capped at one swing every 1.25 seconds (5 ticks).
                 if (ticks < 5)
@@ -1084,7 +1065,7 @@ namespace Server.Items
             }
             else if (Core.AOS)
             {
-                int v = (m.Stam + 100) * speed;
+                int v = (m.Stam + 100) * (int)speed;
 
                 int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
 
@@ -1111,7 +1092,7 @@ namespace Server.Items
             }
             else
             {
-                int v = (m.Stam + 100) * speed;
+                int v = (m.Stam + 100) * (int)speed;
 
                 if (v <= 0)
                     v = 1;
@@ -2640,7 +2621,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)12); // version
+            writer.Write((int)13); // version
 
             writer.Write((Mobile)m_BlessedBy); // personal bless deed
 
@@ -2771,7 +2752,7 @@ namespace Server.Items
                 writer.Write((int)m_MissSound);
 
             if (GetSaveFlag(flags, SaveFlag.Speed))
-                writer.Write((int)m_Speed);
+                writer.Write((float)m_Speed);
 
             if (GetSaveFlag(flags, SaveFlag.MaxRange))
                 writer.Write((int)m_MaxRange);
@@ -2878,6 +2859,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 13:
                 //personal bless deed
                 case 12:
                     {
@@ -3021,7 +3003,12 @@ namespace Server.Items
                             m_MissSound = -1;
 
                         if (GetSaveFlag(flags, SaveFlag.Speed))
-                            m_Speed = reader.ReadInt();
+                        {
+                            if (version < 13)
+                                m_Speed = reader.ReadInt();
+                            else
+                                m_Speed = reader.ReadFloat();
+                        }
                         else
                             m_Speed = -1;
 
@@ -3648,12 +3635,10 @@ namespace Server.Items
 
             list.Add(1061168, "{0}\t{1}", MinDamage.ToString(), MaxDamage.ToString()); // weapon damage ~1_val~ - ~2_val~
 
-            #region Mondain's Legacy
             if (Core.ML)
-                list.Add(1061167, "{0}s", MlSpeed.ToString()); // weapon speed ~1_val~
+                list.Add(1061167, String.Format("{0}s", Speed)); // weapon speed ~1_val~
             else
-                list.Add(1061167, "{0}s", Speed.ToString()); // weapon speed ~1_val~
-            #endregion
+                list.Add(1061167, Speed.ToString());
 
             if (MaxRange > 1)
                 list.Add(1061169, MaxRange.ToString()); // range ~1_val~

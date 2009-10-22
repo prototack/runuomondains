@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server;
 using Server.Commands;
 using Server.Engines.Craft;
@@ -19,8 +19,8 @@ namespace Server.Items
 		Samurai,
 		Arcanist
 	}
-	
-	#region Mondain's Legacy	
+
+	#region Mondain's Legacy
 	public enum BookQuality
 	{
 		Regular,
@@ -29,26 +29,26 @@ namespace Server.Items
 	#endregion
 
 	public class Spellbook : Item, ICraftable, ISlayer, IEngravable
-	{		
-		#region Mondain's Legacy		
+	{
+		#region Mondain's Legacy
 		private string m_EngravedText;
 		private BookQuality m_Quality;
-				
-		[CommandProperty( AccessLevel.GameMaster )]		
+
+		[CommandProperty( AccessLevel.GameMaster )]
 		public string EngravedText
 		{
 			get{ return m_EngravedText; }
 			set{ m_EngravedText = value; InvalidateProperties(); }
 		}
-				
-		[CommandProperty( AccessLevel.GameMaster )]		
+
+		[CommandProperty( AccessLevel.GameMaster )]
 		public BookQuality Quality
 		{
 			get{ return m_Quality; }
 			set{ m_Quality = value; InvalidateProperties(); }
 		}
 		#endregion
-		
+
 		public static void Initialize()
 		{
 			EventSink.OpenSpellbookRequest += new OpenSpellbookRequestEventHandler( EventSink_OpenSpellbookRequest );
@@ -150,7 +150,7 @@ namespace Server.Items
 			}
 		}
 
-		private static Hashtable m_Table = new Hashtable();
+		private static Dictionary<Mobile, List<Spellbook>> m_Table = new Dictionary<Mobile, List<Spellbook>>();
 
 		public static SpellbookType GetTypeForSpell( int spellID )
 		{
@@ -210,13 +210,15 @@ namespace Server.Items
 			if ( from == null )
 				return null;
 
-			ArrayList list = (ArrayList)m_Table[from];
-
 			if ( from.Deleted )
 			{
 				m_Table.Remove( from );
 				return null;
 			}
+
+			List<Spellbook> list = null;
+
+			m_Table.TryGetValue( from, out list );
 
 			bool searchAgain = false;
 
@@ -237,7 +239,7 @@ namespace Server.Items
 			return book;
 		}
 
-		public static Spellbook FindSpellbookInList( ArrayList list, Mobile from, int spellID, SpellbookType type )
+		public static Spellbook FindSpellbookInList( List<Spellbook> list, Mobile from, int spellID, SpellbookType type )
 		{
 			Container pack = from.Backpack;
 
@@ -246,25 +248,25 @@ namespace Server.Items
 				if ( i >= list.Count )
 					continue;
 
-				Spellbook book = (Spellbook)list[i];
+				Spellbook book = list[i];
 
 				if ( !book.Deleted && (book.Parent == from || (pack != null && book.Parent == pack)) && ValidateSpellbook( book, spellID, type ) )
 					return book;
 
-				list.Remove( i );
+				list.RemoveAt( i );
 			}
 
 			return null;
 		}
 
-		public static ArrayList FindAllSpellbooks( Mobile from )
+		public static List<Spellbook> FindAllSpellbooks( Mobile from )
 		{
-			ArrayList list = new ArrayList();
+			List<Spellbook> list = new List<Spellbook>();
 
 			Item item = from.FindItemOnLayer( Layer.OneHanded );
 
 			if ( item is Spellbook )
-				list.Add( item );
+				list.Add( (Spellbook)item );
 
 			Container pack = from.Backpack;
 
@@ -276,7 +278,7 @@ namespace Server.Items
 				item = pack.Items[i];
 
 				if ( item is Spellbook )
-					list.Add( item );
+					list.Add( (Spellbook)item );
 			}
 
 			return list;
@@ -576,15 +578,15 @@ namespace Server.Items
 
 		public override void GetProperties( ObjectPropertyList list )
 		{
-			base.GetProperties( list );	
-			
-			#region Mondain's Legacy			
+			base.GetProperties( list );
+
+			#region Mondain's Legacy
 			if ( m_Quality == BookQuality.Exceptional )
 				list.Add( 1063341 ); // exceptional
-				
+
 			if ( m_EngravedText != null )
 				list.Add( 1072305, m_EngravedText ); // Engraved: ~1_INSCRIPTION~
-			#endregion		
+			#endregion
 
 			if ( m_Crafter != null )
 				list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
@@ -727,16 +729,16 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 5 ); // version		
-			
-			#region Mondain's Legacy version 5	
-			writer.Write( (byte) m_Quality );	
+			writer.Write( (int) 5 ); // version
+
+			#region Mondain's Legacy version 5
+			writer.Write( (byte) m_Quality );
 			#endregion
-			
+
 			#region Mondain's Legacy version 4
-			writer.Write( (string) m_EngravedText );	
-			#endregion			
-			
+			writer.Write( (string) m_EngravedText );
+			#endregion
+
 			writer.Write( m_Crafter );
 
 			writer.Write( (int)m_Slayer );
@@ -760,17 +762,17 @@ namespace Server.Items
 				case 5:
 				{
 					#region Mondain's Legacy
-					m_Quality = (BookQuality) reader.ReadByte();		
-					#endregion					
-					
+					m_Quality = (BookQuality) reader.ReadByte();
+					#endregion
+
 					goto case 4;
 				}
 				case 4:
 				{
 					#region Mondain's Legacy
-					m_EngravedText = reader.ReadString();		
+					m_EngravedText = reader.ReadString();
 					#endregion
-					
+
 					goto case 3;
 				}
 				case 3:
@@ -913,7 +915,7 @@ namespace Server.Items
 
 			if ( makersMark )
 				Crafter = from;
-			
+
 			#region Mondain's Legacy
 			m_Quality = (BookQuality) ( quality - 1 );
 			#endregion
