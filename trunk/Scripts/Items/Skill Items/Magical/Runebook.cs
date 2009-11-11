@@ -238,7 +238,9 @@ namespace Server.Items
 
 		public void DropRune( Mobile from, RunebookEntry e, int index )
 		{
-			if ( m_DefaultIndex == index )
+			if ( m_DefaultIndex > index )
+				m_DefaultIndex -= 1;
+			else if ( m_DefaultIndex == index )
 				m_DefaultIndex = -1;
 
 			m_Entries.RemoveAt( index );
@@ -304,7 +306,7 @@ namespace Server.Items
 
 		public override void OnDoubleClick( Mobile from )
 		{
-			if ( from.InRange( GetWorldLocation(), (Core.ML ? 3 : 1) ) )
+			if ( from.InRange( GetWorldLocation(), (Core.ML ? 3 : 1) ) && CheckAccess( from ) )
 			{
 				if ( DateTime.Now < NextUse )
 				{
@@ -356,9 +358,9 @@ namespace Server.Items
 		{
 			if ( dropped is RecallRune )
 			{
-				if ( !CheckAccess( from ) )
+				if ( IsLockedDown && from.AccessLevel < AccessLevel.GameMaster )
 				{
-					from.SendLocalizedMessage( 502413 ); // That cannot be done while the book is locked down.
+					from.SendLocalizedMessage( 502413, null, 0x35 ); // That cannot be done while the book is locked down.
 				}
 				else if ( IsOpen( from ) )
 				{
