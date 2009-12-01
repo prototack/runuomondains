@@ -19,7 +19,7 @@ namespace Server.Items
 		[Constructable]
 		public HelmOfSwiftness() : base()
 		{
-			Hue = 0x593;
+			Hue = 0x592;
 			
 			Attributes.BonusInt = 5;
 			Attributes.CastSpeed = 1;

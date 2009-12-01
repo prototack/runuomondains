@@ -242,40 +242,40 @@ namespace Server.Engines.Craft
 				SetNeededExpansion( index, Expansion.SE );
 			}
 
-			#region Mondain's Legacy
 			if ( Core.ML )
 			{
-				index = AddCraft( typeof( ElvenQuiver ), 1015283, 1032657, 65.0, 105.0, typeof( Leather ), 1044462, 28, 1044463 );
+				index = AddCraft( typeof( ElvenQuiver ), 1015283, 1032657, 65.0, 115.0, typeof( Leather ), 1044462, 28, 1044463 );
 				AddRecipe( index, (int) TailorRecipe.ElvenQuiver );
 				SetNeededExpansion( index, Expansion.ML );
-				
-				index = AddCraft( typeof( QuiverOfFire ), 1015283, 1073109, 65.0, 105.0, typeof( Leather ), 1044462, 28, 1044463 );
+
+				index = AddCraft( typeof( QuiverOfFire ), 1015283, 1073109, 65.0, 115.0, typeof( Leather ), 1044462, 28, 1044463 );
 				AddRes( index, typeof( FireRuby ), 1032695, 15, 1042081 );
 				AddRecipe( index, (int) TailorRecipe.QuiverOfFire );
 				SetNeededExpansion( index, Expansion.ML );
-				
-				index = AddCraft( typeof( QuiverOfIce ), 1015283, 1073110, 65.0, 105.0, typeof( Leather ), 1044462, 28, 1044463 );
+
+				index = AddCraft( typeof( QuiverOfIce ), 1015283, 1073110, 65.0, 115.0, typeof( Leather ), 1044462, 28, 1044463 );
 				AddRes( index, typeof( WhitePearl ), 1032694, 15, 1042081 );
 				AddRecipe( index, (int) TailorRecipe.QuiverOfIce );
 				SetNeededExpansion( index, Expansion.ML );
-				
-				index = AddCraft( typeof( QuiverOfBlight ), 1015283, 1073111, 65.0, 105.0, typeof( Leather ), 1044462, 28, 1044463 );
+
+				index = AddCraft( typeof( QuiverOfBlight ), 1015283, 1073111, 65.0, 115.0, typeof( Leather ), 1044462, 28, 1044463 );
 				AddRes( index, typeof( Blight ), 1032675, 10, 1042081 );
 				AddRecipe( index, (int) TailorRecipe.QuiverOfBlight );
 				SetNeededExpansion( index, Expansion.ML );
-				
-				index = AddCraft( typeof( QuiverOfLightning ), 1015283, 1073112, 65.0, 105.0, typeof( Leather ), 1044462, 28, 1044463 );
+
+				index = AddCraft( typeof( QuiverOfLightning ), 1015283, 1073112, 65.0, 115.0, typeof( Leather ), 1044462, 28, 1044463 );
 				AddRes( index, typeof( Corruption ), 1032676, 10, 1042081 );
 				AddRecipe( index, (int) TailorRecipe.QuiverOfLightning );
-				SetNeededExpansion( index, Expansion.ML );			
-				
+				SetNeededExpansion( index, Expansion.ML );
+
+			#region Mondain's Legacy
 				index = AddCraft( typeof( LeatherContainerEngraver ), 1015283, 1072152, 75.0, 100.0, typeof( Bone ), 1049064, 1, 1049063 );
 				AddRes( index, typeof( Leather ), 1044462, 6, 1044463 );
 				AddRes( index, typeof( SpoolOfThread ), 1073462, 2, 1073463 );
 				AddRes( index, typeof( Dyes ), 1024009, 6, 1044253 );
 				SetNeededExpansion( index, Expansion.ML );
-			}
 			#endregion
+			}
 
 			AddCraft( typeof( OilCloth ), 1015283, 1041498, 74.6, 99.6, typeof( Cloth ), 1044286, 1, 1044287 );
 

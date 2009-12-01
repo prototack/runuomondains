@@ -21,7 +21,8 @@ namespace Server.Misc
 				typeof( AncientFarmersKasa ), typeof( AncientSamuraiDo ), typeof( ArmsOfTacticalExcellence ), typeof( BlackLotusHood ),
 				typeof( DaimyosHelm ), typeof( DemonForks ), typeof( DragonNunchaku ), typeof( Exiler ), typeof( GlovesOfTheSun ),
 				typeof( HanzosBow ), typeof( LegsOfStability ), typeof( PeasantsBokuto ), typeof( PilferedDancerFans ), typeof( TheDestroyer ),
-				typeof( TomeOfEnlightenment ), typeof( AncientUrn ), typeof( HonorableSwords ), typeof( LesserPigmentsOfTokuno ), typeof( FluteOfRenewal ) //TODO: Chest of heirlooms
+				typeof( TomeOfEnlightenment ), typeof( AncientUrn ), typeof( HonorableSwords ), typeof( LesserPigmentsOfTokuno ), typeof( FluteOfRenewal ),
+                typeof( LeurociansMempoOfFortune ), typeof( ChestOfHeirlooms )
 			};
 
 		public static Type[] LesserArtifacts { get { return m_LesserArtifacts; } }
@@ -262,9 +263,12 @@ namespace Server.Gumps
 				Item item = (Item)items[i];
 				//bool acceptable = true;
 
-				/*	TODO:
-						if( item is ChestOfHeirlooms )
-				*/
+				if( item is ChestOfHeirlooms && !((ChestOfHeirlooms)item).Locked )
+					continue;
+				
+				if( item is ChestOfHeirlooms && ((ChestOfHeirlooms)item).TrapLevel != 10 )
+					continue;
+				
 				if( item is PigmentsOfTokuno && ((PigmentsOfTokuno)item).Type != PigmentType.None )
 					continue;
 

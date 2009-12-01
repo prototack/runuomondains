@@ -431,6 +431,92 @@ namespace Server.Engines.CannedEvil
         {
             return PowerScroll.CreateRandomNoCraft(5, 5);
         }
+
+        public static void GiveScrollOfTranscendenceFelTo(Mobile killer, ScrollofTranscendence SoTF)
+        {
+            if (SoTF == null || killer == null)	//sanity
+                return;
+
+            killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
+
+            if (killer.Alive)
+                killer.AddToBackpack(SoTF);
+            else
+            {
+                if (killer.Corpse != null && !killer.Corpse.Deleted)
+                    killer.Corpse.DropItem(SoTF);
+                else
+                    killer.AddToBackpack(SoTF);
+            }
+
+
+            // Justice reward
+            PlayerMobile pm = (PlayerMobile)killer;
+            for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
+            {
+                Mobile prot = (Mobile)pm.JusticeProtectors[j];
+                if (prot.Map != killer.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
+                    continue;
+
+                int chance = 0;
+
+                switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
+                {
+                    case VirtueLevel.Seeker: chance = 60; break;
+                    case VirtueLevel.Follower: chance = 80; break;
+                    case VirtueLevel.Knight: chance = 100; break;
+                }
+
+                if (chance > Utility.Random(100))
+                {
+                    prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
+                    ScrollofTranscendence SoTFduplicate = new ScrollofTranscendence(SoTF.Skill, SoTF.Value);
+                    prot.AddToBackpack(SoTFduplicate);
+                }
+            }
+        }
+        public static void GivePowerScrollFelTo(Mobile killer, PowerScroll PS)
+        {
+            if (PS == null || killer == null)	//sanity
+                return;
+
+            killer.SendLocalizedMessage(1049524); // You have received a scroll of power!
+
+            if (killer.Alive)
+                killer.AddToBackpack(PS);
+            else
+            {
+                if (killer.Corpse != null && !killer.Corpse.Deleted)
+                    killer.Corpse.DropItem(PS);
+                else
+                    killer.AddToBackpack(PS);
+            }
+
+            // Justice reward
+            PlayerMobile pm = (PlayerMobile)killer;
+            for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
+            {
+                Mobile prot = (Mobile)pm.JusticeProtectors[j];
+                if (prot.Map != killer.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
+                    continue;
+
+                int chance = 0;
+
+                switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
+                {
+                    case VirtueLevel.Seeker: chance = 60; break;
+                    case VirtueLevel.Follower: chance = 80; break;
+                    case VirtueLevel.Knight: chance = 100; break;
+                }
+
+                if (chance > Utility.Random(100))
+                {
+                    prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
+                    PowerScroll PSduplicate = new PowerScroll(PS.Skill, PS.Value);
+                    prot.AddToBackpack(PSduplicate);
+                }
+            }
+        }
         #endregion
 
         public void OnSlice()
@@ -499,44 +585,19 @@ namespace Server.Engines.CannedEvil
                                     if (Utility.RandomDouble() < 0.001)
                                     {
                                         PlayerMobile pm = (PlayerMobile)killer;
-
-                                        for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
-                                        {
-                                            Mobile prot = (Mobile)pm.JusticeProtectors[j];
-
-                                            if (prot.Map != killer.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
-                                                continue;
-
-                                            int chance = 0;
-
-                                            switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
-                                            {
-                                                case VirtueLevel.Seeker: chance = 60; break;
-                                                case VirtueLevel.Follower: chance = 80; break;
-                                                case VirtueLevel.Knight: chance = 100; break;
-                                            }
-
-                                            if (chance > Utility.Random(100))
-                                            {
-                                                prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
-                                                ScrollofTranscendence SoTF = CreateRandomFelSoT();
-                                                prot.AddToBackpack(SoTF);
-                                            }
-                                        }
-
                                         double random = Utility.Random(49);
 
                                         if (random <= 24)
                                         {
-                                            killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
+                                            pm.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
                                             ScrollofTranscendence SoTF = CreateRandomFelSoT();
-                                            killer.AddToBackpack(SoTF);
+                                            GiveScrollOfTranscendenceFelTo(pm, SoTF);
                                         }
                                         else
                                         {
-                                            killer.SendLocalizedMessage(1049524); // You have received a scroll of power!
+                                            pm.SendLocalizedMessage(1049524); // You have received a scroll of power!
                                             PowerScroll PS = CreateRandomFelPS();
-                                            killer.AddToBackpack(PS);
+                                            GivePowerScrollFelTo(pm, PS);
                                         }
                                     }
                                 }
@@ -574,45 +635,6 @@ namespace Server.Engines.CannedEvil
                                 PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)killer).ChampionTitles;
 
                                 info.Award(m_Type, mobSubLevel);
-                            }
-
-                            if (Map == Map.Felucca)
-                            {
-                                PlayerMobile pm = (PlayerMobile)killer;
-
-                                for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
-                                {
-                                    Mobile prot = pm.JusticeProtectors[j];
-
-                                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
-                                        continue;
-
-                                    int chance = 0;
-
-                                    switch (VirtueHelper.GetLevel(prot, VirtueName.Justice))
-                                    {
-                                        case VirtueLevel.Seeker: chance = 60; break;
-                                        case VirtueLevel.Follower: chance = 80; break;
-                                        case VirtueLevel.Knight: chance = 100; break;
-                                    }
-
-                                    if (chance > Utility.Random(100))
-                                    {
-                                        ScrollofTranscendence SoTF = CreateRandomFelSoT();
-
-                                        prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
-
-                                        if (!Core.SE || prot.Alive)
-                                            prot.AddToBackpack(SoTF);
-                                        else
-                                        {
-                                            if (prot.Corpse != null && !prot.Corpse.Deleted)
-                                                prot.Corpse.DropItem(SoTF);
-                                            else
-                                                prot.AddToBackpack(SoTF);
-                                        }
-                                    }
-                                }
                             }
                         }
                     }

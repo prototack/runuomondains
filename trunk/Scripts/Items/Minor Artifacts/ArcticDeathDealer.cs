@@ -19,15 +19,15 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 20;
 			Attributes.WeaponDamage = 40;
 			WeaponAttributes.ResistColdBonus = 10;
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
+			cold = 50;
+			phys = 50;
+
 			pois = fire = nrgy = chaos = direct = 0;
-			cold = phys = 50;
 		}
-		#endregion
 
 		public ArcticDeathDealer( Serial serial ) : base( serial )
 		{

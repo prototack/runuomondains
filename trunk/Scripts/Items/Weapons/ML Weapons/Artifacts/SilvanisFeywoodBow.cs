@@ -20,15 +20,13 @@ namespace Server.Items
 			Attributes.AttackChance = 12;
 			Attributes.WeaponSpeed = 30;
 			Attributes.WeaponDamage = 35;
-        }
+		}
 
-        #region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
 			phys = fire = cold = pois = chaos = direct = 0;
 			nrgy = 100;
 		}
-        #endregion
 
 		public SilvanisFeywoodBow( Serial serial ) : base( serial )
 		{

@@ -18,15 +18,14 @@ namespace Server.Items
 			WeaponAttributes.HitLightning = 33;
 			Attributes.AttackChance = 15;
 			Attributes.WeaponDamage = 40;
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			phys = fire = cold = nrgy = chaos = direct = 0;
 			pois = 100;
+
+			cold = fire = phys = nrgy = chaos = direct = 0;
 		}
-		#endregion
 
 		public WrathOfTheDryad( Serial serial ) : base( serial )
 		{

@@ -25,16 +25,14 @@ namespace Server.Items
             Hue = 1150;
 		}
 
-        #region Mondain's Legacy
-        public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
-        {
-            phys = chaos = direct = 0;
-            fire = 40;
-            cold = 30;
-            pois = 10;
-            nrgy = 20;
-        }
-        #endregion
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
+		{
+			phys = chaos = direct = 0;
+			fire = 40;
+			cold = 30;
+			pois = 10;
+			nrgy = 20;
+		}
 
 		public BraveKnightOfTheBritannia( Serial serial ) : base( serial )
 		{

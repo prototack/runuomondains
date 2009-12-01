@@ -23,15 +23,13 @@ namespace Server.Items
 			Attributes.WeaponDamage = 45;
 
 			Hue = this.GetElementalDamageHue();
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
 			phys = cold = pois = nrgy = chaos = direct = 0;
 			fire = 100;
 		}
-		#endregion
 
 		public OverseerSunderedBlade( Serial serial ) : base( serial )
 		{

@@ -30,57 +30,30 @@ namespace Server
 
 		public static int Damage( Mobile m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy )
 		{
-			return Damage( m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, 0 );
+			return Damage( m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy );
 		}
 
 		public static int Damage( Mobile m, int damage, int phys, int fire, int cold, int pois, int nrgy )
 		{
-			return Damage( m, null, damage, phys, fire, cold, pois, nrgy, 0, 0, 0 );
+			return Damage( m, null, damage, phys, fire, cold, pois, nrgy );
 		}
 
 		public static int Damage( Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy )
 		{
-			return Damage( m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, false, 0 );
+			return Damage( m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, false, false );
 		}
 
 		public static int Damage( Mobile m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy )
 		{
-			return Damage( m, from, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, false, 0 );
+			return Damage( m, from, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, false, false );
 		}
 
 		public static int Damage( Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, bool keepAlive )
 		{
-			return Damage( m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, keepAlive, 0 );
+			return Damage( m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, keepAlive, false );
 		}
 
-		#region Mondain's Legacy
-		public static int Damage( Mobile m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, int damageIncrease )
-		{
-			return Damage( m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, damageIncrease );
-		}
-
-		public static int Damage( Mobile m, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, int damageIncrease )
-		{
-			return Damage( m, null, damage, phys, fire, cold, pois, nrgy, chaos, direct, damageIncrease );
-		}
-
-		public static int Damage( Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, int damageIncrease )
-		{
-			return Damage( m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, false, damageIncrease );
-		}
-
-		public static int Damage( Mobile m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, int damageIncrease )
-		{
-			return Damage( m, from, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, damageIncrease );
-		}
-
-		public static int Damage( Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, int damageIncrease )
-		{
-			return Damage( m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, keepAlive, damageIncrease );
-		}
-		#endregion
-
-		public static int Damage( Mobile m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, int damageIncrease )
+		public static int Damage( Mobile m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, bool archer )
 		{
 			if( m == null || m.Deleted || !m.Alive || damage <= 0 )
 				return 0;
@@ -106,12 +79,10 @@ namespace Server
 			Fix( ref cold );
 			Fix( ref pois );
 			Fix( ref nrgy );
-
-			#region Mondain's Legacy
 			Fix( ref chaos );
 			Fix( ref direct );
-			
-			if ( chaos > 0 )
+
+			if ( Core.ML && chaos > 0 )
 			{
 				switch ( Utility.Random( 5 ) )
 				{
@@ -123,8 +94,10 @@ namespace Server
 				}
 			}
 
-			damage += (int) ( damage * direct / (double) 100 );
-			#endregion
+			BaseQuiver quiver = null;
+			
+			if ( archer && from != null )
+				quiver = from.FindItemOnLayer( Layer.Cloak ) as BaseQuiver;
 
 			int totalDamage;
 
@@ -145,21 +118,31 @@ namespace Server
 
 				totalDamage /= 10000;
 
+				if ( Core.ML )
+				{
+					totalDamage += damage * direct / 100;
+
+					if ( quiver != null )
+						totalDamage += totalDamage * quiver.DamageIncrease / 100;
+				}
+
 				if( totalDamage < 1 )
 					totalDamage = 1;
 			}
 			else if( Core.ML && m is PlayerMobile && from is PlayerMobile )
 			{
+				if ( quiver != null )
+					damage += damage * quiver.DamageIncrease / 100;
+
 				totalDamage = Math.Min( damage, 35 );	//Direct Damage cap of 35
 			}
 			else
 			{
 				totalDamage = damage;
-			}
 
-			#region Mondain's Legacy
-			totalDamage += (int) ( totalDamage * damageIncrease / (double) 100 );
-			#endregion
+				if ( Core.ML && quiver != null )
+					totalDamage += totalDamage * quiver.DamageIncrease / 100;
+			}
 
 			#region Dragon Barding
 			if( (from == null || !from.Player) && m.Player && m.Mount is SwampDragon )
@@ -391,7 +374,6 @@ namespace Server
 			return "...";
 		}
 
-		#region Mondain's Legacy
 		public void AddStatBonuses( Mobile to )
 		{
 			int strBonus = BonusStr;
@@ -425,7 +407,6 @@ namespace Server
 
 			from.CheckStatTimers();
 		}
-		#endregion
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int RegenHits { get { return this[AosAttribute.RegenHits]; } set { this[AosAttribute.RegenHits] = value; } }
@@ -986,10 +967,8 @@ namespace Server
 		Cold=0x00000004,
 		Poison=0x00000008,
 		Energy=0x00000010,
-		#region Mondain's Legacy
-		Chaos	= 0x00000020,
-		Direct	= 0x00000040
-		#endregion
+		Chaos=0x00000020,
+		Direct=0x00000040
 	}
 
 	public sealed class AosElementAttributes : BaseAttributes
@@ -1035,21 +1014,11 @@ namespace Server
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int Energy { get { return this[AosElementAttribute.Energy]; } set { this[AosElementAttribute.Energy] = value; } }
 
-		#region Mondain's Legacy
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int Chaos
-		{
-			get { return this[ AosElementAttribute.Chaos ]; }
-			set { this[ AosElementAttribute.Chaos ] = value; }
-		}
+		public int Chaos { get { return this[AosElementAttribute.Chaos]; } set { this[AosElementAttribute.Chaos] = value; } }
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int Direct
-		{
-			get { return this[ AosElementAttribute.Direct ]; }
-			set { this[ AosElementAttribute.Direct ] = value; }
-		}
-		#endregion
+		public int Direct { get { return this[AosElementAttribute.Direct]; } set { this[AosElementAttribute.Direct] = value; } }
 	}
 
 	[PropertyObject]

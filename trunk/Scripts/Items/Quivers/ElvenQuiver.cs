@@ -1,5 +1,5 @@
 using System;
-using Server.Items;
+using Server;
 
 namespace Server.Items
 {
@@ -11,8 +11,7 @@ namespace Server.Items
 		[Constructable]
 		public ElvenQuiver() : base()
 		{
-			Attributes.WeaponDamage = 10;
-			
+			DamageIncrease = 10;
 			WeightReduction = 30;
 		}
 
@@ -24,14 +23,14 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.WriteEncodedInt( 0 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
-			int version = reader.ReadInt();
+			int version = reader.ReadEncodedInt();
 		}
 	}
 }

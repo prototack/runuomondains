@@ -19,15 +19,13 @@ namespace Server.Items
 			Attributes.BonusDex = 5;
 			Attributes.AttackChance = 15;
 			Attributes.WeaponDamage = 50;
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
 			phys = fire = cold = nrgy = chaos = direct = 0;
 			pois = 100;
 		}
-		#endregion
 
 		public TheTaskmaster( Serial serial ) : base( serial )
 		{

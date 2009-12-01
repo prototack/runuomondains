@@ -20,15 +20,14 @@ namespace Server.Items
 			Attributes.BonusHits = 6;
 			Attributes.BonusStam = 6;
 			Attributes.BonusMana = 6;
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			phys = fire = pois = nrgy = chaos = direct = 0;
 			cold = 100;
+
+			fire = phys = pois = nrgy = chaos = direct = 0;
 		}
-		#endregion
 
 		public ColdBlood( Serial serial ) : base( serial )
 		{

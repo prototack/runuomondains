@@ -19,15 +19,15 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 30;
 			Attributes.WeaponDamage = 20;
 			WeaponAttributes.ResistPoisonBonus = 10;
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
+			pois = 50;
+			phys = 50;
+
 			fire = cold = nrgy = chaos = direct = 0;
-			phys = pois = 50;
 		}
-		#endregion
 
 		public NoxRangersHeavyCrossbow( Serial serial ) : base( serial )
 		{

@@ -10,8 +10,8 @@ namespace Server.Items
 		
 		[Constructable]
 		public QuiverOfInfinity() : base( 0x2B02 )
-		{			
-			Attributes.WeaponDamage = 10;
+        {
+            DamageIncrease = 10;
 			Attributes.DefendChance = 5;
 			
 			LowerAmmoCost = 20;

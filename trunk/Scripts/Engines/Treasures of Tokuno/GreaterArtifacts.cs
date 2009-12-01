@@ -20,13 +20,11 @@ namespace Server.Items
 			Attributes.WeaponDamage = 50;
 		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			pois = fire = phys = chaos = direct = 0;
+			phys = fire = pois = chaos = direct = 0;
 			cold = nrgy = 50;
 		}
-		#endregion
 
 		public DarkenedSky( Serial serial ) : base( serial )
 		{
@@ -192,13 +190,11 @@ namespace Server.Items
 			Attributes.WeaponDamage = 60;
 		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
 			phys = fire = pois = nrgy = chaos = direct = 0;
 			cold = 100;
 		}
-		#endregion
 
 		public SwordOfTheStampede( Serial serial ) : base( serial )
 		{
@@ -236,13 +232,11 @@ namespace Server.Items
 			Attributes.Luck = 200;
 		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
 			phys = cold = pois = nrgy = chaos = direct = 0;
 			fire = 100;
 		}
-		#endregion
 
 		public SwordsOfProsperity( Serial serial ) : base( serial )
 		{
@@ -351,13 +345,11 @@ namespace Server.Items
 			Attributes.DefendChance = 10;
 		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
 			phys = fire = cold = pois = chaos = direct = 0;
 			nrgy = 100;
 		}
-		#endregion
 
 		public WindsEdge( Serial serial ) : base( serial )
 		{
@@ -545,8 +537,8 @@ namespace Server.Items
 				from.SendLocalizedMessage( 1070930 ); // Can't dye artifacts or enhanced magic items that are being worn.
 			else if( i.IsLockedDown )
 				from.SendLocalizedMessage( 1070932 ); // You may not dye artifacts and enhanced magic items which are locked down.
-			else if( i is PigmentsOfTokuno )
-				from.SendLocalizedMessage( 1042417 ); // You cannot dye that.
+            else if (i is PigmentsOfTokuno || i is LesserPigmentsOfTokuno)
+                from.SendLocalizedMessage(1042417); // You cannot dye that.
 			else if( !IsValidItem( i ) )
 				from.SendLocalizedMessage( 1070931 ); // You can only dye artifacts and enhanced magic items with this tub.	//Yes, it says tub on OSI.  Don't ask me why ;p
 			else
@@ -591,7 +583,7 @@ namespace Server.Items
 				#endregion
 				|| IsInTypeList( t, DemonKnight.ArtifactRarity10 )
 				|| IsInTypeList( t, DemonKnight.ArtifactRarity11 )
-				|| IsInTypeList( t, DemonKnight.ArtifactRarity10 )
+				|| IsInTypeList( t, BaseCreature.MinorArtifactsMl )
 				|| IsInTypeList( t, StealableArtifactsSpawner.TypesOfEntires )
 				|| IsInTypeList( t, Paragon.Artifacts )
 				|| IsInTypeList( t, Leviathan.Artifacts )
@@ -633,13 +625,9 @@ namespace Server.Items
 			m_Type = (PigmentType)reader.ReadEncodedInt();
 			m_UsesRemaining = reader.ReadEncodedInt();
 
-            // After you compile the server save it and comment out the next section then restart server again. Or you can just remove this section entirely or leave it.
-
             PigmentInfo p = PigmentInfo.GetInfo(m_Type);
             if (Hue != p.Hue)
                 Hue = p.Hue;
-
-            // This will revert all the hues back to the hue that they should be.
 		}
 
 		#region IUsesRemaining Members
