@@ -29,8 +29,10 @@ namespace Server.Mobiles
 		AI_Predator,
 		AI_Thief,
 		AI_NecroMage,
-// >>>>>>>>>> ERICA'S ORC SCOUT
-		AI_OrcScout
+        // >>>>>>>>>> ERICA'S ORC SCOUT
+        AI_OrcScout,
+        // PAPPA SMURF's Spellbinder
+        AI_Spellbinder
 	}
 
 	public enum ActionType
