@@ -106,6 +106,27 @@ namespace Server.Items
 					from.LocalOverheadMessage( Network.MessageType.Regular, 0x3B2, 1005422 ); // Hmmmm... this does not need to be cleaned.
 				}
 			}
+			else if ( obj is BaseBeverage )
+			{
+				BaseBeverage beverage = (BaseBeverage) obj;
+
+				if ( beverage.Content == BeverageType.Liquor )
+				{
+					Firebomb bomb = new Firebomb( beverage.ItemID );
+					bomb.Name = beverage.Name;
+					Point3D loc = beverage.Location;
+					beverage.Delete();
+
+					from.AddToBackpack( bomb );
+					bomb.Location = loc;
+					from.SendLocalizedMessage( 1060580 ); // You prepare a firebomb.
+					Consume();
+				}
+			}
+			else if ( obj is Firebomb )
+			{
+				from.SendLocalizedMessage( 1060579 ); // That is already a firebomb!
+			}
 			else
 			{
 				from.SendLocalizedMessage( 1005426 ); // The cloth will not work on that.

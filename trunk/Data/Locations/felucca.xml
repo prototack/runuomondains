@@ -18,6 +18,9 @@
 			<child name="True Britannians" x="1419" y="1622" z="20" />
 		</parent>
 		<parent name="Dungeons">
+			<parent name="Blighted Grove">
+				<child name="Entrance" x="586" y="1643" z="-5" />
+			</parent>
 			<parent name="Covetous">
 				<child name="Entrance" x="2499" y="919" z="0" />
 				<child name="Level 1" x="5456" y="1863" z="0" />
@@ -95,6 +98,18 @@
 				<child name="Level 1" x="5137" y="2014" z="0" />
 				<child name="Level 2" x="5332" y="1376" z="0" />
 				<child name="Level 3" x="5272" y="2036" z="0" />
+			</parent>
+			<parent name="Painted Caves">
+				<child name="Entrance" x="1716" y="2993" z="0" />
+			</parent>
+			<parent name="Palace of Paroxysmus">
+				<child name="Entrance" x="5576" y="3018" z="25" />
+			</parent>
+			<parent name="Prism of Light">
+				<child name="Entrance" x="3784" y="1097" z="14" />
+			</parent>
+			<parent name="Sanctuary">
+				<child name="Entrance" x="764" y="1646" z="0" />
 			</parent>
 			<parent name="Solen Hives">
 				<child name="Central Area" x="5774" y="1896" z="20" />
