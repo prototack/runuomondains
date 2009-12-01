@@ -11,13 +11,17 @@ namespace Server.Items
 		public QuiverOfElements() : base()
 		{
 			Hue = 0x104;
-			
-			Attributes.WeaponDamage = 10;
-			
-			DamageModifier.Chaos = 100;
+
+            DamageIncrease = 10;
 			
 			WeightReduction = 50;
 		}
+
+        public override void AlterBowDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
+        {
+            phys = cold = fire = pois = nrgy = direct = 0;
+            chaos = 100;
+        }
 
 		public QuiverOfElements( Serial serial ) : base( serial )
 		{
@@ -27,7 +31,7 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 1 ); // version
+			writer.Write( (int) 0 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
@@ -35,12 +39,6 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
-
-            if ( version == 0 )
-            {
-                DamageModifier.Fire = 0;
-                DamageModifier.Chaos = 100;
-            }
 		}
 	}
 }

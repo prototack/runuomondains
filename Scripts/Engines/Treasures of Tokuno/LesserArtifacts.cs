@@ -299,13 +299,12 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 20;
 		}
 
-        #region Mondain's Legacy
-        public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
-        {
-            phys = fire = cold = pois = chaos = direct = 0;
-            nrgy = 100;
-        }
-        #endregion
+		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
+		{
+			phys = fire = cold = pois = chaos = direct = 0;
+
+			nrgy = 100;
+		}
 
 
 		public Exiler( Serial serial ) : base( serial )
@@ -585,6 +584,47 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
+	
+	public class LeurociansMempoOfFortune : LeatherMempo
+	{
+		public override int LabelNumber { get { return 1071460; } } // Leurocian's mempo of fortune
+ 
+		public override int BasePhysicalResistance{ get{ return 15; } }
+		public override int BaseFireResistance{ get{ return 10; } }
+		public override int BaseColdResistance{ get{ return 10; } }
+		public override int BasePoisonResistance{ get{ return 10; } }
+		public override int BaseEnergyResistance{ get{ return 15; } }
+		
+		[Constructable]
+		public LeurociansMempoOfFortune() : base()
+		{
+			LootType = LootType.Regular;
+			Hue = 0x501;
+
+			Attributes.Luck = 300;
+			Attributes.RegenMana = 1;
+		}
+
+		public LeurociansMempoOfFortune( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int)0 );
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+		public override int InitMinHits { get { return 255; } }
+		public override int InitMaxHits { get { return 255; } }
+	}
 
 	//Non weapon/armor ones:
 
@@ -745,9 +785,120 @@ namespace Server.Items
 		{
 			LabelTo( from, 1070936, m_SwordsName ); // Honorable Swords of ~1_name~
 		}
-
-		//TODO: the Chest of Heirlooms
 	}
+
+	[Furniture]
+	[Flipable( 0x2811, 0x2812 )]
+	public class ChestOfHeirlooms : LockableContainer
+	{
+		public override int LabelNumber{ get{ return 1070937; } } // Chest of heirlooms
+		
+		[Constructable]
+		public ChestOfHeirlooms() : base( 0x2811 )
+		{
+			Locked = true;
+			LockLevel = 95;
+			MaxLockLevel = 140;
+			RequiredSkill = 95;
+			
+			TrapType = TrapType.ExplosionTrap;
+			TrapLevel = 10;
+			TrapPower = 100;
+			
+			GumpID = 0x10B;
+			
+			for ( int i = 0; i < 10; ++i )
+			{
+				Item item = Loot.ChestOfHeirloomsContains();
+				
+				
+				if ( item is BaseWeapon )
+				{
+					BaseWeapon weapon = (BaseWeapon)item;
+
+					if ( Core.AOS )
+					{
+						int attributeCount = Utility.RandomMinMax( 1, 5 );
+						int min = 20;
+						int max = 80;
+
+						BaseRunicTool.ApplyAttributesTo( weapon, attributeCount, min, max );
+					}
+					else
+					{
+						weapon.DamageLevel = (WeaponDamageLevel)Utility.Random( 6 );
+						weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random( 6 );
+						weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random( 6 );
+					}
+
+					DropItem( item );
+				}
+				else if ( item is BaseArmor )
+				{
+					BaseArmor armor = (BaseArmor)item;
+
+					if ( Core.AOS )
+					{
+						int attributeCount = Utility.RandomMinMax( 1, 5 );
+						int min = 20;
+						int max = 80;
+
+						BaseRunicTool.ApplyAttributesTo( armor, attributeCount, min, max );
+					}
+					else
+					{
+						armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random( 6 );
+						armor.Durability = (ArmorDurabilityLevel)Utility.Random( 6 );
+					}
+
+					DropItem( item );
+				}
+				else if( item is BaseHat )
+				{
+					BaseHat hat = (BaseHat)item;
+
+					if( Core.AOS )
+					{
+						int attributeCount = Utility.RandomMinMax( 1, 5 );
+						int min = 20;
+						int max = 80;
+
+						BaseRunicTool.ApplyAttributesTo( hat, attributeCount, min, max );
+					}
+
+					DropItem( item );
+				}
+				else if( item is BaseJewel )
+				{
+						int attributeCount = Utility.RandomMinMax( 1, 5 );
+						int min = 20;
+						int max = 80;
+
+					BaseRunicTool.ApplyAttributesTo( (BaseJewel)item, attributeCount, min, max );
+
+					DropItem( item );
+				}
+			}
+		}
+
+		public ChestOfHeirlooms( Serial serial ) : base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int) 0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+ 	}
 
 	public class FluteOfRenewal : BambooFlute
 	{
@@ -967,12 +1118,12 @@ namespace Server.Items
             return (
                 IsInTypeList(t, TreasuresOfTokuno.LesserArtifacts)
                 || IsInTypeList(t, TreasuresOfTokuno.GreaterArtifacts)
-            #region Mondain's Legacy
- || IsInTypeList(t, MondainsLegacy.PigmentList)
-            #endregion
- || IsInTypeList(t, DemonKnight.ArtifactRarity10)
-                || IsInTypeList(t, DemonKnight.ArtifactRarity11)
+                #region Mondain's Legacy
+                || IsInTypeList(t, MondainsLegacy.PigmentList)
+                #endregion
                 || IsInTypeList(t, DemonKnight.ArtifactRarity10)
+                || IsInTypeList(t, DemonKnight.ArtifactRarity11)
+                || IsInTypeList(t, BaseCreature.MinorArtifactsMl)
                 || IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires)
                 || IsInTypeList(t, Paragon.Artifacts)
                 || IsInTypeList(t, Leviathan.Artifacts)

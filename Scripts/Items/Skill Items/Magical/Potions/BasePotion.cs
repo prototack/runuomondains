@@ -81,16 +81,14 @@ namespace Server.Items
 
 			if ( handTwo is BaseWeapon )
 				handOne = handTwo;
-				
-			#region Mondain's Legacy	
-			if ( handTwo is BaseRanged )
+			
+			if ( handOne is BaseRanged )
 			{
-				BaseRanged ranged = (BaseRanged) handTwo;
-				
+				BaseRanged ranged = (BaseRanged) handOne;
+
 				if ( ranged.Balanced )
 					return true;
 			}
-			#endregion
 
 			return ( handOne == null || handTwo == null );
 		}

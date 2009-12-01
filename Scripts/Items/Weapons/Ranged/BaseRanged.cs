@@ -21,7 +21,6 @@ namespace Server.Items
 
 		public override SkillName AccuracySkill{ get{ return SkillName.Archery; } }
 
-		#region Mondain's Legacy
 		private bool m_Balanced;
 		private int m_Velocity;
 		
@@ -38,7 +37,6 @@ namespace Server.Items
 			get{ return m_Velocity; }
 			set{ m_Velocity = value; InvalidateProperties(); }
 		}
-		#endregion
 
 		public BaseRanged( int itemID ) : base( itemID )
 		{
@@ -100,6 +98,22 @@ namespace Server.Items
 			if ( attacker.Player && !defender.Player && (defender.Body.IsAnimal || defender.Body.IsMonster) && 0.4 >= Utility.RandomDouble() )
 				defender.AddToBackpack( Ammo );
 
+			if ( Core.ML && m_Velocity > 0 )
+			{
+				int bonus = (int) attacker.GetDistanceToSqrt( defender );
+
+				if ( bonus > 0 && m_Velocity > Utility.Random( 100 ) )
+				{
+					AOS.Damage( defender, attacker, bonus * 3, 100, 0, 0, 0, 0 );
+
+					if ( attacker.Player )
+						attacker.SendLocalizedMessage( 1072794 ); // Your arrow hits its mark with velocity!
+
+					if ( defender.Player )
+						defender.SendLocalizedMessage( 1072795 ); // You have been hit by an arrow with velocity!
+				}
+			}
+
 			base.OnHit( attacker, defender, damageBonus );
 		}
 
@@ -113,68 +127,24 @@ namespace Server.Items
 
 		public virtual bool OnFired( Mobile attacker, Mobile defender )
 		{
+			BaseQuiver quiver = attacker.FindItemOnLayer( Layer.Cloak ) as BaseQuiver;
 			Container pack = attacker.Backpack;
 
-			#region Mondain's Legacy			
-			BaseQuiver quiver = attacker.FindItemOnLayer( Layer.Cloak ) as BaseQuiver;
-			
-			if ( attacker.Player && (quiver == null || !quiver.ConsumeAmmo( AmmoType )) )
-			{				
-				if ( pack == null || !pack.ConsumeTotal( AmmoType, 1 ) )
-					return false;
+			if ( attacker.Player )
+			{
+				if ( quiver == null || quiver.LowerAmmoCost == 0 || quiver.LowerAmmoCost > Utility.Random( 100 ) )
+				{
+					if ( quiver != null && quiver.ConsumeTotal( AmmoType, 1 ) )
+						quiver.InvalidateWeight();
+					else if ( pack == null || !pack.ConsumeTotal( AmmoType, 1 ) )
+						return false;
+				}
 			}
-			#endregion
 
 			attacker.MovingEffect( defender, EffectID, 18, 1, false, false );
 
 			return true;
 		}
-
-		#region Mondain's Legacy
-		public override int ComputeDamage( Mobile attacker, Mobile defender )
-		{
-			int damage = base.ComputeDamage( attacker, defender );
-			
-			// add velocity bonus
-			if ( m_Velocity > 0 )
-			{
-				int range = (int) Math.Round( Math.Sqrt( Math.Pow( attacker.X - defender.X, 2 ) + Math.Pow( attacker.Y - defender.Y, 2 ) ) ); 	
-				damage += (int) Math.Round( Math.Min( range * 3, 30 ) * ( m_Velocity / (double) 100 ) );
-			}	
-			
-			return damage;	
-		}
-		
-		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
-		{
-			if ( Parent is Mobile )
-			{
-				Mobile parent = (Mobile) Parent;
-			
-				BaseQuiver quiver = parent.FindItemOnLayer( Layer.Cloak ) as BaseQuiver;
-				
-				if ( quiver != null && !quiver.DamageModifier.IsEmpty )
-				{
-					quiver.GetDamageTypes( out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct );
-					
-					return;
-				}
-			}
-			
-			base.GetDamageTypes( wielder, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct );
-		}
-		
-		public override void AddNameProperties( ObjectPropertyList list )
-		{
-			base.AddNameProperties( list );
-			
-			if ( m_Balanced )
-				list.Add( 1072792 ); // Balanced
-			
-			if ( m_Velocity > 0 )
-				list.Add( 1072793, m_Velocity.ToString() ); // Velocity ~1_val~%
-		}
-		#endregion
 
 		public override void Serialize( GenericWriter writer )
 		{

@@ -221,6 +221,7 @@ namespace Server.Spells.Ninjitsu
 			timer.Start();
 
 			AddContext( m, new AnimalFormContext( timer, mod, entry.SpeedBoost, entry.Type, entry.StealingBonus ) );
+			m.CheckStatTimers();
 			return MorphResult.Success;
 		}
 

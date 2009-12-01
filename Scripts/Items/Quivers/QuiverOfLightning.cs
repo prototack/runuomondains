@@ -1,5 +1,5 @@
 using System;
-using Server.Items;
+using Server;
 
 namespace Server.Items
 {
@@ -10,28 +10,31 @@ namespace Server.Items
 		[Constructable]
 		public QuiverOfLightning() : base()
 		{
-			Hue = 0x4F3;
-			
-			DamageModifier.Energy = 50;
-			DamageModifier.Physical = 50;
+			Hue = 0x4F9;
 		}
 
 		public QuiverOfLightning( Serial serial ) : base( serial )
 		{
 		}
 
+		public override void AlterBowDamage( ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct )
+		{
+			fire = cold = pois = chaos = direct = 0;
+			phys = nrgy = 50;
+		}
+
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.WriteEncodedInt( 0 ); // version
 		}
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 
-			int version = reader.ReadInt();
+			int version = reader.ReadEncodedInt();
 		}
 	}
 }

@@ -11,74 +11,65 @@ using Server.Network;
 namespace Server.Items
 {
 	public class BaseQuiver : Container, ICraftable, ISetItem
-	{				
-		public override Rectangle2D Bounds{ get{ return new Rectangle2D( 25, 30, 120, 75 ); } }
+	{
 		public override int DefaultGumpID{ get{ return 0x108; } }
 		public override int DefaultMaxItems{ get{ return 1; } }
 		public override int DefaultMaxWeight{ get{ return 50; } }
-		
+		public override double DefaultWeight{ get{ return 2.0; } }
+
 		private AosAttributes m_Attributes;
-		private AosElementAttributes m_DamageModifier;
 		private int m_Capacity;
 		private int m_LowerAmmoCost;
 		private int m_WeightReduction;
 		private int m_DamageIncrease;
-		
+
 		[CommandProperty( AccessLevel.GameMaster)]
 		public AosAttributes Attributes
 		{
 			get{ return m_Attributes; }
 			set{}
-		}			
-		
-		[CommandProperty( AccessLevel.GameMaster)]
-		public AosElementAttributes DamageModifier
-		{
-			get{ return m_DamageModifier; }
-			set{}
-		}		
-		
+		}
+
 		[CommandProperty( AccessLevel.GameMaster)]
 		public int Capacity
 		{
 			get{ return m_Capacity; }
 			set{ m_Capacity = value; InvalidateProperties(); }
 		}
-		
+
 		[CommandProperty( AccessLevel.GameMaster)]
 		public int LowerAmmoCost
 		{
 			get{ return m_LowerAmmoCost; }
 			set{ m_LowerAmmoCost = value; InvalidateProperties(); }
 		}
-		
+
 		[CommandProperty( AccessLevel.GameMaster)]
 		public int WeightReduction
 		{
 			get{ return m_WeightReduction; }
 			set{ m_WeightReduction = value; InvalidateProperties(); }
 		}
-		
-		// damage increased after resists applied
+
 		[CommandProperty( AccessLevel.GameMaster)]
 		public int DamageIncrease
 		{
 			get{ return m_DamageIncrease; }
 			set{ m_DamageIncrease = value; InvalidateProperties(); }
-		}		
-		
+		}
+
 		#region Craftable
 		private Mobile m_Crafter;
 		private ClothingQuality m_Quality;
 		private bool m_PlayerConstructed;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public Mobile Crafter
 		{
 			get{ return m_Crafter; }
 			set{ m_Crafter = value; InvalidateProperties(); }
-		}		
-		
+		}
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public ClothingQuality Quality
 		{
@@ -92,29 +83,28 @@ namespace Server.Items
 			get{ return m_PlayerConstructed; }
 			set{ m_PlayerConstructed = value; }
 		}
-		
+
 		public Item Ammo
 		{
-			get{ return Items.Count == 1 ? Items[ 0 ] : null; }
+			get{ return Items.Count > 0 ? Items[ 0 ] : null; }
 		}
 		#endregion
-		
+
 		public BaseQuiver() : this( 0x2FB7 )
 		{
 		}
-		
+
 		public BaseQuiver( int itemID ) : base( itemID )
 		{
-			Weight = 2;
+			Weight = 2.0;
 			Capacity = 500;
 			Layer = Layer.Cloak;
-			
+
 			m_Attributes = new AosAttributes( this );
 			m_SetAttributes = new AosAttributes( this );
 			m_SetSkillBonuses = new AosSkillBonuses( this );
-			m_DamageModifier = new AosElementAttributes( this );
 		}
-		
+
 		public BaseQuiver( Serial serial ) : base( serial )
 		{
 		}
@@ -129,32 +119,59 @@ namespace Server.Items
 			quiver.m_Attributes = new AosAttributes( newItem, m_Attributes );
 			quiver.m_SetAttributes = new AosAttributes( newItem, m_SetAttributes );
 			quiver.m_SetSkillBonuses = new AosSkillBonuses( newItem, m_SetSkillBonuses );
-			quiver.m_DamageModifier = new AosElementAttributes( newItem, m_DamageModifier );
-		}	
-		
+		}
+
+		public override void  UpdateTotal( Item sender, TotalType type, int delta )
+		{
+			InvalidateProperties();
+
+ 			base.UpdateTotal(sender, type, delta);
+		}
+
 		public override int GetTotal( TotalType type )
 		{
-			if ( type != TotalType.Weight )
-				return base.GetTotal( type );
-				
-			double weight = 0;
-				
-			if ( Items.Count == 1 )
-				weight += Items[ 0 ].PileWeight;
-				
-			if ( weight > 0 && m_WeightReduction != 0 )
-				weight -= weight * m_WeightReduction / (double) 100;  
-				
-			return (int) ( weight + Weight );
+			int total = base.GetTotal( type );
+
+			if ( type == TotalType.Weight )
+				total -= total * m_WeightReduction / 100;
+
+			return total;
 		}
-		
+
+		private static Type[] m_Ammo = new Type[]
+		{
+			typeof( Arrow ), typeof( Bolt )
+		};
+
+		public bool CheckType( Item item )
+		{
+			Type type = item.GetType();
+			Item ammo = Ammo;
+
+			if ( ammo != null )
+			{
+				if ( ammo.GetType() == type )
+					return true;
+			}
+			else
+			{
+				for ( int i = 0; i < m_Ammo.Length; i++ )
+				{
+					if ( type == m_Ammo[ i ] )
+						return true;
+				}
+			}
+
+			return false;
+		}
+
 		public override bool CheckHold( Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight )
 		{
 			if ( !CheckType( item ) )
 			{
 				if ( message )
 					m.SendLocalizedMessage( 1074836 ); // The container can not hold that type of object.
-				
+
 				return false;
 			}
 
@@ -167,29 +184,29 @@ namespace Server.Items
 			}
 			else if ( checkItems )
 				return false;
-				
-			Item ammo = Ammo;	
-		
+
+			Item ammo = Ammo;
+
 			if ( ammo == null || ammo.Deleted )
 				return false;
-			
+
 			if ( ammo.Amount + item.Amount <= m_Capacity )
 				return true;
-			
+
 			return false;
 		}
-		
+
 		public override void AddItem( Item dropped )
 		{
 			base.AddItem( dropped );
-			
+
 			InvalidateWeight();
 		}
 		
 		public override void RemoveItem( Item dropped )
 		{
 			base.RemoveItem( dropped );
-						
+
 			InvalidateWeight();
 		}
 		
@@ -198,20 +215,22 @@ namespace Server.Items
 			if ( parent is Mobile )
 			{
 				Mobile mob = (Mobile) parent;
-				
+
+				m_Attributes.AddStatBonuses( mob );
+
 				BaseRanged ranged = mob.Weapon as BaseRanged;
-				
+
 				if ( ranged != null )
 					ranged.InvalidateProperties();	
-								
+
 				#region Mondain's Legacy Sets
 				if ( IsSetItem )
 				{
 					m_SetEquipped = SetHelper.FullSetEquipped( mob, SetID, Pieces );
-				
+
 					if ( m_SetEquipped )
 					{
-						m_LastEquipped = true;							
+						m_LastEquipped = true;
 						SetHelper.AddSetBonus( mob, SetID );
 					}
 				}
@@ -224,65 +243,30 @@ namespace Server.Items
 			if ( parent is Mobile )
 			{
 				Mobile mob = (Mobile) parent;
-				
-				BaseRanged ranged = mob.Weapon as BaseRanged;
-				
-				if ( ranged != null )
-					ranged.InvalidateProperties();							
-				
-				string modName = this.Serial.ToString();
 
-				mob.RemoveStatMod( modName + "Str" );
-				mob.RemoveStatMod( modName + "Dex" );
-				mob.RemoveStatMod( modName + "Int" );
+				m_Attributes.RemoveStatBonuses( mob );
 
-				mob.CheckStatTimers();					
-								
 				#region Mondain's Legacy Sets
 				if ( IsSetItem && m_SetEquipped )
 					SetHelper.RemoveSetBonus( mob, SetID, this );
 				#endregion
 			}
-		}	
-		
+		}
+
 		public override bool OnDragLift( Mobile from )
 		{
 			#region Mondain's Legacy Sets
 			if ( Parent is Mobile && from == Parent )
-			{			
+			{
 				if ( IsSetItem && m_SetEquipped )
 					SetHelper.RemoveSetBonus( from, SetID, this );
-			}				
+			}
 			#endregion
-			
+
 			return base.OnDragLift( from );
 		}
 
-		public override bool OnEquip( Mobile from )
-		{
-			from.CheckStatTimers();
 
-			int strBonus = m_Attributes.BonusStr;
-			int dexBonus = m_Attributes.BonusDex;
-			int intBonus = m_Attributes.BonusInt;
-
-			if ( strBonus != 0 || dexBonus != 0 || intBonus != 0 )
-			{
-				string modName = this.Serial.ToString();
-
-				if ( strBonus != 0 )
-					from.AddStatMod( new StatMod( StatType.Str, modName + "Str", strBonus, TimeSpan.Zero ) );
-
-				if ( dexBonus != 0 )
-					from.AddStatMod( new StatMod( StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero ) );
-
-				if ( intBonus != 0 )
-					from.AddStatMod( new StatMod( StatType.Int, modName + "Int", intBonus, TimeSpan.Zero ) );
-			}
-
-			return base.OnEquip( from );
-		}
-		
 		public override bool CanEquip( Mobile m )
 		{
 			if ( m.NetState != null && !m.NetState.SupportsExpansion( Expansion.ML ) )
@@ -290,57 +274,64 @@ namespace Server.Items
 				m.SendLocalizedMessage( 1072791 ); // You must upgrade to Mondain's Legacy in order to use that item.				
 				return false;
 			}
-			
+
 			return true;
 		}
-		
+
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
 				
 			if ( m_Crafter != null )
 				list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
-							
+
 			if ( m_Quality == ClothingQuality.Exceptional )
 				list.Add( 1063341 ); // exceptional
-			
-			if ( Ammo != null )
-			{				
-				if ( Ammo.GetType() == typeof( Arrow ) )
-					list.Add( 1075265, "{0}\t{1}", Ammo.Amount, Capacity ); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
-				else if ( Ammo.GetType() == typeof( Bolt ) )
-					list.Add( 1075266, "{0}\t{1}", Ammo.Amount, Capacity ); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ bolts
-			}			
+
+			Item ammo = Ammo;
+
+			if ( ammo != null )
+			{
+				if ( ammo is Arrow )
+					list.Add( 1075265, "{0}\t{1}", ammo.Amount, Capacity ); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
+				else if ( ammo is Bolt )
+					list.Add( 1075266, "{0}\t{1}", ammo.Amount, Capacity ); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ bolts
+			}
 			else
-				list.Add( 1075265, "{0}\t{1}", 0, Capacity ); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows			
-			
-			int prop;		
-				
+				list.Add( 1075265, "{0}\t{1}", 0, Capacity ); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
+
+			int prop;
+
 			if ( (prop = m_DamageIncrease) != 0 )
 				list.Add( 1074762, prop.ToString() ); // Damage modifier: ~1_PERCENT~%
 			
-			if ( (prop = m_DamageModifier.Direct) != 0 )
-				list.Add( 1079978, prop.ToString() ); // Direct Damage: ~1_PERCENT~%				
-				
-			if ( (prop = m_DamageModifier.Chaos) != 0 )
-				list.Add( 1072846, prop.ToString() ); // chaos damage ~1_val~%
-			
-			if ( (prop = m_DamageModifier.Physical) != 0 )
-				list.Add( 1060403, prop.ToString() ); // physical damage ~1_val~%
-				
-			if ( (prop = m_DamageModifier.Fire) != 0 )
-				list.Add( 1060405, prop.ToString() ); // fire damage ~1_val~%
-			
-			if ( (prop = m_DamageModifier.Cold) != 0 )
-				list.Add( 1060404, prop.ToString() ); // cold damage ~1_val~%
-				
-			if ( (prop = m_DamageModifier.Poison) != 0 )
-				list.Add( 1060406, prop.ToString() ); // poison damage ~1_val~%
-				
-			if ( (prop = m_DamageModifier.Energy) != 0 )
-				list.Add( 1060407, prop.ToString() ); // energy damage ~1_val~%
-				
-			list.Add( 1075085 ); // Requirement: Mondain's Legacy		
+			int phys, fire, cold, pois, nrgy, chaos, direct;
+			phys = fire = cold = pois = nrgy = chaos = direct = 0;
+
+			AlterBowDamage( ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct );
+
+			if ( phys != 0 )
+				list.Add( 1060403, phys.ToString() ); // physical damage ~1_val~%
+
+			if ( fire != 0 )
+				list.Add( 1060405, fire.ToString() ); // fire damage ~1_val~%
+
+			if ( cold != 0 )
+				list.Add( 1060404, cold.ToString() ); // cold damage ~1_val~%
+
+			if ( pois != 0 )
+				list.Add( 1060406, pois.ToString() ); // poison damage ~1_val~%
+
+			if ( nrgy != 0 )
+				list.Add( 1060407, nrgy.ToString() ); // energy damage ~1_val
+
+			if ( chaos != 0 )
+				list.Add( 1072846, chaos.ToString() ); // chaos damage ~1_val~%
+
+			if ( direct != 0 )
+				list.Add( 1079978, direct.ToString() ); // Direct Damage: ~1_PERCENT~%
+
+			list.Add( 1075085 ); // Requirement: Mondain's Legacy
 
 			if ( (prop = m_Attributes.DefendChance) != 0 )
 				list.Add( 1060408, prop.ToString() ); // defense chance increase ~1_val~%
@@ -371,7 +362,7 @@ namespace Server.Items
 
 			if ( (prop = m_Attributes.LowerRegCost) != 0 )
 				list.Add( 1060434, prop.ToString() ); // lower reagent cost ~1_val~%	
-			
+
 			if ( (prop = m_Attributes.Luck) != 0 )
 				list.Add( 1060436, prop.ToString() ); // luck ~1_val~
 
@@ -404,41 +395,41 @@ namespace Server.Items
 
 			if ( (prop = m_Attributes.WeaponSpeed) != 0 )
 				list.Add( 1060486, prop.ToString() ); // swing speed increase ~1_val~%
-					
+
 			if ( (prop = m_LowerAmmoCost) > 0 )
 				list.Add( 1075208, prop.ToString() ); // Lower Ammo Cost ~1_Percentage~%
-				
+
 			#region Mondain's Legacy Sets
 			if ( IsSetItem )
 			{
 				list.Add( 1073491, Pieces.ToString() ); // Part of a Weapon/Armor Set (~1_val~ pieces)
-					
+
 				if ( m_SetEquipped )
 				{
 					list.Add( 1073492 ); // Full Weapon/Armor Set Present					
 					SetHelper.GetSetProperties( list, this );
 				}
 			}
-			#endregion	
-				
+			#endregion
+
 			double weight = 0;
-			
-			if ( Items.Count > 0 )
-				weight = Items[ 0 ].Weight;
-			
-			list.Add( 1072241, "{0}\t{1}\t{2}\t{3}", Items.Count, DefaultMaxItems, TotalWeight - Weight, DefaultMaxWeight ); // Contents: ~1_COUNT~/~2_MAXCOUNT items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
-			
+
+			if ( ammo != null )
+				weight = ammo.Weight * ammo.Amount;
+
+			list.Add( 1072241, "{0}\t{1}\t{2}\t{3}", Items.Count, DefaultMaxItems, (int) weight, DefaultMaxWeight ); // Contents: ~1_COUNT~/~2_MAXCOUNT items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+
 			if ( (prop = m_WeightReduction) != 0 )
 				list.Add( 1072210, prop.ToString() ); // Weight reduction: ~1_PERCENTAGE~%	
-				
-			
+
+
 			#region Mondain's Legacy Sets
 			if ( IsSetItem && !m_SetEquipped )
 			{
 				list.Add( 1072378 ); // <br>Only when full set is present:				
 				SetHelper.GetSetProperties( list, this );
 			}
-			#endregion		
+			#endregion
 		}
 		
 		private static void SetSaveFlag( ref SaveFlag flags, SaveFlag toSet, bool setIf )
@@ -450,7 +441,7 @@ namespace Server.Items
 		private static bool GetSaveFlag( SaveFlag flags, SaveFlag toGet )
 		{
 			return ( (flags & toGet) != 0 );
-		}	
+		}
 
 		[Flags]
 		private enum SaveFlag
@@ -458,8 +449,8 @@ namespace Server.Items
 			None				= 0x00000000,
 			Attributes			= 0x00000001,
 			DamageModifier		= 0x00000002,
-			LowerAmmoCost		= 0x00000004,		
-			WeightReduction		= 0x00000008,	
+			LowerAmmoCost		= 0x00000004,
+			WeightReduction		= 0x00000008,
 			Crafter				= 0x00000010,
 			Quality				= 0x00000020,
 			PlayerConstructed	= 0x00000040,
@@ -475,17 +466,16 @@ namespace Server.Items
 			
 			DamageIncrease		= 0x00001000
 		}
-		
+
 		public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );
 
 			writer.Write( 0 ); // version
-			
+
 			SaveFlag flags = SaveFlag.None;
 
 			SetSaveFlag( ref flags, SaveFlag.Attributes,		!m_Attributes.IsEmpty );
-			SetSaveFlag( ref flags, SaveFlag.DamageModifier,	!m_DamageModifier.IsEmpty );
 			SetSaveFlag( ref flags, SaveFlag.LowerAmmoCost,		m_LowerAmmoCost != 0 );
 			SetSaveFlag( ref flags, SaveFlag.WeightReduction,	m_WeightReduction != 0 );
 			SetSaveFlag( ref flags, SaveFlag.DamageIncrease,	m_DamageIncrease != 0 );
@@ -493,7 +483,7 @@ namespace Server.Items
 			SetSaveFlag( ref flags, SaveFlag.Quality,			true );
 			SetSaveFlag( ref flags, SaveFlag.PlayerConstructed,	m_PlayerConstructed );
 			SetSaveFlag( ref flags, SaveFlag.Capacity,			m_Capacity > 0 );
-			
+
 			#region Mondain's Legacy Sets
 			SetSaveFlag( ref flags, SaveFlag.SetAttributes,		!m_SetAttributes.IsEmpty );
 			SetSaveFlag( ref flags, SaveFlag.SetSkillAttributes,!m_SetSkillBonuses.IsEmpty );
@@ -501,49 +491,46 @@ namespace Server.Items
 			SetSaveFlag( ref flags, SaveFlag.LastEquipped,		m_LastEquipped );			
 			SetSaveFlag( ref flags, SaveFlag.SetEquipped,		m_SetEquipped );
 			#endregion
-			
+
 			writer.WriteEncodedInt( (int) flags );
 
 			if ( GetSaveFlag( flags, SaveFlag.Attributes ) )
 				m_Attributes.Serialize( writer );
-				
-			if ( GetSaveFlag( flags, SaveFlag.DamageModifier ) )
-				m_DamageModifier.Serialize( writer );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.LowerAmmoCost ) )
 				writer.Write( (int) m_LowerAmmoCost );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.WeightReduction ) )
 				writer.Write( (int) m_WeightReduction );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.DamageIncrease ) )
 				writer.Write( (int) m_DamageIncrease );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.Crafter ) )
 				writer.Write( (Mobile) m_Crafter );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.Quality ) )
 				writer.Write( (int) m_Quality );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.PlayerConstructed ) )
 				writer.Write( (bool) m_PlayerConstructed );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.Capacity ) )
 				writer.Write( (int) m_Capacity );
-				
+
 			#region Mondain's Legacy Sets
 			if ( GetSaveFlag( flags, SaveFlag.SetAttributes ) )
 				m_SetAttributes.Serialize( writer );
 
 			if ( GetSaveFlag( flags, SaveFlag.SetSkillAttributes ) )
 				m_SetSkillBonuses.Serialize( writer );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.SetHue ) )
 				writer.Write( (int) m_SetHue );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.LastEquipped ) )
 				writer.Write( (bool) m_LastEquipped );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.SetEquipped ) )
 				writer.Write( (bool) m_SetEquipped );
 			#endregion
@@ -554,40 +541,35 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
-			
+
 			SaveFlag flags = (SaveFlag) reader.ReadEncodedInt();
-			
+
 			if ( GetSaveFlag( flags, SaveFlag.Attributes ) )
 				m_Attributes = new AosAttributes( this, reader );
 			else
 				m_Attributes = new AosAttributes( this );
-				
-			if ( GetSaveFlag( flags, SaveFlag.DamageModifier ) )
-				m_DamageModifier = new AosElementAttributes( this, reader );
-			else
-				m_DamageModifier = new AosElementAttributes( this );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.LowerAmmoCost ) )
 				m_LowerAmmoCost = reader.ReadInt();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.WeightReduction ) )
 				m_WeightReduction = reader.ReadInt();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.DamageIncrease ) )
 				m_DamageIncrease = reader.ReadInt();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.Crafter ) )
 				m_Crafter = reader.ReadMobile();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.Quality ) )
 				m_Quality = (ClothingQuality) reader.ReadInt();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.PlayerConstructed ) )
 				m_PlayerConstructed = reader.ReadBool();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.Capacity ) )
 				m_Capacity = reader.ReadInt();
-							
+
 			#region Mondain's Legacy Sets
 			if ( GetSaveFlag( flags, SaveFlag.SetAttributes ) )
 				m_SetAttributes = new AosAttributes( this, reader );
@@ -598,149 +580,81 @@ namespace Server.Items
 				m_SetSkillBonuses = new AosSkillBonuses( this, reader );
 			else
 				m_SetSkillBonuses = new AosSkillBonuses( this );
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.SetHue ) )
 				m_SetHue = reader.ReadInt();
-				
+
 			if ( GetSaveFlag( flags, SaveFlag.LastEquipped ) )
 				m_LastEquipped = reader.ReadBool();
-									
+
 			if ( GetSaveFlag( flags, SaveFlag.SetEquipped ) )
 				m_SetEquipped = reader.ReadBool();
 			#endregion
-			
+
 			if ( version == 1 )
 				Layer = Layer.Cloak;
 		}
-		
-		#region Virtual members
-		public virtual void GetDamageTypes( out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
-		{
-			phys = m_DamageModifier.Physical;
-			fire = m_DamageModifier.Fire;
-			cold = m_DamageModifier.Cold;
-			pois = m_DamageModifier.Poison;
-			nrgy = m_DamageModifier.Energy;
-			chaos = m_DamageModifier.Chaos;
-			direct = m_DamageModifier.Direct;
-		}
-		
-		public virtual bool ConsumeAmmo( Type ammo )
-		{
-			if ( m_LowerAmmoCost / 100 > Utility.RandomDouble() ) 
-				return true;
-		
-			if ( Items.Count > 0 )
-			{
-				Item item = Items[ 0 ];
-				
-				if ( ammo.IsAssignableFrom( item.GetType() ) )
-				{						
-					if ( item.Amount > 1 )
-						item.Amount -= 1;
-					else
-						item.Delete();
-						
-					InvalidateProperties();	
-					
-					return true;
-				}					
-			}
-			
-			return false;
-		}		
-		#endregion
-		
-		#region Static members
-		private static Type[] m_Ammo = new Type[]
-		{
-			typeof( Arrow ), typeof( Bolt )
-		};
-		#endregion
-		
-		#region Members
-		public bool CheckType( Item item )
-		{		
-			Type type = item.GetType();
-			Item ammo = Ammo;
 
-			if ( ammo != null )
-			{
-				if ( ammo.GetType() == type )
-					return true;
-			}
-			else
-			{
-				for ( int i = 0; i < m_Ammo.Length; i++ )
-				{
-					if ( type == m_Ammo[ i ] )
-						return true;
-				}
-			}
-			
-			return false;
+		public virtual void AlterBowDamage( ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct )
+		{
 		}
-		
+
 		public void InvalidateWeight()
-		{						
+		{
 			if ( RootParent is Mobile )
 			{
-				Mobile m = (Mobile) RootParent;				
-				
+				Mobile m = (Mobile) RootParent;
+
 				m.UpdateTotals();
-				
-				if ( m.NetState != null )						
-					m.NetState.Send( new MobileStatusExtended( m ) );
 			}
 		}
-		#endregion
 		
 		#region ICraftable
 		public virtual int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
 		{
 			Quality = (ClothingQuality) quality;
-			
+
 			if ( makersMark )
 				Crafter = from;
-				
+
 			PlayerConstructed = true;
-			
+
 			return quality;
 		}
 		#endregion
-		
+
 		#region Mondain's Legacy Sets
 		public virtual SetItem SetID{ get{ return SetItem.None; } }
 		public virtual int Pieces{ get{ return 0; } }
-		
+
 		public bool IsSetItem{ get{ return SetID != SetItem.None; } }
-		
+
 		private int m_SetHue;
 		private bool m_SetEquipped;
 		private bool m_LastEquipped;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int SetHue
 		{
 			get{ return m_SetHue; }
 			set{ m_SetHue = value; InvalidateProperties(); }
 		}
-		
+
 		public bool SetEquipped
 		{
 			get{ return m_SetEquipped; }
 			set{ m_SetEquipped = value; }
 		}
-		
+
 		public bool LastEquipped
 		{
 			get{ return m_LastEquipped; }
 			set{ m_LastEquipped = value; }
-		}		
-		
+		}
+
 		private AosAttributes m_SetAttributes;
 		private AosSkillBonuses m_SetSkillBonuses;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public AosAttributes SetAttributes
 		{
@@ -753,7 +667,7 @@ namespace Server.Items
 		{
 			get{ return m_SetSkillBonuses; }
 			set{}
-		}	
+		}
 		#endregion
 	}
 }

@@ -22,15 +22,14 @@ namespace Server.Items
 			WeaponAttributes.ResistEnergyBonus = 12;
 
 			Slayer = SlayerName.Fey;
-        }
+		}
 
-		#region Mondain's Legacy
 		public override void GetDamageTypes( Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct )
 		{
-			cold = pois = phys = nrgy = chaos = direct = 0;
 			fire = 100;
+
+			cold = pois = phys = nrgy = chaos = direct = 0;
 		}
-		#endregion
 
 		public PixieSwatter( Serial serial ) : base( serial )
 		{

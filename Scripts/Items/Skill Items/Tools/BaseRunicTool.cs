@@ -278,7 +278,7 @@ namespace Server.Items
 
 			for ( int i = 0; i < attributeCount; ++i )
 			{
-				int random = GetUniqueRandom( ranged != null ? 27 : 25 );
+				int random = GetUniqueRandom( 25 );
 
 				if ( random == -1 )
 					break;
@@ -358,10 +358,9 @@ namespace Server.Items
 
 		public static void GetElementalDamages( BaseWeapon weapon, bool randomizeOrder )
 		{
-			#region Mondain's Legacy
-			int phys, fire, cold, pois, nrgy, chaos, direct;
+			int fire, phys, cold, nrgy, pois, chaos, direct;
+
 			weapon.GetDamageTypes( null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct );
-			#endregion
 
 			int totalDamage = phys;
 

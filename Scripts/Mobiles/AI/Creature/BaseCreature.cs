@@ -231,6 +231,8 @@ namespace Server.Mobiles
         private int m_ColdResistance, m_ColdDamage;
         private int m_PoisonResistance, m_PoisonDamage;
         private int m_EnergyResistance, m_EnergyDamage;
+        private int m_ChaosDamage;
+        private int m_DirectDamage;
 
         private List<Mobile> m_Owners;
         private List<Mobile> m_Friends;
@@ -373,6 +375,12 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int EnergyDamage { get { return m_EnergyDamage; } set { m_EnergyDamage = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ChaosDamage { get { return m_ChaosDamage; } set { m_ChaosDamage = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int DirectDamage { get { return m_DirectDamage; } set { m_DirectDamage = value; } }
 
         #endregion
 
@@ -3032,7 +3040,7 @@ namespace Server.Mobiles
         public override bool OnMoveOver(Mobile m)
         {
             if (m is BaseCreature && !((BaseCreature)m).Controlled)
-                return false;
+                return (!Alive || !m.Alive || IsDeadBondedPet || m.IsDeadBondedPet) || (Hidden && m.AccessLevel > AccessLevel.Player);
 
             return base.OnMoveOver(m);
         }
@@ -4705,6 +4713,22 @@ namespace Server.Mobiles
             m_Summoning = false;
 
             return true;
+        }
+
+        private static Type[] m_MinorArtifactsMl = new Type[]
+		{
+			typeof( AegisOfGrace ), typeof( BladeDance ), typeof( Bonesmasher ),
+			typeof( Boomstick ), typeof( FeyLeggings ), typeof( FleshRipper ),
+			typeof( HelmOfSwiftness ), typeof( PadsOfTheCuSidhe ), typeof( QuiverOfRage ),
+			typeof( QuiverOfElements ), typeof( RaedsGlory ), typeof( RighteousAnger ),
+			typeof( RobeOfTheEclipse ), typeof( RobeOfTheEquinox ), typeof( SoulSeeker ),
+			typeof( TalonBite ), typeof( WildfireBow ), typeof( Windsong ),
+			// TODO: Brightsight lenses, Bloodwood spirit, Totem of the void
+		};
+
+        public static Type[] MinorArtifactsMl
+        {
+            get { return m_MinorArtifactsMl; }
         }
 
         private static bool EnableRummaging = true;

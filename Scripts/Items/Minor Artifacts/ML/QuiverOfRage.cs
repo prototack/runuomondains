@@ -10,17 +10,17 @@ namespace Server.Items
 		[Constructable]
 		public QuiverOfRage() : base()
 		{
-			Hue = 0xEB;		
-			
-			DamageModifier.Physical = 20;
-			DamageModifier.Energy = 20;
-			DamageModifier.Poison = 20;
-			DamageModifier.Cold = 20;
-			DamageModifier.Fire = 20;
+			Hue = 0xEB;
 			
 			WeightReduction = 25;
 			DamageIncrease = 10;
 		}
+
+        public override void AlterBowDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)
+        {
+            cold = pois = phys = fire = nrgy = 20;
+            chaos = direct = 0;
+        }
 
 		public QuiverOfRage( Serial serial ) : base( serial )
 		{
