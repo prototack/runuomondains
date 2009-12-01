@@ -2,6 +2,9 @@
 <places>
 	<parent name="Trammel">
 		<parent name="Dungeons">
+			<parent name="Blighted Grove">
+				<child name="Entrance" x="586" y="1643" z="-5" />
+			</parent>
 			<parent name="Covetous">
 				<child name="Entrance" x="2499" y="919" z="0" />
 				<child name="Level 1" x="5456" y="1863" z="0" />
@@ -80,6 +83,18 @@
 				<child name="Level 2" x="5332" y="1376" z="0" />
 				<child name="Level 3" x="5272" y="2036" z="0" />
 			</parent>
+			<parent name="Painted Caves">
+				<child name="Entrance" x="1716" y="2993" z="0" />
+			</parent>
+			<parent name="Palace of Paroxysmus">
+				<child name="Entrance" x="5576" y="3018" z="25" />
+			</parent>
+			<parent name="Prism of Light">
+				<child name="Entrance" x="3784" y="1097" z="14" />
+			</parent>
+			<parent name="Sanctuary">
+				<child name="Entrance" x="764" y="1646" z="0" />
+			</parent>
 			<parent name="Solen Hives">
 				<child name="Central Area" x="5774" y="1896" z="20" />
 				<parent name="Area A">
@@ -156,6 +171,9 @@
 				<child name="Guard Post" x="2218" y="1116" z="19" />
 				<child name="Orc Fort" x="2171" y="1332" z="0" />
 			</parent>
+			<parent name="Heartwood">
+				<child name="Entrance" x="6986" y="340" z="0" />
+			</parent>
 			<parent name="Jhelom">
 				<child name="Cemetery" x="1296" y="3719" z="0" />
 				<child name="East Docks" x="1492" y="3696" z="-3" />
@@ -193,10 +211,12 @@
 				<child name="Palace" x="3698" y="1279" z="20" />
 				<child name="West" x="3572" y="1211" z="0" />
 			</parent>
-			<parent name="Haven"> <!-- TODO: Update -->
-				<child name="Docks" x="3650" y="2653" z="0" />
+			<parent name="Haven">
+				<child name="Old Haven" x="3650" y="2592" z="0" />
+				<child name="Old Haven North" x="3650" y="2516" z="0" />
+				<child name="New Haven" x="3506" y="2570" z="14" />
+				<child name="New Haven North" x="3502" y="2475" z="34" />
 				<child name="Farmlands" x="3722" y="2647" z="20" />
-				<child name="North" x="3650" y="2516" z="0" />
 			</parent>
 			<parent name="Serpents Hold">
 				<child name="North" x="3023" y="3417" z="15" />

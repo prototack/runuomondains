@@ -111,6 +111,7 @@ namespace Server.Commands
 						from.Karma = 0;
 						from.Kills = 0;
 						from.Hidden = true;
+						from.Blessed = true;
 						from.Hits = from.HitsMax;
 						from.Mana = from.ManaMax;
 						from.Stam = from.StamMax;

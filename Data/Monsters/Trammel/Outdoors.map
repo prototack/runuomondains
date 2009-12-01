@@ -1,15 +1,10 @@
-##############
-## By Nerun ##
-##############
 overrideid 113
 overridemap 2
+##################################################################
+## OSI Light                                                    ##
+##################################################################
 overridemintime 60
 overridemaxtime 60
-##
-## OSI Light
-##
-*|hordeminion||||||3619|2814|21|2|5|10|50|50|1|17|0|0|0|0|0
-*|mongbat||||||3619|2814|21|2|5|10|50|50|1|17|0|0|0|0|0
 *|lizardman:ratman||||||1147|3524|0|2|60|80|30|30|1|8|0|0|0|0|0
 *|ettin:giantspider|wisp|mongbat:orc:troll||||1266|1982|0|2|60|80|30|30|1|2|1|6|0|0|0
 *|ettin:giantspider|wisp|mongbat:orc:troll||||1249|2030|0|2|60|80|30|30|1|2|1|6|0|0|0
@@ -32,12 +27,6 @@ overridemaxtime 60
 *|orc||||||4576|3356|0|2|60|80|30|30|1|10|0|0|0|0|0
 *|orc||||||4658|3376|0|2|60|80|30|30|1|10|0|0|0|0|0
 *|orc||||||4607|3480|29|2|60|80|30|30|1|10|0|0|0|0|0
-*|brigand:harpy:lizardman:orcishmage:orc:ratman:spectre:troll||||||3485|2595|12|2|60|80|30|30|1|3|0|0|0|0|0
-*|brigand:harpy:lizardman:orcishmage:orc:ratman:spectre:troll||||||3446|2741|49|2|60|80|50|50|1|7|0|0|0|0|0
-*|brigand:harpy:lizardman:orcishmage:orc:ratman:spectre:troll||||||3459|2655|9|2|60|80|30|30|1|3|0|0|0|0|0
-*|brigand:harpy:lizardman:orcishmage:orc:ratman:spectre:troll||||||3379|2693|35|2|60|80|30|30|1|3|0|0|0|0|0
-*|brigand:harpy:lizardman:orcishmage:orc:ratman:spectre:troll||||||3411|2592|44|2|60|80|40|40|1|6|0|0|0|0|0
-*|brigand:harpy:lizardman:orcishmage:orc:ratman:spectre:troll||||||3464|2503|49|2|60|80|50|50|1|7|0|0|0|0|0
 *|airelemental:ettin:ogre:waterelemental|orc:troll:lizardman|||||3168|629|8|2|60|80|30|30|1|5|5|0|0|0|0
 *|airelemental:ettin:ogre:waterelemental|orc:troll:lizardman|||||3172|700|8|2|60|80|30|30|1|5|5|0|0|0|0
 *|airelemental:ettin:ogre:waterelemental|orc:troll:lizardman|||||3173|771|0|2|60|80|30|30|1|5|5|0|0|0|0
@@ -89,14 +78,11 @@ overridemaxtime 60
 *|lizardman:ratman||||||1131|3415|0|2|60|80|30|30|1|8|0|0|0|0|0
 *|lizardman:ratman||||||1158|3457|0|2|60|80|30|30|1|8|0|0|0|0|0
 *|lizardman:ratman||||||1094|3482|0|2|60|80|30|30|1|8|0|0|0|0|0
-##############
-## By Nerun ##
-##############
+##################################################################
+## OSI Medium                                                   ##
+##################################################################
 overridemintime 20
 overridemaxtime 20
-##
-## OSI Medium
-##
 *|corpser:ettin:ghoul:giantspider:lizardman:ogre:orc:reaper:skeleton:troll:zombie|wisp|||||1312|613|10|2|20|30|30|30|1|11|1|0|0|0|0
 *|corpser:ettin:ghoul:giantspider:lizardman:ogre:orc:reaper:skeleton:troll:zombie|wisp|||||1214|617|13|2|20|30|30|30|1|11|1|0|0|0|0
 *|corpser:ettin:ghoul:giantspider:lizardman:ogre:orc:reaper:skeleton:troll:zombie|wisp|||||1361|522|19|2|20|30|30|30|1|11|1|0|0|0|0
@@ -319,14 +305,11 @@ overridemaxtime 20
 *|corpser:ettin:ghoul:giantspider:lizardman:ogre:orc:reaper:skeleton:troll:zombie|wisp|||||1268|774|0|2|20|30|30|30|1|11|1|0|0|0|0
 *|corpser:ettin:ghoul:giantspider:lizardman:ogre:orc:reaper:skeleton:troll:zombie|wisp|||||1180|737|1|2|20|30|30|30|1|11|1|0|0|0|0
 *|corpser:ettin:ghoul:giantspider:lizardman:ogre:orc:reaper:skeleton:troll:zombie|wisp|||||1122|718|1|2|20|30|30|30|1|11|1|0|0|0|0
-##############
-## By Nerun ##
-##############
+##################################################################
+## OSI Heavy + Miscellaneous                                    ##
+##################################################################
 overridemintime 5
 overridemaxtime 10
-##
-## OSI Heavy + Miscellaneous
-##
 *|airelemental:ettin:gargoyle:gazer:orc:troll:waterelemental||||||423|1595|0|2|5|10|30|30|1|7|0|0|0|0|0
 *|airelemental:ettin:gargoyle:gazer:orc:troll:waterelemental||||||418|1665|0|2|5|10|30|30|1|7|0|0|0|0|0
 *|airelemental:ettin:gargoyle:gazer:orc:troll:waterelemental||||||480|1641|0|2|5|10|30|30|1|7|0|0|0|0|0
@@ -487,20 +470,16 @@ overridemaxtime 10
 *|Rottingcorpse|Skeleton|Slime|Snake|Strongmongbat||4512|1372|23|2|5|10|10|3|1|1|1|1|1|1|0
 *|Ghoul|Giantserpent|Headlessone|Jwilson|Zombie||4512|1380|23|2|5|10|10|3|1|1|1|1|1|1|0
 *|Cat|Chicken|Dog|Pig|Sheep||4500|1382|23|2|5|10|10|1|1|1|1|1|1|1|0
-##############
-## By Nerun ##
-##############
+##################################################################
+## CAMPS                                                        ##
+##################################################################
 overridemintime 45
 overridemaxtime 60
-##
-## Camps
-##
 *|Orccamp:Ratcamp||||||821|675|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||1042|1394|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||2540|130|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||3170|672|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||2548|1173|0|2|45|60|10|1|1|1|0|0|0|0|0
-*|Orccamp:Ratcamp||||||3602|2815|28|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||4480|1439|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||1152|3471|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||1530|999|0|2|45|60|10|1|1|1|0|0|0|0|0
@@ -511,3 +490,63 @@ overridemaxtime 60
 *|Orccamp:Ratcamp||||||2044|2323|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||1939|1310|0|2|45|60|10|1|1|1|0|0|0|0|0
 *|Orccamp:Ratcamp||||||2349|722|0|2|45|60|10|1|1|1|0|0|0|0|0
+##################################################################
+## HAVEN ISLAND (UO Client +6.0.0.0)                            ##
+##################################################################
+overridemintime 5
+overridemaxtime 10
+##
+## Old Haven - north
+##
+*|zombie:skeleton|spellbinder|||||3650|2509|0|2|5|10|60|60|1|70|20|0|0|0|0
+*|spellbinder:zombie:skeleton||||||3598|2450|16|2|5|10|10|10|1|4|0|0|0|0|0
+##
+## Old Haven - south
+##
+*|skeleton||||||3635|2625|0|2|5|10|15|6|1|7|0|0|0|0|0
+*|skeleton||||||3651|2627|0|2|5|10|15|8|1|10|0|0|0|0|0
+*|zombie||||||3625|2594|0|2|5|10|15|8|1|10|0|0|0|0|0
+*|zombie||||||3649|2591|0|2|5|10|15|8|1|10|0|0|0|0|0
+*|healer||||||3618|2614|0|2|5|10|4|4|1|1|0|0|0|0|0
+##
+## Farmlands
+##
+*|sheep||||||3725|2670|35|2|5|10|40|40|1|10|0|0|0|0|0
+*|sheep||||||3727|2603|40|2|5|10|40|40|1|10|0|0|0|0|0
+*|pumpkin||||||3738|2586|40|2|5|10|12|12|1|40|0|0|0|0|0
+*|pumpkin||||||3711|2571|20|2|5|10|6|6|1|6|0|0|0|0|0
+*|pumpkin||||||3738|2610|40|2|5|10|12|12|1|40|0|0|0|0|0
+*|pumpkin||||||3716|2612|20|2|5|10|6|5|1|5|0|0|0|0|0
+*|pumpkin||||||3716|2617|20|2|5|10|6|5|1|5|0|0|0|0|0
+*|pumpkin||||||3716|2624|21|2|5|10|6|5|1|5|0|0|0|0|0
+*|pumpkin||||||3744|2660|40|2|5|10|12|12|1|50|0|0|0|0|0
+*|pumpkin||||||3716|2632|20|2|5|10|6|5|1|5|0|0|0|0|0
+*|pumpkin||||||3751|2704|39|2|5|10|6|6|1|12|0|0|0|0|0
+*|pumpkin||||||3711|2669|20|2|5|10|6|6|1|8|0|0|0|0|0
+*|pumpkin||||||3711|2690|20|2|5|10|6|6|1|8|0|0|0|0|0
+*|pumpkin||||||3711|2679|20|2|5|10|6|6|1|8|0|0|0|0|0
+##
+## Small southeast island
+##
+*|corpser|lizardman|||||3772|2771|56|2|5|10|30|20|1|2|2|0|0|0|0
+##
+## Wild life and monsters
+##
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:gaman:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3396|2645|48|2|5|10|50|50|1|14|5|40|5|5|5
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3742|2520|47|2|5|10|40|40|1|12|4|28|4|4|4
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3403|2572|21|2|5|10|30|30|1|6|2|14|2|2|2
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3690|2422|40|2|5|10|50|47|1|12|4|28|4|4|4
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3615|2410|47|2|5|10|30|25|1|6|1|7|1|1|1
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3549|2409|16|2|5|10|40|40|1|10|4|28|4|4|4
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3483|2389|17|2|5|10|25|25|1|6|1|7|1|1|1
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3575|2523|0|2|5|10|40|30|1|6|2|14|2|2|2
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3524|2459|28|2|5|10|25|25|1|6|1|7|1|1|1
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3482|2459|35|2|5|10|25|25|1|6|1|7|1|1|1
+*|mongbat:bogling|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3436|2486|27|2|5|10|25|25|1|6|1|7|1|1|1
+*|mongbat:bogling:ettin|timberwolf:greywolf|bull:eagle:hind:bird:llama:goat:gaman:greathart|cougar:panther|blackbear:brownbear|rabbit:jackrabbit|3450|2734|49|2|5|10|70|50|1|36|10|80|10|10|10
+##
+## Brigand camps
+##
+*|humanbrigandcamp||||||3700|2699|20|2|5|10|4|4|1|1|0|0|0|0|0
+*|humanbrigandcamp||||||3753|2705|40|2|5|10|4|4|1|1|0|0|0|0|0
+*|humanbrigandcamp||||||3764|2662|62|2|5|10|0|0|1|1|0|0|0|0|0
