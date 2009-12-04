@@ -37,6 +37,16 @@ namespace Server
 			}
 		}
 
+		public override string ToString()
+		{
+			if ( m_Number > 0 )
+				return "#" + m_Number.ToString();
+			else if ( m_String != null )
+				return m_String;
+
+			return "(empty)";
+		}
+
 		public virtual void Serialize( GenericWriter writer )
 		{
 			if ( m_Number > 0 )
@@ -53,16 +63,6 @@ namespace Server
 				writer.WriteEncodedInt( 0 );
 		}
 		#endregion
-
-		public override string ToString()
-		{
-			if ( m_Number > 0 )
-				return "#" + m_Number.ToString();
-			else if ( m_String != null )
-				return m_String;
-
-			return "(empty)";
-		}
 
 		public static void AddTo( ObjectPropertyList list, TextDefinition def )
 		{

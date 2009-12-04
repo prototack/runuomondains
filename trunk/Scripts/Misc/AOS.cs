@@ -67,13 +67,6 @@ namespace Server
 				return damage;
 			}
 
-			#region Mondain's Legacy
-			BaseTalisman talisman = m.Talisman as BaseTalisman;
-
-			if ( talisman != null && talisman.Protection != null )
-				damage = talisman.Protection.ScaleDamage( from, damage );
-			#endregion
-
 			Fix( ref phys );
 			Fix( ref fire );
 			Fix( ref cold );

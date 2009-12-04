@@ -746,6 +746,7 @@ namespace Server.Spells
 			#region Mondain'e Legacy
 			else if ( m_Caster is PlayerMobile && ( (PlayerMobile) m_Caster ).PeacedUntil > DateTime.Now )
 			{
+				m_Caster.SendLocalizedMessage( 1072060 ); // You cannot cast a spell while calmed.
 				DoFizzle();
 			}
 			#endregion

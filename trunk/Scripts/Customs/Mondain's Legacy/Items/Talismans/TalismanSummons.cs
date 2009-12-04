@@ -353,7 +353,7 @@ namespace Server.Mobiles
 	}
 
 	public class SummonedLavaSerpent : BaseTalismanSummon
-	{	
+	{
 		[Constructable]
 		public SummonedLavaSerpent() : base()
 		{
@@ -365,7 +365,7 @@ namespace Server.Mobiles
 		public SummonedLavaSerpent( Serial serial ) : base( serial )
 		{
 		}
-		
+
 		public override void OnThink()
 		{
 			if ( m_NextWave < DateTime.Now )
@@ -385,24 +385,24 @@ namespace Server.Mobiles
 
 			int version = reader.ReadEncodedInt();
 		}
-		
+
 		private DateTime m_NextWave;
-		
+
 		public void AreaHeatDamage()
 		{
 			Mobile mob = ControlMaster;
-			
+
 			if ( mob != null )
-			{			
+			{
 				if ( mob.InRange( Location, 2 ) )
-				{			
+				{
 					if ( mob.AccessLevel != AccessLevel.Player )
-					{					
+					{
 						AOS.Damage( mob, Utility.Random( 2, 3 ), 0, 100, 0, 0, 0 );
 						mob.SendLocalizedMessage( 1008112 ); // The intense heat is damaging you!
 					}
 				}
-				
+
 				GuardedRegion r = Region as GuardedRegion;
 				
 				if ( r != null && mob.Alive )
@@ -414,9 +414,9 @@ namespace Server.Mobiles
 					}
 				}
 			}
-						
+
 			m_NextWave = DateTime.Now + TimeSpan.FromSeconds( 3 );
-		}	
+		}
 	}
 
 	public class SummonedOrcBrute : BaseTalismanSummon
@@ -546,17 +546,12 @@ namespace Server.Mobiles
 			Body = 205;
 			Hue = 0x480;
 			BaseSoundID = 0xC9;
-			
-			DelayBeginTunnel();
+
+			Timer.DelayCall( TimeSpan.FromMinutes( 30.0 ), new TimerCallback( BeginTunnel ) );
 		}
 
 		public SummonedVorpalBunny( Serial serial ) : base( serial )
 		{
-		}
-		
-		public virtual void DelayBeginTunnel()
-		{
-			Timer.DelayCall( TimeSpan.FromMinutes( 30.0 ), new TimerCallback( BeginTunnel ) );
 		}
 
 		public virtual void BeginTunnel()
