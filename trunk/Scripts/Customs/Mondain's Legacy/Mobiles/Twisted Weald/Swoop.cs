@@ -40,6 +40,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 121.9, 140.4);
 
             PackReg(4);
+
             PackArcaneScroll(0, 1);
 
             Fame = 26000;

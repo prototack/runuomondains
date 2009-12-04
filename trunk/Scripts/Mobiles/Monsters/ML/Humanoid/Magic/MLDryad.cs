@@ -52,7 +52,7 @@ namespace Server.Mobiles
 			if ( Core.ML && Utility.RandomDouble() < .60 )
 				PackItem( Seed.RandomPeculiarSeed( 1 ) );
 
-            PackArcanistScroll(0.05);
+            PackArcaneScroll(0, 2);
 		}
 
 		public override void GenerateLoot()

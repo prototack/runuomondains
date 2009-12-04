@@ -42,8 +42,8 @@ namespace Server.Mobiles
 			
 			Fame = 15000;
 			Karma = -15000;
-			
-			PackArcaneScroll( 0, 1 );
+
+            PackArcaneScroll(0, 1);
 		}
 		
 		public override void GenerateLoot()

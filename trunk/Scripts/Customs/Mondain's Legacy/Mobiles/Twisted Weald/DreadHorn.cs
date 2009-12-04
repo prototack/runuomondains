@@ -51,7 +51,7 @@ namespace Server.Mobiles
 
             Fame = 15000;  //Guessing here
             Karma = -15000;  //Guessing here
-
+            
             PackArcaneScroll(1, 3);
 			
 			PackResources( 8 );
