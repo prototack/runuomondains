@@ -422,7 +422,7 @@ namespace Server
 			#endregion
 
 			if ( Core.SE && inTokuno )
-				return Construct( m_SEClothingTypes, m_AosClothingTypes, m_ClothingTypes ) as BaseClothing;				
+				return Construct( m_SEClothingTypes, m_AosClothingTypes, m_ClothingTypes ) as BaseClothing;
 
 			if ( Core.AOS )
 				return Construct( m_AosClothingTypes, m_ClothingTypes ) as BaseClothing;

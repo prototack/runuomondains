@@ -9,14 +9,14 @@ namespace Server.Items
 		private Type m_Type;
 		private TextDefinition m_Name;
 		private int m_Amount;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public Type Type
 		{
 			get{ return m_Type; }
 			set{ m_Type = value; }
 		}
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public TextDefinition Name
 		{
@@ -42,7 +42,7 @@ namespace Server.Items
 		{
 			get { return m_Type != null && m_Type.Namespace.Equals( "Server.Items" ); }
 		}
-		
+
 		public TalismanAttribute() : this( null, 0, 0 )
 		{
 		}
@@ -83,7 +83,7 @@ namespace Server.Items
 			if ( GetSaveFlag( flags, SaveFlag.Amount ) )
 				m_Amount = reader.ReadEncodedInt();
 		}
-		
+
 		public override string ToString()
 		{
 			if ( m_Type != null )
@@ -91,7 +91,7 @@ namespace Server.Items
 
 			return "None";
 		}
-		
+
 		private static void SetSaveFlag( ref SaveFlag flags, SaveFlag toSet, bool setIf )
 		{
 			if ( setIf )
@@ -102,7 +102,7 @@ namespace Server.Items
 		{
 			return ( (flags & toGet) != 0 );
 		}
-		
+
 		[Flags]
 		private enum SaveFlag
 		{
@@ -111,17 +111,17 @@ namespace Server.Items
 			Name				= 0x00000002,
 			Amount				= 0x00000004,
 		}
-		
+
 		public virtual void Serialize( GenericWriter writer )
 		{
 			writer.Write( (int) 0 ); // version
-			
+
 			SaveFlag flags = SaveFlag.None;
 
 			SetSaveFlag( ref flags, SaveFlag.Type,		m_Type != null );
 			SetSaveFlag( ref flags, SaveFlag.Name,		m_Name != null );
 			SetSaveFlag( ref flags, SaveFlag.Amount,	m_Amount != 0 );
-			
+
 			writer.WriteEncodedInt( (int) flags );
 
 			if ( GetSaveFlag( flags, SaveFlag.Type ) )
@@ -129,9 +129,9 @@ namespace Server.Items
 
 			if ( GetSaveFlag( flags, SaveFlag.Name ) )
 				m_Name.Serialize( writer );
-				
-			if ( GetSaveFlag( flags, SaveFlag.Amount ) )				
-				writer.WriteEncodedInt( m_Amount );			
+
+			if ( GetSaveFlag( flags, SaveFlag.Amount ) )
+				writer.WriteEncodedInt( m_Amount );
 		}
 
 		public int DamageBonus( Mobile to )
@@ -140,14 +140,6 @@ namespace Server.Items
 				return m_Amount;
 
 			return 0;
-		}
-
-		public int ScaleDamage( Mobile from, int damage )
-		{
-			if ( from != null && from.GetType() == m_Type )
-				return (int) ( damage * ( 1 - m_Amount / 100.0 ) );
-
-			return damage;
 		}
 	}
 }

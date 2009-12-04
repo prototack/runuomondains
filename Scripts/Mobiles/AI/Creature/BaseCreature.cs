@@ -3572,6 +3572,14 @@ namespace Server.Mobiles
             PackItem(Loot.RandomPotion());
         }
 
+        public void PackArcanistScroll(double chance)
+        {
+            if (!Core.ML || chance <= Utility.RandomDouble())
+                return;
+
+            PackItem(Loot.Construct(Loot.ArcanistScrollTypes));
+        }
+
         public void PackNecroScroll(int index)
         {
             if (!Core.AOS || 0.05 <= Utility.RandomDouble())
