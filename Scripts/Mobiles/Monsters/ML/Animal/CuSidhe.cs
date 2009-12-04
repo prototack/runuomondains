@@ -64,7 +64,7 @@ namespace Server.Mobiles
 
 			PackItem( new Bandage( 10 ) );
 
-            PackArcaneScroll(0, 2);
+            PackArcaneScroll(1, 2);
 		}	
 
 		public override void GenerateLoot()

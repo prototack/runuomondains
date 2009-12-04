@@ -42,8 +42,8 @@ namespace Server.Mobiles
 			
 			Fame = 17000;
 			Karma = -17000;
-			
-			PackArcaneScroll( 0, 1 );
+
+            PackArcaneScroll(0, 1);
 		}
 		
 		public CrystalHydra( Serial serial ) : base( serial )

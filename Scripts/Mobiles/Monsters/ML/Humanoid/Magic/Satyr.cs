@@ -38,7 +38,7 @@ namespace Server.Mobiles
 
 			VirtualArmor = 28; // Don't know what it should be
 
-            PackArcanistScroll(0.05);
+            PackArcaneScroll(0, 1);
 		}
 
 		public override void GenerateLoot()

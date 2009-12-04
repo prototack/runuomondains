@@ -44,8 +44,8 @@ namespace Server.Mobiles
 			Karma = -30000;
 			
 			PackResources( 8 );
-			PackTalismans( 5 );
-			PackArcaneScroll( 1, 6 );
+            PackTalismans(5);
+            PackArcaneScroll(1, 6);
 		}
 		
 		public override void GenerateLoot()

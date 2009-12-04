@@ -12,7 +12,7 @@ namespace Server.Mobiles
 			Name = "a crystal wisp";
 			Hue = 0x482;
 			
-			PackArcaneScroll( 0, 1 );
+            PackArcaneScroll(0, 1);
 		}
 
 		public override void GenerateLoot()
