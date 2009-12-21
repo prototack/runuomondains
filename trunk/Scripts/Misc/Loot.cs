@@ -267,7 +267,6 @@ namespace Server
 
 		private static Type[] m_PaladinScrollTypes = new Type[0];
 
-		#region Mondain's Legacy
 		private static Type[] m_ArcanistScrollTypes = new Type[]
 		{
 			typeof( ArcaneCircleScroll ),	typeof( GiftOfRenewalScroll ),	typeof( ImmolatingWeaponScroll ),	typeof( AttuneWeaponScroll ),
@@ -275,16 +274,13 @@ namespace Server
 			typeof( ReaperFormScroll ),		typeof( WildfireScroll ),		typeof( EssenceOfWindScroll ),		typeof( DryadAllureScroll ),
 			typeof( EtherealVoyageScroll ),	typeof( WordOfDeathScroll ),	typeof( GiftOfLifeScroll ),			typeof( ArcaneEmpowermentScroll )
 		};
-		#endregion
 
 		public static Type[] RegularScrollTypes{ get{ return m_RegularScrollTypes; } }
 		public static Type[] NecromancyScrollTypes{ get{ return m_NecromancyScrollTypes; } }
 		public static Type[] SENecromancyScrollTypes{ get{ return m_SENecromancyScrollTypes; } }
 		public static Type[] PaladinScrollTypes{ get{ return m_PaladinScrollTypes; } }
-
-		#region Mondain's Legacy
 		public static Type[] ArcanistScrollTypes{ get{ return m_ArcanistScrollTypes; } }
-		#endregion
+
 
 		private static Type[] m_GrimmochJournalTypes = new Type[]
 		{
@@ -713,10 +709,7 @@ namespace Server
 				case SpellbookType.Regular: types = m_RegularScrollTypes; break;
 				case SpellbookType.Necromancer: types = (Core.SE ? m_SENecromancyScrollTypes : m_NecromancyScrollTypes ); break;
 				case SpellbookType.Paladin: types = m_PaladinScrollTypes; break;
-
-				#region Mondain's Legacy
 				case SpellbookType.Arcanist: types = m_ArcanistScrollTypes; break;
-				#endregion
 			}
 
 			return Construct( types, Utility.RandomMinMax( minIndex, maxIndex ) ) as SpellScroll;

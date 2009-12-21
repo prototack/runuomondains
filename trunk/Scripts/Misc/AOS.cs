@@ -340,11 +340,11 @@ namespace Server
 					if ( MonstrousInterredGrizzle.UnderCacophonicAttack( m ) )
 						value -= 3; // TODO check
 				}
-				
+
 				if ( obj is ISetItem )
 				{					
 					ISetItem item = (ISetItem) obj;
-				
+
 					AosAttributes attrs = item.SetAttributes;
 										
 					if( attrs != null && item.LastEquipped )

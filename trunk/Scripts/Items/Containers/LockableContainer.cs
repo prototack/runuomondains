@@ -391,7 +391,7 @@ namespace Server.Items
 			{
 				from.SendLocalizedMessage( 500637 ); // Your tinker skill was insufficient to make the item lockable.
 			}
-			
+
 			#region Mondain's Legacy
 			return base.OnCraft( quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue );
 			#endregion

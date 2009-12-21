@@ -181,6 +181,10 @@ namespace Server.Spells.Chivalry
 				}
 			}
 
+			protected override void OnNonlocalTarget( Mobile from, object o )
+			{
+			}
+
 			protected override void OnTargetFinish( Mobile from )
 			{
 				m_Owner.FinishSequence();

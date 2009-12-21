@@ -588,7 +588,7 @@ namespace Server.Items
 	public class LeurociansMempoOfFortune : LeatherMempo
 	{
 		public override int LabelNumber { get { return 1071460; } } // Leurocian's mempo of fortune
- 
+
 		public override int BasePhysicalResistance{ get{ return 15; } }
 		public override int BaseFireResistance{ get{ return 10; } }
 		public override int BaseColdResistance{ get{ return 10; } }
@@ -898,7 +898,7 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
- 	}
+	}
 
 	public class FluteOfRenewal : BambooFlute
 	{
@@ -940,7 +940,7 @@ namespace Server.Items
     public enum LesserPigmentType
     {
         None,
-        FreshPlum,
+        FreshPeach,
         Silver,
         DeepBrown,
         BurntBrown,
@@ -952,237 +952,133 @@ namespace Server.Items
         ChaosBlue
     }
 
-    public class LesserPigmentsOfTokuno : Item, IUsesRemaining
-    {
-        public class PigmentInfo
-        {
-            //private LesserPigmentType m_LesserPigmentType;
-            private int m_Hue;
-            private TextDefinition m_Label;
+	public class LesserPigmentsOfTokuno : BasePigmentsOfTokuno
+	{
 
-            public int Hue { get { return m_Hue; } }
-            public TextDefinition Label { get { return m_Label; } }
+		private static int[][] m_Table = new int[][]
+		{
+			// Hue, Label
+			new int[]{ /*LesserPigmentType.None,*/ 0, -1 },
+			new int[]{ /*LesserPigmentType.FreshPeach,*/ 0x145, 1071450 },
+			new int[]{ /*LesserPigmentType.Silver,*/ 0x3E9, 1071451 },
+			new int[]{ /*LesserPigmentType.DeepBrown,*/ 0x3F0, 1071452 },
+			new int[]{ /*LesserPigmentType.BurntBrown,*/ 0x41A, 1071453 },
+			new int[]{ /*LesserPigmentType.LightGreen,*/ 0x1C8, 1071454 },
+			new int[]{ /*LesserPigmentType.FreshRose,*/ 0x4B9, 1071455 },
+			new int[]{ /*LesserPigmentType.PaleBlue,*/ 0x24F, 1071456 },
+			new int[]{ /*LesserPigmentType.NobleGold,*/ 0x227, 1071457 },
+			new int[]{ /*LesserPigmentType.PaleOrange,*/ 0x02E, 1071458 },
+			new int[]{ /*LesserPigmentType.ChaosBlue,*/ 0x005, 1071459 }
+		};
 
-            public PigmentInfo(int hue, TextDefinition label)
-            {
-                m_Hue = hue;
-                m_Label = label;
-            }
+		public static int[] GetInfo( LesserPigmentType type )
+		{
+			int v = (int)type;
 
-            private static PigmentInfo[] m_Table = new PigmentInfo[]
+			if( v < 0 || v >= m_Table.Length )
+				v = 0;
+
+			return m_Table[v];
+		}
+
+		private LesserPigmentType m_Type;
+
+		[CommandProperty( AccessLevel.GameMaster )]
+		public LesserPigmentType Type
+		{
+			get { return m_Type; }
+			set
+			{
+				m_Type = value;
+
+				int v = (int)m_Type;
+
+				if ( v >= 0 && v < m_Table.Length )
 				{
-					new PigmentInfo( /*LesserPigmentType.None,*/ 0, -1 ),
-                    new PigmentInfo( /*LesserPigmentType.FreshPeach,*/ 0x145, 1071450 ),
-                    new PigmentInfo( /*LesserPigmentType.Silver,*/ 0x3E9, 1071451 ),
-                    new PigmentInfo( /*LesserPigmentType.DeepBrown,*/ 0x3F0, 1071452 ),
-                    new PigmentInfo( /*LesserPigmentType.BurntBrown,*/ 0x41A, 1071453 ),
-                    new PigmentInfo( /*LesserPigmentType.LightGreen,*/ 0x1C8, 1071454 ),
-                    new PigmentInfo( /*LesserPigmentType.FreshRose,*/ 0x4B9, 1071455 ),
-                    new PigmentInfo( /*LesserPigmentType.PaleBlue,*/ 0x24F, 1071456 ),
-                    new PigmentInfo( /*LesserPigmentType.NobleGold,*/ 0x227, 1071457 ),
-                    new PigmentInfo( /*LesserPigmentType.PaleOrange,*/ 0x02E, 1071458 ),
-                    new PigmentInfo( /*LesserPigmentType.ChaosBlue,*/ 0x005, 1071459 )
-				};
+					Hue = m_Table[v][0];
+					Label = m_Table[v][1];
+				}
+				else
+				{
+					Hue = 0;
+					Label = -1;
+				}
+			}
+		}
 
-            public static PigmentInfo GetInfo(LesserPigmentType type)
-            {
-                int v = (int)type;
+		[Constructable]
+		public LesserPigmentsOfTokuno() : this( (LesserPigmentType)Utility.Random(0,11) )
+		{
+		}
 
-                if (v < 0 || v >= m_Table.Length)
-                    v = 0;
+		[Constructable]
+		public LesserPigmentsOfTokuno( LesserPigmentType type ) : base( 1 )
+		{
+			Weight = 1.0;
+			Type = type;
+		}
 
-                return m_Table[v];
-            }
-        }
+		public LesserPigmentsOfTokuno( Serial serial ) : base( serial )
+		{
+		}
 
-        private LesserPigmentType m_Type;
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public LesserPigmentType Type
-        {
-            get { return m_Type; }
-            set
-            {
-                m_Type = value;
+			writer.Write( (int)1 );
 
-                PigmentInfo p = PigmentInfo.GetInfo(m_Type);
-                Hue = p.Hue;
-                InvalidateProperties();
-            }
-        }
+			writer.WriteEncodedInt( (int)m_Type );
+		}
 
-        private int m_UsesRemaining;
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
 
-        public override int LabelNumber { get { return 1070933; } } // Pigments of Tokuno
+			int version = ( InheritsItem ? 0 : reader.ReadInt() ); // Required for BasePigmentsOfTokuno insertion
 
-        [Constructable]
-        public LesserPigmentsOfTokuno()
-            : this(LesserPigmentType.None, 10)
-        {
-        }
+			switch ( version )
+			{
+				case 1: m_Type = (LesserPigmentType)reader.ReadEncodedInt(); break;
+				case 0: break;
+			}
+		}
+	}
 
-        [Constructable]
-        public LesserPigmentsOfTokuno(LesserPigmentType type)
-            : this(type, (type == LesserPigmentType.None) ? 10 : 50)
-        {
-        }
+	public class MetalPigmentsOfTokuno : BasePigmentsOfTokuno
+	{
+		[Constructable]
+		public MetalPigmentsOfTokuno() : base( 1 )
+		{
+			RandomHue();
+			Label = -1;
+		}
 
-        [Constructable]
-        public LesserPigmentsOfTokuno(LesserPigmentType type, int uses)
-            : base(0xEFF)
-        {
-            Weight = 1.0;
-            m_UsesRemaining = uses;
-            Type = type;
-        }
+		public MetalPigmentsOfTokuno( Serial serial ) : base( serial )
+		{
+		}
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
+		public void RandomHue()
+		{
+			int a = Utility.Random(0,30);
+			if ( a != 0 )
+				Hue = a + 0x960;
+			else
+				Hue = 0;
+		}
 
-            if (m_Type != LesserPigmentType.None)
-            {
-                PigmentInfo p = PigmentInfo.GetInfo(m_Type);
-                TextDefinition.AddTo(list, p.Label);
-            }
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
 
-            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
-        }
+			writer.Write( (int)0 );
+		}
 
-        public override void OnDoubleClick(Mobile from)
-        {
-            if (IsAccessibleTo(from) && from.InRange(GetWorldLocation(), 3))
-            {
-                from.SendLocalizedMessage(1070929); // Select the artifact or enhanced magic item to dye.
-                from.BeginTarget(3, false, Server.Targeting.TargetFlags.None, new TargetStateCallback(InternalCallback), this);
-            }
-            else
-                from.SendLocalizedMessage(502436); // That is not accessible.
-        }
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
 
-        private void InternalCallback(Mobile from, object targeted, object state)
-        {
-            LesserPigmentsOfTokuno pigment = (LesserPigmentsOfTokuno)state;
-
-            if (pigment.Deleted || pigment.UsesRemaining <= 0 || !from.InRange(pigment.GetWorldLocation(), 3) || !pigment.IsAccessibleTo(from))
-                return;
-
-            Item i = targeted as Item;
-
-            if (i == null)
-                from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.
-            else if (!from.InRange(i.GetWorldLocation(), 3) || !IsAccessibleTo(from))
-                from.SendLocalizedMessage(502436); // That is not accessible.
-            else if (from.Items.Contains(i))
-                from.SendLocalizedMessage(1070930); // Can't dye artifacts or enhanced magic items that are being worn.
-            else if (i.IsLockedDown)
-                from.SendLocalizedMessage(1070932); // You may not dye artifacts and enhanced magic items which are locked down.
-            else if (i is PigmentsOfTokuno || i is LesserPigmentsOfTokuno)
-                from.SendLocalizedMessage(1042417); // You cannot dye that.
-            else if (!IsValidItem(i))
-                from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.	//Yes, it says tub on OSI.  Don't ask me why ;p
-            else
-            {
-                //Notes: on OSI there IS no hue check to see if it's already hued.  and no messages on successful hue either
-                i.Hue = PigmentInfo.GetInfo(pigment.Type).Hue;
-
-                if (--pigment.UsesRemaining <= 0)
-                    pigment.Delete();
-
-                from.PlaySound(0x23E);
-            }
-        }
-
-        public static bool IsValidItem(Item i)
-        {
-            if (i is PigmentsOfTokuno || i is LesserPigmentsOfTokuno)
-                return false;
-
-            Type t = i.GetType();
-
-            CraftResource resource = CraftResource.None;
-
-            if (i is BaseWeapon)
-                resource = ((BaseWeapon)i).Resource;
-            else if (i is BaseArmor)
-                resource = ((BaseArmor)i).Resource;
-
-            if (!CraftResources.IsStandard(resource))
-                return true;
-
-            #region Heritage Items
-            if (i is ITokunoDyable)
-                return true;
-            #endregion
-
-            return (
-                IsInTypeList(t, TreasuresOfTokuno.LesserArtifacts)
-                || IsInTypeList(t, TreasuresOfTokuno.GreaterArtifacts)
-                #region Mondain's Legacy
-                || IsInTypeList(t, MondainsLegacy.PigmentList)
-                #endregion
-                || IsInTypeList(t, DemonKnight.ArtifactRarity10)
-                || IsInTypeList(t, DemonKnight.ArtifactRarity11)
-                || IsInTypeList(t, BaseCreature.MinorArtifactsMl)
-                || IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires)
-                || IsInTypeList(t, Paragon.Artifacts)
-                || IsInTypeList(t, Leviathan.Artifacts)
-                || IsInTypeList(t, TreasureMapChest.Artifacts)
-                || IsInTypeList(t, VirtueArtifactSystem.VirtueArtifacts)
-                );
-        }
-
-        private static bool IsInTypeList(Type t, Type[] list)
-        {
-            for (int i = 0; i < list.Length; i++)
-            {
-                if (list[i] == t) return true;
-            }
-
-            return false;
-        }
-
-        public LesserPigmentsOfTokuno(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0);
-
-            writer.WriteEncodedInt((int)m_Type);
-            writer.WriteEncodedInt(m_UsesRemaining);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            m_Type = (LesserPigmentType)reader.ReadEncodedInt();
-            m_UsesRemaining = reader.ReadEncodedInt();
-        }
-
-        #region IUsesRemaining Members
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining
-        {
-            get { return m_UsesRemaining; }
-            set { m_UsesRemaining = value; InvalidateProperties(); }
-        }
-
-        public bool ShowUsesRemaining
-        {
-            get { return true; }
-            set { }
-        }
-
-
-        #endregion
-    }
+			int version = ( InheritsItem ? 0 : reader.ReadInt() ); // Required for BasePigmentsOfTokuno insertion
+		}
+	}
 }
