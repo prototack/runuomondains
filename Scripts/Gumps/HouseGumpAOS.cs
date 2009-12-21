@@ -191,6 +191,8 @@ namespace Server.Gumps
 				974, 982
 			};
 
+		private static List<int> _HouseSigns = new List<int>();
+
 		public HouseGumpAOS( HouseGumpPageAOS page, Mobile from, BaseHouse house ) : base( 50, 40 )
 		{
 			m_House = house;
@@ -487,55 +489,38 @@ namespace Server.Gumps
 				{
 					int index = 0;
 
-                    for (int i = 0; i < 3; ++i)
-                    {
-                        AddPage(i + 1);
+					if ( _HouseSigns.Count == 0 )
+					{
+						// Add standard signs
+						for ( int i = 0; i < 54; ++i )
+						{
+							_HouseSigns.Add( 2980 + ( i * 2 ) );
+						}
 
-                        AddButton(10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % 3) + 1);
+						// Add library and beekeeper signs ( ML )
+						_HouseSigns.Add( 2966 );
+						_HouseSigns.Add( 3140 );
+					}
 
-                        if (Core.ML)
-                        {
-                            if (i < 2)
-                            {
-                                for (int j = 0; j < 24; ++j)
-                                {
-                                    int x = 30 + ((j % 6) * 60);
-                                    int y = 130 + ((j / 6) * 60);
+					int signsPerPage = Core.ML ? 24 : 18;
+					int totalSigns = Core.ML ? 56 : 54;
+					int pages = (int) Math.Ceiling( (double) totalSigns / signsPerPage );
 
-                                    AddButton(x, y, 4005, 4007, GetButtonID(9, index), GumpButtonType.Reply, 0);
-                                    AddItem(x + 20, y, 2980 + (index++ * 2));
-                                }
-                            }
-                            else
-                            {
-                                for (int j = 0; j < 6; ++j)
-                                {
-                                    int x = 30 + ((j % 6) * 60);
-                                    int y = 130 + ((j / 6) * 60);
+					for ( int i = 0; i < pages; ++i )
+					{
+						AddPage( i + 1 );
 
-                                    AddButton(x, y, 4005, 4007, GetButtonID(9, index), GumpButtonType.Reply, 0);
-                                    AddItem(x + 20, y, 2980 + (index++ * 2));
-                                }
-                            }
-                        }
-                        else
-                            for (int j = 0; j < 18; ++j)
-                            {
-                                int x = 30 + ((j % 6) * 60);
-                                int y = 130 + ((j / 6) * 60);
+						AddButton( 10, 360, 4005, 4007, 0, GumpButtonType.Page, ((i + 1) % pages ) + 1 );
 
-                                AddButton(x, y, 4005, 4007, GetButtonID(9, index), GumpButtonType.Reply, 0);
-                                AddItem(x + 20, y, 2980 + (index++ * 2));
-                            }
-                    }
+						for ( int j = 0; j < signsPerPage && totalSigns - ( signsPerPage * i ) - j > 0; ++j )
+						{
+							int x = 30 + ((j % 6) * 60);
+							int y = 130 + ((j / 6) * 60);
 
-                    if (Core.ML)
-                    {
-                        AddButton(30, 190, 4005, 4007, GetButtonID(9, index++), GumpButtonType.Reply, 0);
-                        AddItem(50, 190, 0xB96); // library
-                        AddButton(90, 190, 4005, 4007, GetButtonID(9, index++), GumpButtonType.Reply, 0);
-                        AddItem(110, 190, 0xC44); // beekeeper
-                    }
+							AddButton( x, y, 4005, 4007, GetButtonID( 9, index ), GumpButtonType.Reply, 0 );
+							AddItem( x + 20, y, _HouseSigns[index++] );
+						}
+					}
 
 					break;
 				}
@@ -1347,31 +1332,9 @@ namespace Server.Gumps
 				}
 				case 9:
 				{
-					if ( isOwner && m_House.Public && index >= 0 && index < 56 )
+					if ( isOwner && m_House.Public && index >= 0 && index < _HouseSigns.Count )
 					{
-						switch ( index )
-						{
-							case 54:
-							{
-								if ( Core.ML )
-									m_House.ChangeSignType( 0xB96 );
-
-								break;
-							}
-							case 55:
-							{
-								if ( Core.ML )
-									m_House.ChangeSignType( 0xC44 );
-
-								break;
-							}
-							default:
-							{
-								m_House.ChangeSignType( 2980 + ( index * 2 ) );
-								break;
-							}
-						}
-						
+						m_House.ChangeSignType( _HouseSigns[index] );
 						from.SendGump( new HouseGumpAOS( HouseGumpPageAOS.Customize, from, m_House ) );
 					}
 

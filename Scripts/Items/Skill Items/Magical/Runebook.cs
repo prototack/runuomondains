@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Server;
 using Server.Gumps;
 using Server.Network;
+using Server.Mobiles;
 using Server.Multis;
 using Server.Engines.Craft;
 using Server.ContextMenus;
@@ -13,11 +14,11 @@ namespace Server.Items
 	public class Runebook : Item, ISecurable, ICraftable
 	{
 		public static readonly TimeSpan UseDelay = TimeSpan.FromSeconds( 7.0 );
-		
-		#region Mondain's Legacy		
+
+		#region Mondain's Legacy
 		private BookQuality m_Quality;
-		
-		[CommandProperty( AccessLevel.GameMaster )]		
+
+		[CommandProperty( AccessLevel.GameMaster )]
 		public BookQuality Quality
 		{
 			get{ return m_Quality; }
@@ -33,6 +34,8 @@ namespace Server.Items
 		private Mobile m_Crafter;
 		
 		private DateTime m_NextUse;
+
+		private List<Mobile> m_Openers = new List<Mobile>();
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public DateTime NextUse
@@ -92,6 +95,18 @@ namespace Server.Items
 			set
 			{
 				m_MaxCharges = value;
+			}
+		}
+
+		public List<Mobile> Openers
+		{
+			get
+			{
+				return m_Openers;
+			}
+			set
+			{
+				m_Openers = value;
 			}
 		}
 
@@ -165,10 +180,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 3 );	
-			
+			writer.Write( (int) 3 );
+
 			#region Mondain's Legacy version 3
-			writer.Write( (byte) m_Quality );	
+			writer.Write( (byte) m_Quality );
 			#endregion
 
 			writer.Write( m_Crafter );
@@ -202,9 +217,9 @@ namespace Server.Items
 				case 3:
 				{
 					#region Mondain's Legacy
-					m_Quality = (BookQuality) reader.ReadByte();		
-					#endregion					
-					
+					m_Quality = (BookQuality) reader.ReadByte();
+					#endregion
+
 					goto case 2;
 				}
 				case 2:
@@ -280,8 +295,8 @@ namespace Server.Items
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
-			
-			#region Mondain's Legacy			
+
+			#region Mondain's Legacy
 			if ( m_Quality == BookQuality.Exceptional )
 				list.Add( 1063341 ); // exceptional
 			#endregion
@@ -291,6 +306,23 @@ namespace Server.Items
 
 			if ( m_Description != null && m_Description.Length > 0 )
 				list.Add( m_Description );
+		}
+
+		public override bool OnDragLift( Mobile from )
+		{
+			if ( from.HasGump( typeof( RunebookGump ) ) )
+			{
+				from.SendLocalizedMessage( 500169 ); // You cannot pick that up.
+				return false;
+			}
+
+			foreach ( Mobile m in m_Openers )
+				if ( IsOpen( m ) )
+					m.CloseGump( typeof( RunebookGump ) );
+
+			m_Openers.Clear();
+
+			return true;
 		}
 
 		public override void OnSingleClick( Mobile from )
@@ -308,6 +340,12 @@ namespace Server.Items
 		{
 			if ( from.InRange( GetWorldLocation(), (Core.ML ? 3 : 1) ) && CheckAccess( from ) )
 			{
+				if ( RootParent is BaseCreature )
+				{
+					from.SendLocalizedMessage( 502402 ); // That is inaccessible.
+					return;
+				}
+
 				if ( DateTime.Now < NextUse )
 				{
 					from.SendLocalizedMessage( 502406 ); // This book needs time to recharge.
@@ -316,6 +354,8 @@ namespace Server.Items
 
 				from.CloseGump( typeof( RunebookGump ) );
 				from.SendGump( new RunebookGump( from, this ) );
+
+				m_Openers.Add( from );
 			}
 		}
 
@@ -439,7 +479,7 @@ namespace Server.Items
 
 			if ( makersMark )
 				Crafter = from;
-			
+
 			#region Mondain's Legacy
 			m_Quality = (BookQuality) ( quality - 1 );
 			#endregion
