@@ -739,8 +739,8 @@ namespace Server.Gumps
                     {
                         if (m_List == null)
                         {
-                            m_List = new ArrayList(); // new ArrayList( (ICollection)Accounts.GetAccounts() );
-                            // m_List.Sort( AccountComparer.Instance );
+                            m_List = new ArrayList((ICollection)Accounts.GetAccounts());
+                            m_List.Sort(AccountComparer.Instance);
                         }
 
                         ArrayList rads = (state as ArrayList);
@@ -1324,7 +1324,7 @@ namespace Server.Gumps
             AddButtonLabeled(200, 10, GetButtonID(5, 31), "View All: Inactive");
             AddButtonLabeled(200, 30, GetButtonID(5, 32), "View All: Banned");
             AddButtonLabeled(200, 50, GetButtonID(5, 26), "View All: Shared");
-            AddButtonLabeled(200, 70, GetButtonID(5, 30), "View All: Empty");
+            AddButtonLabeled(200, 70, GetButtonID(5, 33), "View All: Empty");
             AddButtonLabeled(200, 90, GetButtonID(5, 30), "View All: TotalGameTime");
 
             AddButton(384, 84, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 1);
@@ -2424,7 +2424,7 @@ namespace Server.Gumps
 
                                     break;
                                 }
-                                                 #region original case 30
+                            #region original case 30
                             case 33: // View all empty accounts
                             {
                                 ArrayList results = new ArrayList();
@@ -2447,7 +2447,7 @@ namespace Server.Gumps
 
                                 break;
                             }
-                            #endregion           
+                            #endregion
                             default:
                                 {
                                     index -= 50;
