@@ -61,9 +61,9 @@ namespace Server.Misc
             int x = pm.VASTotalMonsterFame;
 
             //const double A = 8.63316841 * Math.Pow( 10, -4 );
-            const double A = 0.000215829210; // Lower this number to lower chance.  Raise it to raise chance.  Currently it's 1/2 of Treasures of Tokuno drop.
+            const double A = 0.000215829210; // Lower this number to lower chance.  Raise it to raise chance.  Currently it's 1/4 of Treasures of Tokuno drop.
             //const double B = 4.25531915 * Math.Pow( 10, -6 );
-            const double B = 0.00000106382978; // Lower this number to lower chance.  Raise it to raise chance.  Currently it's 1/2 of Treasures of Tokuno drop.
+            const double B = 0.00000106382978; // Lower this number to lower chance.  Raise it to raise chance.  Currently it's 1/4 of Treasures of Tokuno drop.
 
             double chance = A * Math.Pow(10, B * x);
 
