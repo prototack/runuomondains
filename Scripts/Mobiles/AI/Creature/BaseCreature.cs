@@ -4477,6 +4477,7 @@ namespace Server.Mobiles
                     bool givenQuestKill = false;
                     bool givenFactionKill = false;
                     bool givenToTKill = false;
+                    bool givenVaSKill = false;
 
                     for (int i = 0; i < list.Count; ++i)
                     {
@@ -4500,6 +4501,11 @@ namespace Server.Mobiles
                         {
                             givenToTKill = true;
                             TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
+                        }
+
+                        if (!givenVaSKill)
+                        {
+                            givenVaSKill = true;
                             VirtueArtifactSystem.HandleKill(this, ds.m_Mobile);
                         }
 
