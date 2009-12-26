@@ -20,7 +20,7 @@ namespace Server.Items
 				return base.DefaultMaxWeight;
 			}
 		}
-		
+
 		#region Mondain's Legacy
 		private ClothingQuality m_Quality;
 		private CraftResource m_Resource;
@@ -44,7 +44,7 @@ namespace Server.Items
 				{
 					m_Resource = value;
 					Hue = CraftResources.GetHue( m_Resource );
-					
+
 					InvalidateProperties();
 				}
 			}
@@ -56,8 +56,8 @@ namespace Server.Items
 			get{ return m_Crafter; }
 			set{ m_Crafter = value; InvalidateProperties(); }
 		}
-				
-		[CommandProperty( AccessLevel.GameMaster )]		
+
+		[CommandProperty( AccessLevel.GameMaster )]
 		public string EngravedText
 		{
 			get{ return m_EngravedText; }
@@ -175,7 +175,7 @@ namespace Server.Items
 			else
 				from.LocalOverheadMessage( MessageType.Regular, 0x3B2, 1019045 ); // I can't reach that.
 		}
-		
+
 		public override void AddWeightProperty( ObjectPropertyList list )
 		{
 			base.AddWeightProperty( list );
@@ -191,7 +191,7 @@ namespace Server.Items
 				list.Add( 1060636 ); // exceptional
 			#endregion
 		}
-		
+
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
@@ -231,17 +231,17 @@ namespace Server.Items
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
-			
+
 			#region Mondain's Legacy
 			int version = reader.ReadInt();
 
 			m_EngravedText = reader.ReadString();
 			m_Quality = (ClothingQuality) reader.ReadInt();
 			m_Resource = (CraftResource) reader.ReadInt();
-			m_Crafter = reader.ReadMobile();			
+			m_Crafter = reader.ReadMobile();
 			#endregion
 		}
-		
+
 		#region ICraftable
 		public virtual int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
 		{
@@ -292,12 +292,12 @@ namespace Server.Items
 
 			return base.CheckContentDisplay( from );
 		}
-		
+
 		#region Mondain's Legacy
 		public override void UpdateTotal( Item sender, TotalType type, int delta )
 		{
 			base.UpdateTotal( sender, type, delta );
-			
+
 			if ( type == TotalType.Weight && RootParent is Mobile )
 				((Mobile) RootParent).InvalidateProperties();
 		}
