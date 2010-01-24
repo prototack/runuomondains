@@ -327,6 +327,62 @@ namespace Server.Mobiles
         }
         #endregion
 
+        #region Auto Arrow Recovery
+        private Dictionary<Type, int> m_RecoverableAmmo = new Dictionary<Type, int>();
+
+        public Dictionary<Type, int> RecoverableAmmo
+        {
+            get { return m_RecoverableAmmo; }
+        }
+
+        public void RecoverAmmo()
+        {
+            if (Core.SE && Alive)
+            {
+                foreach (KeyValuePair<Type, int> kvp in m_RecoverableAmmo)
+                {
+                    if (kvp.Value > 0)
+                    {
+                        Item ammo = null;
+
+                        try
+                        {
+                            ammo = Activator.CreateInstance(kvp.Key) as Item;
+                        }
+                        catch
+                        {
+                        }
+
+                        if (ammo != null)
+                        {
+                            string name = ammo.Name;
+                            ammo.Amount = kvp.Value;
+
+                            if (name == null)
+                            {
+                                if (ammo is Arrow)
+                                    name = "arrow";
+                                else if (ammo is Bolt)
+                                    name = "bolt";
+                            }
+
+                            if (name != null && ammo.Amount > 1)
+                                name = String.Format("{0}s", name);
+
+                            if (name == null)
+                                name = String.Format("#{0}", ammo.LabelNumber);
+
+                            PlaceInBackpack(ammo);
+                            SendLocalizedMessage(1073504, String.Format("{0}\t{1}", ammo.Amount, name)); // You recover ~1_NUM~ ~2_AMMO~.
+                        }
+                    }
+                }
+
+                m_RecoverableAmmo.Clear();
+            }
+        }
+        #endregion
+
         private DateTime m_AnkhNextUse;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -358,6 +414,12 @@ namespace Server.Mobiles
             set { SetFlag(PlayerFlag.Spellweaving, value); }
         }
         #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TimeSpan DisguiseTimeLeft
+        {
+            get { return DisguiseTimers.TimeRemaining(this); }
+        }
 
         #region Scroll of Alacrity
         private DateTime m_AcceleratedStart;
@@ -405,6 +467,16 @@ namespace Server.Mobiles
         {
             if (!base.OnDroppedItemToWorld(item, location))
                 return false;
+
+            IPooledEnumerable mobiles = Map.GetMobilesInRange(location, 0);
+
+            if (mobiles.GetEnumerator().MoveNext())
+            {
+                mobiles.Free();
+                return false;
+            }
+            else
+                mobiles.Free();
 
             BounceInfo bi = item.GetBounce();
 
@@ -895,6 +967,8 @@ namespace Server.Mobiles
                 pm.LastOnline = DateTime.Now;
             }
 
+            DisguiseTimers.StartTimer(e.Mobile);
+
             Timer.DelayCall(TimeSpan.Zero, new TimerStateCallback(ClearSpecialMovesCallback), e.Mobile);
         }
 
@@ -950,6 +1024,8 @@ namespace Server.Mobiles
                 pm.m_SpeechLog = null;
                 pm.LastOnline = DateTime.Now;
             }
+
+            DisguiseTimers.StopTimer(from);
         }
 
         public override void RevealingAction()
@@ -1904,6 +1980,9 @@ namespace Server.Mobiles
             if (m_SentHonorContext != null)
                 m_SentHonorContext.OnSourceDamaged(from, amount);
 
+            if (willKill && from is PlayerMobile)
+                Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(((PlayerMobile)from).RecoverAmmo));
+
             #region Mondain's Legacy
             if (InvisibilityPotion.HasTimer(this))
                 InvisibilityPotion.Iterrupt(this);
@@ -1938,6 +2017,12 @@ namespace Server.Mobiles
             }
         }
 
+        public override void OnWarmodeChanged()
+        {
+            if (!Warmode)
+                Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(RecoverAmmo));
+        }
+
         private Mobile m_InsuranceAward;
         private int m_InsuranceCost;
         private int m_InsuranceBonus;
@@ -1965,6 +2050,8 @@ namespace Server.Mobiles
                 m_ReceivedHonorContext.OnTargetKilled();
             if (m_SentHonorContext != null)
                 m_SentHonorContext.OnSourceKilled();
+
+            RecoverAmmo();
 
             return base.OnBeforeDeath();
         }
@@ -2048,7 +2135,7 @@ namespace Server.Mobiles
 
             PolymorphSpell.StopTimer(this);
             IncognitoSpell.StopTimer(this);
-            DisguiseGump.StopTimer(this);
+            DisguiseTimers.RemoveTimer(this);
 
             EndAction(typeof(PolymorphSpell));
             EndAction(typeof(IncognitoSpell));
@@ -2689,9 +2776,6 @@ namespace Server.Mobiles
                             m_HairModHue = reader.ReadInt();
                             m_BeardModID = reader.ReadInt();
                             m_BeardModHue = reader.ReadInt();
-
-                            // We cannot call SetHairMods( -1, -1 ) here because the items have not yet loaded
-                            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(RevertHair));
                         }
 
                         goto case 9;
@@ -3065,6 +3149,8 @@ namespace Server.Mobiles
                 faction.RemoveMember(this);
 
             BaseHouse.HandleDeletion(this);
+
+            DisguiseTimers.RemoveTimer(this);
         }
 
         public override bool NewGuildDisplay { get { return Server.Guilds.Guild.NewGuildSystem; } }
@@ -4336,7 +4422,7 @@ namespace Server.Mobiles
         {
             if (Core.SE && AllFollowers.Count > 0)
             {
-                for (int i = 0; i < m_AllFollowers.Count; ++i)
+                for (int i = m_AllFollowers.Count - 1; i >= 0; --i)
                 {
                     BaseCreature pet = AllFollowers[i] as BaseCreature;
 
@@ -4349,7 +4435,7 @@ namespace Server.Mobiles
                     if ((pet is PackLlama || pet is PackHorse || pet is Beetle || pet is HordeMinionFamiliar) && (pet.Backpack != null && pet.Backpack.Items.Count > 0))
                         continue;
 
-                    if (!pet.Summoned && !pet.IsBonded)
+                    if (pet is BaseEscortable)
                         continue;
 
                     pet.ControlTarget = null;
@@ -4365,7 +4451,6 @@ namespace Server.Mobiles
 
                     Stabled.Add(pet);
                     m_AutoStabled.Add(pet);
-                    --i;
                 }
             }
         }
@@ -4381,25 +4466,22 @@ namespace Server.Mobiles
                 return;
             }
 
-            for (int i = 0; i < m_AutoStabled.Count; ++i)
+            for (int i = m_AutoStabled.Count - 1; i >= 0; --i)
             {
                 BaseCreature pet = m_AutoStabled[i] as BaseCreature;
 
                 if (pet == null || pet.Deleted)
                 {
                     pet.IsStabled = false;
-                    m_AutoStabled.RemoveAt(i);
+
                     if (Stabled.Contains(pet))
                         Stabled.Remove(pet);
-                    --i;
+
                     continue;
                 }
 
                 if ((Followers + pet.ControlSlots) <= FollowersMax)
                 {
-                    m_AutoStabled.RemoveAt(i);
-                    --i;
-
                     pet.SetControlMaster(this);
 
                     if (pet.Summoned)

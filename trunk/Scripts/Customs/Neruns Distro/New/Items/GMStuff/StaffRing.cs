@@ -12,17 +12,18 @@ namespace Server.Items
 		[Constructable]
 		public StaffRing() : base( 0x108a )
 		{
-			Weight = 0.1;
+			Weight = 1.0;
 			Name = "The Staff Ring";
 			Attributes.NightSight = 1;
+			Attributes.AttackChance = 20;
 			Attributes.LowerRegCost = 100;
 			Attributes.LowerManaCost = 100;
-			Attributes.RegenHits = 200;
-			Attributes.RegenStam = 200;
-			Attributes.RegenMana = 200;
-			Attributes.SpellDamage = 500;
-			Attributes.CastRecovery = 100;
-			Attributes.CastSpeed = 100;
+			Attributes.RegenHits = 12;
+			Attributes.RegenStam = 24;
+			Attributes.RegenMana = 18;
+			Attributes.SpellDamage = 30;
+			Attributes.CastRecovery = 6;
+			Attributes.CastSpeed = 4;
 			LootType = LootType.Blessed;
 		}
 

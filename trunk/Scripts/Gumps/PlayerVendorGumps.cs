@@ -925,12 +925,19 @@ namespace Server.Gumps
 				}
 				case 1: // Female/Male
 				{
-					m_Vendor.Female = !m_Vendor.Female;
-					m_Vendor.BodyValue = m_Vendor.Race.AliveBody( m_Vendor.Female );
-
 					if ( m_Vendor.Female )
+					{
+						m_Vendor.BodyValue = 400;
+						m_Vendor.Female = false;
+					}
+					else
+					{
+						m_Vendor.BodyValue = 401;
+						m_Vendor.Female = true;
+
 						m_Vendor.FacialHairItemID = 0;
-					
+					}
+
 					from.SendGump( new NewPlayerVendorCustomizeGump( m_Vendor ) );
 
 					break;
@@ -996,6 +1003,8 @@ namespace Server.Gumps
 				}
 				default:
 				{
+					int hairhue = 0;
+
 					if ( (info.ButtonID & 0x100) != 0 ) // Hair style selected
 					{
 						int index = info.ButtonID & 0xFF;
@@ -1005,7 +1014,7 @@ namespace Server.Gumps
 						else if ( index >= m_FemaleElfHairStyles.Length && m_Vendor.Race == Race.Elf )
 							return;
 
-						HairOrBeard hairStyle;
+						HairOrBeard hairStyle = m_HairStyles[index];
 
 						if ( m_Vendor.Race == Race.Elf && m_Vendor.Female )
 							hairStyle = m_FemaleElfHairStyles[index];
@@ -1014,9 +1023,14 @@ namespace Server.Gumps
 						else
 							hairStyle = m_HairStyles[index];
 
+						hairhue = m_Vendor.HairHue;
+
 						m_Vendor.HairItemID = 0;
 						m_Vendor.ProcessDelta();
+
 						m_Vendor.HairItemID = hairStyle.ItemID;
+
+						m_Vendor.HairHue = hairhue;
 
 						from.SendGump( new NewPlayerVendorCustomizeGump( m_Vendor ) );
 					}
@@ -1032,9 +1046,14 @@ namespace Server.Gumps
 
 						HairOrBeard beardStyle = m_BeardStyles[index];
 
+						hairhue = m_Vendor.FacialHairHue;
+
 						m_Vendor.FacialHairItemID = 0;
 						m_Vendor.ProcessDelta();
+
 						m_Vendor.FacialHairItemID = beardStyle.ItemID;
+
+						m_Vendor.FacialHairHue = hairhue;
 
 						from.SendGump( new NewPlayerVendorCustomizeGump( m_Vendor ) );
 					}

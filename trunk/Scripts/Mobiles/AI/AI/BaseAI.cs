@@ -1064,6 +1064,8 @@ namespace Server.Mobiles
 				m_Mobile.PlaySound( m_Mobile.GetIdleSound() );
 				m_Mobile.Warmode = true;
 				m_Mobile.Combatant = null;
+				string petname = String.Format( "{0}", m_Mobile.Name );
+				m_Mobile.ControlMaster.SendLocalizedMessage ( 1049671, petname );	//~1_PETNAME~ is now guarding you.
 				break;
 
 				case OrderType.Attack:
@@ -1290,6 +1292,7 @@ namespace Server.Mobiles
 						else
 						{
 							m_Mobile.Warmode = false;
+							m_Mobile.CurrentSpeed = 0.1;
 						}
 					}
 				}
@@ -1458,6 +1461,7 @@ namespace Server.Mobiles
 				m_Mobile.DebugSay( "Nothing to guard from" );
 
 				m_Mobile.Warmode = false;
+				m_Mobile.CurrentSpeed = 0.1;
 
 				WalkMobileRange( controlMaster, 1, false, 0, 1 );
 			}
@@ -1474,8 +1478,8 @@ namespace Server.Mobiles
 			{
 				m_Mobile.DebugSay( "I think he might be dead. He's not anywhere around here at least. That's cool. I'm glad he's dead." );
 
-				m_Mobile.ControlTarget = null;
-				m_Mobile.ControlOrder = OrderType.None;
+				m_Mobile.ControlTarget = m_Mobile.ControlMaster;
+				m_Mobile.ControlOrder = OrderType.Follow;
 
 				if( m_Mobile.FightMode == FightMode.Closest || m_Mobile.FightMode == FightMode.Aggressor )
 				{
@@ -2497,6 +2501,10 @@ namespace Server.Mobiles
 
 					//Ignore anyone under EtherealVoyage
 					if( TransformationSpellHelper.UnderTransformation( m, typeof( EtherealVoyageSpell ) ) )
+						continue;
+
+					// Ignore players with activated honor
+					if ( m is PlayerMobile && ( (PlayerMobile)m ).HonorActive )
 						continue;
 
 					if( acqType == FightMode.Aggressor || acqType == FightMode.Evil )

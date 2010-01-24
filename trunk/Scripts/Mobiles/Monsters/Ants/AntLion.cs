@@ -13,7 +13,6 @@ namespace Server.Mobiles
 			Name = "an ant lion";
 			Body = 787;
 			BaseSoundID = 1006;
-			SpeechHue = 0x3B2;
 
 			SetStr( 296, 320 );
 			SetDex( 81, 105 );
@@ -112,7 +111,7 @@ namespace Server.Mobiles
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.FilthyRich, 1 );
+			AddLoot( LootPack.Average, 2 );
 		}
 
 		public override void OnThink()

@@ -46,6 +46,9 @@ overridemaxtime 10
 *|gaman:bird|direwolf:timberwolf|blackbear:brownbear|llama:horse:ridablellama|||208|936|43|5|5|20|30|30|1|1|1|1|1|0|0
 *|gaman|direwolf:timberwolf|blackbear:brownbear|bird|llama|horse:ridablellama|221|968|34|5|5|20|30|30|1|2|1|1|1|1|2
 ##
+## Isamu-Jima icelands (removed, see Outdoors.map) - since v5.1.9
+##
+##
 ## REVISAR ABAIXO - NOVO FORMATO
 ##
 *|crane:rat||||||192|1014|10|5|5|20|30|30|1|8|0|0|0|0|0
@@ -57,11 +60,6 @@ overridemaxtime 10
 *|crane||||||261|1186|20|5|5|20|30|10|1|4|0|0|0|0|0
 *|crane:rat:bird:giantrat:bullfrog:gianttoad||||||251|1074|10|5|5|20|30|30|1|12|0|0|0|0|0
 *|horse:timberwolf:greywolf:ridablellama:bird:blackbear:direwolf:llama||||||901|264|31|5|5|20|30|30|1|8|0|0|0|0|0
-*|polarbear:walrus:snowleopard||||||926|145|49|5|5|20|30|30|1|8|0|0|0|0|0
-*|polarbear:walrus:snowleopard||||||879|128|44|5|5|20|30|30|1|8|0|0|0|0|0
-*|polarbear:walrus:snowleopard||||||914|55|36|5|5|20|30|30|1|8|0|0|0|0|0
-*|polarbear:walrus:snowleopard||||||947|103|46|5|5|20|30|30|1|8|0|0|0|0|0
-*|polarbear:walrus:snowleopard||||||976|144|35|5|5|20|30|30|1|8|0|0|0|0|0
 *|crane||||||243|563|42|5|5|20|15|15|1|2|0|0|0|0|0
 *|horse:timberwolf:greywolf:ridablellama:bird:blackbear:direwolf:llama||||||812|218|41|5|5|20|30|30|1|8|0|0|0|0|0
 *|direwolf:timberwolf:mongbat:blackbear:brownbear:bird:llama:horse:ridablellama:greywolf||||||384|460|32|5|5|20|30|30|1|8|0|0|0|0|0

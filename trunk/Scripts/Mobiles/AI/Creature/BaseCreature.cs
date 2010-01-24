@@ -11,6 +11,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.ContextMenus;
 using Server.Engines.Quests;
+using Server.Engines.PartySystem;
 using Server.Factions;
 using Server.Spells.Bushido;
 using Server.Spells.Spellweaving;
@@ -771,6 +772,9 @@ namespace Server.Mobiles
             if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
                 return false;
 
+            if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
+                return false;
+
             BaseCreature c = (BaseCreature)m;
 
             return (m_iTeam != c.m_iTeam || ((m_bSummoned || m_bControlled) != (c.m_bSummoned || c.m_bControlled))/* || c.Combatant == this*/ );
@@ -1226,6 +1230,9 @@ namespace Server.Mobiles
             if (m_ReceivedHonorContext != null)
                 m_ReceivedHonorContext.OnTargetDamaged(from, amount);
 
+            if (willKill && from is PlayerMobile)
+                Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(((PlayerMobile)from).RecoverAmmo));
+
             base.OnDamage(amount, from, willKill);
         }
 
@@ -1265,7 +1272,6 @@ namespace Server.Mobiles
         {
         }
 
-        // Mondain's Legacy mod
         public virtual void OnCarve(Mobile from, Corpse corpse, Item with)
         {
             int feathers = Feathers;
@@ -1318,44 +1324,45 @@ namespace Server.Mobiles
                     from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
                 }
 
-                #region Mondain's Legacy
-                if (hides != 0 && with is ButchersWarCleaver)
+                if (hides != 0)
                 {
-                    Item leather = null;
-
-                    if (HideType == HideType.Regular)
-                        leather = new Leather(hides);
-                    else if (HideType == HideType.Spined)
-                        leather = new SpinedLeather(hides);
-                    else if (HideType == HideType.Horned)
-                        leather = new HornedLeather(hides);
-                    else if (HideType == HideType.Barbed)
-                        leather = new BarbedLeather(hides);
-
-                    if (leather != null)
+                    Item holding = from.Weapon as Item;
+                    if (Core.AOS && (holding is SkinningKnife || holding is ButchersWarCleaver || with is ButchersWarCleaver ))
                     {
-                        if (!from.PlaceInBackpack(leather))
-                        {
-                            leather.MoveToWorld(from.Location, from.Map);
-                            from.SendLocalizedMessage(1077182); // Your backpack is too full, and it falls to the ground.	
-                        }
-                        else
-                            from.SendLocalizedMessage(1073555); // You skin it and place the cut-up hides in your backpack.		
-                    }
-                }
-                #endregion
-                else if (hides != 0)
-                {
-                    if (HideType == HideType.Regular)
-                        corpse.DropItem(new Hides(hides));
-                    else if (HideType == HideType.Spined)
-                        corpse.DropItem(new SpinedHides(hides));
-                    else if (HideType == HideType.Horned)
-                        corpse.DropItem(new HornedHides(hides));
-                    else if (HideType == HideType.Barbed)
-                        corpse.DropItem(new BarbedHides(hides));
+                        Item leather = null;
 
-                    from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
+                        switch (HideType)
+                        {
+                            case HideType.Regular: leather = new Leather(hides); break;
+                            case HideType.Spined: leather = new SpinedLeather(hides); break;
+                            case HideType.Horned: leather = new HornedLeather(hides); break;
+                            case HideType.Barbed: leather = new BarbedLeather(hides); break;
+                        }
+
+                        if (leather != null)
+                        {
+                            if (!from.PlaceInBackpack(leather))
+                            {
+                                corpse.DropItem(leather);
+                                from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
+                            }
+                            else
+                                from.SendLocalizedMessage(1073555); // You skin it and place the cut-up hides in your backpack.
+                        }
+                    }
+                    else
+                    {
+                        if (HideType == HideType.Regular)
+                            corpse.DropItem(new Hides(hides));
+                        else if (HideType == HideType.Spined)
+                            corpse.DropItem(new SpinedHides(hides));
+                        else if (HideType == HideType.Horned)
+                            corpse.DropItem(new HornedHides(hides));
+                        else if (HideType == HideType.Barbed)
+                            corpse.DropItem(new BarbedHides(hides));
+
+                        from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
+                    }
                 }
 
                 if (scales != 0)
@@ -1997,7 +2004,7 @@ namespace Server.Mobiles
 
                             if (master != null && master == from)	//So friends can't start the bonding process
                             {
-                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill || OverrideBondingReqs())
+                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill || OverrideBondingReqs() || (Core.ML && master.Skills[SkillName.AnimalTaming].Value >= m_dMinTameSkill))
                                 {
                                     if (BondingBegin == DateTime.MinValue)
                                     {
@@ -2657,7 +2664,11 @@ namespace Server.Mobiles
                 p = PoisonImpl.IncreaseLevel(p);
 
             if (p != null && HitPoisonChance >= Utility.RandomDouble())
+            {
                 defender.ApplyPoison(this, p);
+                if (this.Controlled)
+                    this.CheckSkill(SkillName.Poisoning, 0, this.Skills[SkillName.Poisoning].Cap);
+            }
 
             if (AutoDispel && defender is BaseCreature && ((BaseCreature)defender).IsDispellable && AutoDispelChance > Utility.RandomDouble())
                 Dispel(defender);
@@ -4473,6 +4484,9 @@ namespace Server.Mobiles
                     int totalKarma = -Karma / 100;
 
                     List<DamageStore> list = GetLootingRights(this.DamageEntries, this.HitsMax);
+                    List<Mobile> titles = new List<Mobile>();
+                    List<int> fame = new List<int>();
+                    List<int> karma = new List<int>();
 
                     bool givenQuestKill = false;
                     bool givenFactionKill = false;
@@ -4486,8 +4500,41 @@ namespace Server.Mobiles
                         if (!ds.m_HasRight)
                             continue;
 
-                        Titles.AwardFame(ds.m_Mobile, totalFame, true);
-                        Titles.AwardKarma(ds.m_Mobile, totalKarma, true);
+                        Party party = Engines.PartySystem.Party.Get(ds.m_Mobile);
+
+                        if (party != null)
+                        {
+                            int divedFame = totalFame / party.Members.Count;
+                            int divedKarma = totalKarma / party.Members.Count;
+
+                            for (int j = 0; j < party.Members.Count; ++j)
+                            {
+                                PartyMemberInfo info = party.Members[j] as PartyMemberInfo;
+
+                                if (info != null && info.Mobile != null)
+                                {
+                                    int index = titles.IndexOf(info.Mobile);
+
+                                    if (index == -1)
+                                    {
+                                        titles.Add(info.Mobile);
+                                        fame.Add(divedFame);
+                                        karma.Add(divedKarma);
+                                    }
+                                    else
+                                    {
+                                        fame[index] += divedFame;
+                                        karma[index] += divedKarma;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            titles.Add(ds.m_Mobile);
+                            fame.Add(totalFame);
+                            karma.Add(totalKarma);
+                        }
 
                         OnKilledBy(ds.m_Mobile);
 
@@ -4528,6 +4575,11 @@ namespace Server.Mobiles
                             QuestHelper.CheckCreature(pm, this);
                             #endregion
                         }
+                    }
+                    for (int i = 0; i < titles.Count; ++i)
+                    {
+                        Titles.AwardFame(titles[i], fame[i], true);
+                        Titles.AwardKarma(titles[i], karma[i], true);
                     }
                 }
 

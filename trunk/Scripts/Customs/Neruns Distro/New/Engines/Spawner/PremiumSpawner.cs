@@ -1,6 +1,6 @@
 ///////////////////////////
 //       By Nerun        //
-//    Engine v5.1.4      //
+//    Engine v5.1.9      //
 ///////////////////////////
 
 using System;
@@ -138,35 +138,35 @@ namespace Server.Mobiles
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int SubCountA
+		public int CountA
 		{
 			get { return m_SubCountA; }
 			set { m_SubCountA = value; InvalidateProperties(); }
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int SubCountB
+		public int CountB
 		{
 			get { return m_SubCountB; }
 			set { m_SubCountB = value; InvalidateProperties(); }
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int SubCountC
+		public int CountC
 		{
 			get { return m_SubCountC; }
 			set { m_SubCountC = value; InvalidateProperties(); }
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int SubCountD
+		public int CountD
 		{
 			get { return m_SubCountD; }
 			set { m_SubCountD = value; InvalidateProperties(); }
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int SubCountE
+		public int CountE
 		{
 			get { return m_SubCountE; }
 			set { m_SubCountE = value; InvalidateProperties(); }
@@ -357,7 +357,7 @@ namespace Server.Mobiles
 			m_HomeRange = homeRange;
 			m_SpawnRange = ((spawnRange > homeRange)? homeRange : spawnRange);
 			m_SpawnID = spawnID;
-			m_PlayerRangeSensitive = false; //SmartPRS
+			m_PlayerRangeSensitive = false; //SmartPRS off
 			m_CreaturesName = creaturesName;
 			m_SubSpawnerA = subSpawnerAA;
 			m_SubSpawnerB = subSpawnerBB;
@@ -400,8 +400,8 @@ namespace Server.Mobiles
 				list.Add( 1060662, "SpawnRange\t{0}", m_SpawnRange.ToString() );
 				list.Add( 1060663, "SpawnID\t{0}", m_SpawnID.ToString() );
 
-				list.Add( 1060658, "group\t{0}", m_Group );
-				list.Add( 1060659, "team\t{0}", m_Team );
+				//list.Add( 1060658, "group\t{0}", m_Group );
+				//list.Add( 1060659, "team\t{0}", m_Team );
 				list.Add( 1060660, "speed\t{0} to {1}", m_MinDelay, m_MaxDelay );
 
 				for ( int i = 0; i < 3 && i < m_CreaturesName.Count; ++i )
@@ -928,7 +928,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			else  // SmartPRS off
+			else  // if SmartPRS off
 			{
 				this.SmartPRS = false;
 

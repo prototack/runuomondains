@@ -1073,7 +1073,6 @@ namespace Server.Items
 			}
 			else if ( dead is BaseCreature )
 			{
-				// Mondain's Legacy mod
 				((BaseCreature)dead).OnCarve( from, this, item );
 			}
 			else

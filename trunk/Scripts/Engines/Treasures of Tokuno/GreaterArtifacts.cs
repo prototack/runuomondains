@@ -506,7 +506,7 @@ namespace Server.Items
 			
 			switch ( version )
 			{
-				case 1: m_Type = (PigmentType)reader.ReadEncodedInt(); break;
+				case 1: Type = (PigmentType)reader.ReadEncodedInt(); break;
 				case 0: break;
 			}
 		}
