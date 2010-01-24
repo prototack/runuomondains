@@ -59,13 +59,13 @@ namespace Server.Gumps
 			AddLabel( 20, 101, 200, "SignGen" );
 			AddLabel( 20, 126, 200, "TelGen" );
 			AddLabel( 20, 151, 200, "GenGauntlet" );
-			AddLabel( 20, 176, 200, "GenChampions" );
+			AddLabel( 20, 176, 246, "GenChampions" );
 			AddLabel( 20, 201, 200, "GenKhaldun" );
 			AddLabel( 20, 226, 200, "GenerateFactions" );
 			AddLabel( 20, 251, 200, "GenStealArties" );
 			AddLabel( 20, 276, 200, "SHTelGen" );
 			AddLabel( 20, 301, 200, "SecretLocGen" );
-			AddLabel( 20, 326, 200, "DecorateML" );
+			AddLabel( 20, 326, 246, "DecorateML" );
 	//Options
 			AddCheck( 160, 23, 210, 211, true, 101 );
 			AddCheck( 160, 48, 210, 211, true, 102 );

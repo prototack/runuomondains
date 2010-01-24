@@ -1009,6 +1009,11 @@ namespace Server.Spells
 					//from.SendMessage(String.Format("You Leeched {0} Mana", manaLeech));
 				}
 			}
+			if ( context != null && context.Type == typeof( VampiricEmbraceSpell ) )
+			{
+				from.Hits += AOS.Scale( damageGiven, 20 );
+				from.PlaySound( 0x44D );
+			}
 		}
 
 		public static void Heal( int amount, Mobile target, Mobile from )
@@ -1204,6 +1209,11 @@ namespace Server.Spells
 			else if( !caster.CanBeginAction( typeof( PolymorphSpell ) ) )
 			{
 				caster.SendLocalizedMessage( 1061628 ); // You can't do that while polymorphed.
+			}
+			else if ( DisguiseTimers.IsDisguised( caster ) )
+			{
+				caster.SendLocalizedMessage( 1061631 ); // You can't do that while disguised.
+				return false;
 			}
 			else if( AnimalForm.UnderTransformation( caster ) )
 			{

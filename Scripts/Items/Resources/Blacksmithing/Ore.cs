@@ -308,12 +308,15 @@ namespace Server.Items
 						return;
 					}
 
+					if ( m_Ore.Amount <= 1 && m_Ore.ItemID == 0x19B7 )
+					{
+						from.SendLocalizedMessage( 501987 ); // There is not enough metal-bearing ore in this pile to make an ingot.
+						return;
+					}
+
 					if ( from.CheckTargetSkill( SkillName.Mining, targeted, minSkill, maxSkill ) )
 					{
 						int toConsume = m_Ore.Amount;
-						
-						if ( m_Ore.ItemID == 0x19B7 && (toConsume / 2 == 0 || toConsume != (toConsume / 2) * 2) ) // I predict here, that unpair int halfed returns 0.
-							--toConsume;
 
 						if ( toConsume <= 0 )
 						{

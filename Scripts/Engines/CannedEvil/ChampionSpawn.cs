@@ -602,7 +602,7 @@ namespace Server.Engines.CannedEvil
                                     }
                                 }
 
-                                if (Map == Map.Ilshenar || Map == Map.Tokuno)
+                                if (Map == Map.Ilshenar || Map == Map.Tokuno || Map == Map.Malas)
                                 {
                                     if (Utility.RandomDouble() < 0.0015)
                                     {

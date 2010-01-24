@@ -240,7 +240,7 @@ namespace Server.Misc
 					skill.BaseFixedPoint += toGain;
 				}
 			}
-				
+
 			#region Mondain's Legacy
 			if ( from is PlayerMobile )
 				Server.Engines.Quests.QuestHelper.CheckSkill( (PlayerMobile) from, skill );
@@ -344,6 +344,7 @@ namespace Server.Misc
 		}
 
 		private static TimeSpan m_StatGainDelay = TimeSpan.FromMinutes( 15.0 );
+		private static TimeSpan m_PetStatGainDelay = TimeSpan.FromMinutes( 5.0 );
 
 		public static void GainStat( Mobile from, Stat stat )
 		{
@@ -351,7 +352,11 @@ namespace Server.Misc
 			{
 				case Stat.Str:
 				{
-					if( (from.LastStrGain + m_StatGainDelay) >= DateTime.Now )
+					if ( from is BaseCreature && ((BaseCreature)from).Controlled ) {
+						if ( (from.LastStrGain + m_PetStatGainDelay) >= DateTime.Now )
+							return;
+					}
+					else if( (from.LastStrGain + m_StatGainDelay) >= DateTime.Now )
 						return;
 
 					from.LastStrGain = DateTime.Now;
@@ -359,7 +364,11 @@ namespace Server.Misc
 				}
 				case Stat.Dex:
 				{
-					if( (from.LastDexGain + m_StatGainDelay) >= DateTime.Now )
+					if ( from is BaseCreature && ((BaseCreature)from).Controlled ) {
+						if ( (from.LastDexGain + m_PetStatGainDelay) >= DateTime.Now )
+							return;
+					}
+					else if( (from.LastDexGain + m_StatGainDelay) >= DateTime.Now )
 						return;
 
 					from.LastDexGain = DateTime.Now;
@@ -367,7 +376,12 @@ namespace Server.Misc
 				}
 				case Stat.Int:
 				{
-					if( (from.LastIntGain + m_StatGainDelay) >= DateTime.Now )
+					if ( from is BaseCreature && ((BaseCreature)from).Controlled ) {
+						if ( (from.LastIntGain + m_PetStatGainDelay) >= DateTime.Now )
+							return;
+					}
+
+					else if( (from.LastIntGain + m_StatGainDelay) >= DateTime.Now )
 						return;
 
 					from.LastIntGain = DateTime.Now;
