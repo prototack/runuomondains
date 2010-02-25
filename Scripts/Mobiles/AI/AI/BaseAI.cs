@@ -1551,6 +1551,8 @@ namespace Server.Mobiles
 			if( m_Mobile.DeleteOnRelease || m_Mobile.IsDeadPet )
 				m_Mobile.Delete();
 
+			m_Mobile.BeginDeleteTimer();
+
 			return true;
 		}
 
