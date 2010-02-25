@@ -106,6 +106,7 @@ namespace Server.Mobiles
 		public override Poison PoisonImmune{ get{ return Poison.Greater; } }
 		public override Poison HitPoison{ get{ return Poison.Greater; } }
 		public override FoodType FavoriteFood{ get{ return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
+		public override bool CanAngerOnTame { get { return true; } }
 
 		public override void OnGaveMeleeAttack( Mobile defender )
 		{
@@ -134,19 +135,19 @@ namespace Server.Mobiles
 				if ( Core.ML )
 				{
 					if ( defender.PhysicalResistance > 0 )
-						mods.Add( new ResistanceMod( ResistanceType.Physical, defender.PhysicalResistance / 2 ) );
+						mods.Add( new ResistanceMod( ResistanceType.Physical, -(defender.PhysicalResistance / 2) ) );
 
 					if ( defender.FireResistance > 0 )
-						mods.Add( new ResistanceMod( ResistanceType.Fire, defender.FireResistance / 2 ) );
+						mods.Add( new ResistanceMod( ResistanceType.Fire, -(defender.FireResistance / 2) ) );
 
 					if ( defender.ColdResistance > 0 )
-						mods.Add( new ResistanceMod( ResistanceType.Cold, defender.ColdResistance / 2 ) );
+						mods.Add( new ResistanceMod( ResistanceType.Cold, -(defender.ColdResistance / 2) ) );
 
 					if ( defender.PoisonResistance > 0 )
-						mods.Add( new ResistanceMod( ResistanceType.Poison, defender.PoisonResistance / 2 ) );
+						mods.Add( new ResistanceMod( ResistanceType.Poison, -(defender.PoisonResistance / 2) ) );
 
 					if ( defender.EnergyResistance > 0 )
-						mods.Add( new ResistanceMod( ResistanceType.Energy, defender.EnergyResistance / 2 ) );
+						mods.Add( new ResistanceMod( ResistanceType.Energy, -(defender.EnergyResistance / 2) ) );
 				}
 				else
 				{

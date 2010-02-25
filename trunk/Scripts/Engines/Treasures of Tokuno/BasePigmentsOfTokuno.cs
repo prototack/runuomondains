@@ -5,7 +5,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-	public class BasePigmentsOfTokuno : Item, IUsesRemaining
+	public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
 	{
 		public override int LabelNumber { get { return 1070933; } } // Pigments of Tokuno
 		

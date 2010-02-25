@@ -14,6 +14,12 @@ namespace Server.Misc
 			get { return "TreasuresOfTokuno Persistance - Internal"; }
 		}
 
+		public static void Initialize()
+		{
+			if ( m_Instance == null )
+				new TreasuresOfTokunoPersistance();
+		}
+
 		public TreasuresOfTokunoPersistance() : base( 1 )
 		{
 			Movable = false;

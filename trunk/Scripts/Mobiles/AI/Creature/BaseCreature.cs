@@ -331,6 +331,48 @@ namespace Server.Mobiles
         }
         #endregion
 
+        #region Delete Previously Tamed Timer
+        private DeleteTimer m_DeleteTimer;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TimeSpan DeleteTimeLeft
+        {
+            get
+            {
+                if (m_DeleteTimer != null && m_DeleteTimer.Running)
+                    return m_DeleteTimer.Next - DateTime.Now;
+
+                return TimeSpan.Zero;
+            }
+        }
+
+        private class DeleteTimer : Timer
+        {
+            private Mobile m;
+
+            public DeleteTimer(Mobile creature, TimeSpan delay)
+                : base(delay)
+            {
+                m = creature;
+                Priority = TimerPriority.OneMinute;
+            }
+
+            protected override void OnTick()
+            {
+                m.Delete();
+            }
+        }
+
+        public void BeginDeleteTimer()
+        {
+            if (!(this is BaseEscortable) && !Summoned && !Deleted)
+            {
+                m_DeleteTimer = new DeleteTimer(this, TimeSpan.FromDays(3.0));
+                m_DeleteTimer.Start();
+            }
+        }
+        #endregion
+
         public virtual double WeaponAbilityChance { get { return 0.4; } }
 
         public virtual WeaponAbility GetWeaponAbility()
@@ -466,6 +508,9 @@ namespace Server.Mobiles
         public virtual int BreathPoisonDamage { get { return 0; } }
         public virtual int BreathEnergyDamage { get { return 0; } }
 
+        // Is immune to breath damages
+        public virtual bool BreathImmune { get { return false; } }
+
         // Effect details and sound
         public virtual int BreathEffectItemID { get { return 0x36D4; } }
         public virtual int BreathEffectSpeed { get { return 5; } }
@@ -536,6 +581,9 @@ namespace Server.Mobiles
         public virtual void BreathDamage_Callback(object state)
         {
             Mobile target = (Mobile)state;
+
+            if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
+                return;
 
             if (CanBeHarmful(target))
             {
@@ -1583,6 +1631,9 @@ namespace Server.Mobiles
             #region Mondain's Legacy version 17
             writer.Write((bool)m_Allured);
             #endregion
+
+            // Version 18
+            writer.Write(DeleteTimeLeft);
         }
 
         private static double[] m_StandardActiveSpeeds = new double[]
@@ -1788,6 +1839,20 @@ namespace Server.Mobiles
             {
                 m_RemoveIfUntamed = reader.ReadBool();
                 m_RemoveStep = reader.ReadInt();
+            }
+
+            TimeSpan deleteTime = TimeSpan.Zero;
+
+            if (version >= 18)
+                deleteTime = reader.ReadTimeSpan();
+
+            if (deleteTime > TimeSpan.Zero || LastOwner != null && !Controlled && !IsStabled)
+            {
+                if (deleteTime == TimeSpan.Zero)
+                    deleteTime = TimeSpan.FromDays(3.0);
+
+                m_DeleteTimer = new DeleteTimer(this, deleteTime);
+                m_DeleteTimer.Start();
             }
 
             #region Mondain's Legacy version 15
@@ -2682,6 +2747,12 @@ namespace Server.Mobiles
                     m_AI.m_Timer.Stop();
 
                 m_AI = null;
+            }
+
+            if (m_DeleteTimer != null)
+            {
+                m_DeleteTimer.Stop();
+                m_DeleteTimer = null;
             }
 
             FocusMob = null;
@@ -4544,7 +4615,7 @@ namespace Server.Mobiles
                             Faction.HandleDeath(this, ds.m_Mobile);
                         }
 
-                        if (!givenToTKill)
+                        if (!givenToTKill && Map == Map.Tokuno)
                         {
                             givenToTKill = true;
                             TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
@@ -4691,6 +4762,12 @@ namespace Server.Mobiles
                 ControlTarget = null;
                 ControlOrder = OrderType.Come;
                 Guild = null;
+
+                if (m_DeleteTimer != null)
+                {
+                    m_DeleteTimer.Stop();
+                    m_DeleteTimer = null;
+                }
 
                 Delta(MobileDelta.Noto);
             }

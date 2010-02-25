@@ -470,13 +470,16 @@ namespace Server.Mobiles
 
             IPooledEnumerable mobiles = Map.GetMobilesInRange(location, 0);
 
-            if (mobiles.GetEnumerator().MoveNext())
+            foreach (Mobile m in mobiles)
             {
-                mobiles.Free();
-                return false;
+                if (m.Z >= location.Z && m.Z < location.Z + 16)
+                {
+                    mobiles.Free();
+                    return false;
+                }
             }
-            else
-                mobiles.Free();
+
+            mobiles.Free();
 
             BounceInfo bi = item.GetBounce();
 
@@ -1459,6 +1462,20 @@ namespace Server.Mobiles
                         list.Add(new CallbackEntry(6229, new ContextCallback(ShowChangeTitle)));
                 }
                 #endregion
+            }
+            if (from != this)
+            {
+
+                if (Alive && Core.Expansion >= Expansion.AOS)
+                    list.Add(new AddToPartyEntry(from, this));
+
+                BaseHouse curhouse = BaseHouse.FindHouseAt(this);
+
+                if (curhouse != null)
+                {
+                    if (Alive && Core.Expansion >= Expansion.AOS && curhouse.IsAosRules && curhouse.IsFriend(from))
+                        list.Add(new EjectPlayerEntry(from, this));
+                }
             }
         }
 
