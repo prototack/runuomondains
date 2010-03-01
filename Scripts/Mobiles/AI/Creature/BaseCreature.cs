@@ -1517,7 +1517,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)17); // version
+            writer.Write((int)18); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
