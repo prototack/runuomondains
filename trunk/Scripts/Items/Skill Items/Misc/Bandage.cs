@@ -489,10 +489,18 @@ namespace Server.Items
 				{
 					if ( Core.AOS && GetPrimarySkill( patient ) == SkillName.Veterinary )
 					{
-						//if ( dex >= 40 )
 							seconds = 2.0;
-						//else
-						//	seconds = 3.0;
+					}
+					else if ( Core.AOS )
+					{
+						if (dex < 204)
+						{		
+							seconds = 3.2-(Math.Sin((double)dex/130)*2.5) + resDelay;
+						}
+						else
+						{
+							seconds = 0.7 + resDelay;
+						}
 					}
 					else
 					{
@@ -509,8 +517,9 @@ namespace Server.Items
 
 				if ( context != null )
 					context.StopHeal();
-
-				context = new BandageContext( healer, patient, TimeSpan.FromSeconds( seconds ), enhanced );
+				seconds *= 1000;
+				
+				context = new BandageContext( healer, patient, TimeSpan.FromMilliseconds( seconds ), enhanced );
 
 				m_Table[healer] = context;
 

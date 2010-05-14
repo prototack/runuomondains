@@ -980,7 +980,11 @@ namespace Server.Spells
 				WeightOverloading.DFA = dfa;
 
 				int damageGiven = AOS.Damage( target, from, iDamage, phys, fire, cold, pois, nrgy );
-				DoLeech( damageGiven, from, target );
+
+				if ( from != null ) // sanity check
+				{
+					DoLeech( damageGiven, from, target );
+				}
 
 				WeightOverloading.DFA = DFAlgorithm.Standard;
 			}
@@ -996,23 +1000,24 @@ namespace Server.Spells
 		public static void DoLeech( int damageGiven, Mobile from, Mobile target )
 		{
 			TransformContext context = TransformationSpellHelper.GetContext( from );
-			if ( context != null && context.Type == typeof( WraithFormSpell ) )
+
+			if ( context != null ) /* cleanup */
 			{
-				int wraithLeech = ( 5 + (int)( ( 15 * from.Skills.SpiritSpeak.Value ) / 100 ) ); // Wraith form gives 5-20% mana leech
-				int manaLeech = AOS.Scale( damageGiven, wraithLeech );
-				if ( manaLeech != 0 )
+				if ( context.Type == typeof( WraithFormSpell ) )
 				{
-					// Mana leeched by the Wraith Form spell is actually stolen, not just leeched.
-					target.Mana -= manaLeech;
-					from.Mana += manaLeech;
-					from.PlaySound( 0x44D );
-					//from.SendMessage(String.Format("You Leeched {0} Mana", manaLeech));
+					int wraithLeech = ( 5 + (int)( ( 15 * from.Skills.SpiritSpeak.Value ) / 100 ) ); // Wraith form gives 5-20% mana leech
+					int manaLeech = AOS.Scale( damageGiven, wraithLeech );
+					if ( manaLeech != 0 )
+					{
+						from.Mana += manaLeech;
+						from.PlaySound( 0x44D );
+					}
 				}
-			}
-			if ( context != null && context.Type == typeof( VampiricEmbraceSpell ) )
-			{
-				from.Hits += AOS.Scale( damageGiven, 20 );
-				from.PlaySound( 0x44D );
+				else if ( context.Type == typeof( VampiricEmbraceSpell ) )
+				{
+					from.Hits += AOS.Scale( damageGiven, 20 );
+					from.PlaySound( 0x44D );
+				}
 			}
 		}
 
@@ -1098,7 +1103,11 @@ namespace Server.Spells
 				WeightOverloading.DFA = m_DFA;
 
 				int damageGiven = AOS.Damage( m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy );
-				DoLeech( damageGiven, m_From, m_Target );
+
+				if ( m_From != null ) // sanity check
+				{
+					DoLeech( damageGiven, m_From, m_Target );
+				}
 
 				WeightOverloading.DFA = DFAlgorithm.Standard;
 

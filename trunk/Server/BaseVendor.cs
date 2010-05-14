@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: BaseVendor.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: BaseVendor.cs 511 2010-04-25 06:09:43Z mark $
  *
  ***************************************************************************/
 
@@ -24,18 +24,19 @@ using Server.Items;
 using Server.Network;
 using Server.ContextMenus;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
-	public class BuyItemStateComparer : IComparer
+	public class BuyItemStateComparer : IComparer<BuyItemState>
 	{
-		public int Compare( object l, object r )
+		public int Compare( BuyItemState l, BuyItemState r )
 		{
 			if ( l == null && r == null ) return 0;
 			if ( l == null ) return -1;
 			if ( r == null ) return 1;
 
-			return ((BuyItemState)l).MySerial.CompareTo( ((BuyItemState)r).MySerial );
+			return l.MySerial.CompareTo( r.MySerial );
 		}
 	}
 

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Utility.cs 312 2009-02-21 21:58:45Z mark $
+ *   $Id: Utility.cs 511 2010-04-25 06:09:43Z mark $
  *
  ***************************************************************************/
 
@@ -148,7 +148,7 @@ namespace Server
 
         public static bool IPMatchCIDR( string cidr, IPAddress ip )
         {
-			if ( ip.AddressFamily == AddressFamily.InterNetworkV6 )
+			if ( ip == null || ip.AddressFamily == AddressFamily.InterNetworkV6 )
 				return false;	//Just worry about IPv4 for now
 
 
@@ -522,7 +522,7 @@ namespace Server
         #endregion
 
         #region Get[Something]
-        public static int GetInt32( string intString, int defaultValue )
+        public static int GetXMLInt32( string intString, int defaultValue )
 		{
 			try
 			{
@@ -530,18 +530,15 @@ namespace Server
 			}
 			catch
 			{
-				try
-				{
-					return Convert.ToInt32( intString );
-				}
-				catch
-				{
-					return defaultValue;
-				}
+                int val;
+                if ( int.TryParse( intString, out val ) )
+                    return val;
+
+                return defaultValue;
 			}
 		}
 
-		public static DateTime GetDateTime( string dateTimeString, DateTime defaultValue )
+		public static DateTime GetXMLDateTime( string dateTimeString, DateTime defaultValue )
 		{
 			try
 			{
@@ -558,7 +555,7 @@ namespace Server
 			}
 		}
 
-		public static TimeSpan GetTimeSpan( string timeSpanString, TimeSpan defaultValue )
+		public static TimeSpan GetXMLTimeSpan( string timeSpanString, TimeSpan defaultValue )
 		{
 			try
 			{

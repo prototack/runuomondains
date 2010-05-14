@@ -756,22 +756,25 @@ namespace Server.Engines.Craft
 			AddSkill( index, SkillName.Tailoring, 50.0, 55.0 );
 			AddRes( index, typeof( Cloth ), 1044286, 60, 1044287 );
 
-			#region Mondain's Legacy
-			SetSubRes( typeof( Log ), 1072643 );
 
-			AddSubRes( typeof( Log ),			1027136, 0.0, 1072653 );
-			AddSubRes( typeof( OakLog ),		1072533, 65.0, 1072653 );
-			AddSubRes( typeof( AshLog ),		1072534, 80.0, 1072653 );
-			AddSubRes( typeof( YewLog ),		1072535, 95.0, 1072653 );
-			AddSubRes( typeof( HeartwoodLog ),	1072536, 100.0, 1072653 );
-			AddSubRes( typeof( BloodwoodLog ),	1072538, 100.0, 1072653 );
-			AddSubRes( typeof( FrostwoodLog ),	1072539, 100.0, 1072653 );
-
-			CanEnhance = Core.ML;
-			#endregion
 
 			MarkOption = true;
 			Repair = Core.AOS;
+			#region Mondain's Legacy
+			CanEnhance = Core.ML;
+			#endregion
+
+			SetSubRes( typeof( Log ), 1072643 );
+
+			// Add every material you want the player to be able to choose from
+			// This will override the overridable material	TODO: Verify the required skill amount
+			AddSubRes( typeof( Log ), 1072643, 00.0, 1044041, 1072652 );
+			AddSubRes( typeof( OakLog ), 1072644, 65.0, 1044041, 1072652 );
+			AddSubRes( typeof( AshLog ), 1072645, 80.0, 1044041, 1072652 );
+			AddSubRes( typeof( YewLog ), 1072646, 95.0, 1044041, 1072652 );
+			AddSubRes( typeof( HeartwoodLog ), 1072647, 100.0, 1044041, 1072652 );
+			AddSubRes( typeof( BloodwoodLog ), 1072648, 100.0, 1044041, 1072652 );
+			AddSubRes( typeof( FrostwoodLog ), 1072649, 100.0, 1044041, 1072652 );
 		}
 	}
 }

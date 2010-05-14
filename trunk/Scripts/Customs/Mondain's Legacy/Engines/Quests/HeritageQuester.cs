@@ -45,9 +45,9 @@ namespace Server.Engines.Quests
 	
 	public abstract class HeritageQuester : BaseVendor
 	{
-		#region Vendor stuff		
-		private ArrayList m_SBInfos = new ArrayList();
-		protected override ArrayList SBInfos{ get { return m_SBInfos; } }		
+        #region Vendor stuff
+        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }		
 		public override bool IsActiveVendor{ get{ return false; } }		
 		public override void InitSBInfo() {}
 		#endregion

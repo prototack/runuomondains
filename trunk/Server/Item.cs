@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Item.cs 274 2007-12-17 20:41:34Z mark $
+ *   $Id: Item.cs 511 2010-04-25 06:09:43Z mark $
  *
  ***************************************************************************/
 
@@ -1156,6 +1156,11 @@ namespace Server
 			else if ( m_Parent is Mobile )
 				((Mobile)m_Parent).GetChildNameProperties( list, item );
 		}
+
+        public virtual bool IsChildVisibleTo( Mobile m, Item child )
+        {
+            return true;
+        }
 
 		public void Bounce( Mobile from )
 		{

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Skills.cs 73 2006-08-19 23:24:47Z asayre $
+ *   $Id: Skills.cs 511 2010-04-25 06:09:43Z mark $
  *
  ***************************************************************************/
 
@@ -23,7 +23,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Server.Network;
-using System.Xml;
 
 namespace Server
 {
