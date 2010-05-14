@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Items;
 
 namespace Server.Mobiles
 {
 	public class SBMage : SBInfo
 	{
-		private ArrayList m_BuyInfo = new InternalBuyInfo();
+		private List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
 		private IShopSellInfo m_SellInfo = new InternalSellInfo();
 
 		public SBMage()
@@ -14,9 +14,9 @@ namespace Server.Mobiles
 		}
 
 		public override IShopSellInfo SellInfo { get { return m_SellInfo; } }
-		public override ArrayList BuyInfo { get { return m_BuyInfo; } }
+		public override List<GenericBuyInfo> BuyInfo { get { return m_BuyInfo; } }
 
-		public class InternalBuyInfo : ArrayList
+		public class InternalBuyInfo : List<GenericBuyInfo>
 		{
 			public InternalBuyInfo()
 			{
@@ -91,6 +91,16 @@ namespace Server.Mobiles
 				Add( typeof( Nightshade ), 2 ); 
 				Add( typeof( SpidersSilk ), 2 ); 
 				Add( typeof( SulfurousAsh ), 2 ); 
+
+				if ( Core.AOS )
+				{
+					Add( typeof( BatWing ), 1 );
+					Add( typeof( DaemonBlood ), 3 );
+					Add( typeof( PigIron ), 2 );
+					Add( typeof( NoxCrystal ), 3 );
+					Add( typeof( GraveDust ), 1 );
+				}
+
 				Add( typeof( RecallRune ), 13 );
 				Add( typeof( Spellbook ), 25 );
 

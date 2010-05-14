@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ScriptCompiler.cs 353 2009-08-07 07:07:15Z mark $
+ *   $Id: ScriptCompiler.cs 511 2010-04-25 06:09:43Z mark $
  *
  ***************************************************************************/
 
@@ -126,6 +126,7 @@ namespace Server
 					}
 
 					bin.Write( debug );
+                    bin.Write( Core.Version.ToString() );
 
 					ms.Position = 0;
 

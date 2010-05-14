@@ -108,7 +108,7 @@ namespace Server.Mobiles
 			if ( item.QuestItem )
 				return false;
 			#endregion
-			
+
 			//if ( item.Hue != 0 )
 				//return false;
 
@@ -121,7 +121,7 @@ namespace Server.Mobiles
 			if ( item.QuestItem )
 				return false;
 			#endregion
-			
+
 			//if ( item.Hue != 0 )
 				//return false;
 

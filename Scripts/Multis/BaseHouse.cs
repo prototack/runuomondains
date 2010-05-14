@@ -291,11 +291,16 @@ namespace Server.Multis
 
 			ArrayList list = m_Secures;
 
-			for ( int i = 0; list != null && i < list.Count; ++i )
+			if ( list != null )
 			{
-				SecureInfo si = (SecureInfo)list[i];
+				for ( int i = 0; i < list.Count; ++i )
+				{
+					SecureInfo si = (SecureInfo)list[i];
 
-				fromSecures += si.Item.TotalItems;
+					fromSecures += si.Item.TotalItems;
+				}
+
+				fromLockdowns += list.Count;
 			}
 
 			if ( m_LockDowns != null )
@@ -2265,7 +2270,7 @@ namespace Server.Multis
 					{
 						c.IsLockedDown = false;
 						c.IsSecure = false;
-						m_Secures.Remove( c );
+						m_Secures.Remove( info );
 						c.Destroy();
 						break;
 					}

@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server;
 using Server.Items;
 using Server.Mobiles;
@@ -57,9 +57,9 @@ namespace Server.Engines.Quests
 				typeof( InTheBellyOfTheBeastQuest ),
 			};} 
 		}
-		
-		private ArrayList m_SBInfos = new ArrayList();
-		protected override ArrayList SBInfos{ get { return m_SBInfos; } }
+
+        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 		
 		[Constructable]
 		public Frazer() : base( "Frazer", "the vagabond" )

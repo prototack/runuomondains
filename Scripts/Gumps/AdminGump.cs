@@ -2392,11 +2392,9 @@ namespace Server.Gumps
                                 {
                                     ArrayList results = new ArrayList();
 
-                                    DateTime minTime = DateTime.Now - Account.InactiveDuration;
-
                                     foreach (Account acct in Accounts.GetAccounts())
                                     {
-                                        if (acct.LastLogin <= minTime)
+                                        if (acct.Inactive)
                                             results.Add(acct);
                                     }
 

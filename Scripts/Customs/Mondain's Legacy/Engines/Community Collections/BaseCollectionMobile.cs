@@ -9,9 +9,9 @@ using Server.Network;
 namespace Server.Mobiles
 {
 	public abstract class BaseCollectionMobile : BaseVendor, IComunityCollection
-	{			
-		private ArrayList m_SBInfos = new ArrayList();
-		protected override ArrayList SBInfos{ get { return m_SBInfos; } }
+    {
+        private List<SBInfo> m_SBInfos = new List<SBInfo>();
+        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
 
 		public override bool IsActiveVendor{ get{ return false; } }
 	

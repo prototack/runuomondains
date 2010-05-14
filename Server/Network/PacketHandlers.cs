@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: PacketHandlers.cs 389 2009-10-04 08:19:19Z mark $
+ *   $Id: PacketHandlers.cs 512 2010-04-25 06:11:21Z mark $
  *
  ***************************************************************************/
 
@@ -400,7 +400,7 @@ namespace Server.Network
 				if ( (msgSize / 7) > 100 )
 					return;
 
-				ArrayList buyList = new ArrayList( msgSize/7 );
+                List<BuyItemResponse> buyList = new List<BuyItemResponse>( msgSize / 7 );
 				for ( ;msgSize>0;msgSize-=7)
 				{
 					byte layer = pvSrc.ReadByte();
@@ -442,7 +442,7 @@ namespace Server.Network
 			int count = pvSrc.ReadUInt16();
 			if ( count < 100 && pvSrc.Size == (1+2+4+2+(count*6)) )
 			{
-				ArrayList sellList = new ArrayList( count );
+                List<SellItemResponse> sellList = new List<SellItemResponse>( count );
 
 				for (int i=0;i<count;i++)
 				{
@@ -764,8 +764,8 @@ namespace Server.Network
 				{
 					int skillIndex;
 
-					try{ skillIndex = Convert.ToInt32( command.Split( ' ' )[0] ); }
-					catch{ break; }
+                    if ( !int.TryParse( command.Split( ' ' )[0], out skillIndex ) )
+                        break;
 
 					Skills.UseSkill( m, skillIndex );
 
@@ -775,8 +775,8 @@ namespace Server.Network
 				{
 					int booktype;
 
-					try{ booktype = Convert.ToInt32( command ); }
-					catch{ booktype = 1; }
+                    if ( !int.TryParse( command, out booktype ) )
+                        booktype = 1;
 
 					EventSink.InvokeOpenSpellbookRequest( new OpenSpellbookRequestEventArgs( m, booktype ) );
 
@@ -2239,8 +2239,7 @@ namespace Server.Network
 				m_AuthIDWindow.Remove( authID );
 
 				state.Version = ap.Version;
-			}
-			else if ( m_ClientVerification ) {
+			} else if ( m_ClientVerification ) {
 				Console.WriteLine( "Login: {0}: Invalid client detected, disconnecting", state );
 				state.Dispose();
 				return;
@@ -2271,8 +2270,7 @@ namespace Server.Network
 				state.CityInfo = e.CityInfo;
 				state.CompressionEnabled = true;
 
-				if ( Core.AOS )
-					state.Send( SupportedFeatures.Instantiate( state ) );
+				state.Send( SupportedFeatures.Instantiate( state ) );
 
 				state.Send( new CharacterList( state.Account, state.CityInfo ) );
 			}
