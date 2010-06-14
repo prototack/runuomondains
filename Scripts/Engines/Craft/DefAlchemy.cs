@@ -160,21 +160,21 @@ namespace Server.Engines.Craft
 				AddRes( index, typeof ( Ginseng ), 1044356, 3, 1044364 );
 				SetNeededExpansion( index, Expansion.SE );
 			}
-			
+
 			#region Mondain's Legacy
 			// region Necromancy (Core.ML?)
 			index = AddCraft( typeof( ConflagrationPotion ), 1044109, 1072096, 55.0, 105.0, typeof( Bottle ), 1044529, 1, 500315 );
 			AddRes( index, typeof ( GraveDust ), 1023983, 5, 1044253 );
-			
+
 			index = AddCraft( typeof( GreaterConflagrationPotion ), 1044109, 1072099, 70.0, 120.0, typeof( Bottle ), 1044529, 1, 500315 );
 			AddRes( index, typeof ( GraveDust ), 1023983, 10, 1044253 );
-			
+
 			index = AddCraft( typeof( ConfusionBlastPotion ), 1044109, 1072106, 55.0, 105.0, typeof( Bottle ), 1044529, 1, 500315 );
 			AddRes( index, typeof ( PigIron ), 1023978, 5, 1044253 );
-			
+
 			index = AddCraft( typeof( GreaterConfusionBlastPotion ), 1044109, 1072109, 70.0, 120.0, typeof( Bottle ), 1044529, 1, 500315 );
 			AddRes( index, typeof ( PigIron ), 1023978, 10, 1044253 );
-			
+
 			// Earthen Mixtures
 			if ( Core.ML )
 			{
@@ -183,17 +183,17 @@ namespace Server.Engines.Craft
 				AddRes( index, typeof ( Nightshade ), 1044358, 4, 1044366 );
 				AddRecipe( index, (int) TinkerRecipes.InvisibilityPotion );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( ParasiticPotion ), 1074832, 1072942, 65.0, 115.0, typeof( Bottle ), 1044529, 1, 500315 );
 				AddRes( index, typeof ( ParasiticPlant ), 1073474, 5, 1044253 );
 				AddRecipe( index, (int) TinkerRecipes.ParasiticPotion );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( DarkglowPotion ), 1074832, 1072943, 65.0, 115.0, typeof( Bottle ), 1044529, 1, 500315 );
 				AddRes( index, typeof ( LuminescentFungi ), 1073475, 5, 1044253 );
 				AddRecipe( index, (int) TinkerRecipes.DarkglowPotion );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( HoveringWisp ), 1074832, 1072881, 65.0, 115.0, typeof( CapturedEssence ), 1032686, 4, 1044253 );
 				AddRecipe( index, (int) TinkerRecipes.HoveringWisp );
 				SetNeededExpansion( index, Expansion.ML );

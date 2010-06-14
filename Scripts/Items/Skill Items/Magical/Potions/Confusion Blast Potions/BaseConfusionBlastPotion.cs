@@ -6,6 +6,7 @@ using Server.Network;
 using Server.Targeting;
 using Server.Spells;
 using Server.Mobiles;
+using Server.Misc;
 
 namespace Server.Items
 {
@@ -23,7 +24,7 @@ namespace Server.Items
 		public BaseConfusionBlastPotion( Serial serial ) : base( serial )
 		{
 		}
-		
+
 		public override void Drink( Mobile from )
 		{
 			if ( Core.AOS && (from.Paralyzed || from.Frozen || (from.Spell != null && from.Spell.IsCasting)) )
@@ -31,9 +32,9 @@ namespace Server.Items
 				from.SendLocalizedMessage( 1062725 ); // You can not use that potion while paralyzed.
 				return;
 			}
-			
+
 			int delay = GetDelay( from );
-		
+
 			if ( delay > 0 )
 			{
 				from.SendLocalizedMessage( 1072529, String.Format( "{0}\t{1}", delay, delay > 1 ? "seconds." : "second." ) ); // You cannot use that for another ~1_NUM~ ~2_TIMEUNITS~
@@ -66,23 +67,23 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 		}
-		
+
 		private List<Mobile> m_Users = new List<Mobile>();
-		
+
 		public void Explode_Callback( object state )
 		{
 			object[] states = (object[]) state;
-			
+
 			Explode( (Mobile) states[ 0 ], (Point3D) states[ 1 ], (Map) states[ 2 ] );
 		}
-		
+
 		public virtual void Explode( Mobile from, Point3D loc, Map map )
 		{
 			if ( Deleted || map == null )
 				return;
 
 			Consume();
-			
+
 			// Check if any other players are using this potion
 			for ( int i = 0; i < m_Users.Count; i ++ )
 			{
@@ -91,120 +92,73 @@ namespace Server.Items
 				if ( targ != null && targ.Potion == this )
 					Target.Cancel( from );
 			}
-			
-			// Add delay
-			AddDelay( from );
-			
-			// Effects		
+
+			// Effects
 			Effects.PlaySound( loc, map, 0x207 );
-			
-			EffectCircle( loc, map, Radius );
-			
+
+			Geometry.Circle2D( loc, map, Radius, new DoEffect_Callback( BlastEffect ), 270, 90 );
+
+			Timer.DelayCall( TimeSpan.FromSeconds( 0.3 ), new TimerStateCallback( CircleEffect2 ), new object[] { loc, map } );
+
 			foreach ( Mobile mobile in map.GetMobilesInRange( loc, Radius ) )
 			{
 				if ( mobile is BaseCreature )
 				{
 					BaseCreature mon = (BaseCreature) mobile;
-					
+
 					mon.Pacify( from, DateTime.Now + TimeSpan.FromSeconds( 5.0 ) ); // TODO check
 				}
 			}
 		}
-		
+
 		#region Effects
-		public static void EffectCircle( Point3D center, Map map, int radius )
+		public virtual void BlastEffect( Point3D p, Map map )
 		{
-			Point3D current = new Point3D( center.X + radius, center.Y, center.Z );
-			
-			for ( int i = 0; i <= 360; i ++ )
-			{							
-				Point3D next = new Point3D( (int) Math.Round( Math.Cos( i ) * radius ) + center.X, (int) Math.Round( Math.Sin( i ) * radius ) + center.Y, current.Z );
-				
-				EffectLine( current, next, map );
-				
-				current = next;
-			}
+			if ( map.CanFit( p, 12, true, false ) )
+				Effects.SendLocationEffect( p, map, 0x376A, 4, 9 );
 		}
 		
-		public static void EffectLine( Point3D start, Point3D end, Map map )
-		{			
-			if( start.Equals( end ) )
-				return;
-		
-			int difX = Math.Abs( start.X - end.X );
-			int difY = Math.Abs( start.Y - end.Y );
-			
-			int x = start.X;
-			int y = start.Y; 
-			
-			int avgX = (int) Math.Round( difY != 0 ? difX / (double) difY : 0 );
-			int avgY = (int) Math.Round( difX != 0 ? difY / (double) difX : 0 );
-			
-			while ( x != end.X && y != end.Y )
-			{
-				Point3D p = new Point3D( x, y, start.Z );
+		public void CircleEffect2( object state )
+		{
+			object[] states = (object[]) state;
 				
-				if ( map.CanFit( p, 12, true, false ) )		
-					Effects.SendLocationEffect( p, map, 0x376A, 4, 9 );
-				
-				if ( avgX <= 0 )
-				{
-					if ( x < end.X )
-						x += 1;
-					else if ( x > end.X )
-						x -= 1;	
-					avgX = (int) Math.Round( difY != 0 ? difX / (double) difY : 0 );
-				}				
-					
-				if ( avgY <= 0 )
-				{
-					if ( y < end.Y )
-						y += 1;
-					else if ( y > end.Y )
-						y -= 1;
-					
-					avgY = (int) Math.Round( difX != 0 ? difY / (double) difX : 0 );
-				}
-				
-				avgX -= 1;
-				avgY -= 1;
-			}
+			Geometry.Circle2D( (Point3D)states[0], (Map)states[1], Radius, new DoEffect_Callback( BlastEffect ), 90, 270 );
 		}
 		#endregion
-		
+
 		#region Delay
 		private static Hashtable m_Delay = new Hashtable();
-		
+
 		public static void AddDelay( Mobile m )
 		{
 			Timer timer = m_Delay[ m ] as Timer;
-			
+
 			if ( timer != null )
 				timer.Stop();
-				
+
 			m_Delay[ m ] = Timer.DelayCall( TimeSpan.FromSeconds( 60 ), new TimerStateCallback( EndDelay_Callback ), m );	
 		}
-		
+
 		public static int GetDelay( Mobile m )
 		{
 			Timer timer = m_Delay[ m ] as Timer;
-			
+
 			if ( timer != null && timer.Next > DateTime.Now )
 				return (int) (timer.Next - DateTime.Now).TotalSeconds;
-			
+
 			return 0;
 		}
-		
+
 		private static void EndDelay_Callback( object obj )
 		{
 			if ( obj is Mobile )
-				EndDelay( (Mobile) obj );			
+				EndDelay( (Mobile) obj );
 		}
-		
+
 		public static void EndDelay( Mobile m )
 		{
 			Timer timer = m_Delay[ m ] as Timer;
-			
+
 			if ( timer != null )
 			{
 				timer.Stop();
@@ -216,7 +170,7 @@ namespace Server.Items
 		private class ThrowTarget : Target
 		{
 			private BaseConfusionBlastPotion m_Potion;
-			
+
 			public BaseConfusionBlastPotion Potion
 			{
 				get{ return m_Potion; }
@@ -231,11 +185,14 @@ namespace Server.Items
 			{
 				if ( m_Potion.Deleted || m_Potion.Map == Map.Internal )
 					return;
-					
+
 				IPoint3D p = targeted as IPoint3D;
 
 				if ( p == null || from.Map == null )
 					return;
+
+				// Add delay
+				BaseConfusionBlastPotion.AddDelay( from );
 
 				SpellHelper.GetSurfaceTop( ref p );
 
@@ -249,14 +206,7 @@ namespace Server.Items
 					to = new Entity( Serial.Zero, new Point3D( p ), from.Map );
 
 				Effects.SendMovingEffect( from, to, 0xF0D, 7, 0, false, false, m_Potion.Hue, 0 );
-				Timer.DelayCall( TimeSpan.FromMilliseconds( GetDelay( from.Location, new Point3D( p ) ) ), new TimerStateCallback( m_Potion.Explode_Callback ), new object[] { from, new Point3D( p ), from.Map } ); 				
-			}
-			
-			public int GetDelay( Point3D start, Point3D end )
-			{
-				double range = Math.Sqrt( Math.Pow( start.X - end.X, 2 ) + Math.Pow( start.Y - end.Y, 2 ) );
-				
-				return (int) ( 1000 * range / 4 );
+				Timer.DelayCall( TimeSpan.FromSeconds( 1.0 ), new TimerStateCallback( m_Potion.Explode_Callback ), new object[] { from, new Point3D( p ), from.Map } );
 			}
 		}
 	}

@@ -94,12 +94,12 @@ namespace Server.Items
 		{ 
 			get
 			{ 
-				#region Mondain's Legacy
-				if ( m_Held > 0 && (int) m_Type >= (int) PotionEffect.Conflagration )
+				if ( m_Held == 0 )
+					return 1041084; // A specially lined keg for potions.
+				else if( m_Type >= PotionEffect.Conflagration )
 					return 1072658 + (int) m_Type - (int) PotionEffect.Conflagration;
-				#endregion
-			
-				return (m_Held > 0 ? 1041620 + (int)m_Type : 1041641); 
+				else
+					return ( 1041620 + (int)m_Type ); 
 			} 
 		}
 
@@ -230,14 +230,6 @@ namespace Server.Items
 				}
 				else if ( m_Held == 0 )
 				{
-					#region Mondain's Legacy
-					if ( (int) pot.PotionEffect >= (int) PotionEffect.Invisibility )
-					{
-						from.SendLocalizedMessage( 502232 ); // The keg is not designed to hold that type of object.
-						return false;
-					}
-					#endregion
-					
 					if ( GiveBottle( from, toHold ) )
 					{
 						m_Type = pot.PotionEffect;
@@ -316,42 +308,43 @@ namespace Server.Items
 			switch ( m_Type )
 			{
 				default:
-				case PotionEffect.Nightsight:		return new NightSightPotion();
+				case PotionEffect.Nightsight:				return new NightSightPotion();
 
-				case PotionEffect.CureLesser:		return new LesserCurePotion();
-				case PotionEffect.Cure:				return new CurePotion();
-				case PotionEffect.CureGreater:		return new GreaterCurePotion();
+				case PotionEffect.CureLesser:				return new LesserCurePotion();
+				case PotionEffect.Cure:						return new CurePotion();
+				case PotionEffect.CureGreater:				return new GreaterCurePotion();
 
-				case PotionEffect.Agility:			return new AgilityPotion();
-				case PotionEffect.AgilityGreater:	return new GreaterAgilityPotion();
+				case PotionEffect.Agility:					return new AgilityPotion();
+				case PotionEffect.AgilityGreater:			return new GreaterAgilityPotion();
 
-				case PotionEffect.Strength:			return new StrengthPotion();
-				case PotionEffect.StrengthGreater:	return new GreaterStrengthPotion();
+				case PotionEffect.Strength:					return new StrengthPotion();
+				case PotionEffect.StrengthGreater:			return new GreaterStrengthPotion();
 
-				case PotionEffect.PoisonLesser:		return new LesserPoisonPotion();
-				case PotionEffect.Poison:			return new PoisonPotion();
-				case PotionEffect.PoisonGreater:	return new GreaterPoisonPotion();
-				case PotionEffect.PoisonDeadly:		return new DeadlyPoisonPotion();
+				case PotionEffect.PoisonLesser:				return new LesserPoisonPotion();
+				case PotionEffect.Poison:					return new PoisonPotion();
+				case PotionEffect.PoisonGreater:			return new GreaterPoisonPotion();
+				case PotionEffect.PoisonDeadly:				return new DeadlyPoisonPotion();
 
-				case PotionEffect.Refresh:			return new RefreshPotion();
-				case PotionEffect.RefreshTotal:		return new TotalRefreshPotion();
+				case PotionEffect.Refresh:					return new RefreshPotion();
+				case PotionEffect.RefreshTotal:				return new TotalRefreshPotion();
 
-				case PotionEffect.HealLesser:		return new LesserHealPotion();
-				case PotionEffect.Heal:				return new HealPotion();
-				case PotionEffect.HealGreater:		return new GreaterHealPotion();
+				case PotionEffect.HealLesser:				return new LesserHealPotion();
+				case PotionEffect.Heal:						return new HealPotion();
+				case PotionEffect.HealGreater:				return new GreaterHealPotion();
 
-				case PotionEffect.ExplosionLesser:	return new LesserExplosionPotion();
-				case PotionEffect.Explosion:		return new ExplosionPotion();
-				case PotionEffect.ExplosionGreater:	return new GreaterExplosionPotion();
-				
-				#region Mondain's Legacy
+				case PotionEffect.ExplosionLesser:			return new LesserExplosionPotion();
+				case PotionEffect.Explosion:				return new ExplosionPotion();
+				case PotionEffect.ExplosionGreater:			return new GreaterExplosionPotion();
+
 				case PotionEffect.Conflagration:			return new ConflagrationPotion();
 				case PotionEffect.ConflagrationGreater:		return new GreaterConflagrationPotion();
+
 				//case PotionEffect.MaskOfDeath:			return new MaskOfDeathPotion();
 				//case PotionEffect.MaskOfDeathGreater:		return new MaskOfDeathGreaterPotion();
+
 				case PotionEffect.ConfusionBlast:			return new ConfusionBlastPotion();
 				case PotionEffect.ConfusionBlastGreater:	return new GreaterConfusionBlastPotion();
-				#endregion
+
 			}
 		}
 

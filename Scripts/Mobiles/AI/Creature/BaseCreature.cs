@@ -217,7 +217,7 @@ namespace Server.Mobiles
         private Mobile m_bBardTarget = null;
         private DateTime m_timeBardEnd;
         private WayPoint m_CurrentWayPoint = null;
-        private Point2D m_TargetLocation = Point2D.Zero;
+        private IPoint2D m_TargetLocation = null;
 
         private Mobile m_SummonMaster;
 
@@ -1089,7 +1089,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point2D TargetLocation
+        public IPoint2D TargetLocation
         {
             get
             {
@@ -2377,6 +2377,9 @@ namespace Server.Mobiles
         {
             get
             {
+                if (m_TargetLocation != null)
+                    return 0.3;
+
                 return m_dCurrentSpeed;
             }
             set
@@ -4632,7 +4635,9 @@ namespace Server.Mobiles
                             Faction.HandleDeath(this, ds.m_Mobile);
                         }
 
-                        if (!givenToTKill && Map == Map.Tokuno)
+                        Region region = ds.m_Mobile.Region;
+
+                        if (!givenToTKill && (Map == Map.Tokuno || region.IsPartOf("Yomotsu Mines") || region.IsPartOf("Fan Dancer's Dojo")))
                         {
                             givenToTKill = true;
                             TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
