@@ -27,14 +27,13 @@ namespace Server.Items
 		ExplosionLesser,
 		Explosion,
 		ExplosionGreater,
-		
-		#region Mondain's Legacy
 		Conflagration,
 		ConflagrationGreater,
-		MaskOfDeath,
-		MaskOfDeathGreater,
+		MaskOfDeath,		// Mask of Death is not available in OSI but does exist in cliloc files
+		MaskOfDeathGreater,	// included in enumeration for compatability if later enabled by OSI
 		ConfusionBlast,
-		ConfusionBlastGreater,		
+		ConfusionBlastGreater,
+		#region Mondain's Legacy
 		Invisibility,
 		Parasitic,
 		Darkglow,
@@ -157,8 +156,12 @@ namespace Server.Items
 		public static int EnhancePotions( Mobile m )
 		{
 			int EP = AosAttributes.GetValue( m, AosAttribute.EnhancePotions );
-			if ( Core.ML && EP > 50 )
-				EP = 50;
+
+			int cap = 50 + m.Skills.Alchemy.Fixed / 330 * 10;
+
+			if ( Core.ML && EP > cap && m.AccessLevel <= AccessLevel.Player )
+				EP = cap;
+
 			return EP;
 		}
 
@@ -212,7 +215,7 @@ namespace Server.Items
 					if ( (int) PotionEffect >= (int) PotionEffect.Invisibility )
 						return 1;
 					#endregion
-				
+
 					List<PotionKeg> kegs = pack.FindItemsByType<PotionKeg>();
 
 					for ( int i = 0; i < kegs.Count; ++i )
