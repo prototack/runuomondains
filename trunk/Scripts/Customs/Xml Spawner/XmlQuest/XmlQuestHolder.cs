@@ -357,11 +357,11 @@ namespace Server.Items
 
 #if(CLIENT6017)
             // add support for new client container packets
-            if (to.NetState != null && to.NetState.IsPost6017)
+            if (to.NetState != null && to.NetState.ContainerGridLines)
                 to.Send(new ContainerContent6017(to, this));
             else
 #endif
-                to.Send(new ContainerContent(to, this));
+                to.Send(new ContainerContent(to, this)); ;
 
             if (ObjectPropertyList.Enabled)
             {

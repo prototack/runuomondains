@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ClientVersion.cs 187 2007-05-26 03:12:41Z asayre $
+ *   $Id: ClientVersion.cs 521 2010-06-17 07:11:43Z mark $
  *
  ***************************************************************************/
 
@@ -28,7 +28,8 @@ namespace Server
 	{
 		Regular,
 		UOTD,
-		God
+		God,
+		SA
 	}
 
 	public class ClientVersion : IComparable, IComparer

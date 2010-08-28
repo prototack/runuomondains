@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Container.cs 511 2010-04-25 06:09:43Z mark $
+ *   $Id: Container.cs 521 2010-06-17 07:11:43Z mark $
  *
  ***************************************************************************/
 
@@ -1624,7 +1624,7 @@ namespace Server.Items
 
 			to.Send( new ContainerDisplay( this ) );
 			
-			if ( to.NetState != null && to.NetState.IsPost6017 )
+			if ( to.NetState != null && to.NetState.ContainerGridLines )
 				to.Send( new ContainerContent6017( to, this ) );
 			else
 				to.Send( new ContainerContent( to, this ) );

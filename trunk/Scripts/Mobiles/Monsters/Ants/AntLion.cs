@@ -75,7 +75,7 @@ namespace Server.Mobiles
 
 			if ( 0.07 >= Utility.RandomDouble() )
 			{
-				switch ( Utility.Random( 4 ) )
+				switch ( Utility.Random( 3 ) )
 				{
 					case 0: PackItem( new UnknownBardSkeleton() ); break;
 					case 1: PackItem( new UnknownMageSkeleton() ); break;

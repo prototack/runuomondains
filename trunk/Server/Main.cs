@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Main.cs 511 2010-04-25 06:09:43Z mark $
+ *   $Id: Main.cs 521 2010-06-17 07:11:43Z mark $
  *
  ***************************************************************************/
 
@@ -155,6 +155,26 @@ namespace Server
 			set { m_Expansion = value; }
 		}
 
+		public static bool T2A
+		{
+			get { return m_Expansion >= Expansion.T2A; }
+		}
+
+		public static bool UOR
+		{
+			get { return m_Expansion >= Expansion.UOR; }
+		}
+
+		public static bool UOTD
+		{
+			get { return m_Expansion >= Expansion.UOTD; }
+		}
+
+		public static bool LBR
+		{
+			get { return m_Expansion >= Expansion.LBR; }
+		}
+
 		public static bool AOS
 		{
 			get { return m_Expansion >= Expansion.AOS; }
@@ -168,6 +188,11 @@ namespace Server
 		public static bool ML
 		{
 			get { return m_Expansion >= Expansion.ML; }
+		}
+
+		public static bool SA
+		{
+			get { return m_Expansion >= Expansion.SA; }
 		}
 
 		#endregion
