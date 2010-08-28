@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: SecureTrade.cs 304 2009-01-30 23:12:13Z mark $
+ *   $Id: SecureTrade.cs 521 2010-06-17 07:11:43Z mark $
  *
  ***************************************************************************/
 
@@ -209,8 +209,8 @@ namespace Server
 			m_From = new SecureTradeInfo( this, from, new SecureTradeContainer( this ) );
 			m_To = new SecureTradeInfo( this, to, new SecureTradeContainer( this ) );
 
-			bool from6017 = ( from.NetState == null ? false : from.NetState.IsPost6017 );
-			bool to6017   = ( to.NetState == null ? false : to.NetState.IsPost6017 );
+			bool from6017 = ( from.NetState == null ? false : from.NetState.ContainerGridLines );
+			bool to6017   = ( to.NetState == null ? false : to.NetState.ContainerGridLines );
 
 			from.Send( new MobileStatus( from, to ) );
 			from.Send( new UpdateSecureTrade( m_From.Container, false, false ) );

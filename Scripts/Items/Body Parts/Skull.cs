@@ -8,7 +8,7 @@ namespace Server.Items
 	public class Skull : Item
 	{
 		[Constructable]
-		public Skull( ) : base( 0x1AE0 + Utility.Random( 8 ) )
+		public Skull( ) : base( 0x1AE0 + Utility.Random( 4 ) )
 		{
 			Stackable = false;
 			Weight = 1.0;

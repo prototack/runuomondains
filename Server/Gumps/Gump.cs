@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Gump.cs 78 2006-08-27 20:35:58Z krrios $
+ *   $Id: Gump.cs 521 2010-06-17 07:11:43Z mark $
  *
  ***************************************************************************/
 
@@ -365,8 +365,6 @@ namespace Server.Gumps
 		private static byte[] m_NoDispose = StringToBuffer( "{ nodispose }" );
 		private static byte[] m_NoResize = StringToBuffer( "{ noresize }" );
 
-		public static readonly ClientVersion UnpackVersion = new ClientVersion( "5.0.0a" );
-
 		private Packet Compile()
 		{
 			return Compile( null );
@@ -376,7 +374,7 @@ namespace Server.Gumps
 		{
 			IGumpWriter disp;
 
-			if ( ns != null && ns.Version != null && ns.Version >= UnpackVersion )
+			if ( ns != null && ns.Unpack )
 				disp = new DisplayGumpPacked( this );
 			else
 				disp = new DisplayGumpFast( this );
