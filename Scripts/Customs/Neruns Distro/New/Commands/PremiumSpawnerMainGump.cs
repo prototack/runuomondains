@@ -53,7 +53,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun    '<i>Lo diavolo</i>'     v5.1.9", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun     '<i>Il Carro</i>'      v5.2.0", true, false );
 
 
 			AddBlackAlpha( 8, 58, 250, 50 );
@@ -108,7 +108,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun    '<i>Lo diavolo</i>'     v5.1.9", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun     '<i>Il Carro</i>'      v5.2.0", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 110 );
 
@@ -166,7 +166,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun    '<i>Lo diavolo</i>'     v5.1.9", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun     '<i>Il Carro</i>'      v5.2.0", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 50 );
 
@@ -180,10 +180,10 @@ namespace Server.Gumps
 			AddLabel( 45, 80, 52, "RunUO Spawns to PremiumSpawner" );
 			AddButton( 25, 80, 0x845, 0x846, 10200, GumpButtonType.Reply, 0 );
 
-			AddLabel( 45, 138, 52, "Enable" );
+			AddLabel( 45, 138, 52, "Turn on" );
 			AddButton( 25, 138, 0x845, 0x846, 10301, GumpButtonType.Reply, 0 );
 
-			AddLabel( 45, 158, 52, "Disable" );
+			AddLabel( 45, 158, 52, "Turn off" );
 			AddButton( 25, 158, 0x845, 0x846, 10302, GumpButtonType.Reply, 0 );
 
 			AddLabel( 120, 410, 200, "3/3" );
