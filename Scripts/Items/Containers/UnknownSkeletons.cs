@@ -10,6 +10,7 @@ namespace Server.Items
 		[Constructable]
 		public UnknownBardSkeleton() : base( 0xECA + Utility.Random( 9 ) )
 		{
+			Name = "An Unknown Bard's Skeleton";
 			Weight = 35.0;
 
 			DropItem( new Gold( Utility.RandomMinMax( 200, 400 ) ) );
@@ -59,6 +60,7 @@ namespace Server.Items
 		[Constructable]
 		public UnknownRogueSkeleton() : base( 0xECA + Utility.Random( 9 ) )
 		{
+			Name = "An Unknown Rogue's Skeleton";
 			Weight = 35.0;
 
 			DropItem( new LeatherChest() );
@@ -107,6 +109,7 @@ namespace Server.Items
 		[Constructable]
 		public UnknownMageSkeleton() : base( 0xECA + Utility.Random( 9 ) )
 		{
+			Name = "An Unknown Mage's Skeleton";
 			Weight = 35.0;
 
 			DropItem( new Robe( Utility.RandomNondyedHue() ) );
@@ -124,6 +127,7 @@ namespace Server.Items
 			{
 				item = Loot.RandomReagent();
 				item.Amount = Utility.RandomMinMax( 15, 20 );
+				DropItem( item );
 			}
 
 			for ( int i = 0; i < 3; i++ )
@@ -134,6 +138,7 @@ namespace Server.Items
 					item = Loot.RandomScroll( 0, Loot.RegularScrollTypes.Length, SpellbookType.Regular );
 
 				item.Amount = Utility.RandomMinMax( 1, 2 );
+				DropItem( item );
 			}
 		}
 

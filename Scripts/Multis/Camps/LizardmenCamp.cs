@@ -5,16 +5,16 @@ using Server.Mobiles;
 
 namespace Server.Multis
 {
-    public class OrcCamp : BaseCamp
+    public class LizardmenCamp : BaseCamp
     {
-        public virtual Mobile Orcs { get { return new Orc(); } }
+        public virtual Mobile Lizardmen { get { return new Lizardman(); } }
 
         private Mobile m_Prisoner;
 
         private int m_SpawnRange;
 
         [Constructable]
-        public OrcCamp()
+        public LizardmenCamp()
             : base(0x10ee, 0) // dummy garbage at center
         {
         }
@@ -48,15 +48,14 @@ namespace Server.Multis
                         break;
                     }
             }
-            AddItem(new Item(0x428), -5, -4, 0); // Gruesome Standart West
+            AddItem(new Item(0x41F), 4, 4, 0); // Gruesome Standart South
 
             AddCampChests();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
-                AddMobile(Orcs, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
+                AddMobile(Lizardmen, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
             }
-            AddMobile(new OrcCaptain(), 2, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
 
             switch (Utility.Random(2))
             {
@@ -90,7 +89,7 @@ namespace Server.Multis
 
             TreasureMapChest.Fill(chest, 1);
 
-            AddItem(chest, -2, 2, 0);
+            AddItem(chest, 2, -2, 0);
 
             LockableContainer crates = null;
 
@@ -128,7 +127,7 @@ namespace Server.Multis
                 }
             }
 
-            AddItem(crates, 2, -2, 0);
+            AddItem(crates, -2, 2, 0);
         }
 
         // Don't refresh decay timer
@@ -158,7 +157,7 @@ namespace Server.Multis
         {
         }
 
-        public OrcCamp(Serial serial)
+        public LizardmenCamp(Serial serial)
             : base(serial)
         {
         }
@@ -175,7 +174,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)0); // version
 
             writer.Write(m_Prisoner);
         }
@@ -188,15 +187,9 @@ namespace Server.Multis
 
             switch (version)
             {
-                case 1:
-                    {
-                        m_Prisoner = reader.ReadMobile();
-                        break;
-                    }
                 case 0:
                     {
                         m_Prisoner = reader.ReadMobile();
-                        reader.ReadItem();
                         break;
                     }
             }

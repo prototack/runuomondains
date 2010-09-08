@@ -24,7 +24,6 @@ namespace Server
 			m_String = text;
 		}
 
-		#region Mondain's Legacy
 		public TextDefinition( GenericReader reader )
 		{
 			int type = reader.ReadEncodedInt();
@@ -62,7 +61,6 @@ namespace Server
 			else
 				writer.WriteEncodedInt( 0 );
 		}
-		#endregion
 
 		public static void AddTo( ObjectPropertyList list, TextDefinition def )
 		{

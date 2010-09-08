@@ -60,6 +60,17 @@ namespace Server.SkillHandlers
                 {
                     m_Thief.SendLocalizedMessage(1005584); // Both hands must be free to steal.
                 }
+                else if (root is Container)
+                {
+                    if (((Container)root).IsSecure)
+                        m_Thief.SendLocalizedMessage(1010580); // You cannot steal from a secure container.
+                    else if (((Container)root).IsLockedDown)
+                        m_Thief.SendLocalizedMessage(502718); // You cannot steal a locked down item.
+                }
+                else if (root is BaseCreature && ((BaseCreature)root).Map.Rules != MapRules.FeluccaRules && ((BaseCreature)root).Controlled)
+                {
+                    m_Thief.SendLocalizedMessage(1005597); // The creature blocks your attempt to steal.
+                }
                 else if (root is Mobile && ((Mobile)root).Player && IsInnocentTo(m_Thief, (Mobile)root) && !IsInGuild(m_Thief))
                 {
                     m_Thief.SendLocalizedMessage(1005596); // You must be in the thieves guild to steal from other players.
@@ -179,10 +190,6 @@ namespace Server.SkillHandlers
                 {
                     m_Thief.SendLocalizedMessage(502710); // You can't steal that!
                 }
-                else if (Core.AOS && si == null && toSteal is Container)
-                {
-                    m_Thief.SendLocalizedMessage(502710); // You can't steal that!
-                }
                 else if (!m_Thief.InRange(toSteal.GetWorldLocation(), 1))
                 {
                     m_Thief.SendLocalizedMessage(502703); // You must be standing next to an item to steal it.
@@ -195,9 +202,13 @@ namespace Server.SkillHandlers
                 {
                     m_Thief.SendLocalizedMessage(1005585); // You cannot steal items which are equiped.
                 }
-                else if (root == m_Thief)
+                else if (root == m_Thief || (root is Item && ((Item)root).ParentEntity == m_Thief))
                 {
-                    m_Thief.SendLocalizedMessage(502704); // You catch yourself red-handed.
+                    m_Thief.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502704); // You catch yourself red-handed.
+                }
+                else if (Core.AOS && si == null && toSteal is Container)
+                {
+                    m_Thief.SendLocalizedMessage(502710); // You can't steal that!
                 }
                 else if (root is Mobile && ((Mobile)root).AccessLevel > AccessLevel.Player)
                 {
@@ -265,6 +276,9 @@ namespace Server.SkillHandlers
                         if (stolen != null)
                         {
                             m_Thief.SendLocalizedMessage(502724); // You succesfully steal the item.
+
+                            if (root is BaseCreature && ((BaseCreature)root).CanBeHarmful(m_Thief))
+                                m_Thief.DoHarmful((BaseCreature)root);
 
                             if (si != null)
                             {

@@ -81,6 +81,8 @@ namespace Server.Spells.Fourth
 
 		public void Effect( Point3D loc, Map map, bool checkMulti )
 		{
+			Region r = Region.Find( loc, map );
+
 			if ( Factions.Sigil.ExistsOn( Caster ) )
 			{
 				Caster.SendLocalizedMessage( 1061632 ); // You can't do that while carrying the sigil.
@@ -88,6 +90,10 @@ namespace Server.Spells.Fourth
 			else if ( map == null || (!Core.AOS && Caster.Map != map) )
 			{
 				Caster.SendLocalizedMessage( 1005569 ); // You can not recall to another facet.
+			}
+			else if ( r.IsPartOf( typeof( HouseRegion ) ) )
+			{
+				Caster.SendLocalizedMessage( 501025 ); // Something is blocking the location.
 			}
 			else if ( !SpellHelper.CheckTravel( Caster, TravelCheckType.RecallFrom ) )
 			{

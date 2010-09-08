@@ -5,24 +5,20 @@ using Server.Mobiles;
 
 namespace Server.Multis
 {
-    public class OrcCamp : BaseCamp
+    public class GypsyCamp : BaseCamp
     {
-        public virtual Mobile Orcs { get { return new Orc(); } }
-
-        private Mobile m_Prisoner;
+        public virtual Mobile Gypsies { get { return new Gypsy(); } }
 
         private int m_SpawnRange;
 
         [Constructable]
-        public OrcCamp()
+        public GypsyCamp()
             : base(0x10ee, 0) // dummy garbage at center
         {
         }
 
         public override void AddComponents()
         {
-            BaseCreature bc;
-            //BaseEscortable be;
 
             Visible = false;
             DecayDelay = TimeSpan.FromMinutes(5.0);
@@ -48,31 +44,13 @@ namespace Server.Multis
                         break;
                     }
             }
-            AddItem(new Item(0x428), -5, -4, 0); // Gruesome Standart West
 
             AddCampChests();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
-                AddMobile(Orcs, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
+                AddMobile(Gypsies, 6, Utility.Random(-7, 7), Utility.Random(-7, 7), 0);
             }
-            AddMobile(new OrcCaptain(), 2, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
-
-            switch (Utility.Random(2))
-            {
-                case 0: m_Prisoner = new Noble(); break;
-                default: m_Prisoner = new SeekerOfAdventure(); break;
-            }
-
-            //be = (BaseEscortable)m_Prisoner;
-            //be.m_Captive = true;
-
-            bc = (BaseCreature)m_Prisoner;
-            bc.IsPrisoner = true;
-            bc.CantWalk = true;
-
-            m_Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
-            AddMobile(m_Prisoner, 2, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
         }
 
         private void AddCampChests()
@@ -90,7 +68,7 @@ namespace Server.Multis
 
             TreasureMapChest.Fill(chest, 1);
 
-            AddItem(chest, -2, 2, 0);
+            AddItem(chest, -2, -2, 0);
 
             LockableContainer crates = null;
 
@@ -128,29 +106,12 @@ namespace Server.Multis
                 }
             }
 
-            AddItem(crates, 2, -2, 0);
+            AddItem(crates, 2, 2, 0);
         }
 
         // Don't refresh decay timer
         public override void OnEnter(Mobile m)
         {
-            if (m.Player && m_Prisoner != null && m_Prisoner.CantWalk)
-            {
-                int number;
-
-                switch (Utility.Random(8))
-                {
-                    case 0: number = 502261; break; // HELP!
-                    case 1: number = 502262; break; // Help me!
-                    case 2: number = 502263; break; // Canst thou aid me?!
-                    case 3: number = 502264; break; // Help a poor prisoner!
-                    case 4: number = 502265; break; // Help! Please!
-                    case 5: number = 502266; break; // Aaah! Help me!
-                    case 6: number = 502267; break; // Go and get some help!
-                    default: number = 502268; break; // Quickly, I beg thee! Unlock my chains! If thou dost look at me close thou canst see them.	
-                }
-                m_Prisoner.Yell(number);
-            }
         }
 
         // Don't refresh decay timer
@@ -158,7 +119,7 @@ namespace Server.Multis
         {
         }
 
-        public OrcCamp(Serial serial)
+        public GypsyCamp(Serial serial)
             : base(serial)
         {
         }
@@ -175,9 +136,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
-
-            writer.Write(m_Prisoner);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -185,21 +144,6 @@ namespace Server.Multis
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 1:
-                    {
-                        m_Prisoner = reader.ReadMobile();
-                        break;
-                    }
-                case 0:
-                    {
-                        m_Prisoner = reader.ReadMobile();
-                        reader.ReadItem();
-                        break;
-                    }
-            }
         }
     }
 }

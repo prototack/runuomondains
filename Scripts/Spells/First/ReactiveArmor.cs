@@ -138,7 +138,6 @@ namespace Server.Spells.First
 			}
 		}
 
-		#region Mondain's Legacy
 		public static void EndArmor( Mobile m )
 		{
 			if ( m_Table.Contains( m ) )
@@ -155,6 +154,5 @@ namespace Server.Spells.First
 				BuffInfo.RemoveBuff( m, BuffIcon.ReactiveArmor );
 			}
 		}
-		#endregion
 	}
 }
