@@ -73,12 +73,6 @@ namespace Server.Engines.Craft
             return 0;
         }
 
-        public override void PlayCraftEffect(Mobile from)
-        {
-            // no sound
-            //from.PlaySound( 0x241 );
-        }
-
         private static Type[] m_TinkerColorables = new Type[]
 			{
 				typeof( ForkLeft ), typeof( ForkRight ),
@@ -106,6 +100,12 @@ namespace Server.Engines.Craft
                 contains = (m_TinkerColorables[i] == type);
 
             return contains;
+        }
+
+        public override void PlayCraftEffect(Mobile from)
+        {
+            // no sound
+            //from.PlaySound( 0x241 );
         }
 
         public override int PlayEndingEffect(Mobile from, bool failed, bool lostMaterial, bool toolBroken, int quality, bool makersMark, CraftItem item)
@@ -232,7 +232,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Hinge), 1044047, 1024181, 5.0, 55.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(BolaBall), 1044047, 1023699, 45.0, 95.0, typeof(IronIngot), 1044036, 10, 1044037);
 
-            #region Mondain's Legacy
             if (Core.ML)
             {
                 index = AddCraft(typeof(JeweledFiligree), 1044047, 1072894, 70.0, 110.0, typeof(IronIngot), 1044036, 2, 1044037);
@@ -240,7 +239,6 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(Ruby), 1044234, 1, 1044253);
                 SetNeededExpansion(index, Expansion.ML);
             }
-            #endregion
 
             #endregion
 

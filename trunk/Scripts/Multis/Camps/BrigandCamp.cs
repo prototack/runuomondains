@@ -5,16 +5,17 @@ using Server.Mobiles;
 
 namespace Server.Multis
 {
-    public class OrcCamp : BaseCamp
+    public class BrigandCamp : BaseCamp
     {
-        public virtual Mobile Orcs { get { return new Orc(); } }
+        public virtual Mobile Brigands { get { return new Brigand(); } }
+        public virtual Mobile Executioners { get { return new Executioner(); } }
 
         private Mobile m_Prisoner;
 
         private int m_SpawnRange;
 
         [Constructable]
-        public OrcCamp()
+        public BrigandCamp()
             : base(0x10ee, 0) // dummy garbage at center
         {
         }
@@ -26,6 +27,7 @@ namespace Server.Multis
 
             Visible = false;
             DecayDelay = TimeSpan.FromMinutes(5.0);
+
             AddItem(new Static(0x10ee), 0, 0, 0);
             AddItem(new Static(0xfac), 0, 7, 0);
 
@@ -48,15 +50,13 @@ namespace Server.Multis
                         break;
                     }
             }
-            AddItem(new Item(0x428), -5, -4, 0); // Gruesome Standart West
 
             AddCampChests();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
-                AddMobile(Orcs, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
+                AddMobile(Brigands, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
             }
-            AddMobile(new OrcCaptain(), 2, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
 
             switch (Utility.Random(2))
             {
@@ -90,7 +90,7 @@ namespace Server.Multis
 
             TreasureMapChest.Fill(chest, 1);
 
-            AddItem(chest, -2, 2, 0);
+            AddItem(chest, -2, -2, 0);
 
             LockableContainer crates = null;
 
@@ -128,7 +128,7 @@ namespace Server.Multis
                 }
             }
 
-            AddItem(crates, 2, -2, 0);
+            AddItem(crates, 2, 2, 0);
         }
 
         // Don't refresh decay timer
@@ -158,7 +158,7 @@ namespace Server.Multis
         {
         }
 
-        public OrcCamp(Serial serial)
+        public BrigandCamp(Serial serial)
             : base(serial)
         {
         }
@@ -175,7 +175,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)0); // version
 
             writer.Write(m_Prisoner);
         }
@@ -188,15 +188,9 @@ namespace Server.Multis
 
             switch (version)
             {
-                case 1:
-                    {
-                        m_Prisoner = reader.ReadMobile();
-                        break;
-                    }
                 case 0:
                     {
                         m_Prisoner = reader.ReadMobile();
-                        reader.ReadItem();
                         break;
                     }
             }

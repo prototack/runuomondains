@@ -106,9 +106,12 @@ namespace Server.Items
 			{
 				if ( ( from.SkillsTotal + newValue * 10 ) > from.SkillsCap )
 				{
-					for ( int i = 0; i <= 54; i++ )
+					int ns = from.Skills.Length; // number of items in from.Skills[]
+
+					for ( int i = 0; i < ns; i++ )
 					{
-						if ( from.Skills[i].Lock == SkillLock.Down && tskill >= newValue )
+						// skill must point down and its value must be enough
+						if ( from.Skills[i].Lock == SkillLock.Down && from.Skills[i].Base >= newValue )
 						{
 							from.Skills[i].Base -= newValue;
 							canGain = true;

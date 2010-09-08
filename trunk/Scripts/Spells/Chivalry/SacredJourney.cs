@@ -5,6 +5,7 @@ using Server.Multis;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
+using Server.Regions;
 
 namespace Server.Spells.Chivalry
 {
@@ -76,6 +77,8 @@ namespace Server.Spells.Chivalry
 
 		public void Effect( Point3D loc, Map map, bool checkMulti )
 		{
+			Region r = Region.Find( loc, map );
+
 			if ( Factions.Sigil.ExistsOn( Caster ) )
 			{
 				Caster.SendLocalizedMessage( 1061632 ); // You can't do that while carrying the sigil.
@@ -83,6 +86,10 @@ namespace Server.Spells.Chivalry
 			else if ( map == null || (!Core.AOS && Caster.Map != map) )
 			{
 				Caster.SendLocalizedMessage( 1005569 ); // You can not recall to another facet.
+			}
+			else if ( r.IsPartOf( typeof( HouseRegion ) ) )
+			{
+				Caster.SendLocalizedMessage( 501025 ); // Something is blocking the location.
 			}
 			else if ( !SpellHelper.CheckTravel( Caster, TravelCheckType.RecallFrom ) )
 			{

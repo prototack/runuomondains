@@ -5,106 +5,200 @@ using Server.Mobiles;
 
 namespace Server.Multis
 {
-	public class RatCamp : BaseCamp
-	{
-		private Mobile m_Prisoner;
-		private BaseDoor m_Gate;
+    public class RatCamp : BaseCamp
+    {
+        public virtual Mobile Ratmen { get { return new Ratman(); } }
 
-		[Constructable]
-		public RatCamp() : base( 0x1D4C )
-		{
-		}
+        private Mobile m_Prisoner;
 
-		public override void AddComponents()
-		{
-			BaseCreature bc;
+        private int m_SpawnRange;
 
-			IronGate gate = new IronGate( DoorFacing.EastCCW );
-			m_Gate = gate;
+        [Constructable]
+        public RatCamp()
+            : base(0x10ee, 0) // dummy garbage at center
+        {
+        }
 
-			gate.KeyValue = Key.RandomValue();
-			gate.Locked = true;
+        public override void AddComponents()
+        {
+            BaseCreature bc;
+            //BaseEscortable be;
 
-			AddItem( gate, -2, 1, 0 );
+            Visible = false;
+            DecayDelay = TimeSpan.FromMinutes(5.0);
+            AddItem(new Static(0x10ee), 0, 0, 0);
+            AddItem(new Static(0xfac), 0, 6, 0);
 
-			MetalChest chest = new MetalChest();
+            switch (Utility.Random(3))
+            {
+                case 0:
+                    {
+                        AddItem(new Item(0xDE3), 0, 6, 0); // Campfire
+                        AddItem(new Item(0x974), 0, 6, 1); // Cauldron
+                        break;
+                    }
+                case 1:
+                    {
+                        AddItem(new Item(0x1E95), 0, 6, 1); // Rabbit on a spit
+                        break;
+                    }
+                default:
+                    {
+                        AddItem(new Item(0x1E94), 0, 6, 1); // Chicken on a spit
+                        break;
+                    }
+            }
+            AddItem(new Item(0x41F), 5, 5, 0); // Gruesome Standart South
 
-			chest.ItemID = 0xE7C;
+            AddCampChests();
+
+            for (int i = 0; i < 4; i++)
+            {
+                AddMobile(Ratmen, 6, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
+            }
+
+            switch (Utility.Random(2))
+            {
+                case 0: m_Prisoner = new Noble(); break;
+                default: m_Prisoner = new SeekerOfAdventure(); break;
+            }
+
+            //be = (BaseEscortable)m_Prisoner;
+            //be.m_Captive = true;
+
+            bc = (BaseCreature)m_Prisoner;
+            bc.IsPrisoner = true;
+            bc.CantWalk = true;
+
+            m_Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
+            AddMobile(m_Prisoner, 2, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
+        }
+
+        private void AddCampChests()
+        {
+            LockableContainer chest = null;
+
+            switch (Utility.Random(3))
+            {
+                case 0: chest = new MetalChest(); break;
+                case 1: chest = new MetalGoldenChest(); break;
+                default: chest = new WoodenChest(); break;
+            }
+
             chest.LiftOverride = true;
-			chest.DropItem( new Key( KeyType.Iron, gate.KeyValue ) );
 
-			TreasureMapChest.Fill( chest, 2 );
+            TreasureMapChest.Fill(chest, 1);
 
-			AddItem( chest, 4, 4, 1 );
+            AddItem(chest, -2, -2, 0);
 
-			AddMobile( new Ratman(), 15, 0, -2, 0 );
-			AddMobile( new Ratman(), 15, 0,  1, 0 );
-			AddMobile( new RatmanMage(), 15, 0, -1, 0 );
-			AddMobile( new RatmanArcher(), 15, 0,  0, 0 );
+            LockableContainer crates = null;
 
-			switch ( Utility.Random( 2 ) )
-			{
-				case 0: m_Prisoner = new Noble(); break;
-				case 1: m_Prisoner = new SeekerOfAdventure(); break;
-			}
+            switch (Utility.Random(4))
+            {
+                case 0: crates = new SmallCrate(); break;
+                case 1: crates = new MediumCrate(); break;
+                case 2: crates = new LargeCrate(); break;
+                default: crates = new LockableBarrel(); break;
+            }
 
-			bc = (BaseCreature)m_Prisoner;
-			bc.IsPrisoner = true;
-			m_Prisoner.YellHue = Utility.RandomList( 0x57, 0x67, 0x77, 0x87, 0x117 );
+            crates.TrapType = TrapType.ExplosionTrap;
+            crates.TrapPower = Utility.RandomMinMax(30, 40);
+            crates.TrapLevel = 2;
 
-			AddMobile( m_Prisoner, 2, -2, 0, 0 );
-		}
+            crates.RequiredSkill = 76;
+            crates.LockLevel = 66;
+            crates.MaxLockLevel = 116;
+            crates.Locked = true;
 
-		public override void OnEnter( Mobile m )
-		{
-			base.OnEnter( m );
+            crates.DropItem(new Gold(Utility.RandomMinMax(100, 400)));
+            crates.DropItem(new Arrow(10));
+            crates.DropItem(new Bolt(10));
 
-			if ( m.Player && m_Prisoner != null && m_Gate != null && m_Gate.Locked )
-			{
-				int number;
+            crates.LiftOverride = true;
 
-				switch ( Utility.Random( 4 ) )
-				{
-					default:
-					case 0: number =  502264; break; // Help a poor prisoner!
-					case 1: number =  502266; break; // Aaah! Help me!
-					case 2: number = 1046000; break; // Help! These savages wish to end my life!
-					case 3: number = 1046003; break; // Quickly! Kill them for me! HELP!!
-				}
+            if (Utility.RandomDouble() < 0.8)
+            {
+                switch (Utility.Random(4))
+                {
+                    case 0: crates.DropItem(new LesserCurePotion()); break;
+                    case 1: crates.DropItem(new LesserExplosionPotion()); break;
+                    case 2: crates.DropItem(new LesserHealPotion()); break;
+                    default: crates.DropItem(new LesserPoisonPotion()); break;
+                }
+            }
 
-				m_Prisoner.Yell( number );
-			}
-		}
+            AddItem(crates, 2, 2, 0);
+        }
 
-		public RatCamp( Serial serial ) : base( serial )
-		{
-		}
+        // Don't refresh decay timer
+        public override void OnEnter(Mobile m)
+        {
+            if (m.Player && m_Prisoner != null && m_Prisoner.CantWalk)
+            {
+                int number;
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+                switch (Utility.Random(8))
+                {
+                    case 0: number = 502261; break; // HELP!
+                    case 1: number = 502262; break; // Help me!
+                    case 2: number = 502263; break; // Canst thou aid me?!
+                    case 3: number = 502264; break; // Help a poor prisoner!
+                    case 4: number = 502265; break; // Help! Please!
+                    case 5: number = 502266; break; // Aaah! Help me!
+                    case 6: number = 502267; break; // Go and get some help!
+                    default: number = 502268; break; // Quickly, I beg thee! Unlock my chains! If thou dost look at me close thou canst see them.	
+                }
+                m_Prisoner.Yell(number);
+            }
+        }
 
-			writer.Write( (int) 0 ); // version
+        // Don't refresh decay timer
+        public override void OnExit(Mobile m)
+        {
+        }
 
-			writer.Write( m_Prisoner );
-			writer.Write( m_Gate );
-		}
+        public RatCamp(Serial serial)
+            : base(serial)
+        {
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void AddItem(Item item, int xOffset, int yOffset, int zOffset)
+        {
+            if (item != null)
+                item.Movable = false;
 
-			int version = reader.ReadInt();
+            base.AddItem(item, xOffset, yOffset, zOffset);
+        }
 
-			switch ( version )
-			{
-				case 0:
-				{
-					m_Prisoner = reader.ReadMobile();
-					m_Gate = reader.ReadItem() as BaseDoor;
-					break;
-				}
-			}
-		}
-	}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+
+            writer.Write(m_Prisoner);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        m_Prisoner = reader.ReadMobile();
+                        break;
+                    }
+                case 0:
+                    {
+                        m_Prisoner = reader.ReadMobile();
+                        reader.ReadItem();
+                        break;
+                    }
+            }
+        }
+    }
 }

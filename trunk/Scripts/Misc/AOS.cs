@@ -304,14 +304,6 @@ namespace Server
 					if( attrs != null )
 						value += attrs[attribute];
 				}
-				#region Mondain's Legacy
-				else if( obj is BaseTalisman )
-				{
-					AosAttributes attrs = ((BaseTalisman)obj).Attributes;
-
-					if( attrs != null )
-						value += attrs[attribute];
-				}
 				else if( obj is BaseQuiver )
 				{
 					AosAttributes attrs = ((BaseQuiver)obj).Attributes;
@@ -319,7 +311,15 @@ namespace Server
 					if( attrs != null )
 						value += attrs[attribute];
 				}
-				
+				else if( obj is BaseTalisman )
+				{
+					AosAttributes attrs = ((BaseTalisman)obj).Attributes;
+
+					if( attrs != null )
+						value += attrs[attribute];
+				}
+
+				#region Mondain's Legacy
 				if ( attribute == AosAttribute.WeaponDamage )
 				{
 					if ( BaseMagicalFood.IsUnderInfluence( m, MagicalFood.WrathGrapes ) )
@@ -342,11 +342,11 @@ namespace Server
 				}
 
 				if ( obj is ISetItem )
-				{					
+				{
 					ISetItem item = (ISetItem) obj;
 
 					AosAttributes attrs = item.SetAttributes;
-										
+
 					if( attrs != null && item.LastEquipped )
 						value += attrs[attribute];
 				}

@@ -886,7 +886,6 @@ namespace Server.Engines.Craft
             if (m_ForceNonExceptional)
                 return 0.0;
 
-            #region Mondain's Legacy
             double bonus = 0.0;
 
             if (from.Talisman is BaseTalisman)
@@ -895,33 +894,16 @@ namespace Server.Engines.Craft
 
                 if (talisman.Skill == system.MainSkill)
                 {
-                    chance -= talisman.SuccessBonus / (double)100;
-                    bonus = talisman.ExceptionalBonus / (double)100;
+                    chance -= talisman.SuccessBonus / 100.0;
+                    bonus = talisman.ExceptionalBonus / 100.0;
                 }
             }
-            #endregion
 
             switch (system.ECA)
             {
                 default:
-                case CraftECA.ChanceMinusSixty:
-                    {
-                        #region Mondain's Legacy
-                        if (chance - 0.6 > 0)
-                            return chance + bonus - 0.6;
-                        #endregion
-
-                        return chance - 0.6;
-                    }
-                case CraftECA.FiftyPercentChanceMinusTenPercent:
-                    {
-                        #region Mondain's Legacy
-                        if ((chance * 0.5) - 0.1 > 0)
-                            return (chance * 0.5) + bonus - 0.1;
-                        #endregion
-
-                        return (chance * 0.5) - 0.1;
-                    }
+                case CraftECA.ChanceMinusSixty: chance -= 0.6; break;
+                case CraftECA.FiftyPercentChanceMinusTenPercent: chance = chance * 0.5 - 0.1; break;
                 case CraftECA.ChanceMinusSixtyToFourtyFive:
                     {
                         double offset = 0.60 - ((from.Skills[system.MainSkill].Value - 95.0) * 0.03);
@@ -931,14 +913,15 @@ namespace Server.Engines.Craft
                         else if (offset > 0.60)
                             offset = 0.60;
 
-                        #region Mondain's Legacy
-                        if (chance - offset > 0)
-                            return chance + bonus - offset;
-                        #endregion
-
-                        return chance - offset;
+                        chance -= offset;
+                        break;
                     }
             }
+
+            if (chance > 0)
+                return chance + bonus;
+
+            return chance;
         }
 
         public bool CheckSkills(Mobile from, Type typeRes, CraftSystem craftSystem, ref int quality, ref bool allRequiredSkills)
@@ -993,15 +976,13 @@ namespace Server.Engines.Craft
             else
                 chance = 0.0;
 
-            #region Mondain's Legacy
             if (allRequiredSkills && from.Talisman is BaseTalisman)
             {
                 BaseTalisman talisman = (BaseTalisman)from.Talisman;
 
                 if (talisman.Skill == craftSystem.MainSkill)
-                    chance += talisman.SuccessBonus / (double)100;
+                    chance += talisman.SuccessBonus / 100.0;
             }
-            #endregion
 
             if (allRequiredSkills && valMainSkill == maxMainSkill)
                 chance = 1.0;

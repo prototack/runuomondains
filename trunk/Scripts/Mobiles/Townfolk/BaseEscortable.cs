@@ -218,6 +218,10 @@ namespace Server.Mobiles
             ControlOrder = OrderType.Follow;
             ControlTarget = escorter;
 
+            if ((IsPrisoner == true) && (CantWalk == true))
+            {
+                CantWalk = false;
+            }
             CurrentSpeed = 0.1;
         }
 

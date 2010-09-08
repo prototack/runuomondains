@@ -135,7 +135,6 @@ namespace Server.Spells.Fifth
 			}
 		}
 
-		#region Mondain's Legacy
 		public static void EndReflect( Mobile m )
 		{
 			if ( m_Table.Contains( m ) )
@@ -152,6 +151,5 @@ namespace Server.Spells.Fifth
 				BuffInfo.RemoveBuff( m, BuffIcon.MagicReflection );
 			}
 		}
-		#endregion
 	}
 }

@@ -4,11 +4,11 @@ using Server.Network;
 
 namespace Server.Items
 {
-	[FlipableAttribute( 0x1AE0, 0x1AE1 )]
+	[FlipableAttribute( 0x1AE0, 0x1AE1, 0x1AE2, 0x1AE3, 0x1AE4 )]
 	public class Skull : Item
 	{
 		[Constructable]
-		public Skull( ) : base( 0x1AE0 + Utility.Random( 4 ) )
+		public Skull( ) : base( 0x1AE0 + Utility.Random( 5 ) )
 		{
 			Stackable = false;
 			Weight = 1.0;

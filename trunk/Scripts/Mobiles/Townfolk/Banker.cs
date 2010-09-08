@@ -341,19 +341,26 @@ namespace Server.Mobiles
 
 									BankBox box = e.Mobile.BankBox;
 
-									if ( !box.TryDropItem( e.Mobile, check, false ) )
-									{
-										this.Say( 500386 ); // There's not enough room in your bankbox for the check!
-										check.Delete();
-									}
-									else if ( !box.ConsumeTotal( typeof( Gold ), amount ) )
+									if ( !box.ConsumeTotal( typeof( Gold ), amount ) )
 									{
 										this.Say( 500384 ); // Ah, art thou trying to fool me? Thou hast not so much gold!
 										check.Delete();
 									}
 									else
 									{
-										this.Say( 1042673, AffixType.Append, amount.ToString(), "" ); // Into your bank box I have placed a check in the amount of:
+										if ( box.TryDropItem( e.Mobile, check, false ) )
+										{
+											this.Say( 1042673, AffixType.Append, amount.ToString(), "" ); // Into your bankbox I have placed a check in the amount of:
+										}
+										else if ( e.Mobile.Backpack.TryDropItem( e.Mobile, check, false ) )
+										{
+											this.Say( 1042674, AffixType.Append, amount.ToString(), "" ); // Into your backpack I have placed a check in the amount of:
+										}
+										else
+										{
+											this.Say( 1005003 ); // You didn't have enough room in either your bank box, or your backpack.
+											check.Delete();
+										}
 									}
 								}
 							}
