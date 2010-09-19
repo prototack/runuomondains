@@ -39,6 +39,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 94.0 );
 			SetSkill( SkillName.Wrestling, 87.4 );
 
+            Fame = 23000;
+            Karma = -23000;
 		}
 
 		public override int GetIdleSound() { return 1553; } 

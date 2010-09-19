@@ -58,13 +58,15 @@ namespace Server.Mobiles
 
 			if ( 0.2 > Utility.RandomDouble() )
 				PackItem( new BolaBall() );
+
+			if ( 0.05 > Utility.RandomDouble() )
+				PackItem( new EvilOrcHelm() );
 		}
 
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.Meager );
 			AddLoot( LootPack.Average );
-			// TODO: evil orc helm
 		}
 
 		public override bool CanRummageCorpses{ get{ return true; } }

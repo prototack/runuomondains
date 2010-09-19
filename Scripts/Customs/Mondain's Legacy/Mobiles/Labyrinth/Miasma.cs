@@ -38,6 +38,9 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Poisoning, 128.5, 143.6 );
 			
 			PackItem( new LesserPoisonPotion() );
+
+            Fame = 21000;
+            Karma = -21000;
 		}
 				
 		public override void GenerateLoot()

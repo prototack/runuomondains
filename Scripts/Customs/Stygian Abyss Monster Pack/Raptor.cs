@@ -37,21 +37,25 @@ namespace Server.Mobiles
 			Tamable = true;
 			ControlSlots = 2;
 			MinTameSkill = 65.1;
+
+            Fame = 7500;
+            Karma = -7500;
 		}
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Rich, 2);
+        }
 
 		public override int Meat{ get{ return 7; } }
 		public override int Hides{ get{ return 11; } }
-		public override HideType HideType{ get{ return HideType.Horned; } }
+        public override HideType HideType { get { return HideType.Horned; } }
+        public override FoodType FavoriteFood { get { return FoodType.Fish; } }
 
-		public override void GenerateLoot()
-		{
-			AddLoot( LootPack.Rich, 2 );
-		}
-
-		public override int GetIdleSound() { return 1573; } 
-		public override int GetAngerSound() { return 1570; } 
-		public override int GetHurtSound() { return 1572; } 
-		public override int GetDeathSound()	{ return 1571; }
+        public override int GetIdleSound() { return 1573; }
+        public override int GetAngerSound() { return 1570; }
+        public override int GetHurtSound() { return 1572; }
+        public override int GetDeathSound() { return 1571; }
 
 		public Raptor( Serial serial ) : base( serial )
 		{

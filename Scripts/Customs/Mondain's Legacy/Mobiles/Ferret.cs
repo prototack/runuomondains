@@ -35,7 +35,7 @@ namespace Server.Mobiles
 
 			Tamable = true;	
 			ControlSlots = 1;
-			MinTameSkill = -21.3;
+			MinTameSkill = 29.1;
 			
 			m_CanTalk = true;
 		}

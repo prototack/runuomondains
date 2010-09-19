@@ -36,8 +36,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 50.1, 75.0 );
 			SetSkill( SkillName.Wrestling, 50.1, 75.0 );
 
-			Fame = 7500;
-			Karma = -7500;
+			Fame = 13000;
+			Karma = -13000;
 		}	
 
 		public Chiikkaha( Serial serial ) : base( serial )

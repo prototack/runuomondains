@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an eagle corpse")]
+    [CorpseName("a swoop corpse")]
     public class Swoop : BaseCreature
     {
         [Constructable]
@@ -16,11 +16,11 @@ namespace Server.Mobiles
             BaseSoundID = 0x2EE;
             Hue = 0x1A8;
 
-            SetStr(100, 150);
-            SetDex(400, 500);
-            SetInt(80, 90);
+            SetStr(115, 135);
+            SetDex(421, 470);
+            SetInt(76, 88);
 
-            SetHits(1500, 2000);
+            SetHits(1385, 1551);
             SetStam(421, 470);
             SetMana(12, 14);
 
@@ -28,11 +28,11 @@ namespace Server.Mobiles
 
             SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 80, 90);
-            SetResistance(ResistanceType.Fire, 60, 77);
-            SetResistance(ResistanceType.Cold, 70, 85);
-            SetResistance(ResistanceType.Poison, 55, 85);
-            SetResistance(ResistanceType.Energy, 50, 60);
+            SetResistance(ResistanceType.Physical, 76, 90);
+            SetResistance(ResistanceType.Fire, 61, 69);
+            SetResistance(ResistanceType.Cold, 71, 85);
+            SetResistance(ResistanceType.Poison, 54, 60);
+            SetResistance(ResistanceType.Energy, 55, 60);
 
             SetSkill(SkillName.Anatomy, 0, 9.1);
             SetSkill(SkillName.MagicResist, 94.5, 103.9);
@@ -43,7 +43,8 @@ namespace Server.Mobiles
 
             PackArcaneScroll(0, 1);
 
-            Fame = 26000;
+            Fame = 18000;
+            Karma = -18000;
 
             VirtualArmor = 54;
         }
@@ -117,7 +118,9 @@ namespace Server.Mobiles
 
                 ResistanceMod mod = new ResistanceMod(ResistanceType.Physical, effect);
 
-                defender.FixedEffect(0x37B9, 10, 5);
+                int duration = Utility.RandomMinMax(5, 9);
+
+                defender.FixedEffect(0x37B9, 10, duration);
                 defender.AddResistanceMod(mod);
 
                 timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));

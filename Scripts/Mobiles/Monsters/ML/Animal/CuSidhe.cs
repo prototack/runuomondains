@@ -47,8 +47,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Anatomy, 65.5, 69.4 );
 			SetSkill( SkillName.Healing, 72.2, 98.9 );
 
-			Fame = 5000;  //Guessing here
-			Karma = 5000;  //Guessing here
+			Fame = 20000;
+			Karma = 20000;
 
 			Tamable = true;
 			ControlSlots = 4;

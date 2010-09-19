@@ -39,8 +39,8 @@ namespace Server.Mobiles
 			CanSwim = true;
 			CantWalk = true;
 
-			Fame = 8000;
-			Karma = -8000;
+			Fame = 7500;
+			Karma = -7500;
 			
 			PackArcaneScroll( 0, 1 );
 		}

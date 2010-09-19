@@ -33,22 +33,22 @@ namespace Server.Misc
 
 		public static void Configure()
 		{
-			string pathUO = GetPath( @"Origin Worlds Online\Ultima Online\1.0", "ExePath" );
-			string pathTD = GetPath( @"Origin Worlds Online\Ultima Online Third Dawn\1.0", "ExePath" ); //These refer to 2D & 3D, not the Third Dawn expansion
-			string pathKR = GetPath( @"Origin Worlds Online\Ultima Online\KR Legacy Beta", "ExePath" ); //After KR, This is the new registry key for the 2D client
+            //string pathUO = GetPath( @"Origin Worlds Online\Ultima Online\1.0", "ExePath" );
+            //string pathTD = GetPath( @"Origin Worlds Online\Ultima Online Third Dawn\1.0", "ExePath" ); //These refer to 2D & 3D, not the Third Dawn expansion
+            //string pathKR = GetPath( @"Origin Worlds Online\Ultima Online\KR Legacy Beta", "ExePath" ); //After KR, This is the new registry key for the 2D client
 			string pathSA = GetPath( @"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic", "InstallDir" );
 
-			if ( CustomPath != null ) 
-				Core.DataDirectories.Add( CustomPath ); 
+            //if ( CustomPath != null ) 
+            //    Core.DataDirectories.Add( CustomPath ); 
 
-			if ( pathUO != null ) 
-				Core.DataDirectories.Add( pathUO ); 
+            //if ( pathUO != null ) 
+            //    Core.DataDirectories.Add( pathUO ); 
 
-			if ( pathTD != null ) 
-				Core.DataDirectories.Add( pathTD );
+            //if ( pathTD != null ) 
+            //    Core.DataDirectories.Add( pathTD );
 
-			if ( pathKR != null )
-				Core.DataDirectories.Add( pathKR );
+            //if ( pathKR != null )
+            //    Core.DataDirectories.Add( pathKR );
 
 			if ( pathSA != null )
 				Core.DataDirectories.Add( pathSA );

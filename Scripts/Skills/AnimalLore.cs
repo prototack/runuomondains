@@ -342,7 +342,9 @@ namespace Server.SkillHandlers
 			else if ( (c.FavoriteFood & FoodType.Meat) != 0 )
 				foodPref = 1049564; // Meat
 			else if ( (c.FavoriteFood & FoodType.Eggs) != 0 )
-				foodPref = 1044477; // Eggs
+                foodPref = 1044477; // Eggs
+            else if ((c.FavoriteFood & FoodType.Metal) != 0)
+                foodPref = 1049567; // Metal
 
 			AddHtmlLocalized( 153, 168, 160, 18, foodPref, LabelColor, false, false );
 

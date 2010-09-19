@@ -12,8 +12,11 @@ namespace Server.Mobiles
 		[Constructable]
 		public InsaneDryad() : base()
 		{
-			Name = "an insane dryad";	
-			Hue = 0x487;
+			Name = "an insane dryad";
+            Hue = 0x487;
+
+            Fame = 7000;
+            Karma = -7000;
 		}
 		
 		public InsaneDryad( Serial serial ) : base( serial )

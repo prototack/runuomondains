@@ -40,8 +40,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 93.0, 109.9 );
 			SetSkill( SkillName.Wrestling, 92.6, 107.2 );
 
-			Fame = 7000;
-			Karma = -7000;
+			Fame = 13000;
+			Karma = -13000;
 
 			VirtualArmor = 28; // Don't know what it should be
 		}

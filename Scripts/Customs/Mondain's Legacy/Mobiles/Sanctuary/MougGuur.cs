@@ -31,8 +31,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 80.8, 81.7 );
 			SetSkill( SkillName.Wrestling, 93.9, 99.4 );
 
-			Fame = 3000;
-			Karma = -3000;
+			Fame = 13000;
+			Karma = -13000;
 		}
 
 		public MougGuur( Serial serial ) : base( serial )

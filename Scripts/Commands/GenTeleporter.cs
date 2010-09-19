@@ -256,9 +256,9 @@ namespace Server.Commands
 				CreateTeleporter( 5409, 859, 52, 5387, 756, -3, map, false );
 
 				// Destard
-				CreateTeleporter( 5242, 1007, 4, 1175, 2635, 0, map, true );
-				CreateTeleporter( 5243, 1007, 3, 1176, 2635, 0, map, true );
-				CreateTeleporter( 5244, 1007, 4, 1177, 2635, 0, map, true );
+				CreateTeleporter( 5242, 1007, 0, 1175, 2635, 0, map, true );
+				CreateTeleporter( 5243, 1007, 0, 1176, 2635, 0, map, true );
+				CreateTeleporter( 5244, 1007, 0, 1177, 2635, 0, map, true );
 				CreateTeleporter( 5142, 797, 22, 5129, 908, -23, map, false );
 				CreateTeleporter( 5143, 797, 22, 5130, 908, -23, map, false );
 				CreateTeleporter( 5144, 797, 22, 5131, 908, -23, map, false );

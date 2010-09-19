@@ -37,6 +37,14 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 73.3, 78.9 );
 			SetSkill( SkillName.Wrestling, 92.5, 94.6 );
 
+            PackItem(new SpidersSilk(8));
+
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 59.1;
+
+            Fame = 2000;
+            Karma = -2000;
 		}
 
 		public override void GenerateLoot()
@@ -46,8 +54,9 @@ namespace Server.Mobiles
 
 		public override int GetIdleSound() { return 1605; } 
 		public override int GetAngerSound() { return 1602; } 
-		public override int GetHurtSound() { return 1604; } 
-		public override int GetDeathSound()	{ return 1603; }
+		public override int GetHurtSound() { return 1604; }
+        public override int GetDeathSound() { return 1603; }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
 		public TrapdoorSpider( Serial serial ) : base( serial )
 		{

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: NetState.cs 521 2010-06-17 07:11:43Z mark $
+ *   $Id: NetState.cs 530 2010-09-19 15:21:39Z mark $
  *
  ***************************************************************************/
 
@@ -263,13 +263,13 @@ namespace Server.Network {
 
 		public bool IsUOTDClient {
 			get {
-				return ( (m_Flags & ClientFlags.UOTD) != 0 || m_Version.Type == ClientType.UOTD );
+				return ( (m_Flags & ClientFlags.UOTD) != 0 || ( m_Version != null && m_Version.Type == ClientType.UOTD ) );
 			}
 		}
 
 		public bool IsSAClient {
 			get {
-				return ( m_Version.Type == ClientType.SA );
+				return ( m_Version != null && m_Version.Type == ClientType.SA );
 			}
 		}
 

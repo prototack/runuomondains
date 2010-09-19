@@ -63,7 +63,8 @@ namespace Server.Mobiles
         GrainsAndHay = 0x0004,
         Fish = 0x0008,
         Eggs = 0x0010,
-        Gold = 0x0020
+        Gold = 0x0020,
+        Metal = 0x0040
     }
 
     [Flags]
@@ -1373,7 +1374,7 @@ namespace Server.Mobiles
 
                 if (wool != 0)
                 {
-                    corpse.AddCarvedItem(new Wool(wool), from);
+                    corpse.AddCarvedItem(new TaintedWool(wool), from);
                     from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
                 }
 
@@ -1994,6 +1995,14 @@ namespace Server.Mobiles
 				typeof( Gold )
 			};
 
+        private static Type[] m_Metal = new Type[]
+			{
+				// Some Stygian Abyss Monsters eat Metal..
+                typeof( IronIngot ), typeof( DullCopperIngot ), typeof( ShadowIronIngot ),
+                typeof( CopperIngot ), typeof( BronzeIngot ), typeof( GoldIngot ),
+                typeof( AgapiteIngot ), typeof( VeriteIngot ), typeof( ValoriteIngot )
+			};
+
         public virtual bool CheckFoodPreference(Item f)
         {
             if (CheckFoodPreference(f, FoodType.Eggs, m_Eggs))
@@ -2012,6 +2021,9 @@ namespace Server.Mobiles
                 return true;
 
             if (CheckFoodPreference(f, FoodType.Gold, m_Gold))
+                return true;
+
+            if (CheckFoodPreference(f, FoodType.Metal, m_Metal))
                 return true;
 
             return false;
@@ -2033,7 +2045,8 @@ namespace Server.Mobiles
 
         public virtual bool CheckFeed(Mobile from, Item dropped)
         {
-            if (!IsDeadPet && Controlled && (ControlMaster == from || IsPetFriend(from)) && (dropped is Food || dropped is Gold || dropped is CookableFood || dropped is Head || dropped is LeftArm || dropped is LeftLeg || dropped is Torso || dropped is RightArm || dropped is RightLeg))
+            if (!IsDeadPet && Controlled && (ControlMaster == from || IsPetFriend(from)) && (dropped is Food || dropped is Gold || dropped is CookableFood || dropped is Head || dropped is LeftArm || dropped is LeftLeg || dropped is Torso || dropped is RightArm || dropped is RightLeg || 
+                dropped is IronIngot || dropped is DullCopperIngot || dropped is ShadowIronIngot || dropped is CopperIngot || dropped is BronzeIngot || dropped is GoldIngot || dropped is AgapiteIngot || dropped is VeriteIngot || dropped is ValoriteIngot))
             {
                 Item f = dropped;
 
@@ -4573,6 +4586,12 @@ namespace Server.Mobiles
                 {
                     int totalFame = Fame / 100;
                     int totalKarma = -Karma / 100;
+
+                    if (Map == Map.Felucca)
+                    {
+                        totalFame += ((totalFame / 10) * 3);
+                        totalKarma += ((totalKarma / 10) * 3);
+                    }
 
                     List<DamageStore> list = GetLootingRights(this.DamageEntries, this.HitsMax);
                     List<Mobile> titles = new List<Mobile>();

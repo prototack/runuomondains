@@ -14,28 +14,30 @@ namespace Server.Mobiles
 			Name = "a chicken lizard";
 			Body = 716;
 
-			SetStr( 78, 87 );
-			SetDex( 87, 92 );
-			SetInt( 8 );
+			SetStr( 77, 95 );
+			SetDex( 78, 95 );
+			SetInt( 6, 10 );
 
-			SetHits( 77, 82 );
+			SetHits( 75, 85 );
 
 			SetDamage( 2, 5 );
 
 			SetDamageType( ResistanceType.Physical, 100 );
 
-			SetResistance( ResistanceType.Physical, 18, 20 );
-			SetResistance( ResistanceType.Fire, 7, 14 );
+			SetResistance( ResistanceType.Physical, 15, 20 );
+			SetResistance( ResistanceType.Fire, 5, 14 );
 
-			SetSkill( SkillName.MagicResist, 0.0, 28.5 );
-			SetSkill( SkillName.Tactics, 0.0, 41.3 );
-			SetSkill( SkillName.Wrestling, 0.0, 35.8 );
+			SetSkill( SkillName.MagicResist, 25.1, 29.6 );
+			SetSkill( SkillName.Tactics, 30.1, 44.9 );
+			SetSkill( SkillName.Wrestling, 26.2, 38.2 );
 
+            Fame = 300;
+            Karma = 300;
 		}
 
 		public override int Meat{ get{ return 3; } }
 		public override MeatType MeatType{ get{ return MeatType.Bird; } }
-		public override FoodType FavoriteFood{ get{ return FoodType.Meat; } }
+        public override FoodType FavoriteFood { get { return FoodType.GrainsAndHay; } }
 
 		public override int GetIdleSound() { return 1511; } 
 		public override int GetAngerSound() { return 1508; } 

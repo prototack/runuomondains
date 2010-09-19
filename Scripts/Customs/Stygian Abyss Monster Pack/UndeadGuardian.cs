@@ -37,6 +37,8 @@ namespace Server.Mobiles
 
 			PackNecroReg( 10, 15 ); /// Stratics didn't specify
 
+            Fame = 3000;
+            Karma = -3000;
 		}
 
 		public override void GenerateLoot()

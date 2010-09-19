@@ -43,6 +43,9 @@ namespace Server.Mobiles
 			PackItem( new SpidersSilk( 5 ) );
 			PackItem( new LesserPoisonPotion() );
 			PackItem( new LesserPoisonPotion() );
+
+            Fame = 18900;
+            Karma = -18900;
 		}
 
 		public LadyLissith( Serial serial ) : base( serial )

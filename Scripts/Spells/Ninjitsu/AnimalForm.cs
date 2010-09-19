@@ -365,7 +365,7 @@ namespace Server.Spells.Ninjitsu
 				#region Mondain's Legacy
 				new AnimalFormEntry( typeof( Kirin ),			1029632,	9632,    0,  6, 10, 1070811, 100.0, 0x84, false,  true, false ),
 				new AnimalFormEntry( typeof( Unicorn ),			1018214,	9678,    0, 20, 10, 1070812, 100.0, 0x7A, false,  true, false ),
-				new AnimalFormEntry( typeof( BakeKitsune ),		1030083,   10083,    0, 15, 15, 1070810,	 82.5, 0xF6, false,  true, false ),
+				new AnimalFormEntry( typeof( BakeKitsune ),		1030083,   10083,    0, 15, 15, 1070810,  82.5, 0xF6, false,  true, false ),
 				new AnimalFormEntry( typeof( GreyWolf ),		1028482,	9681, 2309, 25, 10, 1070810,  82.5, 0x19, false,  true, false ),
 				new AnimalFormEntry( typeof( Llama ),			1028438,	8438,    0, 15,  8, 1070809,  70.0, 0xDC, false,  true, false ),
 				new AnimalFormEntry( typeof( ForestOstard ),	1018273,	8503, 2212, 12, 10, 1070809,  70.0, 0xDA, false,  true, false ),
@@ -377,8 +377,8 @@ namespace Server.Spells.Ninjitsu
 				new AnimalFormEntry( typeof( Rabbit ),			1028485,	8485, 2309, 19, 20, 1070805,  20.0, 0xCD,  true, false, false ),
 				#region Heritage Items
 				new AnimalFormEntry( typeof( SquirrelFormTalisman ),	1031671,  0x2D97,   0, 15, 15,        0,  20.0, 0x116,  false, false, false ), // squirrel
-				new AnimalFormEntry( typeof( FerretFormTalisman ),		1031672,  0x2D98,   0, 15, 15,	1075220,  40.0, 0x117,  false, false, true ), // ferret
-				new AnimalFormEntry( typeof( CuSidheFormTalisman ),		1031670,  0x2D96,   0, 19, 12,  1075221,  60.0, 0x115,  false, false, false ), // cu sidhe
+				new AnimalFormEntry( typeof( FerretFormTalisman ),		1031672,  0x2D98,   0, 21, 21,	1075220,  40.0, 0x117,  false, false, true ), // ferret
+				new AnimalFormEntry( typeof( CuSidheFormTalisman ),		1031670,  0x2D96,   0, 19,  8,  1075221,  60.0, 0x115,  false, false, false ), // cu sidhe
 				new AnimalFormEntry( typeof( ReptalonFormTalisman ),	1075202,  0x2D95,   0, -2,  0,  1075222,  90.0, 0x114,  false, false, false ), // reptalon
 				#endregion
 				#endregion
