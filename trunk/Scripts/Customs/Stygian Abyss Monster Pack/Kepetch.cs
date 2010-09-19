@@ -65,6 +65,9 @@ namespace Server.Mobiles
 			SetSkill( SkillName.MagicResist, 89.9, 97.4 );
 			SetSkill( SkillName.Tactics, 117.4, 123.5 );
 			SetSkill( SkillName.Wrestling, 107.7, 113.9 );
+
+            Fame = 6000;
+            Karma = -6000;
 		}
 
 		public override void GenerateLoot()

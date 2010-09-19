@@ -4,13 +4,13 @@ using Server.Items;
 namespace Server.Engines.Craft
 {
 	public enum TailorRecipe
-	{		
+	{
 		ElvenQuiver			= 501,
 		QuiverOfFire		= 502,
 		QuiverOfIce			= 503,
-		QuiverOfBlight		= 504,		
+		QuiverOfBlight		= 504,
 		QuiverOfLightning	= 505,
-		
+
 		SongWovenMantle 	= 550,
 		SpellWovenBritches 	= 551,
 		StitchersMittens 	= 552,
@@ -61,6 +61,20 @@ namespace Server.Engines.Craft
 
 			return 0;
 		}
+
+		public static bool IsNonColorable(Type type)
+		{
+			for (int i = 0; i < m_TailorNonColorables.Length; ++i)
+				if (m_TailorNonColorables[i] == type)
+					return true;
+
+			return false;
+		}
+
+		private static Type[] m_TailorNonColorables = new Type[]
+			{
+				typeof( OrcHelm )
+			};
 
 		private static Type[] m_TailorColorables = new Type[]
 			{
@@ -123,7 +137,7 @@ namespace Server.Engines.Craft
 			AddCraft( typeof( SkullCap ), 1011375, 1025444, 0.0, 25.0, typeof( Cloth ), 1044286, 2, 1044287 );
 			AddCraft( typeof( Bandana ), 1011375, 1025440, 0.0, 25.0, typeof( Cloth ), 1044286, 2, 1044287 );
 			AddCraft( typeof( FloppyHat ), 1011375, 1025907, 6.2, 31.2, typeof( Cloth ), 1044286, 11, 1044287 );
-			AddCraft( typeof( Cap ), 1011375, 1025909, -18.8, 6.2, typeof( Cloth ), 1044286, 11, 1044287 );
+			AddCraft( typeof( Cap ), 1011375, 1025909, 6.2, 31.2, typeof( Cloth ), 1044286, 11, 1044287 );
 			AddCraft( typeof( WideBrimHat ), 1011375, 1025908, 6.2, 31.2, typeof( Cloth ), 1044286, 12, 1044287 );
 			AddCraft( typeof( StrawHat ), 1011375, 1025911, 6.2, 31.2, typeof( Cloth ), 1044286, 10, 1044287 );
 			AddCraft( typeof( TallStrawHat ), 1011375, 1025910, 6.7, 31.7, typeof( Cloth ), 1044286, 13, 1044287 );
@@ -186,13 +200,13 @@ namespace Server.Engines.Craft
 			{
 				index = AddCraft( typeof( ElvenShirt ), 1015269, 1032661, 80.0, 105.0, typeof( Cloth ), 1044286, 10, 1044287 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( ElvenDarkShirt ), 1015269, 1032662, 80.0, 105.0, typeof( Cloth ), 1044286, 10, 1044287 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( MaleElvenRobe ), 1015269, 1032659, 80.0, 105.0, typeof( Cloth ), 1044286, 30, 1044287 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( FemaleElvenRobe ), 1015269, 1032660, 80.0, 105.0, typeof( Cloth ), 1044286, 30, 1044287 );
 				SetNeededExpansion( index, Expansion.ML );
 			}
@@ -223,12 +237,12 @@ namespace Server.Engines.Craft
 			{
 				index = AddCraft( typeof( ElvenPants ), 1015279, 1032665, 80.0, 105.0, typeof( Cloth ), 1044286, 12, 1044287 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( WoodlandBelt ), 1015279, 1032639, 80.0, 105.0, typeof( Cloth ), 1044286, 10, 1044287 );
 				SetNeededExpansion( index, Expansion.ML );
 			}
 			#endregion
-			
+
 			#endregion
 
 			#region Misc
@@ -302,7 +316,7 @@ namespace Server.Engines.Craft
 			#endregion
 
 			#region Footwear
-			
+
 			#region Mondain's Legacy
 			if ( Core.ML )
 			{
@@ -310,7 +324,7 @@ namespace Server.Engines.Craft
 				SetNeededExpansion( index, Expansion.ML );
 			}
 			#endregion
-			
+
 			if ( Core.AOS )
 				AddCraft( typeof( FurBoots ), 1015288, 1028967, 50.0, 75.0, typeof( Cloth ), 1044286, 12, 1044287 );
 
@@ -340,7 +354,7 @@ namespace Server.Engines.Craft
 				AddRecipe( index, (int) TailorRecipe.SpellWovenBritches );	
 				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( SongWovenMantle ), 1015293, 1072931, 92.5, 117.5, typeof( Leather ), 1044462, 15, 1044463 );
 				AddRes( index, typeof( EyeOfTheTravesty ), 1032685, 1, 1044253 );
 				AddRes( index, typeof( Blight ), 1032675, 10, 1044253 );
@@ -348,7 +362,7 @@ namespace Server.Engines.Craft
 				AddRecipe( index, (int) TailorRecipe.SongWovenMantle );	
 				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( StitchersMittens ), 1015293, 1072932, 92.5, 117.5, typeof( Leather ), 1044462, 15, 1044463 );
 				AddRes( index, typeof( CapturedEssence ), 1032686, 1, 1044253 );
 				AddRes( index, typeof( Corruption ), 1032676, 10, 1044253 );
@@ -397,19 +411,19 @@ namespace Server.Engines.Craft
 			{
 				index = AddCraft( typeof( LeafChest ), 1015293, 1032667, 75.0, 100.0, typeof( Leather ), 1044462, 15, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( LeafArms ), 1015293, 1032670, 60.0, 85.0, typeof( Leather ), 1044462, 12, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( LeafGloves ), 1015293, 1032668, 60.0, 85.0, typeof( Leather ), 1044462, 10, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( LeafLegs ), 1015293, 1032671, 75.0, 100.0, typeof( Leather ), 1044462, 15, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( LeafGorget ), 1015293, 1032669, 65.0, 90.0, typeof( Leather ), 1044462, 12, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( LeafTonlet ), 1015293, 1032672, 70.0, 95.0, typeof( Leather ), 1044462, 12, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
 			}
@@ -437,22 +451,22 @@ namespace Server.Engines.Craft
 				index = AddCraft( typeof( StuddedHaidate ), 1015300, 1030198, 92.0, 117.0, typeof( Leather ), 1044462, 14, 1044463 );
 				SetNeededExpansion( index, Expansion.SE );
 			}
-			
+
 			#region Mondain's Legacy
 			if ( Core.ML )
 			{
 				index = AddCraft( typeof( HideChest ), 1015300, 1032651, 85.0, 110.0, typeof( Leather ), 1044462, 15, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( HidePauldrons ), 1015300, 1032654, 75.0, 100.0, typeof( Leather ), 1044462, 12, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( HideGloves ), 1015300, 1032652, 75.0, 100.0, typeof( Leather ), 1044462, 10, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( HidePants ), 1015300, 1032655, 92.0, 117.0, typeof( Leather ), 1044462, 15, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( HideGorget ), 1015300, 1032653, 90.0, 115.0, typeof( Leather ), 1044462, 12, 1044463 );
 				SetNeededExpansion( index, Expansion.ML );
 			}
@@ -484,6 +498,9 @@ namespace Server.Engines.Craft
 		
 			index = AddCraft( typeof( BoneChest ), 1049149, 1025199, 96.0, 121.0, typeof( Leather ), 1044462, 12, 1044463 );
 			AddRes( index, typeof( Bone ), 1049064, 10, 1049063 );
+
+			index = AddCraft(typeof(OrcHelm), 1049149, 1027947, 90.0, 115.0, typeof(Leather), 1044462, 6, 1044463);
+			AddRes(index, typeof(Bone), 1049064, 4, 1049063);
 			#endregion
 
 			// Set the overridable material

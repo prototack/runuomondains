@@ -40,8 +40,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 90.0, 100.0 );
 			SetSkill( SkillName.Wrestling, 90.0, 100.0 );
 			
-			Fame = 17000;
-			Karma = -17000;
+			Fame = 18000;
+			Karma = -18000;
 
             PackArcaneScroll(0, 2);
 		}

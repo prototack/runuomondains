@@ -162,97 +162,92 @@ namespace Server.SkillHandlers
 				{
 					Mobile targ = (Mobile)target;
 
-                    if (targ is BaseCreature)
-                    {
-                        if (targ == from || ((BaseCreature)targ).BardImmune || !from.CanBeHarmful(targ, false))
-                        {
-                            from.SendLocalizedMessage(1049535); // A song of discord would have no effect on that.
-                        }
-                        else
-                        {
-                            double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
-                            double music = from.Skills[SkillName.Musicianship].Value;
+					if ( targ == from || (targ is BaseCreature && ( ((BaseCreature)targ).BardImmune || !from.CanBeHarmful( targ, false ) )) )
+					{
+						from.SendLocalizedMessage( 1049535 ); // A song of discord would have no effect on that.
+					}
+					else if ( m_Table.Contains( targ ) ) //Already discorded
+					{
+						from.SendLocalizedMessage( 1049537 );// Your target is already in discord.
+					}
+					else if ( !targ.Player )
+					{
+						double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+						double music = from.Skills[SkillName.Musicianship].Value;
 
-                            if (music > 100.0)
-                                diff -= (music - 100.0) * 0.5;
+						if ( music > 100.0 )
+							diff -= (music - 100.0) * 0.5;
 
-                            if (!BaseInstrument.CheckMusicianship(from))
-                            {
-                                from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
-                                m_Instrument.PlayInstrumentBadly(from);
-                                m_Instrument.ConsumeUse(from);
-                            }
-                            else if (from.CheckTargetSkill(SkillName.Discordance, target, diff - 25.0, diff + 25.0))
-                            {
-                                if (!m_Table.Contains(targ))
-                                {
-                                    from.SendLocalizedMessage(1049539); // You play the song surpressing your targets strength
-                                    m_Instrument.PlayInstrumentWell(from);
-                                    m_Instrument.ConsumeUse(from);
+						if ( !BaseInstrument.CheckMusicianship( from ) )
+						{
+							from.SendLocalizedMessage( 500612 ); // You play poorly, and there is no effect.
+							m_Instrument.PlayInstrumentBadly( from );
+							m_Instrument.ConsumeUse( from );
+						}
+						else if ( from.CheckTargetSkill( SkillName.Discordance, target, diff-25.0, diff+25.0 ) )
+						{
+							from.SendLocalizedMessage( 1049539 ); // You play the song surpressing your targets strength
+							m_Instrument.PlayInstrumentWell( from );
+							m_Instrument.ConsumeUse( from );
 
-                                    ArrayList mods = new ArrayList();
-                                    int effect;
-                                    double scalar;
+							ArrayList mods = new ArrayList();
+							int effect;
+							double scalar;
 
-                                    if (Core.AOS)
-                                    {
-                                        double discord = from.Skills[SkillName.Discordance].Value;
+							if ( Core.AOS )
+							{
+								double discord = from.Skills[SkillName.Discordance].Value;
 
-                                        if (discord > 100.0)
-                                            effect = -20 + (int)((discord - 100.0) / -2.5);
-                                        else
-                                            effect = (int)(discord / -5.0);
+								if ( discord > 100.0 )
+									effect = -20 + (int)((discord - 100.0) / -2.5);
+								else
+									effect = (int)(discord / -5.0);
 
-                                        if (Core.SE && BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
-                                            effect /= 2;
+								if ( Core.SE && BaseInstrument.GetBaseDifficulty( targ ) >= 160.0 )
+									effect /= 2;
 
-                                        scalar = effect * 0.01;
+								scalar = effect * 0.01;
 
-                                        mods.Add(new ResistanceMod(ResistanceType.Physical, effect));
-                                        mods.Add(new ResistanceMod(ResistanceType.Fire, effect));
-                                        mods.Add(new ResistanceMod(ResistanceType.Cold, effect));
-                                        mods.Add(new ResistanceMod(ResistanceType.Poison, effect));
-                                        mods.Add(new ResistanceMod(ResistanceType.Energy, effect));
+								mods.Add( new ResistanceMod( ResistanceType.Physical, effect ) );
+								mods.Add( new ResistanceMod( ResistanceType.Fire, effect ) );
+								mods.Add( new ResistanceMod( ResistanceType.Cold, effect ) );
+								mods.Add( new ResistanceMod( ResistanceType.Poison, effect ) );
+								mods.Add( new ResistanceMod( ResistanceType.Energy, effect ) );
 
-                                        for (int i = 0; i < targ.Skills.Length; ++i)
-                                        {
-                                            if (targ.Skills[i].Value > 0)
-                                                mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        effect = (int)(from.Skills[SkillName.Discordance].Value / -5.0);
-                                        scalar = effect * 0.01;
+								for ( int i = 0; i < targ.Skills.Length; ++i )
+								{
+									if ( targ.Skills[i].Value > 0 )
+										mods.Add( new DefaultSkillMod( (SkillName)i, true, targ.Skills[i].Value * scalar ) );
+								}
+							}
+							else
+							{
+								effect = (int)( from.Skills[SkillName.Discordance].Value / -5.0 );
+								scalar = effect * 0.01;
 
-                                        mods.Add(new StatMod(StatType.Str, "DiscordanceStr", (int)(targ.RawStr * scalar), TimeSpan.Zero));
-                                        mods.Add(new StatMod(StatType.Int, "DiscordanceInt", (int)(targ.RawInt * scalar), TimeSpan.Zero));
-                                        mods.Add(new StatMod(StatType.Dex, "DiscordanceDex", (int)(targ.RawDex * scalar), TimeSpan.Zero));
+								mods.Add( new StatMod( StatType.Str, "DiscordanceStr", (int)(targ.RawStr * scalar), TimeSpan.Zero ) );
+								mods.Add( new StatMod( StatType.Int, "DiscordanceInt", (int)(targ.RawInt * scalar), TimeSpan.Zero ) );
+								mods.Add( new StatMod( StatType.Dex, "DiscordanceDex", (int)(targ.RawDex * scalar), TimeSpan.Zero ) );
 
-                                        for (int i = 0; i < targ.Skills.Length; ++i)
-                                        {
-                                            if (targ.Skills[i].Value > 0)
-                                                mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
-                                        }
-                                    }
+								for ( int i = 0; i < targ.Skills.Length; ++i )
+								{
+									if ( targ.Skills[i].Value > 0 )
+										mods.Add( new DefaultSkillMod( (SkillName)i, true, targ.Skills[i].Value * scalar ) );
+								}
+							}
 
-                                    DiscordanceInfo info = new DiscordanceInfo(from, targ, Math.Abs(effect), mods);
-                                    info.m_Timer = Timer.DelayCall<DiscordanceInfo>(TimeSpan.Zero, TimeSpan.FromSeconds(1.25), new TimerStateCallback<DiscordanceInfo>(ProcessDiscordance), info);
+							DiscordanceInfo info = new DiscordanceInfo( from, targ, Math.Abs( effect ), mods );
+							info.m_Timer = Timer.DelayCall<DiscordanceInfo>( TimeSpan.Zero, TimeSpan.FromSeconds( 1.25 ), new TimerStateCallback<DiscordanceInfo>( ProcessDiscordance ), info );
 
-                                    m_Table[targ] = info;
-                                }
-                                else
-                                {
-                                    from.SendLocalizedMessage(1049537);// Your target is already in discord.
-                                }
-                            }
-                            else
-                            {
-                                from.SendLocalizedMessage(1049540);// You fail to disrupt your target
-                                m_Instrument.PlayInstrumentBadly(from);
-                                m_Instrument.ConsumeUse(from);
-                            }
-                        }
+							m_Table[targ] = info;
+						}
+						else
+						{
+							from.SendLocalizedMessage( 1049540 );// You fail to disrupt your target
+							m_Instrument.PlayInstrumentBadly( from );
+							m_Instrument.ConsumeUse( from );
+						}
+
 						from.NextSkillTime = DateTime.Now + TimeSpan.FromSeconds( 12.0 );
 					}
 					else

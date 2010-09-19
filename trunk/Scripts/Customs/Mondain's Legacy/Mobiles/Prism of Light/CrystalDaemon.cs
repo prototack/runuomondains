@@ -40,8 +40,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.EvalInt, 100.0, 110.0 );
 			SetSkill( SkillName.Meditation, 100.0, 110.0 );
 			
-			Fame = 15000;
-			Karma = -15000;
+			Fame = 10000;
+			Karma = -10000;
 
             PackArcaneScroll(0, 1);
 		}

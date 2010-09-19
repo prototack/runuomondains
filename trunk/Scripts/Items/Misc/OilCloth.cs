@@ -106,6 +106,7 @@ namespace Server.Items
 					from.LocalOverheadMessage( Network.MessageType.Regular, 0x3B2, 1005422 ); // Hmmmm... this does not need to be cleaned.
 				}
 			}
+//Added for Firebomb
 			else if ( obj is BaseBeverage )
 			{
 				BaseBeverage beverage = (BaseBeverage) obj;
@@ -127,6 +128,7 @@ namespace Server.Items
 			{
 				from.SendLocalizedMessage( 1060579 ); // That is already a firebomb!
 			}
+//Firebomb end
 			else
 			{
 				from.SendLocalizedMessage( 1005426 ); // The cloth will not work on that.

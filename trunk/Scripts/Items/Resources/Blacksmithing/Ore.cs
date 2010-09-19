@@ -316,31 +316,47 @@ namespace Server.Items
 
 					if ( from.CheckTargetSkill( SkillName.Mining, targeted, minSkill, maxSkill ) )
 					{
-						int toConsume = m_Ore.Amount;
-
-						if ( toConsume <= 0 )
+						if ( m_Ore.Amount <= 0 )
 						{
 							from.SendLocalizedMessage( 501987 ); // There is not enough metal-bearing ore in this pile to make an ingot.
 						}
 						else
 						{
-							if ( toConsume > 30000 && m_Ore.ItemID == 0x19B9 )
-								toConsume = 30000;
+							int amount = m_Ore.Amount;
+							if ( m_Ore.Amount > 30000 )
+								amount = 30000;
 
 							BaseIngot ingot = m_Ore.GetIngot();
-							
-							int amount = toConsume;
+
 							if ( m_Ore.ItemID == 0x19B7 )
-								amount /= 2;
+							{
+								if ( m_Ore.Amount % 2 == 0 )
+								{
+									amount /= 2;
+									m_Ore.Delete();
+								}
+								else
+								{
+									amount /= 2;
+									m_Ore.Amount = 1;
+								}
+							}
+
 							else if ( m_Ore.ItemID == 0x19B9 )
+							{
 								amount *= 2;
+								m_Ore.Delete();
+							}
 
-							ingot.Amount = amount;
+                            else
+                            {
+                                amount /= 1;
+                                m_Ore.Delete();
+                            }
 
-							m_Ore.Consume( toConsume );
-							from.AddToBackpack( ingot );
+                            ingot.Amount = amount;
+                            from.AddToBackpack(ingot);
 							//from.PlaySound( 0x57 );
-
 
 							from.SendLocalizedMessage( 501988 ); // You smelt the ore removing the impurities and put the metal in your backpack.
 						}

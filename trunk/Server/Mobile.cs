@@ -3870,6 +3870,7 @@ namespace Server
 			if( pack != null )
 			{
 				List<Item> packCopy = new List<Item>( pack.Items );
+				List<Item> contCopy = new List<Item>();
 
 				for( int i = 0; i < packCopy.Count; ++i )
 				{
@@ -3878,9 +3879,30 @@ namespace Server
 					DeathMoveResult res = GetInventoryMoveResultFor( item );
 
 					if( res == DeathMoveResult.MoveToCorpse )
+					{
 						content.Add( item );
+
+						if( item is Container )
+							contCopy.AddRange( item.Items );
+					}
 					else
 						moveToPack.Add( item );
+
+					while( contCopy.Count > 0 )
+					{
+						Item child = contCopy[0];
+						res = GetInventoryMoveResultFor( child );
+
+						if( res != DeathMoveResult.MoveToBackpack )
+						{
+							if( child is Container )
+								contCopy.AddRange( child.Items );
+						}
+						else
+							moveToPack.Add( child );
+
+						contCopy.RemoveAt( 0 );
+					}
 				}
 
 				for( int i = 0; i < moveToPack.Count; ++i )

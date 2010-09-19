@@ -21,7 +21,7 @@ namespace Server.Mobiles
 			SetDex( 91, 120 );
 			SetInt( 51, 70 );
 
-			SetHits( 302, 340 );
+			SetHits( 306, 340 );
 
 			SetDamage( 11, 14 );
 
@@ -38,12 +38,12 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 80.4, 94.7 );
 			SetSkill( SkillName.Wrestling, 70.2, 93.5 );
 
-			Fame = 5000;
-			Karma = -5000;
+			Fame = 11000;
+			Karma = -11000;
 
 			VirtualArmor = 28; // Don't know what it should be
 
-			PackItem( new Bandage( Utility.RandomMinMax( 6, 17 ) ) );  // How many?
+			PackItem( new Bandage( Utility.RandomMinMax( 4, 20 ) ) );  // How many?
 			PackItem( new Ribs() );
 
 			PackItem( new TreasureMap( 2, Map.Trammel ) );

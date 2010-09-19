@@ -43,8 +43,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Anatomy, 81.3, 105.7);
             SetSkill(SkillName.Poisoning, 106.0, 119.2);
 
-            Fame = 7500;
-            Karma = -7500;
+            Fame = 18900;
+            Karma = -18900;
 
             VirtualArmor = 54;
 

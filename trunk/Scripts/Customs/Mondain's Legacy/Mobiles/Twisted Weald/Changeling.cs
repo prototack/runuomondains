@@ -52,6 +52,9 @@ namespace Server.Mobiles
 			PackGem( 2 );
 
             PackArcaneScroll(0, 1);
+
+            Fame = 15000;
+            Karma = -15000;
 		}
 
 		public Changeling( Serial serial ) : base( serial )

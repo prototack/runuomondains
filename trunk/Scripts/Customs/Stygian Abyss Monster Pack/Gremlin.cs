@@ -34,10 +34,17 @@ namespace Server.Mobiles
 			SetSkill( SkillName.MagicResist, 82.5 );
 			SetSkill( SkillName.Tactics, 65.3 );
 
-			AddItem( new Bow() );
-			PackItem( new Arrow( Utility.RandomMinMax( 60, 80 ) ) );
-			PackItem( new Apple( 5 ) );
+            if (0.1 > Utility.RandomDouble())
+                AddItem(new OrcishBow());
+            else
+                AddItem(new Bow());
 
+			PackItem( new Arrow( Utility.RandomMinMax( 60, 80 ) ) );
+            PackItem(new Apple(5));
+            PackItem(new Bandage(Utility.RandomMinMax(6, 17)));  // How many?
+
+            Fame = 1500;
+            Karma = -1500;
 		}
 
 		public override void GenerateLoot()

@@ -100,6 +100,9 @@ namespace Server.Items
 
 		public virtual bool CanFortify{ get{ return true; } }
 
+		public virtual bool UseIntOrDexProperty { get { return false; } }
+		public virtual int IntOrDexPropertyValue { get { return 0; } }
+
 		public override void OnAfterDuped( Item newItem )
 		{
 			BaseArmor armor = newItem as BaseArmor;
@@ -303,7 +306,9 @@ namespace Server.Items
 					UnscaleDurability();
 
 					m_Resource = value;
-					Hue = CraftResources.GetHue( m_Resource );
+
+					if (!DefTailoring.IsNonColorable(this.GetType()))
+						Hue = CraftResources.GetHue(m_Resource);
 
 					Invalidate();
 					InvalidateProperties();
@@ -1729,14 +1734,23 @@ namespace Server.Items
 			if ( (prop = ArtifactRarity) > 0 )
 				list.Add( 1061078, prop.ToString() ); // artifact rarity ~1_val~
 
-			if ( (prop = m_AosAttributes.WeaponDamage) != 0 )
+			if ( ( prop = m_AosAttributes.BonusStr ) != 0 )
+				list.Add( 1060485, prop.ToString() ); // strength bonus ~1_val~
+			
+			if ( ( prop = m_AosAttributes.BonusDex ) != 0 && !UseIntOrDexProperty )
+				list.Add( 1060409, prop.ToString() ); // dexterity bonus ~1_val~
+
+			if ( ( prop = m_AosAttributes.BonusInt ) != 0 && !UseIntOrDexProperty )
+				list.Add( 1060432, prop.ToString() ); // intelligence bonus ~1_val~
+
+			if ( UseIntOrDexProperty )
+				list.Add( 1114777, IntOrDexPropertyValue.ToString() ); // Int or Dex Bonus ~1_val~
+
+			if ( ( prop = m_AosAttributes.WeaponDamage ) != 0 )
 				list.Add( 1060401, prop.ToString() ); // damage increase ~1_val~%
 
 			if ( (prop = m_AosAttributes.DefendChance) != 0 )
 				list.Add( 1060408, prop.ToString() ); // defense chance increase ~1_val~%
-
-			if ( (prop = m_AosAttributes.BonusDex) != 0 )
-				list.Add( 1060409, prop.ToString() ); // dexterity bonus ~1_val~
 
 			if ( (prop = m_AosAttributes.EnhancePotions) != 0 )
 				list.Add( 1060411, prop.ToString() ); // enhance potions ~1_val~%
@@ -1752,9 +1766,6 @@ namespace Server.Items
 
 			if ( (prop = m_AosAttributes.BonusHits) != 0 )
 				list.Add( 1060431, prop.ToString() ); // hit point increase ~1_val~
-
-			if ( (prop = m_AosAttributes.BonusInt) != 0 )
-				list.Add( 1060432, prop.ToString() ); // intelligence bonus ~1_val~
 
 			if ( (prop = m_AosAttributes.LowerManaCost) != 0 )
 				list.Add( 1060433, prop.ToString() ); // lower mana cost ~1_val~%
@@ -1800,9 +1811,6 @@ namespace Server.Items
 
 			if ( (prop = m_AosAttributes.BonusStam) != 0 )
 				list.Add( 1060484, prop.ToString() ); // stamina increase ~1_val~
-
-			if ( (prop = m_AosAttributes.BonusStr) != 0 )
-				list.Add( 1060485, prop.ToString() ); // strength bonus ~1_val~
 
 			if ( (prop = m_AosAttributes.WeaponSpeed) != 0 )
 				list.Add( 1060486, prop.ToString() ); // swing speed increase ~1_val~%

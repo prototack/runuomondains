@@ -42,6 +42,8 @@ namespace Server.Mobiles
 			PackItem( new LesserPoisonPotion() );
 			PackReg( 9 );
 
+            Fame = 12500;
+            Karma = -12500;
 		}
 
 		public override void GenerateLoot()

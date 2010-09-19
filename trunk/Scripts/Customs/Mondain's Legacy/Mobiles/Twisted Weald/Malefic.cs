@@ -44,6 +44,9 @@ namespace Server.Mobiles
 			
 			if ( Utility.RandomDouble() < 0.1 )
 				PackItem( new ParrotItem() );
+
+            Fame = 21000;
+            Karma = -21000;
 		}
 
 		public Malefic( Serial serial ) : base( serial )

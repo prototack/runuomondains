@@ -41,8 +41,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 104.5, 105.1 );
 			SetSkill( SkillName.Wrestling, 105.1, 109.4 );
 
-			Fame = 3700;  // Guessed
-			Karma = -3700;  // Guessed
+			Fame = 11000;
+			Karma = -11000;
 		}
 
 		public override void GenerateLoot() //-- Need to verify

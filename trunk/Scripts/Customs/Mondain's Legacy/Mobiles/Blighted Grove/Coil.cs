@@ -41,8 +41,8 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Anatomy, 120.8, 138.1 );
 			SetSkill( SkillName.Poisoning, 110.1, 133.4 );
 
-            Fame = 12500;
-            Karma = 12500;
+            Fame = 17500;
+            Karma = -17500;
 
 			PackGem( 2 );
 			PackItem( new Bone() );	
