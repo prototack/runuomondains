@@ -348,14 +348,14 @@ namespace Server.Items
 								m_Ore.Delete();
 							}
 
-                            else
-                            {
-                                amount /= 1;
-                                m_Ore.Delete();
-                            }
+							else
+							{
+								amount /= 1;
+								m_Ore.Delete();
+							}
 
-                            ingot.Amount = amount;
-                            from.AddToBackpack(ingot);
+							ingot.Amount = amount;
+							from.AddToBackpack(ingot);
 							//from.PlaySound( 0x57 );
 
 							from.SendLocalizedMessage( 501988 ); // You smelt the ore removing the impurities and put the metal in your backpack.

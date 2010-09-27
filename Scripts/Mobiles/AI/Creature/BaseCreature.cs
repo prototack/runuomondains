@@ -5,6 +5,7 @@ using Server;
 using Server.Regions;
 using Server.Targeting;
 using Server.Network;
+using Server.Multis;
 using Server.Spells;
 using Server.Misc;
 using Server.Items;
@@ -3692,6 +3693,29 @@ namespace Server.Mobiles
             PackItem(Loot.RandomPotion());
         }
 
+        public void PackArcaneScroll(int max)
+        {
+            PackArcaneScroll(0, max);
+        }
+
+        public void PackArcaneScroll(int min, int max)
+        {
+            double div = -1.0 / (max - min + 1);
+            int amount = 0;
+
+            for (int i = max - min; i >= 0; i--)
+            {
+                if (Utility.RandomDouble() < (Math.Exp(div * i) - Math.Exp(div * (i + 1))))
+                {
+                    amount = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < min + amount; i++)
+                PackItem(Loot.Construct(Loot.ArcanistScrollTypes));
+        }
+
         public void PackNecroScroll(int index)
         {
             if (!Core.AOS || 0.05 <= Utility.RandomDouble())
@@ -3721,6 +3745,29 @@ namespace Server.Mobiles
         {
             if (!PackArmor(minLevel, maxLevel, armorChance))
                 PackWeapon(minLevel, maxLevel, weaponChance);
+        }
+
+        public virtual void DropBackpack()
+        {
+            if (Backpack != null)
+            {
+                if (Backpack.Items.Count > 0)
+                {
+                    Backpack b = new CreatureBackpack(Name);
+
+                    List<Item> list = new List<Item>(Backpack.Items);
+                    foreach (Item item in list)
+                    {
+                        b.DropItem(item);
+                    }
+
+                    BaseHouse house = BaseHouse.FindHouseAt(this);
+                    if (house != null)
+                        b.MoveToWorld(house.BanLocation, house.Map);
+                    else
+                        b.MoveToWorld(Location, Map);
+                }
+            }
         }
 
         protected bool m_Spawning;
@@ -4431,29 +4478,6 @@ namespace Server.Mobiles
         {
             if (m_Allured)
                 Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(Delete));
-        }
-
-        public void PackArcaneScroll(int max)
-        {
-            PackArcaneScroll(0, max);
-        }
-
-        public void PackArcaneScroll(int min, int max)
-        {
-            double div = -1.0 / (max - min + 1);
-            int amount = 0;
-
-            for (int i = max - min; i >= 0; i--)
-            {
-                if (Utility.RandomDouble() < (Math.Exp(div * i) - Math.Exp(div * (i + 1))))
-                {
-                    amount = i;
-                    break;
-                }
-            }
-
-            for (int i = 0; i < min + amount; i++)
-                PackItem(Loot.Construct(Loot.ArcanistScrollTypes));
         }
 
         public override void OnItemLifted(Mobile from, Item item)
