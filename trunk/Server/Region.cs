@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Region.cs 144 2007-01-14 02:06:27Z mark $
+ *   $Id: Region.cs 567 2010-10-20 01:09:57Z asayre $
  *
  ***************************************************************************/
 
@@ -992,11 +992,11 @@ namespace Server
 			}
 
 
-			object oMusic = this.DefaultMusic;
+			MusicName music = this.DefaultMusic;
 
-			ReadEnum( xml["music"], "name", typeof( MusicName ), ref oMusic, false );
+			ReadEnum( xml["music"], "name", ref music, false );
 
-			m_Music = (MusicName) oMusic;
+			m_Music = music;
 		}
 
 		protected static string GetAttribute( XmlElement xml, string attribute, bool mandatory )
@@ -1137,21 +1137,24 @@ namespace Server
 			return true;
 		}
 
-		public static bool ReadEnum( XmlElement xml, string attribute, Type type, ref object value )
+		public static bool ReadEnum<T>( XmlElement xml, string attribute, ref T value )
 		{
-			return ReadEnum( xml, attribute, type, ref value, true );
+			return ReadEnum( xml, attribute, ref value, true );
 		}
 
-		public static bool ReadEnum( XmlElement xml, string attribute, Type type, ref object value, bool mandatory )
+		public static bool ReadEnum<T>( XmlElement xml, string attribute, ref T value, bool mandatory )
 		{
 			string s = GetAttribute( xml, attribute, mandatory );
 
 			if ( s == null )
 				return false;
 
+			Type type = typeof(T);
+
 			try
 			{
-				value = Enum.Parse( type, s, true );
+				value = (T)Enum.Parse(type, s, true);
+				//TODO: On .NET 4.0, use Enum.TryParse
 			}
 			catch
 			{

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ExpansionInfo.cs 523 2010-06-17 07:20:28Z mark $
+ *   $Id: ExpansionInfo.cs 565 2010-10-18 07:06:50Z asayre $
  *
  ***************************************************************************/
 
@@ -35,6 +35,7 @@ namespace Server
 		SA
 	}
 
+	[Flags]
 	public enum ClientFlags
 	{
 		None		= 0x00000000,
@@ -49,6 +50,7 @@ namespace Server
 		UOTD		= 0x00000100
 	}
 
+	[Flags]
 	public enum FeatureFlags
 	{
 		None					= 0x00000000,
@@ -82,6 +84,7 @@ namespace Server
 		ExpansionSA		= ExpansionML	| SA
 	}
 
+	[Flags]
 	public enum	CharacterListFlags
 	{
 		None					= 0x00000000,

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Interfaces.cs 511 2010-04-25 06:09:43Z mark $
+ *   $Id: Interfaces.cs 564 2010-10-18 04:56:28Z asayre $
  *
  ***************************************************************************/
 
@@ -40,8 +40,8 @@ namespace Server
 {
 	public interface IVendor
 	{
-        bool OnBuyItems( Mobile from, List<BuyItemResponse> list );
-        bool OnSellItems( Mobile from, List<SellItemResponse> list );
+		bool OnBuyItems( Mobile from, List<BuyItemResponse> list );
+		bool OnSellItems( Mobile from, List<SellItemResponse> list );
 
 		DateTime LastRestock{ get; set; }
 		TimeSpan RestockDelay{ get; }

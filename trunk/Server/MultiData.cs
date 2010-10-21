@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: MultiData.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: MultiData.cs 549 2010-10-14 11:09:38Z mark $
  *
  ***************************************************************************/
 
@@ -66,7 +66,7 @@ namespace Server
 
 				m_StreamReader.BaseStream.Seek( lookup, SeekOrigin.Begin );
 
-				return new MultiComponentList( m_StreamReader, length / 12 );
+				return new MultiComponentList( m_StreamReader, length / ( MultiComponentList.PostHSFormat ? 16 : 12 ) );
 			}
 			catch
 			{
@@ -148,6 +148,13 @@ namespace Server
 
 	public sealed class MultiComponentList
 	{
+		public static bool PostHSFormat {
+			get { return _PostHSFormat; }
+			set { _PostHSFormat = value; }
+		}
+
+		private static bool _PostHSFormat = false;
+
 		private Point2D m_Min, m_Max, m_Center;
 		private int m_Width, m_Height;
 		private Tile[][][] m_Tiles;
@@ -524,6 +531,9 @@ namespace Server
 				allTiles[i].m_OffsetY = reader.ReadInt16();
 				allTiles[i].m_OffsetZ = reader.ReadInt16();
 				allTiles[i].m_Flags = reader.ReadInt32();
+
+				if ( _PostHSFormat )
+					reader.ReadInt32(); // ??
 
 				MultiTileEntry e = allTiles[i];
 

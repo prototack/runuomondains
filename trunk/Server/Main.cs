@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Main.cs 521 2010-06-17 07:11:43Z mark $
+ *   $Id: Main.cs 557 2010-10-16 19:26:26Z asayre $
  *
  ***************************************************************************/
 
@@ -103,13 +103,13 @@ namespace Server
 		internal static bool VBdotNet { get { return m_VBdotNET; } }
 		public static List<string> DataDirectories { get { return m_DataDirectories; } }
 		public static Assembly Assembly { get { return m_Assembly; } set { m_Assembly = value; } }
-        public static Version Version { get { return m_Assembly.GetName().Version; } }
+		public static Version Version { get { return m_Assembly.GetName().Version; } }
 		public static Process Process { get { return m_Process; } }
 		public static Thread Thread { get { return m_Thread; } }
 		public static MultiTextWriter MultiConsoleOut { get { return m_MultiConOut; } }
 
 		public static readonly bool Is64Bit = (IntPtr.Size == 8);
-        //TODO: Upon public release of .NET 4.0, use Environment.Is64BitOperatingSystem/Process
+		//TODO: Upon public release of .NET 4.0, use Environment.Is64BitOperatingSystem/Process
 
 		private static bool m_MultiProcessor;
 		private static int m_ProcessorCount;
@@ -457,8 +457,8 @@ namespace Server
 				SetConsoleCtrlHandler( m_ConsoleEventHandler, true );
 			}
 
-            if ( GCSettings.IsServerGC )
-                Console.WriteLine("Core: Server garbage collection mode enabled");
+			if ( GCSettings.IsServerGC )
+				Console.WriteLine("Core: Server garbage collection mode enabled");
 
 			while( !ScriptCompiler.Compile( m_Debug, m_Cache ) )
 			{
@@ -651,7 +651,7 @@ namespace Server
 					}
 					catch
 					{
-                        Console.WriteLine( "Warning: Exception in serialization verification of type {0}", t );
+						Console.WriteLine( "Warning: Exception in serialization verification of type {0}", t );
 					}
 				}
 			}

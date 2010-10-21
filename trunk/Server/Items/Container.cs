@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Container.cs 521 2010-06-17 07:11:43Z mark $
+ *   $Id: Container.cs 564 2010-10-18 04:56:28Z asayre $
  *
  ***************************************************************************/
 
@@ -1620,11 +1620,19 @@ namespace Server.Items
 
 		public virtual void DisplayTo( Mobile to )
 		{
-            ProcessOpeners( to );
+			ProcessOpeners( to );
 
-			to.Send( new ContainerDisplay( this ) );
+			NetState ns = to.NetState;
+
+			if ( ns == null )
+				return;
+
+			if ( ns.HighSeas )
+				to.Send( new ContainerDisplayHS( this ) );
+			else
+				to.Send( new ContainerDisplay( this ) );
 			
-			if ( to.NetState != null && to.NetState.ContainerGridLines )
+			if ( ns.ContainerGridLines )
 				to.Send( new ContainerContent6017( to, this ) );
 			else
 				to.Send( new ContainerContent( to, this ) );
@@ -1638,50 +1646,50 @@ namespace Server.Items
 			}
 		}
 
-        public void ProcessOpeners( Mobile opener )
-        {
-            if ( !IsPublicContainer )
-            {
-                bool contains = false;
+		public void ProcessOpeners( Mobile opener )
+		{
+			if ( !IsPublicContainer )
+			{
+				bool contains = false;
 
-                if ( m_Openers != null )
-                {
-                    Point3D worldLoc = GetWorldLocation();
-                    Map map = this.Map;
+				if ( m_Openers != null )
+				{
+					Point3D worldLoc = GetWorldLocation();
+					Map map = this.Map;
 
-                    for ( int i = 0; i < m_Openers.Count; ++i )
-                    {
-                        Mobile mob = m_Openers[i];
+					for ( int i = 0; i < m_Openers.Count; ++i )
+					{
+						Mobile mob = m_Openers[i];
 
-                        if ( mob == opener )
-                        {
-                            contains = true;
-                        }
-                        else
-                        {
-                            int range = GetUpdateRange( mob );
+						if ( mob == opener )
+						{
+							contains = true;
+						}
+						else
+						{
+							int range = GetUpdateRange( mob );
 
-                            if ( mob.Map != map || !mob.InRange( worldLoc, range ) )
-                                m_Openers.RemoveAt( i-- );
-                        }
-                    }
-                }
+							if ( mob.Map != map || !mob.InRange( worldLoc, range ) )
+								m_Openers.RemoveAt( i-- );
+						}
+					}
+				}
 
-                if ( !contains )
-                {
-                    if ( m_Openers == null )
-                    {
-                        m_Openers = new List<Mobile>();
-                    }
+				if ( !contains )
+				{
+					if ( m_Openers == null )
+					{
+						m_Openers = new List<Mobile>();
+					}
 
-                    m_Openers.Add( opener );
-                }
-                else if ( m_Openers != null && m_Openers.Count == 0 )
-                {
-                    m_Openers = null;
-                }
-            }
-        }
+					m_Openers.Add( opener );
+				}
+				else if ( m_Openers != null && m_Openers.Count == 0 )
+				{
+					m_Openers = null;
+				}
+			}
+		}
 
 		public override void GetProperties( ObjectPropertyList list )
 		{

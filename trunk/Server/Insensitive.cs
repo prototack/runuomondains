@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Insensitive.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: Insensitive.cs 567 2010-10-20 01:09:57Z asayre $
  *
  ***************************************************************************/
 
@@ -23,17 +23,13 @@ using System.Collections;
 
 namespace Server
 {
-	public class Insensitive
+	public static class Insensitive
 	{
 		private static IComparer m_Comparer = CaseInsensitiveComparer.Default;
 
 		public static IComparer Comparer
 		{
 			get{ return m_Comparer; }
-		}
-
-		private Insensitive()
-		{
 		}
 
 		public static int Compare( string a, string b )

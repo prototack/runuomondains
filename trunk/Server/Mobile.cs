@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Mobile.cs 521 2010-06-17 07:11:43Z mark $
+ *   $Id: Mobile.cs 557 2010-10-16 19:26:26Z asayre $
  *
  ***************************************************************************/
 
@@ -2730,25 +2730,9 @@ namespace Server
 				m_Target = newTarget;
 
 				if( newTarget != null && m_NetState != null && !m_TargetLocked )
-					m_NetState.Send( newTarget.GetPacket() );
+					m_NetState.Send( newTarget.GetPacketFor( m_NetState ) );
 
 				OnTargetChange();
-
-
-
-				/*if ( m_Target != value )
-				{
-					if ( m_Target != null && value != null )
-						m_Target.Cancel( this, TargetCancelType.Overriden );
-
-					m_Target = value;
-
-					if ( m_Target != null && m_NetState != null && !m_TargetLocked )
-						m_NetState.Send( m_Target.GetPacket() );
-					//m_NetState.Send( new TargetReq( m_Target ) );
-
-					OnTargetChange();
-				}*/
 			}
 		}
 
@@ -8087,10 +8071,10 @@ namespace Server
 			{
 				if( item.Parent is Item )
 				{
-                    Item parent = item.Parent as Item;
+					Item parent = item.Parent as Item;
 
-                    if ( !(CanSee( parent ) && parent.IsChildVisibleTo( this, item )) )
-                        return false;
+					if ( !(CanSee( parent ) && parent.IsChildVisibleTo( this, item )) )
+						return false;
 				}
 				else if( item.Parent is Mobile )
 				{
