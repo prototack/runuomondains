@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: MultiTarget.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: MultiTarget.cs 551 2010-10-15 03:54:16Z mark $
  *
  ***************************************************************************/
 
@@ -63,9 +63,12 @@ namespace Server.Targeting
 			m_Offset = offset;
 		}
 
-		public override Packet GetPacket()
+		public override Packet GetPacketFor( NetState ns )
 		{
-			return new MultiTargetReq( this );
+			if ( ns.HighSeas )
+				return new MultiTargetReqHS( this );
+			else
+				return new MultiTargetReq( this );
 		}
 	}
 }

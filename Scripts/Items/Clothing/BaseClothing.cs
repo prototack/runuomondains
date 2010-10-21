@@ -218,7 +218,7 @@ namespace Server.Items
 
 		public virtual int BaseStrBonus{ get{ return 0; } }
 		public virtual int BaseDexBonus{ get{ return 0; } }
-		public virtual int BaseIntBonus { get { return 0; } }
+		public virtual int BaseIntBonus{ get{ return 0; } }
 
 		public override bool AllowSecureTrade( Mobile from, Mobile to, Mobile newOwner, bool accepted )
 		{

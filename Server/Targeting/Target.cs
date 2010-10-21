@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Target.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: Target.cs 551 2010-10-15 03:54:16Z mark $
  *
  ***************************************************************************/
 
@@ -168,7 +168,7 @@ namespace Server.Targeting
 			}
 		}
 
-		public virtual Packet GetPacket()
+		public virtual Packet GetPacketFor( NetState ns )
 		{
 			return new TargetReq( this );
 		}

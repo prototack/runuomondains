@@ -1891,6 +1891,7 @@ namespace Server.Multis
 
 				if ( info != null )
 				{
+					m.CloseGump( typeof ( SetSecureLevelGump ) );
 					m.SendGump( new Gumps.SetSecureLevelGump( m_Owner, info, this ) );
 				}
 				else if ( item.Parent != null )
@@ -1917,7 +1918,7 @@ namespace Server.Multis
 				}
 				else
 				{
-					info = new SecureInfo( (Container)item, SecureLevel.CoOwners );
+					info = new SecureInfo( (Container)item, SecureLevel.Owner );
 
 					item.IsLockedDown = false;
 					item.IsSecure = true;
@@ -1926,6 +1927,7 @@ namespace Server.Multis
 					m_LockDowns.Remove( item );
 					item.Movable = false;
 
+					m.CloseGump( typeof ( SetSecureLevelGump ) );
 					m.SendGump( new Gumps.SetSecureLevelGump( m_Owner, info, this ) );
 				}
 			}
@@ -3860,6 +3862,7 @@ namespace Server.Multis
 			ISecurable sec = GetSecurable( Owner.From, m_Item );
 
 			if ( sec != null )
+				Owner.From.CloseGump( typeof ( SetSecureLevelGump ) );
 				Owner.From.SendGump( new SetSecureLevelGump( Owner.From, sec, BaseHouse.FindHouseAt( m_Item ) ) );
 		}
 	}

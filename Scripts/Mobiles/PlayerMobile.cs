@@ -24,6 +24,7 @@ using Server.Accounting;
 using Server.Engines.CannedEvil;
 using Server.Engines.Craft;
 using Server.Spells.Spellweaving;
+using Server.Engines.PartySystem;
 
 namespace Server.Mobiles
 {
@@ -113,6 +114,7 @@ namespace Server.Mobiles
         private int m_Profession;
         private bool m_IsStealthing; // IsStealthing should be moved to Server.Mobiles
         private bool m_IgnoreMobiles; // IgnoreMobiles should be moved to Server.Mobiles
+        private int m_NonAutoreinsuredItems; // number of items that could not be automaitically reinsured because gold in bank was not enough
 
         /* 
          * a value of zero means, that the mobile is not executing the spell. Otherwise,
@@ -1557,9 +1559,27 @@ namespace Server.Mobiles
             }
             if (from != this)
             {
-
                 if (Alive && Core.Expansion >= Expansion.AOS)
-                    list.Add(new AddToPartyEntry(from, this));
+                {
+                    Party theirParty = from.Party as Party;
+                    Party ourParty = this.Party as Party;
+
+                    if (theirParty == null && ourParty == null)
+                    {
+                        list.Add(new AddToPartyEntry(from, this));
+                    }
+                    else if (theirParty != null && theirParty.Leader == from)
+                    {
+                        if (ourParty == null)
+                        {
+                            list.Add(new AddToPartyEntry(from, this));
+                        }
+                        else if (ourParty == theirParty)
+                        {
+                            list.Add(new RemoveFromPartyEntry(from, this));
+                        }
+                    }
+                }
 
                 BaseHouse curhouse = BaseHouse.FindHouseAt(this);
 
@@ -2138,6 +2158,7 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
+            m_NonAutoreinsuredItems = 0;
             m_InsuranceCost = 0;
             m_InsuranceAward = base.FindMostRecentDamager(false);
 
@@ -2177,12 +2198,14 @@ namespace Server.Mobiles
                     {
                         m_InsuranceCost += cost;
                         item.PayedInsurance = true;
+                        SendLocalizedMessage(1060398, cost.ToString()); // ~1_AMOUNT~ gold has been withdrawn from your bank box.
                     }
                     else
                     {
                         SendLocalizedMessage(1061079, "", 0x23); // You lack the funds to purchase the insurance
                         item.PayedInsurance = false;
                         item.Insured = false;
+                        m_NonAutoreinsuredItems++;
                     }
                 }
                 else
@@ -2234,6 +2257,11 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
+            if (m_NonAutoreinsuredItems > 0)
+            {
+                SendMessage("You do not have the gold to automatically reinsure all your items.");
+            }
+
             base.OnDeath(c);
 
             HueMod = -1;
@@ -2548,6 +2576,7 @@ namespace Server.Mobiles
 
             Packet.Release(p);
         }
+
         private static void SendToStaffMessage(Mobile from, string format, params object[] args)
         {
             SendToStaffMessage(from, String.Format(format, args));
@@ -2720,8 +2749,6 @@ namespace Server.Mobiles
         {
             get { return m_BOBFilter; }
         }
-
-
 
         public override void Deserialize(GenericReader reader)
         {
@@ -3025,7 +3052,6 @@ namespace Server.Mobiles
 
             CheckAtrophies(this);
 
-
             if (Hidden)	//Hiding is the only buff where it has an effect that's serialized.
                 AddBuff(new BuffInfo(BuffIcon.HidingAndOrStealth, 1075655));
         }
@@ -3046,20 +3072,7 @@ namespace Server.Mobiles
                     t.Remove(remove[i]);
             }
 
-            //decay our kills
-            if (m_ShortTermElapse < this.GameTime)
-            {
-                m_ShortTermElapse += TimeSpan.FromHours(8);
-                if (ShortTermMurders > 0)
-                    --ShortTermMurders;
-            }
-
-            if (m_LongTermElapse < this.GameTime)
-            {
-                m_LongTermElapse += TimeSpan.FromHours(40);
-                if (Kills > 0)
-                    --Kills;
-            }
+            CheckKillDecay();
 
             CheckAtrophies(this);
 
@@ -3209,8 +3222,6 @@ namespace Server.Mobiles
             writer.Write(this.GameTime);
         }
 
-
-
         public static void CheckAtrophies(Mobile m)
         {
             SacrificeVirtue.CheckAtrophy(m);
@@ -3221,6 +3232,23 @@ namespace Server.Mobiles
 
             if (m is PlayerMobile)
                 ChampionTitleInfo.CheckAtrophy((PlayerMobile)m);
+        }
+
+        public void CheckKillDecay()
+        {
+            if (m_ShortTermElapse < this.GameTime)
+            {
+                m_ShortTermElapse += TimeSpan.FromHours(8);
+                if (ShortTermMurders > 0)
+                    --ShortTermMurders;
+            }
+
+            if (m_LongTermElapse < this.GameTime)
+            {
+                m_LongTermElapse += TimeSpan.FromHours(40);
+                if (Kills > 0)
+                    --Kills;
+            }
         }
 
         public void ResetKillTime()
@@ -3709,7 +3737,7 @@ namespace Server.Mobiles
         public override TimeSpan ComputeMovementSpeed(Direction dir, bool checkTurning)
         {
             if (checkTurning && (dir & Direction.Mask) != (this.Direction & Direction.Mask))
-                return TimeSpan.FromSeconds(0.1);	// We are NOT actually moving (just a direction change)
+                return Mobile.RunMount;	// We are NOT actually moving (just a direction change)
 
             TransformContext context = TransformationSpellHelper.GetContext(this);
 

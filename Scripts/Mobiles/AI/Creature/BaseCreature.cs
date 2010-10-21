@@ -175,18 +175,18 @@ namespace Server.Mobiles
         #region Var declarations
         private BaseAI m_AI;					// THE AI
 
-        private AIType m_CurrentAI;				// The current AI
-        private AIType m_DefaultAI;				// The default AI
+        private AIType m_CurrentAI;			// The current AI
+        private AIType m_DefaultAI;			// The default AI
 
         private Mobile m_FocusMob;				// Use focus mob instead of combatant, maybe we don't whan to fight
-        private FightMode m_FightMode;				// The style the mob uses
+        private FightMode m_FightMode;			// The style the mob uses
 
         private int m_iRangePerception;		// The view area
         private int m_iRangeFight;			// The fight distance
 
         private bool m_bDebugAI;			// Show debug AI messages
 
-        private int m_iTeam;			// Monster Team
+        private int m_iTeam;				// Monster Team
 
         private double m_dActiveSpeed;			// Timer speed when active
         private double m_dPassiveSpeed;		// Timer speed when not active
@@ -195,14 +195,14 @@ namespace Server.Mobiles
         private Point3D m_pHome;			// The home position of the creature, used by some AI
         private int m_iRangeHome = 10;		// The home range of the creature
 
-        List<Type> m_arSpellAttack;		// List of attack spell/power
+        List<Type> m_arSpellAttack;			// List of attack spell/power
         List<Type> m_arSpellDefense;		// List of defensive spell/power
 
         private bool m_bControlled;			// Is controlled
         private Mobile m_ControlMaster;		// My master
         private Mobile m_ControlTarget;		// My target mobile
-        private Point3D m_ControlDest;			// My target destination (patrol)
-        private OrderType m_ControlOrder;			// My order
+        private Point3D m_ControlDest;		// My target destination (patrol)
+        private OrderType m_ControlOrder;	// My order
 
         private int m_Loyalty;
 

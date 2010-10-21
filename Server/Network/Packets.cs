@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Packets.cs 521 2010-06-17 07:11:43Z mark $
+ *   $Id: Packets.cs 564 2010-10-18 04:56:28Z asayre $
  *
  ***************************************************************************/
 
@@ -249,8 +249,8 @@ namespace Server.Network
 
 	public sealed class VendorBuyContent : Packet
 	{
-        public VendorBuyContent( List<BuyItemState> list )
-            : base( 0x3c )
+		public VendorBuyContent( List<BuyItemState> list )
+			: base( 0x3c )
 		{
 			this.EnsureCapacity( list.Count*19 + 5 );
 
@@ -310,14 +310,24 @@ namespace Server.Network
 		public DisplayBuyList( Mobile vendor ) : base( 0x24, 7 )
 		{
 			m_Stream.Write( (int)vendor.Serial );
-			m_Stream.Write( (short)0x30 );//buy window id?
+			m_Stream.Write( (short) 0x30 ); // buy window id?
+		}
+	}
+
+	public sealed class DisplayBuyListHS : Packet
+	{
+		public DisplayBuyListHS( Mobile vendor ) : base( 0x24, 9 )
+		{
+			m_Stream.Write( (int)vendor.Serial );
+			m_Stream.Write( (short) 0x30 ); // buy window id?
+			m_Stream.Write( (short) 0x00 );
 		}
 	}
 
 	public sealed class VendorBuyList : Packet
 	{
-        public VendorBuyList( Mobile vendor, List<BuyItemState> list )
-            : base( 0x74 )
+		public VendorBuyList( Mobile vendor, List<BuyItemState> list )
+			: base( 0x74 )
 		{
 			this.EnsureCapacity( 256 );
 
@@ -1112,6 +1122,47 @@ namespace Server.Network
 		}
 	}
 
+	public sealed class WorldItemHS : Packet
+	{
+		public WorldItemHS( Item item ) : base( 0xF3, 26 )
+		{
+			m_Stream.Write( (short) 0x1 );
+
+			int itemID = item.ItemID;
+
+			if ( item is BaseMulti ) {
+				m_Stream.Write( (byte) 0x02 );
+				itemID &= 0x3FFF;
+			} else {
+				m_Stream.Write( (byte) 0x00 );
+				itemID &= 0x7FFF;
+			}
+
+			m_Stream.Write( (int) item.Serial );
+
+			m_Stream.Write( (short) itemID ); 
+
+			m_Stream.Write( (byte) item.Direction );
+
+			int amount = item.Amount;
+			m_Stream.Write( (short) amount );
+			m_Stream.Write( (short) amount );
+
+			Point3D loc = item.Location;
+			int x = loc.m_X & 0x7FFF;
+			int y = loc.m_Y & 0x3FFF;
+			m_Stream.Write( (short) x );
+			m_Stream.Write( (short) y );
+			m_Stream.Write( (sbyte) loc.m_Z );
+
+			m_Stream.Write( (byte) item.Light );
+			m_Stream.Write( (short) item.Hue );
+			m_Stream.Write( (byte) item.GetPacketFlags() );
+
+			m_Stream.Write( (short) 0x00 ); // ??
+		}
+	}
+
 	public sealed class LiftRej : Packet
 	{
 		public LiftRej( LRReason reason ) : base( 0x27, 2 )
@@ -1518,6 +1569,16 @@ namespace Server.Network
 		}
 	}
 
+	public sealed class DisplaySpellbookHS : Packet
+	{
+		public DisplaySpellbookHS( Item book ) : base( 0x24, 9 )
+		{
+			m_Stream.Write( (int) book.Serial );
+			m_Stream.Write( (short) -1 );
+			m_Stream.Write( (short) 0x7D );
+		}
+	}
+
 	public sealed class NewSpellbookContent : Packet
 	{
 		public NewSpellbookContent( Item item, int graphic, int offset, ulong content ) : base( 0xBF )
@@ -1611,6 +1672,16 @@ namespace Server.Network
 		{
 			m_Stream.Write( (int) c.Serial );
 			m_Stream.Write( (short) c.GumpID );
+		}
+	}
+
+	public sealed class ContainerDisplayHS : Packet
+	{
+		public ContainerDisplayHS( Container c ) : base( 0x24, 9 )
+		{
+			m_Stream.Write( (int) c.Serial );
+			m_Stream.Write( (short) c.GumpID );
+			m_Stream.Write( (short) 0x7D );
 		}
 	}
 
@@ -2040,6 +2111,24 @@ namespace Server.Network
 			m_Stream.Write( (short) hue );
 			m_Stream.Write( (byte) m.GetOldPacketFlags() );
 			m_Stream.Write( (byte) noto );
+		}
+	}
+
+	public sealed class MultiTargetReqHS : Packet
+	{
+		public MultiTargetReqHS( MultiTarget t ) : base( 0x99, 30 )
+		{
+			m_Stream.Write( (bool) t.AllowGround );
+			m_Stream.Write( (int) t.TargetID );
+			m_Stream.Write( (byte) t.Flags );
+
+			m_Stream.Fill();
+
+			m_Stream.Seek( 18, SeekOrigin.Begin );
+			m_Stream.Write( (short) t.MultiID );
+			m_Stream.Write( (short) t.Offset.X );
+			m_Stream.Write( (short) t.Offset.Y );
+			m_Stream.Write( (short) t.Offset.Z );
 		}
 	}
 

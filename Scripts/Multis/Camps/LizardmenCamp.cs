@@ -1,5 +1,4 @@
 using System;
-using Server;
 using Server.Items;
 using Server.Mobiles;
 
@@ -10,8 +9,6 @@ namespace Server.Multis
         public virtual Mobile Lizardmen { get { return new Lizardman(); } }
 
         private Mobile m_Prisoner;
-
-        private int m_SpawnRange;
 
         [Constructable]
         public LizardmenCamp()
