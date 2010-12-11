@@ -282,13 +282,13 @@ namespace Server.Engines.Craft
 				AddRecipe( index, (int) TailorRecipe.QuiverOfLightning );
 				SetNeededExpansion( index, Expansion.ML );
 
-			#region Mondain's Legacy
+				#region Mondain's Legacy
 				index = AddCraft( typeof( LeatherContainerEngraver ), 1015283, 1072152, 75.0, 100.0, typeof( Bone ), 1049064, 1, 1049063 );
 				AddRes( index, typeof( Leather ), 1044462, 6, 1044463 );
 				AddRes( index, typeof( SpoolOfThread ), 1073462, 2, 1073463 );
 				AddRes( index, typeof( Dyes ), 1024009, 6, 1044253 );
 				SetNeededExpansion( index, Expansion.ML );
-			#endregion
+				#endregion
 			}
 
 			AddCraft( typeof( OilCloth ), 1015283, 1041498, 74.6, 99.6, typeof( Cloth ), 1044286, 1, 1044287 );
@@ -351,7 +351,7 @@ namespace Server.Engines.Craft
 				AddRes( index, typeof( EyeOfTheTravesty ), 1032685, 1, 1044253 );
 				AddRes( index, typeof( Putrefication ), 1032678, 10, 1044253 );
 				AddRes( index, typeof( Scourge ), 1032677, 10, 1044253 );
-				AddRecipe( index, (int) TailorRecipe.SpellWovenBritches );	
+				AddRecipe( index, (int) TailorRecipe.SpellWovenBritches );
 				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
 
@@ -359,7 +359,7 @@ namespace Server.Engines.Craft
 				AddRes( index, typeof( EyeOfTheTravesty ), 1032685, 1, 1044253 );
 				AddRes( index, typeof( Blight ), 1032675, 10, 1044253 );
 				AddRes( index, typeof( Muculent ), 1032680, 10, 1044253 );
-				AddRecipe( index, (int) TailorRecipe.SongWovenMantle );	
+				AddRecipe( index, (int) TailorRecipe.SongWovenMantle );
 				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
 
@@ -367,8 +367,8 @@ namespace Server.Engines.Craft
 				AddRes( index, typeof( CapturedEssence ), 1032686, 1, 1044253 );
 				AddRes( index, typeof( Corruption ), 1032676, 10, 1044253 );
 				AddRes( index, typeof( Taint ), 1032679, 10, 1044253 );
-				AddRecipe( index, (int) TailorRecipe.StitchersMittens );	
-				ForceNonExceptional( index );	
+				AddRecipe( index, (int) TailorRecipe.StitchersMittens );
+				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
 			}
 			#endregion

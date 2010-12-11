@@ -142,7 +142,7 @@ namespace Server.Commands
 				else if ( m_Type == typeof( SecretSwitch ) )
 				{
 					int id = 0;
-					
+
 					for ( int i = 0; i < m_Params.Length; ++i )
 					{
 						if ( m_Params[i].StartsWith( "SecretWall" ) )
@@ -156,28 +156,28 @@ namespace Server.Commands
 							}
 						}
 					}
-					
+
 					Item wall = Decorate.FindByID( id );
-					
+
 					item = new SecretSwitch( m_ItemID, wall as SecretWall );
 				}
 				else if ( m_Type == typeof( SecretWall ) )
 				{
 					SecretWall wall = new SecretWall( m_ItemID );
-				
+
 					for ( int i = 0; i < m_Params.Length; ++i )
 					{
 						if ( m_Params[i].StartsWith( "MapDest" ) )
 						{
 							int indexOf = m_Params[i].IndexOf( '=' );
-	
+
 							if ( indexOf >= 0 )
 								wall.MapDest = Map.Parse( m_Params[i].Substring( ++indexOf ) );
 						}
 						else if ( m_Params[i].StartsWith( "PointDest" ) )
 						{
 							int indexOf = m_Params[i].IndexOf( '=' );
-	
+
 							if ( indexOf >= 0 )
 								wall.PointDest = Point3D.Parse( m_Params[i].Substring( ++indexOf ) );
 						}
@@ -186,8 +186,8 @@ namespace Server.Commands
 							wall.Locked = false;
 						}
 					}
-					
-					item = wall;					
+
+					item = wall;
 				}
 				#endregion
 				else if ( m_Type == typeofLocalizedStatic )
@@ -1002,7 +1002,7 @@ namespace Server.Commands
 						m_DeleteQueue.Enqueue( item );
 				}
 			}
-			else if ( (TileData.ItemTable[itemID & 0x3FFF].Flags & TileFlag.LightSource) != 0 )
+			else if ( (TileData.ItemTable[itemID & TileData.MaxItemValue].Flags & TileFlag.LightSource) != 0 )
 			{
 				eable = map.GetItemsInRange( new Point3D( x, y, z ), 0 );
 

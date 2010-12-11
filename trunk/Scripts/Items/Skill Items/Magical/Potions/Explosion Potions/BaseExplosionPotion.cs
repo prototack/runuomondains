@@ -16,7 +16,8 @@ namespace Server.Items
 
 		private static bool LeveledExplosion = false; // Should explosion potions explode other nearby potions?
 		private static bool InstantExplosion = false; // Should explosion potions explode on impact?
-		private const int   ExplosionRange   = 2;     // How long is the blast radius?
+		private static bool RelativeLocation = false; // Is the explosion target location relative for mobiles?
+		private const int ExplosionRange = 2; // How long is the blast radius?
 
 		public BaseExplosionPotion( PotionEffect effect ) : base( 0xF0D, effect )
 		{
@@ -89,7 +90,11 @@ namespace Server.Items
 			if ( m_Timer == null )
 			{
 				from.SendLocalizedMessage( 500236 ); // You should throw it now!
-				m_Timer = Timer.DelayCall( TimeSpan.FromSeconds( 0.75 ), TimeSpan.FromSeconds( 1.0 ), 4, new TimerStateCallback( Detonate_OnTick ), new object[]{ from, 3 } );
+
+				if( Core.ML )
+					m_Timer = Timer.DelayCall( TimeSpan.FromSeconds( 1.0 ), TimeSpan.FromSeconds( 1.25 ), 5, new TimerStateCallback( Detonate_OnTick ), new object[]{ from, 3 } ); // 3.6 seconds explosion delay
+				else
+					m_Timer = Timer.DelayCall( TimeSpan.FromSeconds( 0.75 ), TimeSpan.FromSeconds( 1.0 ), 4, new TimerStateCallback( Detonate_OnTick ), new object[]{ from, 3 } ); // 2.6 seconds explosion delay
 			}
 		}
 
@@ -195,12 +200,17 @@ namespace Server.Items
 
 				IEntity to;
 
-				if ( p is Mobile )
-					to = (Mobile)p;
-				else
-					to = new Entity( Serial.Zero, new Point3D( p ), map );
+				to = new Entity( Serial.Zero, new Point3D( p ), map );
 
-				Effects.SendMovingEffect( from, to, m_Potion.ItemID & 0x3FFF, 7, 0, false, false, m_Potion.Hue, 0 );
+				if( p is Mobile )
+				{
+					if( !RelativeLocation ) // explosion location = current mob location. 
+						p = ((Mobile)p).Location;
+					else
+						to = (Mobile)p;
+				}
+
+				Effects.SendMovingEffect( from, to, m_Potion.ItemID, 7, 0, false, false, m_Potion.Hue, 0 );
 
 				if( m_Potion.Amount > 1 )
 				{
@@ -231,9 +241,9 @@ namespace Server.Items
 			if ( map == null )
 				return;
 
-			Effects.PlaySound( loc, map, 0x207 );
-			Effects.SendLocationEffect( loc, map, 0x36BD, 20 );
+			Effects.PlaySound(loc, map, 0x307);
 
+			Effects.SendLocationEffect(loc, map, 0x36B0, 9, 10, 0, 0);
 			int alchemyBonus = 0;
 
 			if ( direct )
@@ -246,7 +256,7 @@ namespace Server.Items
 
 			foreach ( object o in eable )
 			{
-				if ( o is Mobile )
+				if ( o is Mobile && (from == null || (SpellHelper.ValidIndirectTarget( from, (Mobile)o ) && from.CanBeHarmful( (Mobile)o, false ))))
 				{
 					toExplode.Add( o );
 					++toDamage;
@@ -270,22 +280,19 @@ namespace Server.Items
 				{
 					Mobile m = (Mobile)o;
 
-					if ( from == null || (SpellHelper.ValidIndirectTarget( from, m ) && from.CanBeHarmful( m, false )) )
-					{
-						if ( from != null )
-							from.DoHarmful( m );
+					if ( from != null )
+						from.DoHarmful( m );
 
-						int damage = Utility.RandomMinMax( min, max );
+					int damage = Utility.RandomMinMax( min, max );
+					
+					damage += alchemyBonus;
 
-						damage += alchemyBonus;
+					if ( !Core.AOS && damage > 40 )
+						damage = 40;
+					else if ( Core.AOS && toDamage > 2 )
+						damage /= toDamage - 1;
 
-						if ( !Core.AOS && damage > 40 )
-							damage = 40;
-						else if ( Core.AOS && toDamage > 2 )
-							damage /= toDamage - 1;
-
-						AOS.Damage( m, from, damage, 0, 100, 0, 0, 0 );
-					}
+					AOS.Damage( m, from, damage, 0, 100, 0, 0, 0 );
 				}
 				else if ( o is BaseExplosionPotion )
 				{

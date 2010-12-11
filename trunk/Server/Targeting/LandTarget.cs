@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: LandTarget.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: LandTarget.cs 591 2010-12-06 06:45:45Z mark $
  *
  ***************************************************************************/
 
@@ -34,7 +34,7 @@ namespace Server.Targeting
 			if ( map != null )
 			{
 				m_Location.Z = map.GetAverageZ( m_Location.X, m_Location.Y );
-				m_TileID = map.Tiles.GetLandTile( m_Location.X, m_Location.Y ).ID & 0x3FFF;
+				m_TileID = map.Tiles.GetLandTile( m_Location.X, m_Location.Y ).ID & TileData.MaxLandValue;
 			}
 		}
 

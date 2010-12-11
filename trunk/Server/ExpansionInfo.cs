@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ExpansionInfo.cs 565 2010-10-18 07:06:50Z asayre $
+ *   $Id: ExpansionInfo.cs 598 2010-12-08 05:29:16Z mark $
  *
  ***************************************************************************/
 
@@ -53,32 +53,32 @@ namespace Server
 	[Flags]
 	public enum FeatureFlags
 	{
-		None					= 0x00000000,
-		T2A						= 0x00000001,
-		UOR						= 0x00000002,
-		UOTD					= 0x00000004,
-		LBR						= 0x00000008,
-		AOS						= 0x00000010,
-		SixthCharacterSlot		= 0x00000020,
-		SE						= 0x00000040,
-		ML						= 0x00000080,
-		Unk1					= 0x00000100,
-		Unk2					= 0x00000200,
-		Unk3					= 0x00000400,
-		Unk4					= 0x00000800,
+		None			= 0x00000000,
+		T2A			= 0x00000001,
+		UOR			= 0x00000002,
+		UOTD			= 0x00000004,
+		LBR			= 0x00000008,
+		AOS			= 0x00000010,
+		SixthCharacterSlot	= 0x00000020,
+		SE			= 0x00000040,
+		ML			= 0x00000080,
+		Unk1			= 0x00000100,
+		Unk2			= 0x00000200,
+		Unk3			= 0x00000400,
+		Unk4			= 0x00000800,
 		SeventhCharacterSlot	= 0x00001000,
-		Unk5					= 0x00002000,
-		Unk6					= 0x00004000,
-		Unk7					= 0x00008000,
-		SA						= 0x00010000,
+		Unk5			= 0x00002000,
+		Unk6			= 0x00004000,
+		Unk7			= 0x00008000,
+		SA			= 0x00010000,
 
 
-		ExpansionNone	= None,
-		ExpansionT2A	= T2A,
-		ExpansionUOR	= ExpansionT2A	| UOR,
-		ExpansionUOTD	= ExpansionUOR	| UOTD,
-		ExpansionLBR	= ExpansionUOTD	| LBR,
-		ExpansionAOS	= ExpansionLBR	| AOS	| Unk7,
+		ExpansionNone		= None,
+		ExpansionT2A		= T2A,
+		ExpansionUOR		= ExpansionT2A	| UOR,
+		ExpansionUOTD		= ExpansionUOR	| UOTD,
+		ExpansionLBR		= ExpansionUOTD	| LBR,
+		ExpansionAOS		= ExpansionLBR	| AOS	| Unk7,
 		ExpansionSE		= ExpansionAOS	| SE,
 		ExpansionML		= ExpansionSE	| ML	| Unk2,
 		ExpansionSA		= ExpansionML	| SA
@@ -87,28 +87,28 @@ namespace Server
 	[Flags]
 	public enum	CharacterListFlags
 	{
-		None					= 0x00000000,
-		Unk1					= 0x00000001,
-		Unk2					= 0x00000002,
-		OneCharacterSlot		= 0x00000004,
-		ContextMenus			= 0x00000008,
-		SlotLimit				= 0x00000010,
-		AOS						= 0x00000020,
-		SixthCharacterSlot		= 0x00000040,
-		SE						= 0x00000080,
-		ML						= 0x00000100,
-		Unk4					= 0x00000200,
-		Unk5					= 0x00000400,
-		Unk6					= 0x00000800,
+		None			= 0x00000000,
+		Unk1			= 0x00000001,
+		Unk2			= 0x00000002,
+		OneCharacterSlot	= 0x00000004,
+		ContextMenus		= 0x00000008,
+		SlotLimit		= 0x00000010,
+		AOS			= 0x00000020,
+		SixthCharacterSlot	= 0x00000040,
+		SE			= 0x00000080,
+		ML			= 0x00000100,
+		Unk4			= 0x00000200,
+		Unk5			= 0x00000400,
+		Unk6			= 0x00000800,
 		SeventhCharacterSlot	= 0x00001000,
-		Unk7					= 0x00002000,
+		Unk7			= 0x00002000,
 
-		ExpansionNone	= ContextMenus, //
-		ExpansionT2A	= ContextMenus, //
-		ExpansionUOR	= ContextMenus, // None
-		ExpansionUOTD	= ContextMenus, //
-		ExpansionLBR	= ContextMenus, //
-		ExpansionAOS	= ContextMenus	| AOS,
+		ExpansionNone		= ContextMenus, //
+		ExpansionT2A		= ContextMenus, //
+		ExpansionUOR		= ContextMenus, // None
+		ExpansionUOTD		= ContextMenus, //
+		ExpansionLBR		= ContextMenus, //
+		ExpansionAOS		= ContextMenus	| AOS,
 		ExpansionSE		= ExpansionAOS	| SE,
 		ExpansionML		= ExpansionSE	| ML,
 		ExpansionSA		= ExpansionML

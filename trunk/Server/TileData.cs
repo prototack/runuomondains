@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: TileData.cs 551 2010-10-15 03:54:16Z mark $
+ *   $Id: TileData.cs 591 2010-12-06 06:45:45Z mark $
  *
  ***************************************************************************/
 
@@ -218,6 +218,17 @@ namespace Server
 			}
 		}
 
+		private static int m_MaxLandValue;
+		private static int m_MaxItemValue;
+
+		public static int MaxLandValue {
+			get { return m_MaxLandValue; }
+		}
+
+		public static int MaxItemValue {
+			get { return m_MaxItemValue; }
+		}
+
 		private static byte[] m_StringBuffer = new byte[20];
 
 		private static string ReadNameString( BinaryReader bin )
@@ -344,6 +355,9 @@ namespace Server
 						}
 					}
 				}
+
+				m_MaxLandValue = m_LandData.Length - 1;
+				m_MaxItemValue = m_ItemData.Length - 1;
 			}
 			else
 			{

@@ -13,7 +13,7 @@ namespace Server.Multis
 
         [Constructable]
         public GypsyCamp()
-            : base(0x10ee, 0) // dummy garbage at center
+            : base(0x10EE) // dummy garbage at center
         {
         }
 

@@ -859,7 +859,7 @@ namespace Server.Items
 			StrReq				= 0x00000400
 		}
 
-		#region Mondain's Legacy Sets		
+		#region Mondain's Legacy Sets
 		private static void SetSaveFlag( ref SetFlag flags, SetFlag toSet, bool setIf )
 		{
 			if ( setIf )
@@ -870,7 +870,7 @@ namespace Server.Items
 		{
 			return ( (flags & toGet) != 0 );
 		}
-		
+
 		[Flags]
 		private enum SetFlag
 		{
@@ -900,7 +900,7 @@ namespace Server.Items
 
 			#region Mondain's Legacy Sets version 6
 			SetFlag sflags = SetFlag.None;
-			
+
 			SetSaveFlag( ref sflags, SetFlag.Attributes,		!m_SetAttributes.IsEmpty );
 			SetSaveFlag( ref sflags, SetFlag.SkillBonuses,		!m_SetSkillBonuses.IsEmpty );
 			SetSaveFlag( ref sflags, SetFlag.PhysicalBonus,		m_SetPhysicalBonus != 0 );
@@ -912,9 +912,9 @@ namespace Server.Items
 			SetSaveFlag( ref sflags, SetFlag.LastEquipped,		m_LastEquipped );			
 			SetSaveFlag( ref sflags, SetFlag.SetEquipped,		m_SetEquipped );		
 			SetSaveFlag( ref sflags, SetFlag.SetSelfRepair,		m_SetSelfRepair != 0 );
-			
+
 			writer.WriteEncodedInt( (int) sflags );
-			
+
 			if ( GetSaveFlag( sflags, SetFlag.Attributes ) )
 				m_SetAttributes.Serialize( writer );	
 
@@ -935,16 +935,16 @@ namespace Server.Items
 
 			if ( GetSaveFlag( sflags, SetFlag.EnergyBonus ) )
 				writer.WriteEncodedInt( (int) m_SetEnergyBonus );
-				
+
 			if ( GetSaveFlag( sflags, SetFlag.SetHue ) )
 				writer.WriteEncodedInt( (int) m_SetHue );
-				
+
 			if ( GetSaveFlag( sflags, SetFlag.LastEquipped ) )
 				writer.Write( (bool) m_LastEquipped );
-				
+
 			if ( GetSaveFlag( sflags, SetFlag.SetEquipped ) )
 				writer.Write( (bool) m_SetEquipped );
-				
+
 			if ( GetSaveFlag( sflags, SetFlag.SetSelfRepair ) )
 				writer.WriteEncodedInt( (int) m_SetSelfRepair );
 			#endregion
@@ -1014,15 +1014,15 @@ namespace Server.Items
 				{
 					#region Mondain's Legacy Sets
 					SetFlag sflags = (SetFlag) reader.ReadEncodedInt();
-					
+
 					if ( GetSaveFlag( sflags, SetFlag.Attributes ) )
 						m_SetAttributes = new AosAttributes( this, reader );
 					else
 						m_SetAttributes = new AosAttributes( this );
-					
+
 					if ( GetSaveFlag( sflags, SetFlag.ArmorAttributes ) )
 						m_SetSelfRepair = (new AosArmorAttributes( this, reader )).SelfRepair;
-						
+
 					if ( GetSaveFlag( sflags, SetFlag.SkillBonuses ) )
 						m_SetSkillBonuses = new AosSkillBonuses( this, reader );
 					else
@@ -1042,20 +1042,20 @@ namespace Server.Items
 
 					if ( GetSaveFlag( sflags, SetFlag.EnergyBonus ) )
 						m_SetEnergyBonus = reader.ReadEncodedInt();
-						
+
 					if ( GetSaveFlag( sflags, SetFlag.SetHue ) )
 						m_SetHue = reader.ReadEncodedInt();
-						
+
 					if ( GetSaveFlag( sflags, SetFlag.LastEquipped ) )
 						m_LastEquipped = reader.ReadBool();
-						
+
 					if ( GetSaveFlag( sflags, SetFlag.SetEquipped ) )
 						m_SetEquipped = reader.ReadBool();
-						
+
 					if ( GetSaveFlag( sflags, SetFlag.SetSelfRepair ) )
 						m_SetSelfRepair = reader.ReadEncodedInt();
 					#endregion
-					
+
 					goto case 5;
 				}
 				case 5:
@@ -1144,11 +1144,11 @@ namespace Server.Items
 					break;
 				}
 			}
-			
+
 			#region Mondain's Legacy Sets
 			if ( m_SetAttributes == null )
 				m_SetAttributes = new AosAttributes( this );
-				
+
 			if ( m_SetSkillBonuses == null )
 				m_SetSkillBonuses = new AosSkillBonuses( this );
 			#endregion
@@ -1396,10 +1396,10 @@ namespace Server.Items
 			get{ return m_SetPoisonBonus; }
 			set{ m_SetPoisonBonus = value; InvalidateProperties(); }
 		}
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int SetEnergyBonus
-		{ 
+		{
 			get{ return m_SetEnergyBonus; }
 			set{ m_SetEnergyBonus = value; InvalidateProperties(); }
 		}

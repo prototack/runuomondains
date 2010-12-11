@@ -82,7 +82,7 @@ namespace Server.Items
 			else
 				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
 		}
-		
+
 		#region Mondain's Legacy
 		public virtual void DeleteDeed()
 		{

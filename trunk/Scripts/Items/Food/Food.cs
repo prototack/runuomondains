@@ -32,11 +32,11 @@ namespace Server.Items
 			get { return m_FillFactor; }
 			set { m_FillFactor = value; }
 		}
-		
-		#region Mondain's Legacy		
+
+		#region Mondain's Legacy
 		private string m_EngravedText;
-				
-		[CommandProperty( AccessLevel.GameMaster )]		
+
+		[CommandProperty( AccessLevel.GameMaster )]
 		public string EngravedText
 		{
 			get{ return m_EngravedText; }
@@ -77,7 +77,7 @@ namespace Server.Items
 				Eat( from );
 			}
 		}
-		
+
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
@@ -148,9 +148,9 @@ namespace Server.Items
 			base.Serialize( writer );
 
 			writer.Write( (int) 5 ); // version
-			
+
 			#region Mondain's Legacy version 5
-			writer.Write( (string) m_EngravedText );	
+			writer.Write( (string) m_EngravedText );
 			#endregion
 
 			writer.Write( m_Poisoner );
@@ -170,9 +170,9 @@ namespace Server.Items
 				case 5:
 				{
 					#region Mondain's Legacy
-					m_EngravedText = reader.ReadString();		
+					m_EngravedText = reader.ReadString();
 					#endregion
-					
+
 					goto case 4;
 				}
 				case 1:

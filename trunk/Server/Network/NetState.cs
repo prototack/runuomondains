@@ -236,25 +236,25 @@ namespace Server.Network {
 		private ProtocolChanges _ProtocolChanges;
 
 		private enum ProtocolChanges {
-			NewSpellbook				= 0x00000001,
-			DamagePacket				= 0x00000002,
-			Unpack						= 0x00000004,
-			BuffIcon					= 0x00000008,
-			NewHaven					= 0x00000010,
-			ContainerGridLines			= 0x00000020,
+			NewSpellbook			= 0x00000001,
+			DamagePacket			= 0x00000002,
+			Unpack				= 0x00000004,
+			BuffIcon			= 0x00000008,
+			NewHaven			= 0x00000010,
+			ContainerGridLines		= 0x00000020,
 			ExtendedSupportedFeatures	= 0x00000040,
-			StygianAbyss				= 0x00000080,
-			HighSeas					= 0x00000100,
+			StygianAbyss			= 0x00000080,
+			HighSeas			= 0x00000100,
 
-			Version400a					= NewSpellbook,
-			Version407a					= Version400a | DamagePacket,
-			Version500a					= Version407a | Unpack,
-			Version502b					= Version500a | BuffIcon,
-			Version6000					= Version502b | NewHaven,
-			Version6017					= Version6000 | ContainerGridLines,
-			Version60142				= Version6017 | ExtendedSupportedFeatures,
-			Version7000					= Version60142 | StygianAbyss,
-			Version7090					= Version7000  | HighSeas
+			Version400a			= NewSpellbook,
+			Version407a			= Version400a  | DamagePacket,
+			Version500a			= Version407a  | Unpack,
+			Version502b			= Version500a  | BuffIcon,
+			Version6000			= Version502b  | NewHaven,
+			Version6017			= Version6000  | ContainerGridLines,
+			Version60142			= Version6017  | ExtendedSupportedFeatures,
+			Version7000			= Version60142 | StygianAbyss,
+			Version7090			= Version7000  | HighSeas
 		}
 
 		public bool NewSpellbook { get { return ((_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0); } }

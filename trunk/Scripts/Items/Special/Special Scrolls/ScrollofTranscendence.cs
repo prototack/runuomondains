@@ -93,8 +93,8 @@ namespace Server.Items
 			if ( !CanUse( from ) )
 				return;
 
-			double tskill = from.Skills[Skill].Base;
-			double tcap = from.Skills[Skill].Cap;
+			double tskill = from.Skills[Skill].Base; // value of skill without item bonuses etc
+			double tcap = from.Skills[Skill].Cap; // maximum value permitted
 			bool canGain = false;
 
 			double newValue = Value;

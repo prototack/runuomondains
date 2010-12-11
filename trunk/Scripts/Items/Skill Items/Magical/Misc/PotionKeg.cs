@@ -344,7 +344,6 @@ namespace Server.Items
 
 				case PotionEffect.ConfusionBlast:			return new ConfusionBlastPotion();
 				case PotionEffect.ConfusionBlastGreater:	return new GreaterConfusionBlastPotion();
-
 			}
 		}
 

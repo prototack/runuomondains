@@ -116,7 +116,7 @@ namespace Server.Misc
 			{
 				if ( Gregorio.IsMurderer( from ) )
 					return true;
-				
+
 				from.SendLocalizedMessage( 1075456 ); // You are not allowed to damage this NPC unless your on the Guilty Quest
 				return false;
 			}
@@ -301,7 +301,7 @@ namespace Server.Misc
 
 				if ( Core.ML && master != null )
 				{
-					if( source == master && CheckAggressor( target.Aggressors, source ) )
+					if ( ( source == master && CheckAggressor( target.Aggressors, source ) ) || ( CheckAggressor( source.Aggressors, bc ) ) )
 						return Notoriety.CanBeAttacked;
                     else if (bc is BaseEscortable || bc is BaseEscort)
                         return Notoriety.Innocent;
@@ -315,7 +315,7 @@ namespace Server.Misc
 
 			if ( target.Kills >= 5 || ( target.Body.IsMonster && IsSummoned( target as BaseCreature ) && !( target is BaseFamiliar ) && !( target is ArcaneFey ) && !( target is Golem ) ) || ( target is BaseCreature && ( ( (BaseCreature)target ).AlwaysMurderer || ( (BaseCreature)target ).IsAnimatedDead ) ) )
 				return Notoriety.Murderer;
-				
+
 			#region Mondain's Legacy
 			if ( target is Gregorio )
 			{
@@ -323,7 +323,7 @@ namespace Server.Misc
 
 				if ( Gregorio.IsMurderer( source ) )
 					return Notoriety.Murderer;
-				
+
 				return Notoriety.Innocent;
 			}
 			else if ( source.Player && target is Engines.Quests.BaseEscort )
@@ -384,8 +384,9 @@ namespace Server.Misc
 				BaseCreature bc = (BaseCreature)source;
 
 				Mobile master = bc.GetMaster();
-				if( master != null && CheckAggressor( master.Aggressors, target ) )
-					return Notoriety.CanBeAttacked;
+				if( master != null )
+					if( CheckAggressor( master.Aggressors, target ) || MobileNotoriety( master, target ) == Notoriety.CanBeAttacked )
+						return Notoriety.CanBeAttacked;
 			}
 
 			return Notoriety.Innocent;
