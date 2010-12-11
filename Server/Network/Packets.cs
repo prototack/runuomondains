@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Packets.cs 564 2010-10-18 04:56:28Z asayre $
+ *   $Id: Packets.cs 597 2010-12-07 03:30:49Z mark $
  *
  ***************************************************************************/
 
@@ -265,7 +265,7 @@ namespace Server.Network
 				BuyItemState bis = (BuyItemState)list[i];
 		
 				m_Stream.Write( (int)bis.MySerial );
-				m_Stream.Write( (ushort)(bis.ItemID & 0x3FFF) );
+				m_Stream.Write( (ushort)bis.ItemID );
 				m_Stream.Write( (byte)0 );//itemid offset
 				m_Stream.Write( (ushort)bis.Amount );
 				m_Stream.Write( (short)(i+1) );//x
@@ -293,7 +293,7 @@ namespace Server.Network
 				BuyItemState bis = (BuyItemState)list[i];
 		
 				m_Stream.Write( (int)bis.MySerial );
-				m_Stream.Write( (ushort)(bis.ItemID & 0x3FFF) );
+				m_Stream.Write( (ushort)bis.ItemID );
 				m_Stream.Write( (byte)0 );//itemid offset
 				m_Stream.Write( (ushort)bis.Amount );
 				m_Stream.Write( (short)(i+1) );//x
@@ -366,7 +366,7 @@ namespace Server.Network
 			foreach ( SellItemState state in table.Values )
 			{
 				m_Stream.Write( (int) state.Item.Serial );
-				m_Stream.Write( (ushort) (state.Item.ItemID & 0x3FFF) );
+				m_Stream.Write( (ushort) state.Item.ItemID );
 				m_Stream.Write( (ushort) state.Item.Hue );
 				m_Stream.Write( (ushort) state.Item.Amount );
 				m_Stream.Write( (ushort) state.Price );
@@ -769,7 +769,7 @@ namespace Server.Network
 			{
 				ItemListEntry e = entries[i];
 
-				m_Stream.Write( (short) (e.ItemID & 0x3FFF) );
+				m_Stream.Write( (ushort) e.ItemID );
 				m_Stream.Write( (short) e.Hue );
 
 				string name = e.Name;
@@ -1021,7 +1021,7 @@ namespace Server.Network
 			// +1 - Flags
 
 			uint serial = (uint)item.Serial.Value;
-			int itemID = item.ItemID;
+			int itemID = item.ItemID & 0x3FFF;
 			int amount = item.Amount;
 			Point3D loc = item.Location;
 			int x = loc.m_X;
@@ -1040,7 +1040,11 @@ namespace Server.Network
 			}
 
 			m_Stream.Write( (uint) serial );
-			m_Stream.Write( (short) (itemID & 0x7FFF) );
+
+			if ( item is BaseMulti )
+				m_Stream.Write( (short) (itemID | 0x4000) );
+			else
+				m_Stream.Write( (short) itemID );
 
 			if ( amount != 0 )
 			{
@@ -1093,17 +1097,33 @@ namespace Server.Network
 
 			if ( item is BaseMulti ) {
 				m_Stream.Write( (byte) 0x02 );
+
+				m_Stream.Write( (int) item.Serial );
+
 				itemID &= 0x3FFF;
+
+				m_Stream.Write( (short) itemID ); 
+
+				m_Stream.Write( (byte) 0 );
+			/*} else if (  ) {
+				m_Stream.Write( (byte) 0x01 );
+
+				m_Stream.Write( (int) item.Serial );
+
+				m_Stream.Write( (short) itemID ); 
+
+				m_Stream.Write( (byte) item.Direction );*/
 			} else {
 				m_Stream.Write( (byte) 0x00 );
+
+				m_Stream.Write( (int) item.Serial );
+
 				itemID &= 0x7FFF;
+
+				m_Stream.Write( (short) itemID ); 
+
+				m_Stream.Write( (byte) 0 );
 			}
-
-			m_Stream.Write( (int) item.Serial );
-
-			m_Stream.Write( (short) itemID ); 
-
-			m_Stream.Write( (byte) item.Direction );
 
 			int amount = item.Amount;
 			m_Stream.Write( (short) amount );
@@ -1132,17 +1152,33 @@ namespace Server.Network
 
 			if ( item is BaseMulti ) {
 				m_Stream.Write( (byte) 0x02 );
+
+				m_Stream.Write( (int) item.Serial );
+
 				itemID &= 0x3FFF;
+
+				m_Stream.Write( (ushort) itemID ); 
+
+				m_Stream.Write( (byte) 0 );
+			/*} else if (  ) {
+				m_Stream.Write( (byte) 0x01 );
+
+				m_Stream.Write( (int) item.Serial );
+
+				m_Stream.Write( (ushort) itemID ); 
+
+				m_Stream.Write( (byte) item.Direction );*/
 			} else {
 				m_Stream.Write( (byte) 0x00 );
-				itemID &= 0x7FFF;
+
+				m_Stream.Write( (int) item.Serial );
+
+				itemID &= 0xFFFF;
+
+				m_Stream.Write( (ushort) itemID ); 
+
+				m_Stream.Write( (byte) 0 );
 			}
-
-			m_Stream.Write( (int) item.Serial );
-
-			m_Stream.Write( (short) itemID ); 
-
-			m_Stream.Write( (byte) item.Direction );
 
 			int amount = item.Amount;
 			m_Stream.Write( (short) amount );
@@ -1701,13 +1737,8 @@ namespace Server.Network
 				parentSerial = Serial.Zero;
 			}
 
-			ushort cid = (ushort) item.ItemID;
-
-			if ( cid > 0x3FFF )
-				cid = 0x9D7;
-
 			m_Stream.Write( (int) item.Serial );
-			m_Stream.Write( (short) cid );
+			m_Stream.Write( (ushort) item.ItemID );
 			m_Stream.Write( (byte) 0 ); // signed, itemID offset
 			m_Stream.Write( (ushort) item.Amount );
 			m_Stream.Write( (short) item.X );
@@ -1733,13 +1764,8 @@ namespace Server.Network
 				parentSerial = Serial.Zero;
 			}
 
-			ushort cid = (ushort) item.ItemID;
-
-			if ( cid > 0x3FFF )
-				cid = 0x9D7;
-
 			m_Stream.Write( (int) item.Serial );
-			m_Stream.Write( (short) cid );
+			m_Stream.Write( (ushort) item.ItemID );
 			m_Stream.Write( (byte) 0 ); // signed, itemID offset
 			m_Stream.Write( (ushort) item.Amount );
 			m_Stream.Write( (short) item.X );
@@ -1773,13 +1799,8 @@ namespace Server.Network
 				{
 					Point3D loc = child.Location;
 
-					ushort cid = (ushort) child.ItemID;
-
-					if ( cid > 0x3FFF )
-						cid = 0x9D7;
-
 					m_Stream.Write( (int) child.Serial );
-					m_Stream.Write( (ushort) cid );
+					m_Stream.Write( (ushort) child.ItemID );
 					m_Stream.Write( (byte) 0 ); // signed, itemID offset
 					m_Stream.Write( (ushort) child.Amount );
 					m_Stream.Write( (short) loc.m_X );
@@ -1819,13 +1840,8 @@ namespace Server.Network
 				{
 					Point3D loc = child.Location;
 
-					ushort cid = (ushort) child.ItemID;
-
-					if ( cid > 0x3FFF )
-						cid = 0x9D7;
-
 					m_Stream.Write( (int) child.Serial );
-					m_Stream.Write( (ushort) cid );
+					m_Stream.Write( (ushort) child.ItemID );
 					m_Stream.Write( (byte) 0 ); // signed, itemID offset
 					m_Stream.Write( (ushort) child.Amount );
 					m_Stream.Write( (short) loc.m_X );
@@ -3185,14 +3201,14 @@ namespace Server.Network
 					if ( beheld.SolidHueOverride >= 0 )
 						hue = beheld.SolidHueOverride;
 
-					int itemID = item.ItemID & 0x3FFF;
+					int itemID = item.ItemID & 0x7FFF;
 					bool writeHue = ( hue != 0 );
 
 					if ( writeHue )
 						itemID |= 0x8000;
 
 					m_Stream.Write( (int) item.Serial );
-					m_Stream.Write( (short) itemID );
+					m_Stream.Write( (ushort) itemID );
 					m_Stream.Write( (byte) layer );
 
 					if ( writeHue )
@@ -3210,7 +3226,7 @@ namespace Server.Network
 					if( beheld.SolidHueOverride >= 0 )
 						hue = beheld.SolidHueOverride;
 
-					int itemID = beheld.HairItemID & 0x3FFF;
+					int itemID = beheld.HairItemID & 0x7FFF;
 
 					bool writeHue = (hue != 0);
 
@@ -3218,7 +3234,7 @@ namespace Server.Network
 						itemID |= 0x8000;
 
 					m_Stream.Write( (int)HairInfo.FakeSerial( beheld ) );
-					m_Stream.Write( (short)itemID );
+					m_Stream.Write( (ushort)itemID );
 					m_Stream.Write( (byte)Layer.Hair );
 
 					if( writeHue )
@@ -3236,7 +3252,7 @@ namespace Server.Network
 					if( beheld.SolidHueOverride >= 0 )
 						hue = beheld.SolidHueOverride;
 
-					int itemID = beheld.FacialHairItemID & 0x3FFF;
+					int itemID = beheld.FacialHairItemID & 0x7FFF;
 
 					bool writeHue = (hue != 0);
 
@@ -3244,7 +3260,7 @@ namespace Server.Network
 						itemID |= 0x8000;
 
 					m_Stream.Write( (int)FacialHairInfo.FakeSerial( beheld ) );
-					m_Stream.Write( (short)itemID );
+					m_Stream.Write( (ushort)itemID );
 					m_Stream.Write( (byte)Layer.FacialHair );
 
 					if( writeHue )
@@ -3309,14 +3325,14 @@ namespace Server.Network
 					if ( beheld.SolidHueOverride >= 0 )
 						hue = beheld.SolidHueOverride;
 
-					int itemID = item.ItemID & 0x3FFF;
+					int itemID = item.ItemID & 0x7FFF;
 					bool writeHue = ( hue != 0 );
 
 					if ( writeHue )
 						itemID |= 0x8000;
 
 					m_Stream.Write( (int) item.Serial );
-					m_Stream.Write( (short) itemID );
+					m_Stream.Write( (ushort) itemID );
 					m_Stream.Write( (byte) layer );
 
 					if ( writeHue )
@@ -3334,7 +3350,7 @@ namespace Server.Network
 					if( beheld.SolidHueOverride >= 0 )
 						hue = beheld.SolidHueOverride;
 
-					int itemID = beheld.HairItemID & 0x3FFF;
+					int itemID = beheld.HairItemID & 0x7FFF;
 
 					bool writeHue = (hue != 0);
 
@@ -3342,7 +3358,7 @@ namespace Server.Network
 						itemID |= 0x8000;
 
 					m_Stream.Write( (int)HairInfo.FakeSerial( beheld ) );
-					m_Stream.Write( (short)itemID );
+					m_Stream.Write( (ushort)itemID );
 					m_Stream.Write( (byte)Layer.Hair );
 
 					if( writeHue )
@@ -3360,7 +3376,7 @@ namespace Server.Network
 					if( beheld.SolidHueOverride >= 0 )
 						hue = beheld.SolidHueOverride;
 
-					int itemID = beheld.FacialHairItemID & 0x3FFF;
+					int itemID = beheld.FacialHairItemID & 0x7FFF;
 
 					bool writeHue = (hue != 0);
 
@@ -3368,7 +3384,7 @@ namespace Server.Network
 						itemID |= 0x8000;
 
 					m_Stream.Write( (int)FacialHairInfo.FakeSerial( beheld ) );
-					m_Stream.Write( (short)itemID );
+					m_Stream.Write( (ushort)itemID );
 					m_Stream.Write( (byte)Layer.FacialHair );
 
 					if( writeHue )

@@ -18,15 +18,8 @@ namespace Server.Items
 			set{ m_Resource = value; InvalidateProperties(); }
 		}
 
-		string ICommodity.Description
-		{
-			get
-			{
-				return String.Format( "{0} {1} ore", Amount, CraftResources.GetName( m_Resource ).ToLower() );
-			}
-		}
-
 		int ICommodity.DescriptionNumber { get { return LabelNumber; } }
+		bool ICommodity.IsDeedable { get { return true; } }
 
 		public abstract BaseIngot GetIngot();
 
@@ -182,7 +175,7 @@ namespace Server.Items
 				if ( obj is Item )
 					itemID = ((Item)obj).ItemID;
 				else if ( obj is StaticTarget )
-					itemID = ((StaticTarget)obj).ItemID & 0x3FFF;
+					itemID = ((StaticTarget)obj).ItemID;
 
 				return ( itemID == 4017 || (itemID >= 6522 && itemID <= 6569) );
 			}

@@ -11,7 +11,7 @@ namespace Server.Multis
 		private List<Item> m_Components;
 		private Timer m_Timer;
 
-		public PreviewHouse( int multiID ) : base( multiID | 0x4000 )
+		public PreviewHouse( int multiID ) : base( multiID )
 		{
 			m_Components = new List<Item>();
 
@@ -23,7 +23,7 @@ namespace Server.Multis
 
 				if ( entry.m_Flags == 0 )
 				{
-					Item item = new Static( entry.m_ItemID & 0x3FFF );
+					Item item = new Static( (int)entry.m_ItemID );
 
 					item.MoveToWorld( new Point3D( X + entry.m_OffsetX, Y + entry.m_OffsetY, Z + entry.m_OffsetZ ), Map );
 
@@ -123,7 +123,7 @@ namespace Server.Multis
 				}
 			}
 
-			Delete();
+			Timer.DelayCall( TimeSpan.Zero, new TimerCallback( this.Delete ) );
 		}
 
 		private class DecayTimer : Timer

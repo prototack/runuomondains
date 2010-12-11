@@ -37,7 +37,7 @@ namespace Server.Targets
 			if ( m_Order == OrderType.Transfer && o is IPoint3D && o is IComunityCollection && m_List.Count > 0 )
 				from.SendGump( new Server.Gumps.ConfirmTransferPetGump( (IComunityCollection) o, new Point3D( (IPoint3D) o ), m_List[ 0 ].m_Mobile ) );
 			#endregion
-		
+
 			if ( o is Mobile ) {
 				Mobile m = (Mobile)o;
 				for ( int i = 0; i < m_List.Count; ++i )

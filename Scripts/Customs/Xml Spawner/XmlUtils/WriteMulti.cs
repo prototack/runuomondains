@@ -304,7 +304,7 @@ namespace Server.Engines.XmlSpawner2
 					{
 						for (int y = sy; y < ey; y++)
 						{
-							Tile[] statics = map.Tiles.GetStaticTiles(x, y, false);
+                            StaticTile[] statics = map.Tiles.GetStaticTiles(x, y, false);
 
 							for (int j = 0; j < statics.Length; j++)
 							{

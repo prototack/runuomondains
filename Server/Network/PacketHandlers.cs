@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: PacketHandlers.cs 564 2010-10-18 04:56:28Z asayre $
+ *   $Id: PacketHandlers.cs 604 2010-12-09 03:27:52Z mark $
  *
  ***************************************************************************/
 
@@ -1084,7 +1084,7 @@ namespace Server.Network
 			int flags = pvSrc.ReadByte();
 			Serial serial = pvSrc.ReadInt32();
 			int x = pvSrc.ReadInt16(), y = pvSrc.ReadInt16(), z = pvSrc.ReadInt16();
-			int graphic = pvSrc.ReadInt16();
+			int graphic = pvSrc.ReadUInt16();
 
 			if ( targetID == unchecked( (int) 0xDEADBEEF ) )
 				return;
@@ -1128,13 +1128,20 @@ namespace Server.Network
 								}
 								else
 								{
-									Tile[] tiles = map.Tiles.GetStaticTiles( x, y, !t.DisallowMultis );
+									StaticTile[] tiles = map.Tiles.GetStaticTiles( x, y, !t.DisallowMultis );
 
 									bool valid = false;
 
+									if ( state.HighSeas ) {
+										ItemData id = TileData.ItemTable[graphic&TileData.MaxItemValue];
+										if ( id.Surface ) {
+											z -= id.Height;
+										}
+									}
+
 									for ( int i = 0; !valid && i < tiles.Length; ++i )
 									{
-										if ( tiles[i].Z == z && (tiles[i].ID & 0x3FFF) == (graphic & 0x3FFF) )
+										if ( tiles[i].Z == z && tiles[i].ID == graphic )
 											valid = true;
 									}
 

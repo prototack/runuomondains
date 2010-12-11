@@ -9782,7 +9782,8 @@ public static void _TraceEnd(int index)
 #if(RUNUO2RC1)
 			ArrayList tiles = map.GetTilesAt(new Point2D(X, Y), true, true, true);
 #else
-            List<Server.Tile> tiles = map.GetTilesAt(new Point2D(X, Y), true, true, true);
+            StaticTile[] tiles = map.Tiles.GetStaticTiles(X, Y, true);
+            //List<Server.Tile> tiles = map.GetTilesAt(new Point2D(X, Y), true, true, true);
 #endif
             if (tiles == null) return false;
 
@@ -9790,9 +9791,9 @@ public static void _TraceEnd(int index)
             foreach (object o in tiles)
             {
 
-                if (o is Tile)
+                if (o is StaticTile)
                 {
-                    Tile i = (Tile)o;
+                    StaticTile i = (StaticTile)o;
 
                     if ((i.Z + i.Height) == Z)
                     {
@@ -9898,14 +9899,14 @@ public static void _TraceEnd(int index)
             {
                 Console.WriteLine("fitting mob {0} checkmob={1} swim={2} walk={3}", mob, checkmob, canswim, cantwalk);
             }
-            Tile lt = map.Tiles.GetLandTile(x, y);
+            LandTile lt = map.Tiles.GetLandTile(x, y);
             int lowZ = 0, avgZ = 0, topZ = 0;
 
             bool surface, impassable;
             bool wet = false;
 
             map.GetAverageZ(x, y, ref lowZ, ref avgZ, ref topZ);
-            TileFlag landFlags = TileData.LandTable[lt.ID & 0x3FFF].Flags;
+            TileFlag landFlags = TileData.LandTable[lt.ID & TileData.MaxLandValue].Flags;
 
             if (DebugThis)
             {
@@ -9937,12 +9938,12 @@ public static void _TraceEnd(int index)
                 Console.WriteLine("landtile at {0},{1},{2} wet={3} impassable={4} hassurface={5}", x, y, z, wet, impassable, hasSurface);
             }
 
-            Tile[] staticTiles = map.Tiles.GetStaticTiles(x, y, true);
+            StaticTile[] staticTiles = map.Tiles.GetStaticTiles(x, y, true);
 
 
             for (int i = 0; i < staticTiles.Length; ++i)
             {
-                ItemData id = TileData.ItemTable[staticTiles[i].ID & 0x3FFF];
+                ItemData id = TileData.ItemTable[staticTiles[i].ID & TileData.MaxItemValue];
                 surface = id.Surface;
                 impassable = id.Impassable;
                 if (checkmob)
@@ -10062,13 +10063,13 @@ public static void _TraceEnd(int index)
                 for (int y = starty; y <= starty + height; y++)
                 {
                     // go through all of the tiles at the location and find those that are in the allowed tiles list
-                    Tile ltile = map.Tiles.GetLandTile(x, y);
-                    TileFlag lflags = TileData.LandTable[ltile.ID & 0x3FFF].Flags;
+                    LandTile ltile = map.Tiles.GetLandTile(x, y);
+                    TileFlag lflags = TileData.LandTable[ltile.ID & TileData.MaxLandValue].Flags;
 
                     // check the land tile
                     if (includetilelist != null && includetilelist.Count > 0)
                     {
-                        includetile = includetilelist.Contains(ltile.ID & 0x3FFF);
+                        includetile = includetilelist.Contains(ltile.ID & TileData.MaxItemValue);
                     }
                     else
                     {
@@ -10079,7 +10080,7 @@ public static void _TraceEnd(int index)
                     if (excludetilelist != null && excludetilelist.Count > 0)
                     {
                         // also require the tile to be passable
-                        excludetile = ((lflags & TileFlag.Impassable) != 0) || excludetilelist.Contains(ltile.ID & 0x3FFF);
+                        excludetile = ((lflags & TileFlag.Impassable) != 0) || excludetilelist.Contains(ltile.ID & TileData.MaxLandValue);
                     }
                     else
                     {
@@ -10093,17 +10094,17 @@ public static void _TraceEnd(int index)
                         continue;
                     }
 
-                    Tile[] statictiles = map.Tiles.GetStaticTiles(x, y, true);
+                    StaticTile[] statictiles = map.Tiles.GetStaticTiles(x, y, true);
 
                     // check the static tiles
                     for (int i = 0; i < statictiles.Length; ++i)
                     {
-                        Tile stile = statictiles[i];
-                        TileFlag sflags = TileData.ItemTable[stile.ID & 0x3FFF].Flags;
+                        StaticTile stile = statictiles[i];
+                        TileFlag sflags = TileData.ItemTable[stile.ID & TileData.MaxItemValue].Flags;
 
                         if (includetilelist != null && includetilelist.Count > 0)
                         {
-                            includetile = includetilelist.Contains(stile.ID & 0x3FFF);
+                            includetile = includetilelist.Contains(stile.ID & TileData.MaxItemValue);
                         }
                         else
                         {
@@ -10113,7 +10114,7 @@ public static void _TraceEnd(int index)
                         // non-excluded tiles must also be passable
                         if (excludetilelist != null && excludetilelist.Count > 0)
                         {
-                            excludetile = ((sflags & TileFlag.Impassable) != 0) || excludetilelist.Contains(stile.ID & 0x3FFF);
+                            excludetile = ((sflags & TileFlag.Impassable) != 0) || excludetilelist.Contains(stile.ID & TileData.MaxItemValue);
                         }
                         else
                         {

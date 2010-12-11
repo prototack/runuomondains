@@ -33,28 +33,28 @@ namespace Server.Items
 		#region Personal Bless Deed
 		private Mobile m_BlessedBy;
 
-		[CommandProperty( AccessLevel.GameMaster )] 
+		[CommandProperty( AccessLevel.GameMaster )]
 		public Mobile BlessedBy
 		{
-			get { return m_BlessedBy; } 
-			set { m_BlessedBy = value;InvalidateProperties();} 
+			get { return m_BlessedBy; }
+			set { m_BlessedBy = value;InvalidateProperties();}
 		}
-	
-		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list ) 
+
+		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
 		{
-			base.GetContextMenuEntries( from, list ); 
-				
+			base.GetContextMenuEntries( from, list );
+
 			if ( BlessedFor == from && BlessedBy == from && RootParent == from )
 			{
 				list.Add( new UnBlessEntry( from, this ) );
 			}
 		}
-			
+
 		private class UnBlessEntry : ContextMenuEntry
 		{
 			private Mobile m_From;
 			private BaseJewel m_Item;
-			
+
 			public UnBlessEntry( Mobile from, BaseJewel item ) : base( 6208, -1 )
 			{
 				m_From = from;
@@ -65,7 +65,7 @@ namespace Server.Items
 			{
 				m_Item.BlessedFor = null;
 				m_Item.BlessedBy = null;
-				
+
 				Container pack = m_From.Backpack;
 
 				if ( pack != null )
@@ -181,18 +181,18 @@ namespace Server.Items
 		}
 
 		public virtual int ArtifactRarity{ get{ return 0; } }
-		
+
 		#region Mondain's Legacy
 		private Mobile m_Crafter;
 		private ArmorQuality m_Quality;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public Mobile Crafter
 		{
 			get{ return m_Crafter; }
 			set{ m_Crafter = value; InvalidateProperties(); }
 		}
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public ArmorQuality Quality
 		{
@@ -267,10 +267,10 @@ namespace Server.Items
 				if ( IsSetItem )
 				{
 					m_SetEquipped = SetHelper.FullSetEquipped( from, SetID, Pieces );
-				
+
 					if ( m_SetEquipped )
 					{
-						m_LastEquipped = true;							
+						m_LastEquipped = true;
 						SetHelper.AddSetBonus( from, SetID );
 					}
 				}
@@ -308,11 +308,11 @@ namespace Server.Items
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
-			
+
 			#region Mondain's Legacy
 			if ( m_Quality == ArmorQuality.Exceptional )
 				list.Add( 1063341 ); // exceptional
-				
+
 			if ( m_Crafter != null )
 				list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
 			#endregion
@@ -321,10 +321,10 @@ namespace Server.Items
 			if ( IsSetItem )
 			{
 				list.Add( 1080240, Pieces.ToString() ); // Part of a Jewelry Set (~1_val~ pieces)
-					
+
 				if ( m_SetEquipped )
 				{
-					list.Add( 1080241 ); // Full Jewelry Set Present					
+					list.Add( 1080241 ); // Full Jewelry Set Present
 					SetHelper.GetSetProperties( list, this );
 				}
 			}
@@ -431,7 +431,7 @@ namespace Server.Items
 			m_SetAttributes.Serialize( writer );
 			m_SetSkillBonuses.Serialize( writer );
 			#endregion
-			
+
 			#region Mondain's Legacy version 3
 			writer.Write( (Mobile) m_Crafter );
 			writer.Write( (int) m_Quality );
@@ -484,7 +484,7 @@ namespace Server.Items
 				{
 					m_Crafter = reader.ReadMobile();
 					m_Quality = (ArmorQuality) reader.ReadInt();
-										
+
 					goto case 2;
 				}
 				#endregion
@@ -595,10 +595,10 @@ namespace Server.Items
 				else if ( resourceType == typeof( Diamond ) )
 					GemType = GemType.Diamond;
 			}
-			
+
 			#region Mondain's Legacy
 			m_Quality = (ArmorQuality) quality;
-			
+
 			if ( makersMark )
 				m_Crafter = from;
 			#endregion
@@ -607,51 +607,51 @@ namespace Server.Items
 		}
 
 		#endregion
-		
+
 		#region Mondain's Legacy Sets
 		public override bool OnDragLift( Mobile from )
 		{
 			if ( Parent is Mobile && from == Parent )
-			{			
+			{
 				if ( IsSetItem && m_SetEquipped )
 					SetHelper.RemoveSetBonus( from, SetID, this );
-			}			
-			
+			}
+
 			return base.OnDragLift( from );
 		}
 
 		public virtual SetItem SetID{ get{ return SetItem.None; } }
 		public virtual int Pieces{ get{ return 0; } }
 		public virtual bool MixedSet{ get{ return false; } }
-		
+
 		public bool IsSetItem{ get{ return SetID == SetItem.None ? false : true; } }
-		
+
 		private int m_SetHue;
 		private bool m_SetEquipped;
 		private bool m_LastEquipped;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int SetHue
 		{
 			get{ return m_SetHue; }
 			set{ m_SetHue = value; InvalidateProperties(); }
 		}
-		
+
 		public bool SetEquipped
 		{
 			get{ return m_SetEquipped; }
 			set{ m_SetEquipped = value; }
 		}
-		
+
 		public bool LastEquipped
 		{
 			get{ return m_LastEquipped; }
 			set{ m_LastEquipped = value; }
-		}		
-		
+		}
+
 		private AosAttributes m_SetAttributes;
 		private AosSkillBonuses m_SetSkillBonuses;
-		
+
 		[CommandProperty( AccessLevel.GameMaster )]
 		public AosAttributes SetAttributes
 		{
@@ -664,7 +664,7 @@ namespace Server.Items
 		{
 			get{ return m_SetSkillBonuses; }
 			set{}
-		}	
+		}
 		#endregion
 	}
 }

@@ -50,8 +50,8 @@ namespace Server.Engines.Harvest
 			oreAndStone.MaxTotal = 34;
 
 			// A resource bank will respawn its content every 10 to 20 minutes
-			oreAndStone.MinRespawn = TimeSpan.FromMinutes( 1.0 );
-			oreAndStone.MaxRespawn = TimeSpan.FromMinutes( 2.0 );
+			oreAndStone.MinRespawn = TimeSpan.FromMinutes( 10.0 );
+			oreAndStone.MaxRespawn = TimeSpan.FromMinutes( 20.0 );
 
 			// Skill checking is done on the Mining skill
 			oreAndStone.Skill = SkillName.Mining;

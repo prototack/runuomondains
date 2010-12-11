@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: StaticTarget.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: StaticTarget.cs 591 2010-12-06 06:45:45Z mark $
  *
  ***************************************************************************/
 
@@ -30,7 +30,7 @@ namespace Server.Targeting
 		public StaticTarget( Point3D location, int itemID )
 		{
 			m_Location = location;
-			m_ItemID = itemID & 0x3FFF;
+			m_ItemID = itemID & TileData.MaxItemValue;
 			m_Location.Z += TileData.ItemTable[m_ItemID].CalcHeight;
 		}
 

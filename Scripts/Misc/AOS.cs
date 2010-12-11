@@ -88,7 +88,7 @@ namespace Server
 			}
 
 			BaseQuiver quiver = null;
-			
+
 			if ( archer && from != null )
 				quiver = from.FindItemOnLayer( Layer.Cloak ) as BaseQuiver;
 
@@ -148,7 +148,7 @@ namespace Server
 					int absorbed = Scale( totalDamage, percent );
 
 					totalDamage -= absorbed;
-					
+
 					// Mondain's Legacy mod
 					if ( !( pet is ParoxysmusSwampDragon ) )
 						pet.BardingHP -= absorbed;

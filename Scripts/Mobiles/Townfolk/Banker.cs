@@ -249,26 +249,32 @@ namespace Server.Mobiles
 							{
 								int amount;
 
-                                if ( !int.TryParse( split[1], out amount ) )
-                                    break;
+								Container pack = e.Mobile.Backpack;
 
-								if ( amount > 5000 )
+								if ( !int.TryParse( split[1], out amount ) )
+									break;
+
+								if ( (!Core.ML && amount > 5000) || (Core.ML && amount > 60000) )
 								{
 									this.Say( 500381 ); // Thou canst not withdraw so much at one time!
 								}
-								else if ( amount > 0 )
+								else if (pack == null || pack.Deleted || !(pack.TotalWeight < pack.MaxWeight) || !(pack.TotalItems < pack.MaxItems))
+								{
+									this.Say(1048147); // Your backpack can't hold anything else.
+								}
+								else if (amount > 0)
 								{
 									BankBox box = e.Mobile.FindBankNoCreate();
 
-									if ( box == null || !box.ConsumeTotal( typeof( Gold ), amount ) )
+									if (box == null || !box.ConsumeTotal(typeof(Gold), amount))
 									{
-										this.Say( 500384 ); // Ah, art thou trying to fool me? Thou hast not so much gold!
+										this.Say(500384); // Ah, art thou trying to fool me? Thou hast not so much gold!
 									}
 									else
 									{
-										e.Mobile.AddToBackpack( new Gold( amount ) );
+										pack.DropItem(new Gold(amount));
 
-										this.Say( 1010005 ); // Thou hast withdrawn gold from thy account.
+										this.Say(1010005); // Thou hast withdrawn gold from thy account.
 									}
 								}
 							}
@@ -341,26 +347,19 @@ namespace Server.Mobiles
 
 									BankBox box = e.Mobile.BankBox;
 
-									if ( !box.ConsumeTotal( typeof( Gold ), amount ) )
+									if ( !box.TryDropItem( e.Mobile, check, false ) )
+									{
+										this.Say( 500386 ); // There's not enough room in your bankbox for the check!
+										check.Delete();
+									}
+									else if ( !box.ConsumeTotal( typeof( Gold ), amount ) )
 									{
 										this.Say( 500384 ); // Ah, art thou trying to fool me? Thou hast not so much gold!
 										check.Delete();
 									}
 									else
 									{
-										if ( box.TryDropItem( e.Mobile, check, false ) )
-										{
-											this.Say( 1042673, AffixType.Append, amount.ToString(), "" ); // Into your bankbox I have placed a check in the amount of:
-										}
-										else if ( e.Mobile.Backpack.TryDropItem( e.Mobile, check, false ) )
-										{
-											this.Say( 1042674, AffixType.Append, amount.ToString(), "" ); // Into your backpack I have placed a check in the amount of:
-										}
-										else
-										{
-											this.Say( 1005003 ); // You didn't have enough room in either your bank box, or your backpack.
-											check.Delete();
-										}
+										this.Say( 1042673, AffixType.Append, amount.ToString(), "" ); // Into your bank box I have placed a check in the amount of:
 									}
 								}
 							}

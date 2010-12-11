@@ -5,7 +5,7 @@ namespace Server.Engines.Craft
 {
 	#region Mondain's Legacy
 	public enum BowRecipes
-	{		
+	{
 		//magical
 		BarbedLongbow 			= 200,
 		SlayerLongbow			= 201,
@@ -15,7 +15,7 @@ namespace Server.Engines.Craft
 		LightweightShortbow		= 205,
 		MysticalShortbow 		= 206,
 		AssassinsShortbow 		= 207,
-		
+
 		// arties
 		BlightGrippedLongbow 	= 250,
 		FaerieFire 				= 251,
@@ -98,7 +98,7 @@ namespace Server.Engines.Craft
 					return 1044156; // You create an exceptional quality item and affix your maker's mark.
 				else if ( quality == 2 )
 					return 1044155; // You create an exceptional quality item.
-				else				
+				else
 					return 1044154; // You create the item.
 			}
 		}
@@ -147,48 +147,48 @@ namespace Server.Engines.Craft
 				index = AddCraft( typeof( Yumi ), 1044566, 1030224, 90.0, 130.0, typeof( Log ), 1044041, 10, 1044351 );
 				SetNeededExpansion( index, Expansion.SE );
 			}
-			
+
 			#region Mondain's Legacy
 			if ( Core.ML )
 			{
 				index = AddCraft( typeof( ElvenCompositeLongbow ), 1044566, 1031562, 95.0, 145.0, typeof( Log ), 1044041, 20, 1044351 );
 				SetNeededExpansion( index, Expansion.ML );
-				
-				index = AddCraft( typeof( MagicalShortbow ), 1044566, 1031551, 85.0, 135.0, typeof( Log ), 1044041, 15, 1044351 );	
+
+				index = AddCraft( typeof( MagicalShortbow ), 1044566, 1031551, 85.0, 135.0, typeof( Log ), 1044041, 15, 1044351 );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( BlightGrippedLongbow ), 1044566, 1072907, 75.0, 125.0, typeof( Log ), 1044041, 20, 1044351 );
 				AddRes( index, typeof( LardOfParoxysmus ), 1032681, 1, 1053098 );
 				AddRes( index, typeof( Blight ), 1032675, 10, 1053098 );
 				AddRes( index, typeof( Corruption ), 1032676, 10, 1053098 );
 				AddRecipe( index, (int) BowRecipes.BlightGrippedLongbow );
-				ForceNonExceptional( index );		
+				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( FaerieFire ), 1044566, 1072908, 75.0, 125.0, typeof( Log ), 1044041, 20, 1044351 );
 				AddRes( index, typeof( LardOfParoxysmus ), 1032681, 1, 1053098 );
 				AddRes( index, typeof( Putrefication ), 1032678, 10, 1053098 );
 				AddRes( index, typeof( Taint ), 1032679, 10, 1053098 );
-				AddRecipe( index, (int) BowRecipes.FaerieFire );	
-				ForceNonExceptional( index );			
+				AddRecipe( index, (int) BowRecipes.FaerieFire );
+				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( SilvanisFeywoodBow ), 1044566, 1072955, 75.0, 125.0, typeof( Log ), 1044041, 20, 1044351 );
 				AddRes( index, typeof( LardOfParoxysmus ), 1032681, 1, 1053098 );
 				AddRes( index, typeof( Scourge ), 1032677, 10, 1053098 );
 				AddRes( index, typeof( Muculent ), 1032680, 10, 1053098 );
 				AddRecipe( index, (int) BowRecipes.SilvanisFeywoodBow );
-				ForceNonExceptional( index );			
+				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( MischiefMaker ), 1044566, 1072910, 75.0, 125.0, typeof( Log ), 1044041, 15, 1044351 );
 				AddRes( index, typeof( DreadHornMane ), 1032682, 1, 1053098 );
 				AddRes( index, typeof( Corruption ), 1032676, 10, 1053098 );
 				AddRes( index, typeof( Putrefication ), 1032678, 10, 1053098 );
-				AddRecipe( index, (int) BowRecipes.MischiefMaker );			
+				AddRecipe( index, (int) BowRecipes.MischiefMaker );
 				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( TheNightReaper ), 1044566, 1072912, 75.0, 125.0, typeof( Log ), 1044041, 10, 1044351 );
 				AddRes( index, typeof( DreadHornMane ), 1032682, 1, 1053098 );
 				AddRes( index, typeof( Blight ), 1032675, 10, 1053098 );
@@ -196,50 +196,50 @@ namespace Server.Engines.Craft
 				AddRecipe( index, (int) BowRecipes.TheNightReaper );
 				ForceNonExceptional( index );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( BarbedLongbow ), 1044566, 1073505, 75.0, 125.0, typeof( Log ), 1044041, 20, 1044351 );
 				AddRes( index, typeof( FireRuby ), 1026254, 1, 1053098 );
 				AddRecipe( index, (int) BowRecipes.BarbedLongbow );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( SlayerLongbow ), 1044566, 1073506, 75.0, 125.0, typeof( Log ), 1044041, 20, 1044351 );
 				AddRes( index, typeof( BrilliantAmber ), 1026256, 1, 1053098 );
 				AddRecipe( index, (int) BowRecipes.SlayerLongbow );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( FrozenLongbow ), 1044566, 1073507, 75.0, 125.0, typeof( Log ), 1044041, 20, 1044351 );
 				AddRes( index, typeof( Turquoise ), 1026250, 1, 1053098 );
-				AddRecipe( index, (int) BowRecipes.FrozenLongbow );	
-				SetNeededExpansion( index, Expansion.ML );			
-				
+				AddRecipe( index, (int) BowRecipes.FrozenLongbow );
+				SetNeededExpansion( index, Expansion.ML );
+
 				index = AddCraft( typeof( LongbowOfMight ), 1044566, 1073508, 75.0, 125.0, typeof( Log ), 1044041, 10, 1044351 );
 				AddRes( index, typeof( BlueDiamond ), 1026255, 1, 1053098 );
-				AddRecipe( index, (int) BowRecipes.LongbowOfMight );	
+				AddRecipe( index, (int) BowRecipes.LongbowOfMight );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( RangersShortbow ), 1044566, 1073509, 75.0, 125.0, typeof( Log ), 1044041, 15, 1044351 );
 				AddRes( index, typeof( PerfectEmerald ), 1026251, 1, 1053098 );
-				AddRecipe( index, (int) BowRecipes.RangersShortbow );	
-				SetNeededExpansion( index, Expansion.ML );	
-				
+				AddRecipe( index, (int) BowRecipes.RangersShortbow );
+				SetNeededExpansion( index, Expansion.ML );
+
 				index = AddCraft( typeof( LightweightShortbow ), 1044566, 1073510, 75.0, 125.0, typeof( Log ), 1044041, 15, 1044351 );
 				AddRes( index, typeof( WhitePearl ), 1026253, 1, 1053098 );
-				AddRecipe( index, (int) BowRecipes.LightweightShortbow );	
-				SetNeededExpansion( index, Expansion.ML );	
-				
+				AddRecipe( index, (int) BowRecipes.LightweightShortbow );
+				SetNeededExpansion( index, Expansion.ML );
+
 				index = AddCraft( typeof( MysticalShortbow ), 1044566, 1073511, 75.0, 125.0, typeof( Log ), 1044041, 15, 1044351 );
 				AddRes( index, typeof( EcruCitrine ), 1026252, 1, 1053098 );
-				AddRecipe( index, (int) BowRecipes.MysticalShortbow );	
+				AddRecipe( index, (int) BowRecipes.MysticalShortbow );
 				SetNeededExpansion( index, Expansion.ML );
-				
+
 				index = AddCraft( typeof( AssassinsShortbow ), 1044566, 1073512, 75.0, 125.0, typeof( Log ), 1044041, 15, 1044351 );
 				AddRes( index, typeof( DarkSapphire ), 1026249, 1, 1053098 );
 				AddRecipe( index, (int) BowRecipes.AssassinsShortbow );
 				SetNeededExpansion( index, Expansion.ML );
 			}
-			
+
 			SetSubRes( typeof( Log ), 1072643 );
-			
+
 			AddSubRes( typeof( Log ),			1021848, 0.0, 1072653 );
 			AddSubRes( typeof( OakLog ),		1072533, 65.0, 1072653 );
 			AddSubRes( typeof( AshLog ),		1072534, 80.0, 1072653 );

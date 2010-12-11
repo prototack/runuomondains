@@ -189,7 +189,7 @@ namespace Server.Items
 				return damage;
 			}
 		}
-		
+
 		#region Mondain's Legacy ICraftable
 		public override int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue )
 		{
@@ -213,11 +213,11 @@ namespace Server.Items
 			CraftContext context = craftSystem.GetContext( from );
 
 			if ( context != null && context.DoNotColor )
-				Hue = 0;			
-			
+				Hue = 0;
+
 			if ( Core.AOS && tool is BaseRunicTool )
 				((BaseRunicTool)tool).ApplyAttributesTo( this );
-			
+
 			return quality;
 		}
 		#endregion

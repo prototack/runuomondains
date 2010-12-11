@@ -100,35 +100,35 @@ namespace Server.Items
 		public int RunicMinIntensity{ get{ return m_RunicMinIntensity; } set{ m_RunicMinIntensity = value; } }
 		public int RunicMaxIntensity{ get{ return m_RunicMaxIntensity; } set{ m_RunicMaxIntensity = value; } }
 
-		#region Mondain's Legacy		
+		#region Mondain's Legacy
 		private int m_WeaponDamage;
 		private int m_WeaponHitChance;
 		private int m_WeaponHitLifeLeech;
 		private int m_WeaponRegenHits;
 		private int m_WeaponSwingSpeed;
-		
+
 		private int m_ArmorDamage;
 		private int m_ArmorHitChance;
 		private int m_ArmorRegenHits;
 		private int m_ArmorMage;
-		
+
 		private int m_ShieldPhysicalResist;
 		private int m_ShieldFireResist;
 		private int m_ShieldColdResist;
 		private int m_ShieldPoisonResist;
 		private int m_ShieldEnergyResist;
-		
+
 		public int WeaponDamage{ get{ return m_WeaponDamage; } set{ m_WeaponDamage = value; } }
 		public int WeaponHitChance{ get{ return m_WeaponHitChance; } set{ m_WeaponHitChance = value; } }
 		public int WeaponHitLifeLeech{ get{ return m_WeaponHitLifeLeech; } set{ m_WeaponHitLifeLeech = value; } }
 		public int WeaponRegenHits{ get{ return m_WeaponRegenHits; } set{ m_WeaponRegenHits = value; } }
 		public int WeaponSwingSpeed{ get{ return m_WeaponSwingSpeed; } set{ m_WeaponSwingSpeed = value; } }
-		
+
 		public int ArmorDamage{ get{ return m_ArmorDamage; } set{ m_ArmorDamage = value; } }
 		public int ArmorHitChance{ get{ return m_ArmorHitChance; } set{ m_ArmorHitChance = value; } }
 		public int ArmorRegenHits{ get{ return m_ArmorRegenHits; } set{ m_ArmorRegenHits = value; } }
 		public int ArmorMage{ get{ return m_ArmorMage; } set{ m_ArmorMage = value; } }
-		
+
 		public int ShieldPhysicalResist{ get{ return m_ShieldPhysicalResist; } set{ m_ShieldPhysicalResist = value; } }
 		public int ShieldFireResist{ get{ return m_ShieldFireResist; } set{ m_ShieldFireResist = value; } }
 		public int ShieldColdResist{ get{ return m_ShieldColdResist; } set{ m_ShieldColdResist = value; } }
