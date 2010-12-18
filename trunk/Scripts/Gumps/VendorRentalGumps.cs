@@ -329,7 +329,7 @@ namespace Server.Gumps
 
 				if ( mob == null || !mob.Player || !mob.Alive || mob == from )
 				{
-					from.SendMessage( "That is not a valid target for a rental contract!" );
+					from.SendLocalizedMessage(1071984); //That is not a valid target for a rental contract!
 				}
 				else if ( !mob.InRange( m_Contract, 5 ) )
 				{

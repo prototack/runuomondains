@@ -45,18 +45,18 @@ namespace Server.Mobiles
 
 			VirtualArmor = 100;
 			if ( 0.02 > Utility.RandomDouble() )
-				PackStatue();				
+				PackStatue();
 		}
-		
+
+		#region Mondain's Legacy
 		public override void OnDeath( Container c )
 		{
-			base.OnDeath( c );		
-				
-			#region Mondain's Legacy
+			base.OnDeath( c );
+
 			if ( Utility.RandomDouble() < 0.3 )
 				c.DropItem( new PixieLeg() );
-			#endregion
 		}
+		#endregion
 
 		public override void GenerateLoot()
 		{
