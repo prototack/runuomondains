@@ -458,12 +458,6 @@ namespace Server.Mobiles
 			set { m_AnkhNextUse = value; }
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public TimeSpan DisguiseTimeLeft
-		{
-			get { return DisguiseTimers.TimeRemaining(this); }
-		}
-
 		#region Mondain's Legacy
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Bedlam
