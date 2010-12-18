@@ -77,9 +77,8 @@ namespace Server.Spells.Ninjitsu
 			{
 				Caster.SendLocalizedMessage( 502831 ); // Cannot teleport to that spot.
 			}
-			else if ( SpellHelper.CheckMulti( new Point3D( p ), map ) )
+			else if (SpellHelper.CheckMulti( Caster.Location, Caster.Map, true, 5 ))
 			{
-				// TODO: Cannot shadowjump within 5 tiles from any house.
 				Caster.SendLocalizedMessage( 502831 ); // Cannot teleport to that spot.
 			}
 			else if ( CheckSequence() )

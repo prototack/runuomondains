@@ -116,9 +116,9 @@ namespace Server.Mobiles
 		private bool m_IgnoreMobiles; // IgnoreMobiles should be moved to Server.Mobiles
 		private int m_NonAutoreinsuredItems; // number of items that could not be automaitically reinsured because gold in bank was not enough
 		private bool m_NinjaWepCooldown;
-		/* 
+		/*
 		 * a value of zero means, that the mobile is not executing the spell. Otherwise,
-		 * the value should match the BaseMana required 
+		 * the value should match the BaseMana required
 		*/
 		private int m_ExecutesLightningStrike; // move to Server.Mobiles??
 
@@ -129,8 +129,22 @@ namespace Server.Mobiles
 
 		private List<Mobile> m_AutoStabled;
 		private List<Mobile> m_AllFollowers;
+		private List<Mobile> m_RecentlyReported;
 
 		#region Getters & Setters
+
+		public List<Mobile> RecentlyReported
+		{
+			get
+			{
+				return m_RecentlyReported;
+			}
+			set
+			{
+				m_RecentlyReported = value;
+			}
+		}
+
 		public List<Mobile> AutoStabled { get { return m_AutoStabled; } }
 
 		public bool NinjaWepCooldown
@@ -150,7 +164,7 @@ namespace Server.Mobiles
 			get
 			{
 				if (m_AllFollowers == null)
-					m_AllFollowers = new List<Mobile>(); ;
+					m_AllFollowers = new List<Mobile>();
 				return m_AllFollowers;
 			}
 		}
@@ -442,6 +456,12 @@ namespace Server.Mobiles
 		{
 			get { return m_AnkhNextUse; }
 			set { m_AnkhNextUse = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public TimeSpan DisguiseTimeLeft
+		{
+			get { return DisguiseTimers.TimeRemaining(this); }
 		}
 
 		#region Mondain's Legacy
@@ -1450,7 +1470,7 @@ namespace Server.Mobiles
 		{
 			SkillName.ArmsLore,	SkillName.Begging, SkillName.Discordance, SkillName.Forensics,
 			SkillName.Inscribe, SkillName.ItemID, SkillName.Meditation, SkillName.Peacemaking,
-			SkillName.Provocation, SkillName.RemoveTrap, SkillName.SpiritSpeak, SkillName.Stealing,	
+			SkillName.Provocation, SkillName.RemoveTrap, SkillName.SpiritSpeak, SkillName.Stealing,
 			SkillName.TasteID
 		};
 
@@ -1776,6 +1796,7 @@ namespace Server.Mobiles
 				}
 			}
 		}
+
 		#endregion
 
 		private void GetVendor()
@@ -1830,6 +1851,7 @@ namespace Server.Mobiles
 
 			base.DisruptiveAction();
 		}
+
 		public override void OnDoubleClick(Mobile from)
 		{
 			if (this == from && !Warmode)
@@ -2063,7 +2085,6 @@ namespace Server.Mobiles
 				return base.CheckShove(shoved);
 		}
 
-
 		protected override void OnMapChange(Map oldMap)
 		{
 			if ((Map != Faction.Facet && oldMap == Faction.Facet) || (Map == Faction.Facet && oldMap != Faction.Facet))
@@ -2183,7 +2204,9 @@ namespace Server.Mobiles
 		public override bool OnBeforeDeath()
 		{
 			NetState state = NetState;
-			state.CancelAllTrades();
+
+			if (state != null)
+				state.CancelAllTrades();
 
 			DropHolding();
 
@@ -2521,6 +2544,7 @@ namespace Server.Mobiles
 			m_VisList = new List<Mobile>();
 			m_PermaFlags = new List<Mobile>();
 			m_AntiMacroTable = new Hashtable();
+			m_RecentlyReported = new List<Mobile>();
 
 			m_BOBFilter = new Engines.BulkOrders.BOBFilter();
 
@@ -2628,7 +2652,7 @@ namespace Server.Mobiles
 
 			Mobile oath = Spells.Necromancy.BloodOathSpell.GetBloodOath(from);
 
-			/* Per EA's UO Herald Pub48 (ML): 
+			/* Per EA's UO Herald Pub48 (ML):
 			 * ((resist spellsx10)/20 + 10=percentage of damage resisted)
 			 */
 
@@ -2668,6 +2692,7 @@ namespace Server.Mobiles
 		}
 
 		#region Poison
+
 		public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
 		{
 			if (!Alive)
@@ -2699,6 +2724,7 @@ namespace Server.Mobiles
 			else
 				base.OnPoisonImmunity(from, poison);
 		}
+
 		#endregion
 
 		public PlayerMobile(Serial s)
@@ -3037,6 +3063,9 @@ namespace Server.Mobiles
 					}
 			}
 
+			if (m_RecentlyReported == null)
+				m_RecentlyReported = new List<Mobile>();
+
 			#region Mondain's Legacy
 			if (m_Quests == null)
 				m_Quests = new List<BaseQuest>();
@@ -3097,7 +3126,7 @@ namespace Server.Mobiles
 
 		public override void Serialize(GenericWriter writer)
 		{
-			//cleanup our anti-macro table 
+			//cleanup our anti-macro table
 			foreach (Hashtable t in m_AntiMacroTable.Values)
 			{
 				ArrayList remove = new ArrayList();
@@ -3763,6 +3792,7 @@ namespace Server.Mobiles
 
 			InvalidateMyRunUO();
 		}
+
 		#endregion
 
 		#region Fastwalk Prevention
@@ -3820,6 +3850,7 @@ namespace Server.Mobiles
 
 			return (ts < FastwalkThreshold);
 		}
+
 		#endregion
 
 		#region Enemy of One
@@ -3873,6 +3904,7 @@ namespace Server.Mobiles
 				}
 			}
 		}
+
 		#endregion
 
 		#region Hair and beard mods
@@ -3933,6 +3965,7 @@ namespace Server.Mobiles
 			}
 			CreateHair(hair, id, 0);
 		}
+
 		#endregion
 
 		#region Virtues
@@ -4176,6 +4209,7 @@ namespace Server.Mobiles
 		{
 			this.SendGump(new YoungDeathNotice());
 		}
+
 		#endregion
 
 		#region Speech log
@@ -4193,6 +4227,7 @@ namespace Server.Mobiles
 				m_SpeechLog.Add(e.Mobile, e.Speech);
 			}
 		}
+
 		#endregion
 
 		#region Champion Titles
@@ -4261,12 +4296,11 @@ namespace Server.Mobiles
 					writer.WriteEncodedInt(info.m_Value);
 					writer.Write(info.m_LastDecay);
 				}
-
 			}
+
 			private TitleInfo[] m_Values;
 
 			private int m_Harrower;	//Harrower titles do NOT decay
-
 
 			public int GetValue(ChampionSpawnType type)
 			{
@@ -4488,6 +4522,7 @@ namespace Server.Mobiles
 				t.m_Harrower = Math.Max(count, t.m_Harrower);	//Harrower titles never decay.
 			}
 		}
+
 		#endregion
 
 		#region Recipes
@@ -4540,7 +4575,6 @@ namespace Server.Mobiles
 				return m_AcquiredRecipes.Count;
 			}
 		}
-
 
 		#endregion
 
@@ -4614,6 +4648,7 @@ namespace Server.Mobiles
 			if (m_BuffTable.Count <= 0)
 				m_BuffTable = null;
 		}
+
 		#endregion
 
 		public void AutoStablePets()
@@ -4670,7 +4705,7 @@ namespace Server.Mobiles
 
 			if (!Alive)
 			{
-				SendLocalizedMessage(1076251); // Your pet was unable to join you while you are a ghost.  Please re-login once you have ressurected to claim your pets.				
+				SendLocalizedMessage(1076251); // Your pet was unable to join you while you are a ghost.  Please re-login once you have ressurected to claim your pets.
 				return;
 			}
 
@@ -4709,7 +4744,7 @@ namespace Server.Mobiles
 				}
 				else
 				{
-					SendMessage(1049612, pet.Name); // ~1_NAME~ remained in the stables because you have too many followers.
+					SendLocalizedMessage(1049612, pet.Name); // ~1_NAME~ remained in the stables because you have too many followers.
 				}
 			}
 

@@ -24,7 +24,7 @@ namespace Server.Mobiles
 	/// <summary>
 	/// Summary description for MobileAI.
 	/// </summary>
-	/// 
+	///
 	public enum FightMode
 	{
 		None,			// Never focus on others
@@ -38,21 +38,21 @@ namespace Server.Mobiles
 	public enum OrderType
 	{
 		None,			//When no order, let's roam
-		Come,			//"(All/Name) come"  Summons all or one pet to your location.  
-		Drop,			//"(Name) drop"  Drops its loot to the ground (if it carries any).  
-		Follow,			//"(Name) follow"  Follows targeted being.  
-		//"(All/Name) follow me"  Makes all or one pet follow you.  
-		Friend,			//"(Name) friend"  Allows targeted player to confirm resurrection. 
+		Come,			//"(All/Name) come"  Summons all or one pet to your location.
+		Drop,			//"(Name) drop"  Drops its loot to the ground (if it carries any).
+		Follow,			//"(Name) follow"  Follows targeted being.
+		//"(All/Name) follow me"  Makes all or one pet follow you.
+		Friend,			//"(Name) friend"  Allows targeted player to confirm resurrection.
 		Unfriend,		// Remove a friend
-		Guard,			//"(Name) guard"  Makes the specified pet guard you. Pets can only guard their owner. 
-		//"(All/Name) guard me"  Makes all or one pet guard you.  
-		Attack,			//"(All/Name) kill", 
-		//"(All/Name) attack"  All or the specified pet(s) currently under your control attack the target. 
-		Patrol,			//"(Name) patrol"  Roves between two or more guarded targets.  
-		Release,		//"(Name) release"  Releases pet back into the wild (removes "tame" status). 
-		Stay,			//"(All/Name) stay" All or the specified pet(s) will stop and stay in current spot. 
-		Stop,			//"(All/Name) stop Cancels any current orders to attack, guard or follow.  
-		Transfer		//"(Name) transfer" Transfers complete ownership to targeted player. 
+		Guard,			//"(Name) guard"  Makes the specified pet guard you. Pets can only guard their owner.
+		//"(All/Name) guard me"  Makes all or one pet guard you.
+		Attack,			//"(All/Name) kill",
+		//"(All/Name) attack"  All or the specified pet(s) currently under your control attack the target.
+		Patrol,			//"(Name) patrol"  Roves between two or more guarded targets.
+		Release,		//"(Name) release"  Releases pet back into the wild (removes "tame" status).
+		Stay,			//"(All/Name) stay" All or the specified pet(s) will stop and stay in current spot.
+		Stop,			//"(All/Name) stop Cancels any current orders to attack, guard or follow.
+		Transfer		//"(Name) transfer" Transfers complete ownership to targeted player.
 	}
 
 	[Flags]
@@ -421,7 +421,6 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int EnergyResistSeed { get { return m_EnergyResistance; } set { m_EnergyResistance = value; UpdateResistances(); } }
 
-
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int PhysicalDamage { get { return m_PhysicalDamage; } set { m_PhysicalDamage = value; } }
 
@@ -680,9 +679,9 @@ namespace Server.Mobiles
 			}
 		}
 
-		/* 
-			Solen Style, override me for other mobiles/items: 
-			kappa+acidslime, grizzles+whatever, etc. 
+		/*
+			Solen Style, override me for other mobiles/items:
+			kappa+acidslime, grizzles+whatever, etc.
 		*/
 		public virtual Item NewHarmfulItem()
 		{
@@ -1333,7 +1332,6 @@ namespace Server.Mobiles
 		}
 		#endregion
 
-
 		public virtual void CheckReflect(Mobile caster, ref bool reflect)
 		{
 		}
@@ -1362,6 +1360,12 @@ namespace Server.Mobiles
 					feathers *= 2;
 					wool *= 2;
 					hides *= 2;
+
+					if (Core.ML)
+					{
+						meat *= 2;
+						scales *= 2;
+					}
 				}
 
 				new Blood(0x122D).MoveToWorld(corpse.Location, corpse.Map);
@@ -1592,7 +1596,7 @@ namespace Server.Mobiles
 			// Version 3
 			writer.Write((int)m_Loyalty);
 
-			// Version 4 
+			// Version 4
 			writer.Write(m_CurrentWayPoint);
 
 			// Verison 5
@@ -2813,11 +2817,11 @@ namespace Server.Mobiles
 				this.PublicOverheadMessage(MessageType.Regular, 41, false, String.Format(format, args));
 		}
 
-		/* 
+		/*
 		 * This function can be overriden.. so a "Strongest" mobile, can have a different definition depending
 		 * on who check for value
 		 * -Could add a FightMode.Prefered
-		 * 
+		 *
 		 */
 		public virtual double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
 		{
@@ -3429,7 +3433,6 @@ namespace Server.Mobiles
 			}
 		}
 
-
 		public void AddSpellAttack(Type type)
 		{
 			m_arSpellAttack.Add(type);
@@ -3925,9 +3928,9 @@ namespace Server.Mobiles
 			 *    min: 1
 			 *    max: 5
 			 *  count: 5
-			 * 
+			 *
 			 * total = (5*5) + (4*4) + (3*3) + (2*2) + (1*1) = 25 + 16 + 9 + 4 + 1 = 55
-			 * 
+			 *
 			 * chance for min+0 : 25/55 : 45.45%
 			 * chance for min+1 : 16/55 : 29.09%
 			 * chance for min+2 :  9/55 : 16.36%
@@ -4613,7 +4616,6 @@ namespace Server.Mobiles
 				{
 					int totalFame = Fame / 100;
 					int totalKarma = -Karma / 100;
-
 					if (Map == Map.Felucca)
 					{
 						totalFame += ((totalFame / 10) * 3);
@@ -4733,7 +4735,7 @@ namespace Server.Mobiles
 		 *  - 10 seconds have elapsed since the last time it tried
 		 *  - The creature was attacked
 		 *  - Some creatures, like dragons, will reacquire when they see someone move
-		 * 
+		 *
 		 * This functionality appears to be implemented on OSI as well
 		 */
 
@@ -5210,7 +5212,7 @@ namespace Server.Mobiles
 				{
 					if (patient.CurePoison(this))
 					{
-						patient.SendLocalizedMessage(1010059); // You have been cured of all poisons.						
+						patient.SendLocalizedMessage(1010059); // You have been cured of all poisons.
 						patient.PlaySound(0x57);
 
 						CheckSkill(SkillName.Healing, 0.0, 100.0);
@@ -5669,6 +5671,7 @@ namespace Server.Mobiles
 				c.ControlTarget = null;
 				//c.ControlOrder = OrderType.Release;
 				c.AIObject.DoOrderRelease(); // this will prevent no release of creatures left alone with AI disabled (and consequent bug of Followers)
+				c.DropBackpack();
 			}
 
 			// added code to handle removing of wild creatures in house regions

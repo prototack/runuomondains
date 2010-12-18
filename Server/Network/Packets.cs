@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Packets.cs 597 2010-12-07 03:30:49Z mark $
+ *   $Id: Packets.cs 619 2010-12-12 23:55:08Z mark $
  *
  ***************************************************************************/
 
@@ -135,6 +135,28 @@ namespace Server.Network
 			m_Stream.Write( (byte) 1 );
 			m_Stream.Write( (short) x );
 			m_Stream.Write( (short) y );
+		}
+	}
+
+	public sealed class CancelArrowHS : Packet
+	{
+		public CancelArrowHS( int x, int y, Serial s ) : base( 0xBA, 10 )
+		{
+			m_Stream.Write( (byte) 0 );
+			m_Stream.Write( (short) x );
+			m_Stream.Write( (short) y );
+			m_Stream.Write( (int) s );
+		}
+	}
+
+	public sealed class SetArrowHS : Packet
+	{
+		public SetArrowHS( int x, int y, Serial s ) : base( 0xBA, 10 )
+		{
+			m_Stream.Write( (byte) 1 );
+			m_Stream.Write( (short) x );
+			m_Stream.Write( (short) y );
+			m_Stream.Write( (int) s );
 		}
 	}
 
