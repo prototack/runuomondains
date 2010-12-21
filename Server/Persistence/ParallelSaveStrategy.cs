@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ParallelSaveStrategy.cs 164 2007-04-20 22:35:41Z krrios $
+ *   $Id: ParallelSaveStrategy.cs 641 2010-12-20 03:34:25Z asayre $
  *
  ***************************************************************************/
 
@@ -60,7 +60,8 @@ namespace Server {
 
 		private bool finished;
 
-		public override void Save( SaveMetrics metrics ) {
+		public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
+		{
 			this.metrics = metrics;
 
 			OpenFiles();
@@ -163,6 +164,8 @@ namespace Server {
 
 			guildData.Close();
 			guildIndex.Close();
+
+			World.NotifyDiskWriteComplete();
 		}
 
 		private void OnSerialized( ConsumableEntry entry ) {

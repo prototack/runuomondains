@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Listener.cs 405 2009-10-18 00:44:59Z mark $
+ *   $Id: Listener.cs 640 2010-12-19 23:35:09Z mark $
  *
  ***************************************************************************/
 
@@ -36,7 +36,11 @@ namespace Server.Network
 		private Queue<Socket> m_Accepted;
 		private object m_AcceptedSyncRoot;
 
+#if Framework_4_0
+		private SocketAsyncEventArgs m_EventArgs;
+#else
 		private AsyncCallback m_OnAccept;
+#endif
 
 		private static Socket[] m_EmptySockets = new Socket[0];
 
@@ -51,54 +55,40 @@ namespace Server.Network
 		{
 			m_Accepted = new Queue<Socket>();
 			m_AcceptedSyncRoot = ((ICollection)m_Accepted).SyncRoot;
-			m_OnAccept = new AsyncCallback( OnAccept );
+
 			m_Listener = Bind( ipep );
+
+			if ( m_Listener == null )
+				return;
+
+			DisplayListener();
+
+#if Framework_4_0
+			m_EventArgs = new SocketAsyncEventArgs();
+			m_EventArgs.Completed += new EventHandler<SocketAsyncEventArgs>( Accept_Completion );
+			Accept_Start();
+#else
+			m_OnAccept = new AsyncCallback( OnAccept );
+			try {
+				IAsyncResult res = m_Listener.BeginAccept( m_OnAccept, m_Listener );
+			} catch ( SocketException ex ) {
+				NetState.TraceException( ex );
+			} catch ( ObjectDisposedException ) {
+			}
+#endif
 		}
 
 		private Socket Bind( IPEndPoint ipep )
 		{
-			Socket s = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
+			Socket s = new Socket( ipep.AddressFamily, SocketType.Stream, ProtocolType.Tcp );
 
 			try
 			{
 				s.LingerState.Enabled = false;
-#if !MONO
 				s.ExclusiveAddressUse = false;
-#endif
 
 				s.Bind( ipep );
 				s.Listen( 8 );
-
-				if ( ipep.Address.Equals( IPAddress.Any ) ) {
-					NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-
-					foreach ( NetworkInterface adapter in adapters ) {
-						IPInterfaceProperties properties = adapter.GetIPProperties();
-
-						foreach ( IPAddressInformation unicast in properties.UnicastAddresses ) {
-							Console.WriteLine( "Listening: {0}:{1}", unicast.Address, ipep.Port );
-						}
-					}
-					
-					/*
-					try {
-						Console.WriteLine( "Listening: {0}:{1}", IPAddress.Loopback, ipep.Port );
-
-						IPHostEntry iphe = Dns.GetHostEntry( Dns.GetHostName() );
-
-						IPAddress[] ip = iphe.AddressList;
-
-						for ( int i = 0; i < ip.Length; ++i )
-							Console.WriteLine( "Listening: {0}:{1}", ip[i], ipep.Port );
-					}
-					catch { }
-					*/
-				}
-				else {
-					Console.WriteLine( "Listening: {0}:{1}", ipep.Address, ipep.Port );
-				}
-
-				IAsyncResult res = s.BeginAccept( m_OnAccept, s );
 
 				return s;
 			}
@@ -122,6 +112,78 @@ namespace Server.Network
 				return null;
 			}
 		}
+
+		private void DisplayListener()
+		{
+			IPEndPoint ipep = m_Listener.LocalEndPoint as IPEndPoint;
+
+			if ( ipep == null )
+				return;
+
+			if ( ipep.Address.Equals( IPAddress.Any ) || ipep.Address.Equals( IPAddress.IPv6Any ) ) {
+				NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+				foreach ( NetworkInterface adapter in adapters ) {
+					IPInterfaceProperties properties = adapter.GetIPProperties();
+					foreach ( IPAddressInformation unicast in properties.UnicastAddresses ) {
+						if ( ipep.AddressFamily == unicast.Address.AddressFamily )
+							Console.WriteLine( "Listening: {0}:{1}", unicast.Address, ipep.Port );
+					}
+				}
+				/*
+				try {
+					Console.WriteLine( "Listening: {0}:{1}", IPAddress.Loopback, ipep.Port );
+					IPHostEntry iphe = Dns.GetHostEntry( Dns.GetHostName() );
+					IPAddress[] ip = iphe.AddressList;
+					for ( int i = 0; i < ip.Length; ++i )
+						Console.WriteLine( "Listening: {0}:{1}", ip[i], ipep.Port );
+				}
+				catch { }
+				*/
+			}
+			else {
+				Console.WriteLine( "Listening: {0}:{1}", ipep.Address, ipep.Port );
+			}
+		}
+
+#if Framework_4_0
+		private void Accept_Start()
+		{
+			bool result = false;
+
+			do {
+				try {
+					result = !m_Listener.AcceptAsync( m_EventArgs );
+				} catch ( SocketException ex ) {
+					NetState.TraceException( ex );
+					break;
+				} catch ( ObjectDisposedException ) {
+					break;
+				}
+
+				if ( result )
+					Accept_Process( m_EventArgs );
+			} while ( result );
+		}
+
+		private void Accept_Completion( object sender, SocketAsyncEventArgs e )
+		{
+			Accept_Process( e );
+
+			Accept_Start();
+		}
+
+		private void Accept_Process( SocketAsyncEventArgs e )
+		{
+			if ( e.SocketError == SocketError.Success && VerifySocket( e.AcceptSocket ) ) {
+				Enqueue( e.AcceptSocket );
+			} else {
+				Release( e.AcceptSocket );
+			}
+
+			e.AcceptSocket = null;
+		}
+
+#else
 
 		private void OnAccept( IAsyncResult asyncResult ) {
 			Socket listener = (Socket) asyncResult.AsyncState;
@@ -151,6 +213,7 @@ namespace Server.Network
 			} catch ( ObjectDisposedException ) {
 			}
 		}
+#endif
 
 		private bool VerifySocket( Socket socket ) {
 			try {

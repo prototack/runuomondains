@@ -824,19 +824,19 @@ namespace Server
 			info.m_Items = new List<Item>();
 
 			return info.m_Items;
-        }
+		}
 
         #region Mondain's Legacy
 
         public static System.Drawing.Bitmap GetBitmap( int itemID )
         {
-            try 
-			{ 
-				return Ultima.Art.GetStatic( itemID ); 
+            try
+			{
+				return Ultima.Art.GetStatic( itemID );
 			}
-            catch ( Exception e ) 
-			{ 
-				Console.WriteLine( e.ToString() ); 
+            catch ( Exception e )
+			{
+				Console.WriteLine( e.ToString() );
 			}
 
             return null;
@@ -844,13 +844,13 @@ namespace Server
 
         public static void Measure( System.Drawing.Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax )
         {
-            try 
-            { 
-            	Ultima.Art.Measure( bmp, out xMin, out yMin, out xMax, out yMax ); 
+            try
+            {
+            	Ultima.Art.Measure( bmp, out xMin, out yMin, out xMax, out yMax );
             }
             catch ( Exception e ) 
-            { 
-            	Console.WriteLine( e.ToString() ); 
+            {
+            	Console.WriteLine( e.ToString() );
             	xMin = yMin = xMax = yMax = 0;
             }
         }
@@ -2362,7 +2362,7 @@ namespace Server
 					}
 
 					if ( GetSaveFlag( flags, SaveFlag.DupeSource ) )
-						m_DupeSource = reader.ReadItem();		
+						m_DupeSource = reader.ReadItem();
 
 					if ( GetSaveFlag( flags, SaveFlag.Direction ) )
 						m_Direction = (Direction)reader.ReadByte();

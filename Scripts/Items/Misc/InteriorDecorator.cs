@@ -234,7 +234,7 @@ namespace Server.Items
 				if ( addon != null )
 				{
 					FlipableAddonAttribute[] fattributes = (FlipableAddonAttribute[]) addon.GetType().GetCustomAttributes( typeof( FlipableAddonAttribute ), false );
-					
+
 					if ( fattributes.Length > 0 )
 						fattributes[ 0 ].Flip( from, addon );
 				}
