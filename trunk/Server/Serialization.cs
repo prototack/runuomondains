@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Serialization.cs 247 2007-09-14 05:59:15Z mark $
+ *   $Id: Serialization.cs 641 2010-12-20 03:34:25Z asayre $
  *
  ***************************************************************************/
 
@@ -1217,7 +1217,11 @@ namespace Server
 
 				if( m_Owner.m_Closed )
 					m_Owner.m_File.Close();
+
 				AsyncWriter.m_ThreadCount--;
+
+				if (AsyncWriter.m_ThreadCount <= 0)
+					World.NotifyDiskWriteComplete();
 			}
 		}
 

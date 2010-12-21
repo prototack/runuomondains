@@ -1197,7 +1197,7 @@ namespace Server.Network
 
 				itemID &= 0xFFFF;
 
-				m_Stream.Write( (ushort) itemID ); 
+				m_Stream.Write( (ushort) itemID );
 
 				m_Stream.Write( (byte) 0 );
 			}

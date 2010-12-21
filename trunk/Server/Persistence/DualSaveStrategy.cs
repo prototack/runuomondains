@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: DualSaveStrategy.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: DualSaveStrategy.cs 642 2010-12-20 11:31:46Z asayre $
  *
  ***************************************************************************/
 
@@ -37,18 +37,24 @@ namespace Server {
 		public DualSaveStrategy() {
 		}
 
-		public override void Save( SaveMetrics metrics ) {
+		public override void Save( SaveMetrics metrics, bool permitBackgroundWrite ) 
+		{
+			this.PermitBackgroundWrite = permitBackgroundWrite;
+
 			Thread saveThread = new Thread( delegate() {
-				SaveItems( metrics );
+				SaveItems(metrics);
 			} );
 
 			saveThread.Name = "Item Save Subset";
 			saveThread.Start();
 
-			SaveMobiles( metrics );
-			SaveGuilds( metrics );
+			SaveMobiles(metrics);
+			SaveGuilds(metrics);
 
 			saveThread.Join();
+
+			if (permitBackgroundWrite && UseSequentialWriters)	//If we're permitted to write in the background, but we don't anyways, then notify.
+				World.NotifyDiskWriteComplete();
 		}
 	}
 }
