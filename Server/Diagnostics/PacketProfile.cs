@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: PacketProfile.cs 169 2007-04-22 07:31:23Z krrios $
+ *   $Id: PacketProfile.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -39,7 +39,7 @@ namespace Server.Diagnostics {
 			}
 		}
 
-		public BasePacketProfile( string name )
+		protected BasePacketProfile(string name)
 			: base( name ) {
 		}
 

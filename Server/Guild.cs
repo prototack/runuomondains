@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Guild.cs 92 2006-10-05 06:04:38Z asayre $
+ *   $Id: Guild.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -36,7 +36,7 @@ namespace Server.Guilds
 	{
 		private int m_Id;
 
-		public BaseGuild( int Id )//serialization ctor
+		protected BaseGuild( int Id )//serialization ctor
 		{
 			m_Id = Id;
 			m_GuildList.Add( m_Id, this );
@@ -44,7 +44,7 @@ namespace Server.Guilds
 				m_NextID = m_Id + 1;
 		}
 
-		public BaseGuild()
+		protected BaseGuild()
 		{
 			m_Id = m_NextID++;
 			m_GuildList.Add( m_Id, this );

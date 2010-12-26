@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Packets.cs 619 2010-12-12 23:55:08Z mark $
+ *   $Id: Packets.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -2715,7 +2715,7 @@ namespace Server.Network
 		}
 	}
 
-	public class AttributeNormalizer
+	public static class AttributeNormalizer
 	{
 		private static int m_Maximum = 25;
 		private static bool m_Enabled = true;
@@ -3997,7 +3997,7 @@ namespace Server.Network
 			get{ return m_PacketID; }
 		}
 
-		public Packet( int packetID )
+		protected Packet( int packetID )
 		{
 			m_PacketID = packetID;
 
@@ -4015,7 +4015,7 @@ namespace Server.Network
 			m_Stream.Write( (short) 0 );
 		}
 
-		public Packet( int packetID, int length )
+		protected Packet( int packetID, int length )
 		{
 			m_PacketID = packetID;
 			m_Length = length;

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: MultiData.cs 597 2010-12-07 03:30:49Z mark $
+ *   $Id: MultiData.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -24,7 +24,7 @@ using System.IO;
 
 namespace Server
 {
-	public class MultiData
+	public static class MultiData
 	{
 		private static MultiComponentList[] m_Components;
 

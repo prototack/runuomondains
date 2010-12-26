@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Race.cs 173 2007-04-25 01:06:43Z krrios $
+ *   $Id: Race.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -77,7 +77,7 @@ namespace Server
 					return m_Races[index];
 			}
 
-			throw new Exception( "Invalid race name" );
+			throw new ArgumentException( "Invalid race name" );
 		}
 
 		private static void CheckNamesAndValues()
@@ -114,7 +114,7 @@ namespace Server
 		public int FemaleBody { get { return m_FemaleBody; } }
 		public int FemaleGhostBody { get { return m_FemaleGhostBody; } }
 
-		public Race( int raceID, int raceIndex, string name, string pluralName, int maleBody, int femaleBody, int maleGhostBody, int femaleGhostBody, Expansion requiredExpansion )
+		protected Race( int raceID, int raceIndex, string name, string pluralName, int maleBody, int femaleBody, int maleGhostBody, int femaleGhostBody, Expansion requiredExpansion )
 		{
 			m_RaceID = raceID;
 			m_RaceIndex = raceIndex;

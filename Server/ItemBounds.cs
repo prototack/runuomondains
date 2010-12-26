@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ItemBounds.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: ItemBounds.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -23,7 +23,7 @@ using System.IO;
 
 namespace Server
 {
-	public class ItemBounds
+	public static class ItemBounds
 	{
 		private static Rectangle2D[] m_Bounds;
 

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Region.cs 567 2010-10-20 01:09:57Z asayre $
+ *   $Id: Region.cs 649 2010-12-26 05:18:57Z asayre $
  *
  ***************************************************************************/
 
@@ -98,17 +98,6 @@ namespace Server
 		SerpentIsleCombat_U7,
 		ValoriaShips
 	}
-
-
-	public interface ISpawner
-	{
-		bool UnlinkOnTaming{ get; }
-		Point3D Home{ get; }
-		int Range{ get; }
-
-		void Remove( object spawn );
-	}
-
 
 	public class Region : IComparable
 	{

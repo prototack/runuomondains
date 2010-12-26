@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Movement.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: Movement.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -23,7 +23,7 @@ using System.Collections;
 
 namespace Server.Movement
 {
-	public class Movement
+	public static class Movement
 	{
 		private static IMovementImpl m_Impl;
 

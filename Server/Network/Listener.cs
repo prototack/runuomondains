@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Listener.cs 640 2010-12-19 23:35:09Z mark $
+ *   $Id: Listener.cs 646 2010-12-23 22:29:59Z mark $
  *
  ***************************************************************************/
 
@@ -85,8 +85,9 @@ namespace Server.Network
 			try
 			{
 				s.LingerState.Enabled = false;
+#if !MONO
 				s.ExclusiveAddressUse = false;
-
+#endif
 				s.Bind( ipep );
 				s.Listen( 8 );
 

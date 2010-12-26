@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Serialization.cs 641 2010-12-20 03:34:25Z asayre $
+ *   $Id: Serialization.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -34,7 +34,7 @@ namespace Server
 {
 	public abstract class GenericReader
 	{
-		public GenericReader() { }
+		protected GenericReader() { }
 
 		public abstract string ReadString();
 		public abstract DateTime ReadDateTime();
@@ -90,7 +90,7 @@ namespace Server
 
 	public abstract class GenericWriter
 	{
-		public GenericWriter() { }
+		protected GenericWriter() { }
 
 		public abstract void Close();
 

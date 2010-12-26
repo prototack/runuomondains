@@ -41,13 +41,13 @@ namespace Server.Mobiles
 		Come,			//"(All/Name) come"  Summons all or one pet to your location.
 		Drop,			//"(Name) drop"  Drops its loot to the ground (if it carries any).
 		Follow,			//"(Name) follow"  Follows targeted being.
-		//"(All/Name) follow me"  Makes all or one pet follow you.
+						//"(All/Name) follow me"  Makes all or one pet follow you.
 		Friend,			//"(Name) friend"  Allows targeted player to confirm resurrection.
 		Unfriend,		// Remove a friend
 		Guard,			//"(Name) guard"  Makes the specified pet guard you. Pets can only guard their owner.
-		//"(All/Name) guard me"  Makes all or one pet guard you.
+						//"(All/Name) guard me"  Makes all or one pet guard you.
 		Attack,			//"(All/Name) kill",
-		//"(All/Name) attack"  All or the specified pet(s) currently under your control attack the target.
+						//"(All/Name) attack"  All or the specified pet(s) currently under your control attack the target.
 		Patrol,			//"(Name) patrol"  Roves between two or more guarded targets.
 		Release,		//"(Name) release"  Releases pet back into the wild (removes "tame" status).
 		Stay,			//"(All/Name) stay" All or the specified pet(s) will stop and stay in current spot.
@@ -58,28 +58,28 @@ namespace Server.Mobiles
 	[Flags]
 	public enum FoodType
 	{
-		None = 0x0000,
-		Meat = 0x0001,
-		FruitsAndVegies = 0x0002,
-		GrainsAndHay = 0x0004,
-		Fish = 0x0008,
-		Eggs = 0x0010,
-		Gold = 0x0020,
-		Metal = 0x0040
+		None			= 0x0000,
+		Meat			= 0x0001,
+		FruitsAndVegies	= 0x0002,
+		GrainsAndHay	= 0x0004,
+		Fish			= 0x0008,
+		Eggs			= 0x0010,
+		Gold			= 0x0020,
+		Metal			= 0x0040
 	}
 
 	[Flags]
 	public enum PackInstinct
 	{
-		None = 0x0000,
-		Canine = 0x0001,
-		Ostard = 0x0002,
-		Feline = 0x0004,
-		Arachnid = 0x0008,
-		Daemon = 0x0010,
-		Bear = 0x0020,
-		Equine = 0x0040,
-		Bull = 0x0080
+		None			= 0x0000,
+		Canine			= 0x0001,
+		Ostard			= 0x0002,
+		Feline			= 0x0004,
+		Arachnid		= 0x0008,
+		Daemon			= 0x0010,
+		Bear			= 0x0020,
+		Equine			= 0x0040,
+		Bull			= 0x0080
 	}
 
 	public enum ScaleType
@@ -116,13 +116,13 @@ namespace Server.Mobiles
 		public int m_Damage;
 		public bool m_HasRight;
 
-		public DamageStore(Mobile m, int damage)
+		public DamageStore( Mobile m, int damage )
 		{
 			m_Mobile = m;
 			m_Damage = damage;
 		}
 
-		public int CompareTo(object obj)
+		public int CompareTo( object obj )
 		{
 			DamageStore ds = (DamageStore)obj;
 
@@ -130,7 +130,7 @@ namespace Server.Mobiles
 		}
 	}
 
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage( AttributeTargets.Class )]
 	public class FriendlyNameAttribute : Attribute
 	{
 		//future use: Talisman 'Protection/Bonus vs. Specific Creature
@@ -144,18 +144,18 @@ namespace Server.Mobiles
 			}
 		}
 
-		public FriendlyNameAttribute(TextDefinition friendlyName)
+		public FriendlyNameAttribute( TextDefinition friendlyName )
 		{
 			m_FriendlyName = friendlyName;
 		}
 
-		public static TextDefinition GetFriendlyNameFor(Type t)
+		public static TextDefinition GetFriendlyNameFor( Type t )
 		{
-			if (t.IsDefined(typeof(FriendlyNameAttribute), false))
+			if( t.IsDefined( typeof( FriendlyNameAttribute ), false ) )
 			{
-				object[] objs = t.GetCustomAttributes(typeof(FriendlyNameAttribute), false);
+				object[] objs = t.GetCustomAttributes( typeof( FriendlyNameAttribute ), false );
 
-				if (objs != null && objs.Length > 0)
+				if( objs != null && objs.Length > 0 )
 				{
 					FriendlyNameAttribute friendly = objs[0] as FriendlyNameAttribute;
 
@@ -172,102 +172,102 @@ namespace Server.Mobiles
 		public const int MaxLoyalty = 100;
 
 		#region Var declarations
-		private BaseAI m_AI;					// THE AI
+		private BaseAI	m_AI;					// THE AI
 
-		private AIType m_CurrentAI;			// The current AI
-		private AIType m_DefaultAI;			// The default AI
+		private AIType	m_CurrentAI;			// The current AI
+		private AIType	m_DefaultAI;			// The default AI
 
-		private Mobile m_FocusMob;				// Use focus mob instead of combatant, maybe we don't whan to fight
+		private Mobile	m_FocusMob;				// Use focus mob instead of combatant, maybe we don't whan to fight
 		private FightMode m_FightMode;			// The style the mob uses
 
-		private int m_iRangePerception;		// The view area
-		private int m_iRangeFight;			// The fight distance
+		private int		m_iRangePerception;		// The view area
+		private int		m_iRangeFight;			// The fight distance
 
-		private bool m_bDebugAI;			// Show debug AI messages
+		private bool	m_bDebugAI;				// Show debug AI messages
 
-		private int m_iTeam;				// Monster Team
+		private int		m_iTeam;				// Monster Team
 
-		private double m_dActiveSpeed;			// Timer speed when active
-		private double m_dPassiveSpeed;		// Timer speed when not active
-		private double m_dCurrentSpeed;		// The current speed, lets say it could be changed by something;
+		private double	m_dActiveSpeed;			// Timer speed when active
+		private double	m_dPassiveSpeed;		// Timer speed when not active
+		private double	m_dCurrentSpeed;		// The current speed, lets say it could be changed by something;
 
-		private Point3D m_pHome;			// The home position of the creature, used by some AI
-		private int m_iRangeHome = 10;		// The home range of the creature
+		private Point3D m_pHome;				// The home position of the creature, used by some AI
+		private int		m_iRangeHome = 10;		// The home range of the creature
 
-		List<Type> m_arSpellAttack;			// List of attack spell/power
-		List<Type> m_arSpellDefense;		// List of defensive spell/power
+		List<Type>		m_arSpellAttack;		// List of attack spell/power
+		List<Type>		m_arSpellDefense;		// List of defensive spell/power
 
-		private bool m_bControlled;			// Is controlled
-		private Mobile m_ControlMaster;		// My master
-		private Mobile m_ControlTarget;		// My target mobile
-		private Point3D m_ControlDest;		// My target destination (patrol)
-		private OrderType m_ControlOrder;	// My order
+		private bool		m_bControlled;		// Is controlled
+		private Mobile		m_ControlMaster;	// My master
+		private Mobile		m_ControlTarget;	// My target mobile
+		private Point3D		m_ControlDest;		// My target destination (patrol)
+		private OrderType	m_ControlOrder;		// My order
 
-		private int m_Loyalty;
+		private int			m_Loyalty;
 
-		private double m_dMinTameSkill;
-		private bool m_bTamable;
+		private double		m_dMinTameSkill;
+		private bool		m_bTamable;
 
-		private bool m_bSummoned = false;
-		private DateTime m_SummonEnd;
-		private int m_iControlSlots = 1;
+		private bool		m_bSummoned = false;
+		private DateTime	m_SummonEnd;
+		private int			m_iControlSlots = 1;
 
-		private bool m_bBardProvoked = false;
-		private bool m_bBardPacified = false;
-		private Mobile m_bBardMaster = null;
-		private Mobile m_bBardTarget = null;
-		private DateTime m_timeBardEnd;
-		private WayPoint m_CurrentWayPoint = null;
-		private IPoint2D m_TargetLocation = null;
+		private bool		m_bBardProvoked = false;
+		private bool		m_bBardPacified = false;
+		private Mobile		m_bBardMaster = null;
+		private Mobile		m_bBardTarget = null;
+		private DateTime	m_timeBardEnd;
+		private WayPoint	m_CurrentWayPoint = null;
+		private IPoint2D	m_TargetLocation = null;
 
-		private Mobile m_SummonMaster;
+		private Mobile		m_SummonMaster;
 
-		private int m_HitsMax = -1;
-		private int m_StamMax = -1;
-		private int m_ManaMax = -1;
-		private int m_DamageMin = -1;
-		private int m_DamageMax = -1;
+		private int			m_HitsMax = -1;
+		private	int			m_StamMax = -1;
+		private int			m_ManaMax = -1;
+		private int			m_DamageMin = -1;
+		private int			m_DamageMax = -1;
 
-		private int m_PhysicalResistance, m_PhysicalDamage = 100;
-		private int m_FireResistance, m_FireDamage;
-		private int m_ColdResistance, m_ColdDamage;
-		private int m_PoisonResistance, m_PoisonDamage;
-		private int m_EnergyResistance, m_EnergyDamage;
-		private int m_ChaosDamage;
-		private int m_DirectDamage;
+		private int			m_PhysicalResistance, m_PhysicalDamage = 100;
+		private int			m_FireResistance, m_FireDamage;
+		private int			m_ColdResistance, m_ColdDamage;
+		private int			m_PoisonResistance, m_PoisonDamage;
+		private int			m_EnergyResistance, m_EnergyDamage;
+		private int			m_ChaosDamage;
+		private int			m_DirectDamage;
 
 		private List<Mobile> m_Owners;
 		private List<Mobile> m_Friends;
 
-		private bool m_IsStabled;
+		private bool		m_IsStabled;
 
-		private bool m_HasGeneratedLoot; // have we generated our loot yet?
+		private bool		m_HasGeneratedLoot; // have we generated our loot yet?
 
-		private bool m_Paragon;
+		private bool		m_Paragon;
 
-		private bool m_IsPrisoner;
+		private bool		m_IsPrisoner;
 
 		#endregion
 
-		public virtual InhumanSpeech SpeechType { get { return null; } }
+		public virtual InhumanSpeech SpeechType{ get{ return null; } }
 
-		[CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
+		[CommandProperty( AccessLevel.GameMaster, AccessLevel.Administrator )]
 		public bool IsStabled
 		{
-			get { return m_IsStabled; }
+			get{ return m_IsStabled; }
 			set
 			{
 				m_IsStabled = value;
-				if (m_IsStabled)
+				if ( m_IsStabled )
 					StopDeleteTimer();
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public bool IsPrisoner
 		{
-			get { return m_IsPrisoner; }
-			set { m_IsPrisoner = value; }
+			get{ return m_IsPrisoner; }
+			set{ m_IsPrisoner = value; }
 		}
 
 		protected DateTime SummonEnd
@@ -276,77 +276,77 @@ namespace Server.Mobiles
 			set { m_SummonEnd = value; }
 		}
 
-		public virtual Faction FactionAllegiance { get { return null; } }
-		public virtual int FactionSilverWorth { get { return 30; } }
+		public virtual Faction FactionAllegiance{ get{ return null; } }
+		public virtual int FactionSilverWorth{ get{ return 30; } }
 
 		#region Bonding
 		public const bool BondingEnabled = true;
 
 		// region Mondain's Legacy
-		public virtual bool IsBondable { get { return (BondingEnabled && !Summoned && !Allured); } }
-		public virtual TimeSpan BondingDelay { get { return TimeSpan.FromDays(7.0); } }
+		public virtual bool IsBondable{ get{ return ( BondingEnabled && !Summoned && !Allured ); } }
+		public virtual TimeSpan BondingDelay{ get{ return TimeSpan.FromDays( 7.0 ); } }
 		public virtual TimeSpan BondingAbandonDelay { get { return TimeSpan.FromDays(1.0); } }
 
-		public override bool CanRegenHits { get { return !m_IsDeadPet && base.CanRegenHits; } }
-		public override bool CanRegenStam { get { return !m_IsDeadPet && base.CanRegenStam; } }
-		public override bool CanRegenMana { get { return !m_IsDeadPet && base.CanRegenMana; } }
+		public override bool CanRegenHits{ get{ return !m_IsDeadPet && base.CanRegenHits; } }
+		public override bool CanRegenStam{ get{ return !m_IsDeadPet && base.CanRegenStam; } }
+		public override bool CanRegenMana{ get{ return !m_IsDeadPet && base.CanRegenMana; } }
 
-		public override bool IsDeadBondedPet { get { return m_IsDeadPet; } }
+		public override bool IsDeadBondedPet{ get{ return m_IsDeadPet; } }
 
 		private bool m_IsBonded;
 		private bool m_IsDeadPet;
 		private DateTime m_BondingBegin;
 		private DateTime m_OwnerAbandonTime;
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public Mobile LastOwner
 		{
 			get
 			{
-				if (m_Owners == null || m_Owners.Count == 0)
+				if ( m_Owners == null || m_Owners.Count == 0 )
 					return null;
 
 				return m_Owners[m_Owners.Count - 1];
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public bool IsBonded
 		{
-			get { return m_IsBonded; }
-			set { m_IsBonded = value; InvalidateProperties(); }
+			get{ return m_IsBonded; }
+			set{ m_IsBonded = value; InvalidateProperties(); }
 		}
 
 		public bool IsDeadPet
 		{
-			get { return m_IsDeadPet; }
-			set { m_IsDeadPet = value; }
+			get{ return m_IsDeadPet; }
+			set{ m_IsDeadPet = value; }
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public DateTime BondingBegin
 		{
-			get { return m_BondingBegin; }
-			set { m_BondingBegin = value; }
+			get{ return m_BondingBegin; }
+			set{ m_BondingBegin = value; }
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public DateTime OwnerAbandonTime
 		{
-			get { return m_OwnerAbandonTime; }
-			set { m_OwnerAbandonTime = value; }
+			get{ return m_OwnerAbandonTime; }
+			set{ m_OwnerAbandonTime = value; }
 		}
 		#endregion
 
 		#region Delete Previously Tamed Timer
-		private DeleteTimer m_DeleteTimer;
+		private DeleteTimer		m_DeleteTimer;
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public TimeSpan DeleteTimeLeft
 		{
 			get
 			{
-				if (m_DeleteTimer != null && m_DeleteTimer.Running)
+				if ( m_DeleteTimer != null && m_DeleteTimer.Running )
 					return m_DeleteTimer.Next - DateTime.Now;
 
 				return TimeSpan.Zero;
@@ -357,8 +357,7 @@ namespace Server.Mobiles
 		{
 			private Mobile m;
 
-			public DeleteTimer(Mobile creature, TimeSpan delay)
-				: base(delay)
+			public DeleteTimer( Mobile creature, TimeSpan delay ) : base( delay )
 			{
 				m = creature;
 				Priority = TimerPriority.OneMinute;
@@ -372,17 +371,17 @@ namespace Server.Mobiles
 
 		public void BeginDeleteTimer()
 		{
-			if (!(this is BaseEscortable) && !Summoned && !Deleted && !IsStabled)
+			if ( !(this is BaseEscortable) && !Summoned && !Deleted && !IsStabled )
 			{
 				StopDeleteTimer();
-				m_DeleteTimer = new DeleteTimer(this, TimeSpan.FromDays(3.0));
+				m_DeleteTimer = new DeleteTimer( this, TimeSpan.FromDays( 3.0 ) );
 				m_DeleteTimer.Start();
 			}
 		}
 
 		public void StopDeleteTimer()
 		{
-			if (m_DeleteTimer != null)
+			if ( m_DeleteTimer != null )
 			{
 				m_DeleteTimer.Stop();
 				m_DeleteTimer = null;
@@ -391,7 +390,7 @@ namespace Server.Mobiles
 
 		#endregion
 
-		public virtual double WeaponAbilityChance { get { return 0.4; } }
+		public virtual double WeaponAbilityChance{ get{ return 0.4; } }
 
 		public virtual WeaponAbility GetWeaponAbility()
 		{
@@ -400,62 +399,62 @@ namespace Server.Mobiles
 
 		#region Elemental Resistance/Damage
 
-		public override int BasePhysicalResistance { get { return m_PhysicalResistance; } }
-		public override int BaseFireResistance { get { return m_FireResistance; } }
-		public override int BaseColdResistance { get { return m_ColdResistance; } }
-		public override int BasePoisonResistance { get { return m_PoisonResistance; } }
-		public override int BaseEnergyResistance { get { return m_EnergyResistance; } }
+		public override int BasePhysicalResistance{ get{ return m_PhysicalResistance; } }
+		public override int BaseFireResistance{ get{ return m_FireResistance; } }
+		public override int BaseColdResistance{ get{ return m_ColdResistance; } }
+		public override int BasePoisonResistance{ get{ return m_PoisonResistance; } }
+		public override int BaseEnergyResistance{ get{ return m_EnergyResistance; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int PhysicalResistanceSeed { get { return m_PhysicalResistance; } set { m_PhysicalResistance = value; UpdateResistances(); } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int PhysicalResistanceSeed{ get{ return m_PhysicalResistance; } set{ m_PhysicalResistance = value; UpdateResistances(); } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int FireResistSeed { get { return m_FireResistance; } set { m_FireResistance = value; UpdateResistances(); } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int FireResistSeed{ get{ return m_FireResistance; } set{ m_FireResistance = value; UpdateResistances(); } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int ColdResistSeed { get { return m_ColdResistance; } set { m_ColdResistance = value; UpdateResistances(); } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int ColdResistSeed{ get{ return m_ColdResistance; } set{ m_ColdResistance = value; UpdateResistances(); } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int PoisonResistSeed { get { return m_PoisonResistance; } set { m_PoisonResistance = value; UpdateResistances(); } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int PoisonResistSeed{ get{ return m_PoisonResistance; } set{ m_PoisonResistance = value; UpdateResistances(); } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int EnergyResistSeed { get { return m_EnergyResistance; } set { m_EnergyResistance = value; UpdateResistances(); } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int EnergyResistSeed{ get{ return m_EnergyResistance; } set{ m_EnergyResistance = value; UpdateResistances(); } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int PhysicalDamage { get { return m_PhysicalDamage; } set { m_PhysicalDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int PhysicalDamage{ get{ return m_PhysicalDamage; } set{ m_PhysicalDamage = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int FireDamage { get { return m_FireDamage; } set { m_FireDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int FireDamage{ get{ return m_FireDamage; } set{ m_FireDamage = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int ColdDamage { get { return m_ColdDamage; } set { m_ColdDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int ColdDamage{ get{ return m_ColdDamage; } set{ m_ColdDamage = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int PoisonDamage { get { return m_PoisonDamage; } set { m_PoisonDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int PoisonDamage{ get{ return m_PoisonDamage; } set{ m_PoisonDamage = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int EnergyDamage { get { return m_EnergyDamage; } set { m_EnergyDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int EnergyDamage{ get{ return m_EnergyDamage; } set{ m_EnergyDamage = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int ChaosDamage { get { return m_ChaosDamage; } set { m_ChaosDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int ChaosDamage{ get{ return m_ChaosDamage; } set{ m_ChaosDamage = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int DirectDamage { get { return m_DirectDamage; } set { m_DirectDamage = value; } }
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int DirectDamage{ get{ return m_DirectDamage; } set{ m_DirectDamage = value; } }
 
 		#endregion
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public bool IsParagon
 		{
-			get { return m_Paragon; }
+			get{ return m_Paragon; }
 			set
 			{
-				if (m_Paragon == value)
+				if ( m_Paragon == value )
 					return;
-				else if (value)
-					Paragon.Convert(this);
+				else if ( value )
+					Paragon.Convert( this );
 				else
-					Paragon.UnConvert(this);
+					Paragon.UnConvert( this );
 
 				m_Paragon = value;
 
@@ -463,136 +462,136 @@ namespace Server.Mobiles
 			}
 		}
 
-		public virtual FoodType FavoriteFood { get { return FoodType.Meat; } }
-		public virtual PackInstinct PackInstinct { get { return PackInstinct.None; } }
+		public virtual FoodType FavoriteFood{ get{ return FoodType.Meat; } }
+		public virtual PackInstinct PackInstinct{ get{ return PackInstinct.None; } }
 
 		public List<Mobile> Owners { get { return m_Owners; } }
 
-		public virtual bool AllowMaleTamer { get { return true; } }
-		public virtual bool AllowFemaleTamer { get { return true; } }
-		public virtual bool SubdueBeforeTame { get { return false; } }
-		public virtual bool StatLossAfterTame { get { return SubdueBeforeTame; } }
+		public virtual bool AllowMaleTamer{ get{ return true; } }
+		public virtual bool AllowFemaleTamer{ get{ return true; } }
+		public virtual bool SubdueBeforeTame{ get{ return false; } }
+		public virtual bool StatLossAfterTame{ get{ return SubdueBeforeTame; } }
 
-		public virtual bool Commandable { get { return true; } }
+		public virtual bool Commandable{ get{ return true; } }
 
-		public virtual Poison HitPoison { get { return null; } }
-		public virtual double HitPoisonChance { get { return 0.5; } }
-		public virtual Poison PoisonImmune { get { return null; } }
+		public virtual Poison HitPoison{ get{ return null; } }
+		public virtual double HitPoisonChance{ get{ return 0.5; } }
+		public virtual Poison PoisonImmune{ get{ return null; } }
 
-		public virtual bool BardImmune { get { return false; } }
-		public virtual bool Unprovokable { get { return BardImmune || m_IsDeadPet; } }
-		public virtual bool Uncalmable { get { return BardImmune || m_IsDeadPet; } }
+		public virtual bool BardImmune{ get{ return false; } }
+		public virtual bool Unprovokable{ get{ return BardImmune || m_IsDeadPet; } }
+		public virtual bool Uncalmable{ get{ return BardImmune || m_IsDeadPet; } }
 		public virtual bool AreaPeaceImmune { get { return BardImmune || m_IsDeadPet; } }
 
-		public virtual bool BleedImmune { get { return false; } }
-		public virtual double BonusPetDamageScalar { get { return 1.0; } }
+		public virtual bool BleedImmune{ get{ return false; } }
+		public virtual double BonusPetDamageScalar{ get{ return 1.0; } }
 
-		public virtual bool DeathAdderCharmable { get { return false; } }
+		public virtual bool DeathAdderCharmable{ get{ return false; } }
 
 		//TODO: Find the pub 31 tweaks to the DispelDifficulty and apply them of course.
-		public virtual double DispelDifficulty { get { return 0.0; } } // at this skill level we dispel 50% chance
-		public virtual double DispelFocus { get { return 20.0; } } // at difficulty - focus we have 0%, at difficulty + focus we have 100%
-		public virtual bool DisplayWeight { get { return Backpack is StrongBackpack; } }
+		public virtual double DispelDifficulty{ get{ return 0.0; } } // at this skill level we dispel 50% chance
+		public virtual double DispelFocus{ get{ return 20.0; } } // at difficulty - focus we have 0%, at difficulty + focus we have 100%
+		public virtual bool DisplayWeight{ get{ return Backpack is StrongBackpack; } }
 
 		#region Breath ability, like dragon fire breath
 		private DateTime m_NextBreathTime;
 
 		// Must be overriden in subclass to enable
-		public virtual bool HasBreath { get { return false; } }
+		public virtual bool HasBreath{ get{ return false; } }
 
 		// Base damage given is: CurrentHitPoints * BreathDamageScalar
-		public virtual double BreathDamageScalar { get { return (Core.AOS ? 0.16 : 0.05); } }
+		public virtual double BreathDamageScalar{ get{ return (Core.AOS ? 0.16 : 0.05); } }
 
 		// Min/max seconds until next breath
-		public virtual double BreathMinDelay { get { return 10.0; } }
-		public virtual double BreathMaxDelay { get { return 15.0; } }
+		public virtual double BreathMinDelay{ get{ return 10.0; } }
+		public virtual double BreathMaxDelay{ get{ return 15.0; } }
 
 		// Creature stops moving for 1.0 seconds while breathing
-		public virtual double BreathStallTime { get { return 1.0; } }
+		public virtual double BreathStallTime{ get{ return 1.0; } }
 
 		// Effect is sent 1.3 seconds after BreathAngerSound and BreathAngerAnimation is played
-		public virtual double BreathEffectDelay { get { return 1.3; } }
+		public virtual double BreathEffectDelay{ get{ return 1.3; } }
 
 		// Damage is given 1.0 seconds after effect is sent
-		public virtual double BreathDamageDelay { get { return 1.0; } }
+		public virtual double BreathDamageDelay{ get{ return 1.0; } }
 
-		public virtual int BreathRange { get { return RangePerception; } }
+		public virtual int BreathRange{ get{ return RangePerception; } }
 
 		// Damage types
-		public virtual int BreathPhysicalDamage { get { return 0; } }
-		public virtual int BreathFireDamage { get { return 100; } }
-		public virtual int BreathColdDamage { get { return 0; } }
-		public virtual int BreathPoisonDamage { get { return 0; } }
-		public virtual int BreathEnergyDamage { get { return 0; } }
+		public virtual int BreathPhysicalDamage{ get{ return 0; } }
+		public virtual int BreathFireDamage{ get{ return 100; } }
+		public virtual int BreathColdDamage{ get{ return 0; } }
+		public virtual int BreathPoisonDamage{ get{ return 0; } }
+		public virtual int BreathEnergyDamage{ get{ return 0; } }
 
 		// Is immune to breath damages
-		public virtual bool BreathImmune { get { return false; } }
+		public virtual bool BreathImmune{ get{ return false; } }
 
 		// Effect details and sound
-		public virtual int BreathEffectItemID { get { return 0x36D4; } }
-		public virtual int BreathEffectSpeed { get { return 5; } }
-		public virtual int BreathEffectDuration { get { return 0; } }
-		public virtual bool BreathEffectExplodes { get { return false; } }
-		public virtual bool BreathEffectFixedDir { get { return false; } }
-		public virtual int BreathEffectHue { get { return 0; } }
-		public virtual int BreathEffectRenderMode { get { return 0; } }
+		public virtual int BreathEffectItemID{ get{ return 0x36D4; } }
+		public virtual int BreathEffectSpeed{ get{ return 5; } }
+		public virtual int BreathEffectDuration{ get{ return 0; } }
+		public virtual bool BreathEffectExplodes{ get{ return false; } }
+		public virtual bool BreathEffectFixedDir{ get{ return false; } }
+		public virtual int BreathEffectHue{ get{ return 0; } }
+		public virtual int BreathEffectRenderMode{ get{ return 0; } }
 
-		public virtual int BreathEffectSound { get { return 0x227; } }
+		public virtual int BreathEffectSound{ get{ return 0x227; } }
 
 		// Anger sound/animations
-		public virtual int BreathAngerSound { get { return GetAngerSound(); } }
-		public virtual int BreathAngerAnimation { get { return 12; } }
+		public virtual int BreathAngerSound{ get{ return GetAngerSound(); } }
+		public virtual int BreathAngerAnimation{ get{ return 12; } }
 
-		public virtual void BreathStart(Mobile target)
+		public virtual void BreathStart( Mobile target )
 		{
 			BreathStallMovement();
 			BreathPlayAngerSound();
 			BreathPlayAngerAnimation();
 
-			this.Direction = this.GetDirectionTo(target);
+			this.Direction = this.GetDirectionTo( target );
 
-			Timer.DelayCall(TimeSpan.FromSeconds(BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), target);
+			Timer.DelayCall( TimeSpan.FromSeconds( BreathEffectDelay ), new TimerStateCallback( BreathEffect_Callback ), target );
 		}
 
 		public virtual void BreathStallMovement()
 		{
-			if (m_AI != null)
-				m_AI.NextMove = DateTime.Now + TimeSpan.FromSeconds(BreathStallTime);
+			if ( m_AI != null )
+				m_AI.NextMove = DateTime.Now + TimeSpan.FromSeconds( BreathStallTime );
 		}
 
 		public virtual void BreathPlayAngerSound()
 		{
-			PlaySound(BreathAngerSound);
+			PlaySound( BreathAngerSound );
 		}
 
 		public virtual void BreathPlayAngerAnimation()
 		{
-			Animate(BreathAngerAnimation, 5, 1, true, false, 0);
+			Animate( BreathAngerAnimation, 5, 1, true, false, 0 );
 		}
 
-		public virtual void BreathEffect_Callback(object state)
+		public virtual void BreathEffect_Callback( object state )
 		{
 			Mobile target = (Mobile)state;
 
-			if (!target.Alive || !CanBeHarmful(target))
+			if ( !target.Alive || !CanBeHarmful( target ) )
 				return;
 
 			BreathPlayEffectSound();
-			BreathPlayEffect(target);
+			BreathPlayEffect( target );
 
-			Timer.DelayCall(TimeSpan.FromSeconds(BreathDamageDelay), new TimerStateCallback(BreathDamage_Callback), target);
+			Timer.DelayCall( TimeSpan.FromSeconds( BreathDamageDelay ), new TimerStateCallback( BreathDamage_Callback ), target );
 		}
 
 		public virtual void BreathPlayEffectSound()
 		{
-			PlaySound(BreathEffectSound);
+			PlaySound( BreathEffectSound );
 		}
 
-		public virtual void BreathPlayEffect(Mobile target)
+		public virtual void BreathPlayEffect( Mobile target )
 		{
-			Effects.SendMovingEffect(this, target, BreathEffectItemID,
+			Effects.SendMovingEffect( this, target, BreathEffectItemID,
 				BreathEffectSpeed, BreathEffectDuration, BreathEffectFixedDir,
-				BreathEffectExplodes, BreathEffectHue, BreathEffectRenderMode);
+				BreathEffectExplodes, BreathEffectHue, BreathEffectRenderMode );
 		}
 
 		public virtual void BreathDamage_Callback(object state)
@@ -4798,9 +4797,9 @@ namespace Server.Mobiles
 			return ret;
 		}
 
-		public bool SetControlMaster(Mobile m)
+		public bool SetControlMaster( Mobile m )
 		{
-			if (m == null)
+			if ( m == null )
 			{
 				ControlMaster = null;
 				Controlled = false;
@@ -4808,20 +4807,20 @@ namespace Server.Mobiles
 				ControlOrder = OrderType.None;
 				Guild = null;
 
-				Delta(MobileDelta.Noto);
+				Delta( MobileDelta.Noto );
 			}
 			else
 			{
-				SpawnEntry se = this.Spawner as SpawnEntry;
-				if (se != null && se.UnlinkOnTaming)
+				ISpawner se = this.Spawner;
+				if ( se != null && se.UnlinkOnTaming )
 				{
-					this.Spawner.Remove(this);
+					this.Spawner.Remove( this );
 					this.Spawner = null;
 				}
 
-				if (m.Followers + ControlSlots > m.FollowersMax)
+				if ( m.Followers + ControlSlots > m.FollowersMax )
 				{
-					m.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
+					m.SendLocalizedMessage( 1049607 ); // You have too many followers to control that creature.
 					return false;
 				}
 
@@ -4833,13 +4832,13 @@ namespace Server.Mobiles
 				ControlOrder = OrderType.Come;
 				Guild = null;
 
-				if (m_DeleteTimer != null)
+				if ( m_DeleteTimer != null )
 				{
 					m_DeleteTimer.Stop();
 					m_DeleteTimer = null;
 				}
 
-				Delta(MobileDelta.Noto);
+				Delta( MobileDelta.Noto );
 			}
 
 			InvalidateProperties();
@@ -4847,17 +4846,17 @@ namespace Server.Mobiles
 			return true;
 		}
 
-		public override void OnRegionChange(Region Old, Region New)
+		public override void OnRegionChange( Region Old, Region New )
 		{
-			base.OnRegionChange(Old, New);
+			base.OnRegionChange( Old, New );
 
-			if (this.Controlled)
+			if ( this.Controlled )
 			{
 				SpawnEntry se = this.Spawner as SpawnEntry;
 
-				if (se != null && !se.UnlinkOnTaming && (New == null || !New.AcceptsSpawnsFrom(se.Region)))
+				if ( se != null && !se.UnlinkOnTaming && ( New == null || !New.AcceptsSpawnsFrom( se.Region ) ) )
 				{
-					this.Spawner.Remove(this);
+					this.Spawner.Remove( this );
 					this.Spawner = null;
 				}
 			}
@@ -4867,28 +4866,28 @@ namespace Server.Mobiles
 
 		public static bool Summoning
 		{
-			get { return m_Summoning; }
-			set { m_Summoning = value; }
+			get{ return m_Summoning; }
+			set{ m_Summoning = value; }
 		}
 
-		public static bool Summon(BaseCreature creature, Mobile caster, Point3D p, int sound, TimeSpan duration)
+		public static bool Summon( BaseCreature creature, Mobile caster, Point3D p, int sound, TimeSpan duration )
 		{
-			return Summon(creature, true, caster, p, sound, duration);
+			return Summon( creature, true, caster, p, sound, duration );
 		}
 
-		public static bool Summon(BaseCreature creature, bool controlled, Mobile caster, Point3D p, int sound, TimeSpan duration)
+		public static bool Summon( BaseCreature creature, bool controlled, Mobile caster, Point3D p, int sound, TimeSpan duration )
 		{
-			if (caster.Followers + creature.ControlSlots > caster.FollowersMax)
+			if ( caster.Followers + creature.ControlSlots > caster.FollowersMax )
 			{
-				caster.SendLocalizedMessage(1049645); // You have too many followers to summon that creature.
+				caster.SendLocalizedMessage( 1049645 ); // You have too many followers to summon that creature.
 				creature.Delete();
 				return false;
 			}
 
 			m_Summoning = true;
 
-			if (controlled)
-				creature.SetControlMaster(caster);
+			if ( controlled )
+				creature.SetControlMaster( caster );
 
 			creature.RangeHome = 10;
 			creature.Summoned = true;
@@ -4897,11 +4896,11 @@ namespace Server.Mobiles
 
 			Container pack = creature.Backpack;
 
-			if (pack != null)
+			if ( pack != null )
 			{
-				for (int i = pack.Items.Count - 1; i >= 0; --i)
+				for ( int i = pack.Items.Count - 1; i >= 0; --i )
 				{
-					if (i >= pack.Items.Count)
+					if ( i >= pack.Items.Count )
 						continue;
 
 					pack.Items[i].Delete();
@@ -4912,12 +4911,12 @@ namespace Server.Mobiles
 			creature.SetHits((int)Math.Floor(creature.HitsMax * (1 + ArcaneEmpowermentSpell.GetSpellBonus(caster, false) / 100.0)));
 			#endregion
 
-			new UnsummonTimer(caster, creature, duration).Start();
+			new UnsummonTimer( caster, creature, duration ).Start();
 			creature.m_SummonEnd = DateTime.Now + duration;
 
-			creature.MoveToWorld(p, caster.Map);
+			creature.MoveToWorld( p, caster.Map );
 
-			Effects.PlaySound(p, creature.Map, sound);
+			Effects.PlaySound( p, creature.Map, sound );
 
 			m_Summoning = false;
 

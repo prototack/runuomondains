@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Prompt.cs 564 2010-10-18 04:56:28Z asayre $
+ *   $Id: Prompt.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -36,7 +36,7 @@ namespace Server.Prompts
 			}
 		}
 
-		public Prompt()
+		protected Prompt()
 		{
 			do
 			{

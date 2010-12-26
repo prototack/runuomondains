@@ -620,7 +620,7 @@ namespace Server.Mobiles
 								else if (i is Spawner)
 								{
 									// search the entries of the spawner
-									foreach (string so in ((Spawner)i).CreaturesName)
+									foreach (string so in ((Spawner)i).SpawnNames)
 									{
 										if (criteria.Dosearchspawntype)
 										{

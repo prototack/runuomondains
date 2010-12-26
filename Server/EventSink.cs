@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: EventSink.cs 214 2007-08-27 08:49:15Z mark $
+ *   $Id: EventSink.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -789,7 +789,7 @@ namespace Server
 		public bool Blocked{ get{ return m_Blocked; } set{ m_Blocked = value; } }
 	}
 
-	public class EventSink
+	public static class EventSink
 	{
 		public static event CharacterCreatedEventHandler CharacterCreated;
 		public static event OpenDoorMacroEventHandler OpenDoorMacroUsed;

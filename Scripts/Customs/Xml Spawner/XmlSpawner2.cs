@@ -1933,11 +1933,11 @@ namespace Server.Mobiles
 
         #region ISpawner interface support
 
-        public bool UnlinkOnTaming { get { return false; } }
-        public Point3D Home { get { return this.Location; } }
+        public bool UnlinkOnTaming { get { return true; } }
+		public Point3D HomeLocation { get { return this.Location; } }
         public int Range { get { return HomeRange; } }
 
-        public void Remove(object spawn)
+		public void Remove(ISpawnable spawn)
         {
             if (m_SpawnObjects == null) return;
 

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: MultiTarget.cs 551 2010-10-15 03:54:16Z mark $
+ *   $Id: MultiTarget.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -53,11 +53,13 @@ namespace Server.Targeting
 			}
 		}
 
-		public MultiTarget( int multiID, Point3D offset ) : this( multiID, offset, 10, true, TargetFlags.None )
+		protected MultiTarget( int multiID, Point3D offset )
+			: this( multiID, offset, 10, true, TargetFlags.None )
 		{
 		}
 
-		public MultiTarget( int multiID, Point3D offset, int range, bool allowGround, TargetFlags flags ) : base( range, allowGround, flags )
+		protected MultiTarget( int multiID, Point3D offset, int range, bool allowGround, TargetFlags flags )
+			: base( range, allowGround, flags )
 		{
 			m_MultiID = multiID;
 			m_Offset = offset;

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: EventLog.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: EventLog.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -24,7 +24,7 @@ using DiagELog = System.Diagnostics.EventLog;
 
 namespace Server
 {
-	public class EventLog
+	public static class EventLog
 	{
 		static EventLog()
 		{

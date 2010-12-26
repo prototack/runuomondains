@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: StandardSaveStrategy.cs 642 2010-12-20 11:31:46Z asayre $
+ *   $Id: StandardSaveStrategy.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -108,7 +108,6 @@ namespace Server {
 		protected void SaveItems(SaveMetrics metrics)
 		{
 			Dictionary<Serial, Item> items = World.Items;
-			List<Item> decaying = new List<Item>();
 
 			GenericWriter idx;
 			GenericWriter tdb;
