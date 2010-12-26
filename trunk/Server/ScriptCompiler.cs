@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ScriptCompiler.cs 632 2010-12-18 11:00:57Z asayre $
+ *   $Id: ScriptCompiler.cs 649 2010-12-26 05:18:57Z asayre $
  *
  ***************************************************************************/
 
@@ -32,7 +32,7 @@ using Microsoft.VisualBasic;
 
 namespace Server
 {
-	public class ScriptCompiler
+	public static class ScriptCompiler
 	{
 		private static Assembly[] m_Assemblies;
 
@@ -412,7 +412,7 @@ namespace Server
 				{
 					string file = e.FileName;
 
-					// Rediculous. FileName is null if the warning/error is internally generated in csc.
+					// Ridiculous. FileName is null if the warning/error is internally generated in csc.
 					if ( string.IsNullOrEmpty( file ) ) {
 						Console.WriteLine( "ScriptCompiler: {0}: {1}", e.ErrorNumber, e.ErrorText );
 						continue;
@@ -521,15 +521,6 @@ namespace Server
 		}
 
 		private delegate CompilerResults Compiler( bool debug );
-
-		private void LoadScriptedAssembly( List<Assembly> assemblies, string fileName, Compiler compiler, bool debug )
-		{
-
-
-			if( File.Exists( fileName ) )
-			{
-			}
-		}
 
 		public static bool Compile()
 		{

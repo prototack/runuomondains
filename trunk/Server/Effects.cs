@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Effects.cs 149 2007-01-19 22:10:11Z mark $
+ *   $Id: Effects.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -42,7 +42,7 @@ namespace Server
 		None
 	}
 
-	public class Effects
+	public static class Effects
 	{
 		private static ParticleSupportType m_ParticleSupportType = ParticleSupportType.Detect;
 

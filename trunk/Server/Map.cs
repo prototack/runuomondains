@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Map.cs 602 2010-12-09 02:48:29Z mark $
+ *   $Id: Map.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -125,7 +125,7 @@ namespace Server
 					return m_Maps[index];
 			}
 
-			throw new Exception( "Invalid map name" );
+			throw new ArgumentException( "Invalid map name" );
 		}
 
 		private static void CheckNamesAndValues()

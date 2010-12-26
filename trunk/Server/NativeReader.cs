@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: NativeReader.cs 251 2007-09-14 07:44:17Z mark $
+ *   $Id: NativeReader.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -22,7 +22,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Server {
-	public class NativeReader {
+	public static class NativeReader {
 
 		private static readonly INativeReader m_NativeReader;
 

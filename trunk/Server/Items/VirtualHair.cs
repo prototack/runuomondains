@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: VirtualHair.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: VirtualHair.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -35,18 +35,18 @@ namespace Server
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int Hue { get { return m_Hue; } set { m_Hue = value; } }
 
-		public BaseHairInfo( int itemid )
+		protected BaseHairInfo( int itemid )
 			: this( itemid, 0 )
 		{
 		}
 
-		public BaseHairInfo( int itemid, int hue )
+		protected BaseHairInfo( int itemid, int hue )
 		{
 			m_ItemID = itemid;
 			m_Hue = hue;
 		}
 
-		public BaseHairInfo( GenericReader reader )
+		protected BaseHairInfo( GenericReader reader )
 		{
 			int version = reader.ReadInt();
 

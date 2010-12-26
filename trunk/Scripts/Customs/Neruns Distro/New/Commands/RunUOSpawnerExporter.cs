@@ -86,7 +86,7 @@ namespace Server.Commands
 
 						Spawner spawner = ((Spawner)item);
 
-						if ( spawner.CreaturesName.Count > 0 )
+						if ( spawner.SpawnNames.Count > 0 )
 						{
 							int MinDelay = ConvertToInt(spawner.MinDelay);
 
@@ -102,11 +102,11 @@ namespace Server.Commands
 								MaxDelay = MinDelay;
 							}
 
-							string towrite = "*|" + spawner.CreaturesName[0];
+							string towrite = "*|" + spawner.SpawnNames[0];
 
-							for ( int i = 1; i < spawner.CreaturesName.Count; ++i )
+							for ( int i = 1; i < spawner.SpawnNames.Count; ++i )
 							{
-								towrite = towrite + ":" + spawner.CreaturesName[i].ToString();
+								towrite = towrite + ":" + spawner.SpawnNames[i].ToString();
 							}
 
 							op.WriteLine( "{0}||||||{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|1|{9}|0|0|0|0|0", towrite, spawner.X, spawner.Y, spawner.Z, mapfinal, MinDelay, MaxDelay, spawner.HomeRange, spawner.HomeRange, spawner.Count);

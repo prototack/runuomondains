@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Target.cs 551 2010-10-15 03:54:16Z mark $
+ *   $Id: Target.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -38,7 +38,7 @@ namespace Server.Targeting
 
 		public DateTime TimeoutTime{ get{ return m_TimeoutTime; } }
 
-		public Target( int range, bool allowGround, TargetFlags flags )
+		protected Target( int range, bool allowGround, TargetFlags flags )
 		{
 			m_TargetID = ++m_NextTargetID;
 			m_Range = range;

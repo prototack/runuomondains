@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: TileData.cs 591 2010-12-06 06:45:45Z mark $
+ *   $Id: TileData.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -197,7 +197,7 @@ namespace Server
 		StairRight		= 0x80000000
 	}
 
-	public class TileData
+	public static class TileData
 	{
 		private static LandData[] m_LandData;
 		private static ItemData[] m_ItemData;

@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Item.cs 602 2010-12-09 02:48:29Z mark $
+ *   $Id: Item.cs 649 2010-12-26 05:18:57Z asayre $
  *
  ***************************************************************************/
 
@@ -544,6 +544,7 @@ namespace Server
 		Weight,
 	}
 
+	[Flags]
 	public enum ExpandFlag
 	{
 		None		= 0x00,
@@ -558,7 +559,7 @@ namespace Server
 		Weight		= 0x80
 	}
 
-	public class Item : IEntity, IHued, IComparable<Item>, ISerializable
+	public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
 	{
 		public static readonly List<Item> EmptyItems = new List<Item>();
 
@@ -826,35 +827,35 @@ namespace Server
 			return info.m_Items;
 		}
 
-        #region Mondain's Legacy
+		#region Mondain's Legacy
 
-        public static System.Drawing.Bitmap GetBitmap( int itemID )
-        {
-            try
+		public static System.Drawing.Bitmap GetBitmap( int itemID )
+		{
+			try
 			{
 				return Ultima.Art.GetStatic( itemID );
 			}
-            catch ( Exception e )
+			catch ( Exception e )
 			{
 				Console.WriteLine( e.ToString() );
 			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public static void Measure( System.Drawing.Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax )
-        {
-            try
-            {
-            	Ultima.Art.Measure( bmp, out xMin, out yMin, out xMax, out yMax );
-            }
-            catch ( Exception e ) 
-            {
-            	Console.WriteLine( e.ToString() );
-            	xMin = yMin = xMax = yMax = 0;
-            }
-        }
-        #endregion
+		public static void Measure( System.Drawing.Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax )
+		{
+			try
+			{
+				Ultima.Art.Measure( bmp, out xMin, out yMin, out xMax, out yMax );
+			}
+			catch ( Exception e ) 
+			{
+				Console.WriteLine( e.ToString() );
+				xMin = yMin = xMax = yMax = 0;
+			}
+		}
+		#endregion
 
 		private void SetFlag( ImplFlag flag, bool value )
 		{
@@ -3484,6 +3485,7 @@ namespace Server
 			return true;
 		}
 
+		//TODO: Move to CompactInfo.
 		private ISpawner m_Spawner;
 
 		public ISpawner Spawner{ get{ return m_Spawner; } set{ m_Spawner = value; } }

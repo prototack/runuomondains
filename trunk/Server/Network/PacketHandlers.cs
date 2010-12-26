@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: PacketHandlers.cs 604 2010-12-09 03:27:52Z mark $
+ *   $Id: PacketHandlers.cs 644 2010-12-23 09:18:45Z asayre $
  *
  ***************************************************************************/
 
@@ -57,7 +57,7 @@ namespace Server.Network
 		Encoded = 0xC0
 	}
 
-	public class PacketHandlers
+	public static class PacketHandlers
 	{
 		private static PacketHandler[] m_Handlers;
 		private static PacketHandler[] m_6017Handlers;
