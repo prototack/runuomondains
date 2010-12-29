@@ -13,10 +13,11 @@ namespace Server.Mobiles
 
 		public override ChampionSkullType SkullType{ get{ return ChampionSkullType.Enlightenment; } }
 
-        public override Type[] UniqueArtifacts{ get { return new Type[] {
+		public override Type[] UniqueArtifacts{ get{ return new Type[]
+		{
 			typeof( OrcChieftainHelm ) }; } }
 
-        public override Type[] SharedArtifacts{ get { return new Type[] {
+		public override Type[] SharedArtifacts{ get{ return new Type[] {
 			typeof( RoyalGuardSurvivalKnife ),
 			typeof( DjinnisRing ),
 			typeof( LieutenantOfTheBritannianRoyalGuard ),
@@ -24,13 +25,14 @@ namespace Server.Mobiles
 			typeof( TheMostKnowledgePerson ),
 			typeof( SamaritanRobe ) }; } }
 
-        public override Type[] DecorationArtifacts{ get { return new Type[] {
-            typeof( Pier ),
-            typeof( WindSpirit ),
-            typeof( SmallRockWater ),
-            typeof( SmallRocksWater ) }; } }
+		public override Type[] DecorationArtifacts{ get{ return new Type[] {
+			typeof( Pier ),
+			typeof( WindSpirit ),
+			typeof( SmallRockWater ),
+			typeof( SmallRocksWater ),
+			typeof( DirtPatch ) }; } }
 
-        public override MonsterStatuetteType[] StatueTypes { get { return new MonsterStatuetteType[] { }; } }
+		public override MonsterStatuetteType[] StatueTypes{ get{ return new MonsterStatuetteType[] { }; } }
 
 		[Constructable]
 		public LordOaks() : base( AIType.AI_Mage, FightMode.Evil )

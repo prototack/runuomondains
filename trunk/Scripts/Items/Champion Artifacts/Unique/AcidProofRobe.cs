@@ -17,7 +17,7 @@ namespace Server.Items
 		[Constructable]
 		public AcidProofRobe()
 		{
-			Hue = 0x7E3;
+			Hue = 0x455;
 			LootType = LootType.Blessed;
 		}
 

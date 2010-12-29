@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ScriptCompiler.cs 649 2010-12-26 05:18:57Z asayre $
+ *   $Id: ScriptCompiler.cs 651 2010-12-28 09:24:08Z asayre $
  *
  ***************************************************************************/
 
@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using System.Diagnostics;
 
 namespace Server
 {
@@ -583,8 +584,14 @@ namespace Server
 			m_Assemblies = assemblies.ToArray();
 
 			Console.Write( "Scripts: Verifying..." );
+
+			Stopwatch watch = Stopwatch.StartNew();
+
 			Core.VerifySerialization();
-			Console.WriteLine( "done ({0} items, {1} mobiles)", Core.ScriptItems, Core.ScriptMobiles );
+			
+			watch.Stop();
+
+			Console.WriteLine("done ({0} items, {1} mobiles) ({2:F2} seconds)", Core.ScriptItems, Core.ScriptMobiles, watch.Elapsed.TotalSeconds);
 
 			return true;
 		}
