@@ -21,7 +21,7 @@ namespace Server.Items
 		[Constructable]
 		public OrcChieftainHelm()
 		{
-            Hue = 0x8A4;
+			Hue = 0x1D6;
 
 			Attributes.Luck = 100;
 			Attributes.RegenHits = 3;

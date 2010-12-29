@@ -8749,7 +8749,10 @@ namespace Server
 		private static int[] m_InvalidBodies = new int[]
 			{
 				32,
-				156,
+				// 95, Now used for the Turkey
+				156
+				// 197, Now used for the Order Dragon
+				// 198, Now used for the Chaos Dragon
 			};
 
 		[Body, CommandProperty( AccessLevel.GameMaster )]
