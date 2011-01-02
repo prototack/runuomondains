@@ -9,10 +9,22 @@ using Server.Mobiles;
 namespace Server.Items
 {
 	[FlipableAttribute( 0x27AA, 0x27F5 )]
-	public class Fukiya : Item, IUsesRemaining
+	public class Fukiya : Item, INinjaWeapon
 	{
-		private int m_UsesRemaining;
+		public virtual int WrongAmmoMessage { get { return 1063329; } } //You can only load fukiya darts
+		public virtual int NoFreeHandMessage { get { return 1063327; } } //You must have a free hand to use a fukiya.
+		public virtual int EmptyWeaponMessage { get { return 1063325; } } //You have no fukiya darts!
+		public virtual int RecentlyUsedMessage { get { return 1063326; } } //You are already using that fukiya.
+		public virtual int FullWeaponMessage { get { return 1063330; } } //You can only load fukiya darts
 
+		public virtual int WeaponMinRange { get { return 0; } }
+		public virtual int WeaponMaxRange { get { return 6; } }
+
+		public virtual int WeaponDamage { get { return Utility.RandomMinMax(4, 6); } }
+
+		public  Type AmmoType{ get { return typeof(FukiyaDarts); } }
+
+		private int m_UsesRemaining;
 		private Poison m_Poison;
 		private int m_PoisonCharges;
 
@@ -50,6 +62,17 @@ namespace Server.Items
 		{
 		}
 
+		public void AttackAnimation(Mobile from, Mobile to)
+		{
+			if (from.Body.IsHuman && !from.Mounted)
+			{
+				from.Animate(33, 2, 1, true, true, 0);
+			}
+
+			from.PlaySound(0x223);
+			from.MovingEffect(to, 0x2804, 5, 0, false, false);
+		}
+
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
@@ -64,31 +87,10 @@ namespace Server.Items
 
 		public override void OnDoubleClick( Mobile from )
 		{
-			if ( !IsChildOf( from ) )
-				return;
-
-			if ( m_UsesRemaining < 1 )
-			{
-				// You have no fukiya darts!
-				from.SendLocalizedMessage( 1063325 );
-			}
-			else if (((PlayerMobile)from).NinjaWepCooldown)
-			{
-				// You are already using that fukiya.
-				from.SendLocalizedMessage( 1063326 );
-			}
-			else if ( !BasePotion.HasFreeHand( from ) )
-			{
-				// You must have a free hand to use a fukiya.
-				from.SendLocalizedMessage( 1063327 );
-			}
-			else
-			{
-				from.BeginTarget( 5, false, TargetFlags.Harmful, new TargetCallback( OnTarget ) );
-			}
+			NinjaWeapon.AttemptShoot((PlayerMobile)from, this);
 		}
 
-		public void Shoot( Mobile from, Mobile target )
+/*		public void Shoot( Mobile from, Mobile target )
 		{
 			if ( from == target )
 				return;
@@ -283,7 +285,7 @@ namespace Server.Items
 				Reload( from, (FukiyaDarts) obj );
 			else
 				from.SendLocalizedMessage( 1063329 ); // You can only load fukiya darts
-		}
+		}*/
 
 		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
 		{
@@ -291,42 +293,8 @@ namespace Server.Items
 
 			if ( IsChildOf( from ) )
 			{
-				list.Add( new LoadEntry( this ) );
-				list.Add( new UnloadEntry( this ) );
-			}
-		}
-
-		private class LoadEntry : ContextMenuEntry
-		{
-			private Fukiya m_Fukiya;
-
-			public LoadEntry( Fukiya fukiya ) : base( 6224, 0 )
-			{
-				m_Fukiya = fukiya;
-			}
-
-			public override void OnClick()
-			{
-				if ( !m_Fukiya.Deleted && m_Fukiya.IsChildOf( Owner.From ) )
-					Owner.From.BeginTarget( 5, false, TargetFlags.Harmful, new TargetCallback( m_Fukiya.OnTarget ) );
-			}
-		}
-
-		private class UnloadEntry : ContextMenuEntry
-		{
-			private Fukiya m_Fukiya;
-
-			public UnloadEntry( Fukiya fukiya ) : base( 6225, 0 )
-			{
-				m_Fukiya = fukiya;
-
-				Enabled = ( fukiya.UsesRemaining > 0 );
-			}
-
-			public override void OnClick()
-			{
-				if ( !m_Fukiya.Deleted && m_Fukiya.IsChildOf( Owner.From ) )
-					m_Fukiya.Unload( Owner.From );
+				list.Add(new NinjaWeapon.LoadEntry(this));
+				list.Add(new NinjaWeapon.UnloadEntry(this));
 			}
 		}
 
@@ -341,7 +309,7 @@ namespace Server.Items
 			Poison.Serialize( m_Poison, writer );
 			writer.Write( (int) m_PoisonCharges );
 		}
-		
+
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );

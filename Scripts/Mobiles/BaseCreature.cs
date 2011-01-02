@@ -638,13 +638,16 @@ namespace Server.Mobiles
 
 			return damage;
 		}
+
 		#endregion
 
 		#region Spill Acid
+
 		public void SpillAcid(int Amount)
 		{
 			SpillAcid(null, Amount);
 		}
+
 		public void SpillAcid(Mobile target, int Amount)
 		{
 			if ((target != null && target.Map == null) || this.Map == null)
@@ -682,10 +685,12 @@ namespace Server.Mobiles
 			Solen Style, override me for other mobiles/items:
 			kappa+acidslime, grizzles+whatever, etc.
 		*/
+
 		public virtual Item NewHarmfulItem()
 		{
 			return new PoolOfAcid(TimeSpan.FromSeconds(10), 30, 30);
 		}
+
 		#endregion
 
 		#region Flee!!!
@@ -720,6 +725,7 @@ namespace Server.Mobiles
 		{
 			m_EndFlee = DateTime.Now + maxDuration;
 		}
+
 		#endregion
 
 		public BaseAI AIObject { get { return m_AI; } }
@@ -772,6 +778,7 @@ namespace Server.Mobiles
 
 			return (m_iTeam == c.m_iTeam && ((m_bSummoned || m_bControlled) == (c.m_bSummoned || c.m_bControlled))/* && c.Combatant != this */);
 		}
+
 		#endregion
 
 		#region Allegiance
@@ -809,6 +816,7 @@ namespace Server.Mobiles
 
 			return (ethic == EthicAllegiance ? Allegiance.Ally : Allegiance.Enemy);
 		}
+
 		#endregion
 
 		public virtual bool IsEnemy(Mobile m)
@@ -989,7 +997,7 @@ namespace Server.Mobiles
 			if (Core.AOS && !this.Summoned && this.Controlled && 0.2 > Utility.RandomDouble())
 				amount = (int)(amount * BonusPetDamageScalar);
 
-			if (Spells.Necromancy.EvilOmenSpell.CheckEffect(this))
+			if (Spells.Necromancy.EvilOmenSpell.TryEndEffect(this))
 				amount = (int)(amount * 1.25);
 
 			Mobile oath = Spells.Necromancy.BloodOathSpell.GetBloodOath(from);
@@ -1038,7 +1046,7 @@ namespace Server.Mobiles
 			if (!Alive || IsDeadPet)
 				return ApplyPoisonResult.Immune;
 
-			if (Spells.Necromancy.EvilOmenSpell.CheckEffect(this))
+			if (Spells.Necromancy.EvilOmenSpell.TryEndEffect(this))
 				poison = PoisonImpl.IncreaseLevel(poison);
 
 			ApplyPoisonResult result = base.ApplyPoison(from, poison);
@@ -1329,6 +1337,7 @@ namespace Server.Mobiles
 		public virtual void AlterMeleeDamageTo(Mobile to, ref int damage)
 		{
 		}
+
 		#endregion
 
 		public virtual void CheckReflect(Mobile caster, ref bool reflect)
@@ -2144,6 +2153,7 @@ namespace Server.Mobiles
 		public virtual bool CanAngerOnTame { get { return false; } }
 
 		#region OnAction[...]
+
 		public virtual void OnActionWander()
 		{
 		}
@@ -2167,6 +2177,7 @@ namespace Server.Mobiles
 		public virtual void OnActionBackoff()
 		{
 		}
+
 		#endregion
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
@@ -2822,6 +2833,7 @@ namespace Server.Mobiles
 		 * -Could add a FightMode.Prefered
 		 *
 		 */
+
 		public virtual double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
 		{
 			if ((bPlayerOnly && m.Player) || !bPlayerOnly)
@@ -3118,6 +3130,7 @@ namespace Server.Mobiles
 
 			return false;
 		}
+
 		#endregion
 
 		public override void AggressiveAction(Mobile aggressor, bool criminal)
@@ -4152,6 +4165,7 @@ namespace Server.Mobiles
 			if (!item.Stackable || !pack.TryDropItem(this, item, false)) // try stack
 				pack.DropItem(item); // failed, drop it anyway
 		}
+
 		#endregion
 
 		public override void OnDoubleClick(Mobile from)

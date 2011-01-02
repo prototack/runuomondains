@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: Packets.cs 644 2010-12-23 09:18:45Z asayre $
+ *   $Id: Packets.cs 653 2010-12-31 11:09:18Z asayre $
  *
  ***************************************************************************/
 
@@ -3771,7 +3771,7 @@ namespace Server.Network
 		}
 	}
 
-	public class ClearWeaponAbility : Packet
+	public sealed class ClearWeaponAbility : Packet
 	{
 		public static readonly Packet Instance = Packet.SetStatic( new ClearWeaponAbility() );
 
