@@ -1043,7 +1043,7 @@ namespace Server.Items
 
 							target.Paralyzed = false;
 
-							EvilOmenSpell.CheckEffect( target );
+							EvilOmenSpell.TryEndEffect( target );
 							StrangleSpell.RemoveCurse( target );
 							CorpseSkinSpell.RemoveCurse( target );
 							CurseSpell.RemoveEffect( target );

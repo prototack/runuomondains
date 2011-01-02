@@ -54,7 +54,7 @@ namespace Server.Items
 
 				from.Paralyzed = false;
 
-				EvilOmenSpell.CheckEffect( from );
+				EvilOmenSpell.TryEndEffect( from );
 				StrangleSpell.RemoveCurse( from );
 				CorpseSkinSpell.RemoveCurse( from );
 				CurseSpell.RemoveEffect( from );

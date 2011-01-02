@@ -2641,7 +2641,7 @@ namespace Server.Mobiles
 
 		public override void Damage(int amount, Mobile from)
 		{
-			if (Spells.Necromancy.EvilOmenSpell.CheckEffect(this))
+			if (Spells.Necromancy.EvilOmenSpell.TryEndEffect(this))
 				amount = (int)(amount * 1.25);
 
 			Mobile oath = Spells.Necromancy.BloodOathSpell.GetBloodOath(from);
@@ -2692,7 +2692,7 @@ namespace Server.Mobiles
 			if (!Alive)
 				return ApplyPoisonResult.Immune;
 
-			if (Spells.Necromancy.EvilOmenSpell.CheckEffect(this))
+			if (Spells.Necromancy.EvilOmenSpell.TryEndEffect(this))
 				poison = PoisonImpl.IncreaseLevel(poison);
 
 			ApplyPoisonResult result = base.ApplyPoison(from, poison);

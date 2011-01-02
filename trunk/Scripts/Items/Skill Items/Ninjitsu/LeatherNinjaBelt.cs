@@ -9,12 +9,24 @@ using Server.Mobiles;
 namespace Server.Items
 {
 	[FlipableAttribute( 0x2790, 0x27DB )]
-	public class LeatherNinjaBelt : BaseWaist, IUsesRemaining, IDyable
+	public class LeatherNinjaBelt : BaseWaist, IDyable, INinjaWeapon
 	{
 		public override CraftResource DefaultResource{ get{ return CraftResource.RegularLeather; } }
 
-		private int m_UsesRemaining;
+		public virtual int WrongAmmoMessage { get { return 1063301; } } //You can only place shuriken in a ninja belt.
+		public virtual int NoFreeHandMessage { get { return 1063299; } } //You must have a free hand to throw shuriken.
+		public virtual int EmptyWeaponMessage { get { return 1063297; } } //You have no shuriken in your ninja belt!
+		public virtual int RecentlyUsedMessage { get { return 1063298; } } //You cannot throw another shuriken yet.
+		public virtual int FullWeaponMessage { get { return 1063302; } } //You cannot add any more shuriken.
 
+		public virtual int WeaponMinRange { get { return 2; } }
+		public virtual int WeaponMaxRange { get { return 10; } }
+
+		public virtual int WeaponDamage { get { return Utility.RandomMinMax(3, 5); } }
+
+		public virtual Type AmmoType { get { return typeof(Shuriken); } }
+
+		private int m_UsesRemaining;
 		private Poison m_Poison;
 		private int m_PoisonCharges;
 
@@ -52,6 +64,17 @@ namespace Server.Items
 		{
 		}
 
+		public void AttackAnimation(Mobile from, Mobile to)
+		{
+			if (from.Body.IsHuman)
+			{
+				from.Animate(from.Mounted ? 26 : 9, 7, 1, true, false, 0);
+			}
+
+			from.PlaySound(0x23A);
+			from.MovingEffect(to, 0x27AC, 1, 0, false, false);
+		}
+
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );
@@ -66,40 +89,20 @@ namespace Server.Items
 
 		public override bool OnEquip( Mobile from )
 		{
-			if ( !base.OnEquip( from ) )
-				return false;
-
-			from.SendLocalizedMessage( 1070785 ); // Double click this item each time you wish to throw a shuriken.
-			return true;
+			if (base.OnEquip(from))
+			{
+				from.SendLocalizedMessage(1070785); // Double click this item each time you wish to throw a shuriken.
+				return true;
+			}
+			return false;
 		}
 
-		public override void OnDoubleClick( Mobile from )
+		public override void OnDoubleClick(Mobile from)
 		{
-			if ( !IsChildOf( from ) )
-				return;
-
-			if ( m_UsesRemaining < 1 )
-			{
-				// You have no shuriken in your ninja belt!
-				from.SendLocalizedMessage( 1063297 );
-			}
-			else if (((PlayerMobile)from).NinjaWepCooldown)
-			{
-				// You cannot throw another shuriken yet.
-				from.SendLocalizedMessage( 1063298 );
-			}
-			else if ( !BasePotion.HasFreeHand( from ) )
-			{
-				// You must have a free hand to throw shuriken.
-				from.SendLocalizedMessage( 1063299 );
-			}
-			else
-			{
-				from.BeginTarget( 10, false, TargetFlags.Harmful, new TargetCallback( OnTarget ) );
-			}
+			NinjaWeapon.AttemptShoot((PlayerMobile)from, this);
 		}
 
-		public void Shoot( Mobile from, Mobile target )
+/*		public void Shoot( Mobile from, Mobile target )
 		{
 			if ( from == target )
 				return;
@@ -299,7 +302,7 @@ namespace Server.Items
 				Reload( from, (Shuriken) obj );
 			else
 				from.SendLocalizedMessage( 1063301 ); // You can only place shuriken in a ninja belt.
-		}
+		}*/
 
 		public override void GetContextMenuEntries( Mobile from, List<ContextMenuEntry> list )
 		{
@@ -307,42 +310,8 @@ namespace Server.Items
 
 			if ( IsChildOf( from ) )
 			{
-				list.Add( new LoadEntry( this ) );
-				list.Add( new UnloadEntry( this ) );
-			}
-		}
-
-		private class LoadEntry : ContextMenuEntry
-		{
-			private LeatherNinjaBelt m_Belt;
-
-			public LoadEntry( LeatherNinjaBelt belt ) : base( 6222, 0 )
-			{
-				m_Belt = belt;
-			}
-
-			public override void OnClick()
-			{
-				if ( !m_Belt.Deleted && m_Belt.IsChildOf( Owner.From ) )
-					Owner.From.BeginTarget( 10, false, TargetFlags.Harmful, new TargetCallback( m_Belt.OnTarget ) );
-			}
-		}
-
-		private class UnloadEntry : ContextMenuEntry
-		{
-			private LeatherNinjaBelt m_Belt;
-
-			public UnloadEntry( LeatherNinjaBelt belt ) : base( 6223, 0 )
-			{
-				m_Belt = belt;
-
-				Enabled = ( belt.UsesRemaining > 0 );
-			}
-
-			public override void OnClick()
-			{
-				if ( !m_Belt.Deleted && m_Belt.IsChildOf( Owner.From ) )
-					m_Belt.Unload( Owner.From );
+				list.Add( new NinjaWeapon.LoadEntry( this ) );
+				list.Add( new NinjaWeapon.UnloadEntry( this ) );
 			}
 		}
 
@@ -357,7 +326,7 @@ namespace Server.Items
 			Poison.Serialize( m_Poison, writer );
 			writer.Write( (int) m_PoisonCharges );
 		}
-		
+
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );

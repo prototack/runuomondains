@@ -5,7 +5,7 @@
  *   copyright            : (C) The RunUO Software Team
  *   email                : info@runuo.com
  *
- *   $Id: ObjectPropertyList.cs 4 2006-06-15 04:28:39Z mark $
+ *   $Id: ObjectPropertyList.cs 653 2010-12-31 11:09:18Z asayre $
  *
  ***************************************************************************/
 
@@ -25,7 +25,7 @@ using Server.Network;
 
 namespace Server
 {
-	public class ObjectPropertyList : Packet
+	public sealed class ObjectPropertyList : Packet
 	{
 		private IEntity m_Entity;
 		private int m_Hash;
@@ -178,7 +178,7 @@ namespace Server
 		}
 	}
 
-	public class OPLInfo : Packet
+	public sealed class OPLInfo : Packet
 	{
 		/*public OPLInfo( ObjectPropertyList list ) : base( 0xBF )
 		{

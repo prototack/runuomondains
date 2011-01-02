@@ -27,7 +27,7 @@ namespace Server.Items
 		public override int AosMinDamage{ get{ return 13; } }
 		public override int AosMaxDamage{ get{ return 15; } }
 		public override int AosSpeed{ get{ return 33; } }
-		
+
 		#region Mondain's Legacy
 		public override float MlSpeed{ get{ return 3.75f; } }
 		#endregion
