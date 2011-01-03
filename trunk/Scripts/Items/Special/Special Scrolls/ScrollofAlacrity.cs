@@ -125,13 +125,15 @@ namespace Server.Items
 			Effects.PlaySound( from.Location, from.Map, 0x1E9 );
 			Effects.SendTargetParticles( from, 0x373A, 35, 45, 0x00, 0x00, 9502, (EffectLayer)255, 0x100 );
 
-			pm.AcceleratedStart = DateTime.Now + TimeSpan.FromMinutes(15);
+			pm.AcceleratedStart = DateTime.Now + TimeSpan.FromMinutes( 15 );
 
 			Timer t = (Timer)m_Table[from];
 
 			m_Table[from] = Timer.DelayCall( TimeSpan.FromMinutes( 15 ), new TimerStateCallback( Expire_Callback ), from );
 
 			pm.AcceleratedSkill = Skill;
+
+			BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.ArcaneEmpowerment, 1078511, 1078512, Skill.ToString()));
 
 			Delete();
 		}
@@ -145,6 +147,8 @@ namespace Server.Items
 			m_Table.Remove(m);
 
 			m.PlaySound(0x1F8);
+
+			BuffInfo.RemoveBuff(m, BuffIcon.ArcaneEmpowerment);
 
 			m.SendLocalizedMessage(1077957);// The intense energy dissipates. You are no longer under the effects of an accelerated skillgain scroll.
 		}
