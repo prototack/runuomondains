@@ -892,7 +892,7 @@ namespace Server.Multis
 				string sNumber = navPoint.Substring( start );
 
                 if ( !int.TryParse( sNumber, out number ) )
-                    number = -1;
+					number = -1;
 
 				if ( number != -1 )
 				{

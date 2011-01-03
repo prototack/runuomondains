@@ -91,7 +91,7 @@ namespace Server.Mobiles
 			base.OnDeath( c );
 		}
 
-		[CommandProperty( AccessLevel.Administrator )]
+		[CommandProperty( AccessLevel.Player )]
 		public bool IsHired
 		{
 			get

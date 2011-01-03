@@ -1097,8 +1097,8 @@ namespace Server.Gumps
 			AddImageTiled( 20, 145, 200, 2, 10001 );
 			AddImageTiled( 20, 170, 200, 2, 10001 );
 			AddImageTiled( 20, 195, 200, 2, 10001 );
-            AddImageTiled(20, 220, 200, 2, 10001);
-            AddImageTiled(20, 245, 200, 2, 10001);
+			AddImageTiled( 20, 220, 200, 2, 10001 );
+			AddImageTiled( 20, 245, 200, 2, 10001 );
 			//Map names
 			AddLabel( 35, 51, 200, "Doom" );
 			AddLabel( 35, 76, 200, "North" );
@@ -1106,8 +1106,8 @@ namespace Server.Gumps
 			AddLabel( 35, 126, 200, "South" );
 			AddLabel( 35, 151, 200, "Vendors" );
 			AddLabel( 35, 176, 246, "Citadel" );
-            AddLabel(35, 201, 246, "Labyrinth");
-            AddLabel(35, 226, 246, "Bedlam");
+			AddLabel( 35, 201, 246, "Labyrinth" );
+			AddLabel( 35, 226, 246, "Bedlam" );
 
 			//Options
 			AddCheck( 182, 48, 210, 211, true, 101 );
@@ -1116,8 +1116,8 @@ namespace Server.Gumps
 			AddCheck( 182, 123, 210, 211, true, 104 );
 			AddCheck( 182, 148, 210, 211, true, 105 );
 			AddCheck( 182, 173, 210, 211, true, 106 );
-            AddCheck(182, 198, 210, 211, true, 107);
-            AddCheck(182, 223, 210, 211, true, 108);
+			AddCheck( 182, 198, 210, 211, true, 107 );
+			AddCheck( 182, 223, 210, 211, true, 108 );
 
 			//Ok, Cancel
 			// alt era 280
@@ -1176,11 +1176,11 @@ namespace Server.Gumps
 						if( Selections.Contains( 107 ) == true )
 						{
 							CommandSystem.Handle( from, String.Format( "{0}Spawngen malas/Labyrinth.map", prefix ) );
-                        }
-                        if (Selections.Contains(108) == true)
-                        {
-                            CommandSystem.Handle(from, String.Format("{0}Spawngen malas/Bedlam.map", prefix));
-                        }
+						}
+						if (Selections.Contains(108) == true)
+						{
+							CommandSystem.Handle(from, String.Format("{0}Spawngen malas/Bedlam.map", prefix));
+						}
 					}
 
 					from.Say( "Spawn generation completed!" );

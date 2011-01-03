@@ -7,6 +7,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using Server;
 using Server.Items;
 using Server.Mobiles;
@@ -753,9 +754,9 @@ namespace Server.Gumps
 			AddButton( 525, 370, 0x15E1, 0x15E5, 10007, GumpButtonType.Reply, 0 );
 		}
 
-		public ArrayList CreateArray( RelayInfo info, Mobile from )
+		public List<string> CreateArray( RelayInfo info, Mobile from )
 		{
-			ArrayList creaturesName = new ArrayList();
+			List<string> creaturesName = new List<string>();
 
 			for ( int i = 0;  i < 13; i++ )
 			{

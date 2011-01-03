@@ -133,6 +133,8 @@ namespace Server.Items
 
 			pm.AcceleratedSkill = Skill;
 
+			BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.ArcaneEmpowerment, 1078511, 1078512, Skill.ToString())); // Accelerated Skillgain Skill: ~1_val~
+
 			Delete();
 		}
 

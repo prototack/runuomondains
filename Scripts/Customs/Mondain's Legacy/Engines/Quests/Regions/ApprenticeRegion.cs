@@ -47,8 +47,8 @@ namespace Server.Regions
 									player.SendLocalizedMessage( (int) apprentice.Enter );
 								else if ( apprentice.Enter is string )
 									player.SendMessage( (string) apprentice.Enter );
-									
-								BuffInfo info = new BuffInfo( BuffIcon.ArcaneEmpowerment, 1078511 ); // Accelerated Skillgain
+
+								BuffInfo info = new BuffInfo(BuffIcon.ArcaneEmpowerment, 1078511, 1078512, apprentice.Skill.ToString()); // Accelerated Skillgain Skill: ~1_val~
 								BuffInfo.AddBuff( m, info );
 								m_Table[ m ] = info;
 							}
