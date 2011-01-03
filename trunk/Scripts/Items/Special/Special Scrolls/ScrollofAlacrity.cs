@@ -33,9 +33,9 @@ namespace Server.Items
 	{
 		public override int LabelNumber { get { return 1078604; } } // Scroll of Alacrity
 
-		public override int Message { get { return 1078602; } } /*Using a Scroll of Transcendence for a given skill will permanently increase your current 
-																*level in that skill by the amount of points displayed on the scroll.
-																*As you may not gain skills beyond your maximum skill cap, any excess points will be lost.*/
+		public override int Message { get { return 1078602; } } /* Using a Scroll of Alacrity for a given skill will increase the amount of skillgain
+																* you receive for that skill. Once the Scroll of Alacrity duration has expired,
+																* skillgain will return to normal for that skill. */
 
 		public override string DefaultTitle { get { return String.Format( "<basefont color=#FFFFFF>Scroll of Alacrity:</basefont>" ); } }
 
