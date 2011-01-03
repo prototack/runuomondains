@@ -7,7 +7,7 @@ namespace Server.Items
 {
 	public class HitchingRope : Item
 	{
-		public override int LabelNumber { get { return 1071158; } } //  Supplied hitching rope.
+		public override int LabelNumber { get { return 1071124; } } //  hitching rope
 
 		[Constructable]
 		public HitchingRope()
@@ -61,7 +61,7 @@ namespace Server.Items
 
 					if (postItem.UsesRemaining >= 1)
 					{
-						from.SendMessage("Hitching Rope cannot be applied at this time", 0x59);
+						from.SendMessage("Hitching Rope cannot be applied at this time.", 0x59);
 					}
 					else if (postItem.Charges <= 0 && postItem.UsesRemaining <= 0)
 					{
@@ -75,7 +75,7 @@ namespace Server.Items
 
 						if (postItem is Item)
 						{
-							from.SendMessage("You apply the Hitching Rope and can now use it once again");
+							from.SendLocalizedMessage(1071158); // Supplied hitching rope.
 						}
 					}
 				}

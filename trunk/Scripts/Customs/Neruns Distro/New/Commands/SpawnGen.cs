@@ -1,10 +1,11 @@
 ///////////////////////////
 //       By Nerun        //
-//    Engine v5.1.9      //
+//    Engine v5.2.2      //
 ///////////////////////////
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Server;
@@ -132,6 +133,7 @@ namespace Server
 			DateTime startTime = DateTime.Now;
 			int count = 0;
 			ArrayList itemssave = new ArrayList();
+			string mapanome = "spawns";
 
 			foreach ( Item itemsave in World.Items.Values )
 			{
@@ -154,136 +156,7 @@ namespace Server
 				}
 			}
 
-			if ( !Directory.Exists( "Data/Monsters" ) )
-				Directory.CreateDirectory( "Data/Monsters" );
-
-			using ( StreamWriter op = new StreamWriter( "Data/Monsters/spawns.map" ) )
-			{
-				foreach ( PremiumSpawner itemsave2 in itemssave )
-				{
-					int mapnumber = 0;
-					switch ( itemsave2.Map.ToString() )
-					{
-						case "Felucca":
-							mapnumber = 1;
-							break;
-						case "Trammel":
-							mapnumber = 2;
-							break;
-						case "Ilshenar":
-							mapnumber = 3;
-							break;
-						case "Malas":
-							mapnumber = 4;
-							break;
-						case "Tokuno":
-							mapnumber = 5;
-							break;
-						default:
-							mapnumber = 6;
-							Console.WriteLine( "Monster Parser: Warning, unknown map {0}", itemsave2.Map );
-							break;
-					}
-
-					string timer1a = itemsave2.MinDelay.ToString();
-					string[] timer1b = timer1a.Split( ':' );
-					int timer1c = ( Utility.ToInt32( timer1b[0] ) * 60 ) + Utility.ToInt32( timer1b[1] );
-
-					string timer2a = itemsave2.MaxDelay.ToString();
-					string[] timer2b = timer2a.Split( ':' );
-					int timer2c = ( Utility.ToInt32( timer2b[0] ) * 60 ) + Utility.ToInt32( timer2b[1] );
-
-					string towrite = "";
-					string towriteA = "";
-					string towriteB = "";
-					string towriteC = "";
-					string towriteD = "";
-					string towriteE = "";
-
-					if ( itemsave2.CreaturesName.Count > 0 )
-					{
-						towrite = itemsave2.CreaturesName[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerA.Count > 0 )
-					{
-						towriteA = itemsave2.SubSpawnerA[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerB.Count > 0 )
-					{
-						towriteB = itemsave2.SubSpawnerB[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerC.Count > 0 )
-					{
-						towriteC = itemsave2.SubSpawnerC[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerD.Count > 0 )
-					{
-						towriteD = itemsave2.SubSpawnerD[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerE.Count > 0 )
-					{
-						towriteE = itemsave2.SubSpawnerE[0].ToString();
-					}
-
-					for ( int i = 1; i < itemsave2.CreaturesName.Count; ++i )
-					{
-						if ( itemsave2.CreaturesName.Count > 0 )
-						{
-							towrite = towrite + ":" + itemsave2.CreaturesName[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerA.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerA.Count > 0 )
-						{
-							towriteA = towriteA + ":" + itemsave2.SubSpawnerA[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerB.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerB.Count > 0 )
-						{
-							towriteB = towriteB + ":" + itemsave2.SubSpawnerB[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerC.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerC.Count > 0 )
-						{
-							towriteC = towriteC + ":" + itemsave2.SubSpawnerC[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerD.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerD.Count > 0 )
-						{
-							towriteD = towriteD + ":" + itemsave2.SubSpawnerD[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerE.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerE.Count > 0 )
-						{
-							towriteE = towriteE + ":" + itemsave2.SubSpawnerE[i].ToString();
-						}
-					}
-
-					op.WriteLine( "*|{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}|{18}|{19}|{20}", towrite, towriteA, towriteB, towriteC, towriteD, towriteE, itemsave2.X, itemsave2.Y, itemsave2.Z, mapnumber, timer1c, timer2c, itemsave2.HomeRange, itemsave2.SpawnRange, itemsave2.SpawnID, itemsave2.Count, itemsave2.CountA, itemsave2.CountB, itemsave2.CountC, itemsave2.CountD, itemsave2.CountE );
-				}
-			}
-
-			DateTime endTime = DateTime.Now;
-			World.Broadcast( 0x35, true, "{0} spawns have been saved. The entire process took {1:F1} seconds.", count, (endTime - startTime).TotalSeconds );
+			GenericSave( itemssave, mapanome, count, startTime );
 		}
 
 		private static void Remove( int ID )
@@ -317,6 +190,7 @@ namespace Server
 			DateTime startTime = DateTime.Now;
 			int count = 0;
 			ArrayList itemssave = new ArrayList();
+			string mapanome = "byhand";
 
 			foreach ( Item itemsave in World.Items.Values )
 			{ 
@@ -327,136 +201,7 @@ namespace Server
 				}
 			}
 
-			if ( !Directory.Exists( "Data/Monsters" ) )
-				Directory.CreateDirectory( "Data/Monsters" );
-
-			using ( StreamWriter op = new StreamWriter( "Data/Monsters/byhand.map" ) )
-			{
-				foreach ( PremiumSpawner itemsave2 in itemssave )
-				{
-					int mapnumber = 0;
-					switch ( itemsave2.Map.ToString() )
-					{
-						case "Felucca":
-							mapnumber = 1;
-							break;
-						case "Trammel":
-							mapnumber = 2;
-							break;
-						case "Ilshenar":
-							mapnumber = 3;
-							break;
-						case "Malas":
-							mapnumber = 4;
-							break;
-						case "Tokuno":
-							mapnumber = 5;
-							break;
-						default:
-							mapnumber = 6;
-							Console.WriteLine( "Monster Parser: Warning, unknown map {0}", itemsave2.Map );
-							break;
-					}
-
-					string timer1a = itemsave2.MinDelay.ToString();
-					string[] timer1b = timer1a.Split( ':' );
-					int timer1c = ( Utility.ToInt32( timer1b[0] ) * 60 ) + Utility.ToInt32( timer1b[1] );
-
-					string timer2a = itemsave2.MaxDelay.ToString();
-					string[] timer2b = timer2a.Split( ':' );
-					int timer2c = ( Utility.ToInt32( timer2b[0] ) * 60 ) + Utility.ToInt32( timer2b[1] );
-
-					string towrite = "";
-					string towriteA = "";
-					string towriteB = "";
-					string towriteC = "";
-					string towriteD = "";
-					string towriteE = "";
-
-					if ( itemsave2.CreaturesName.Count > 0 )
-					{
-						towrite = itemsave2.CreaturesName[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerA.Count > 0 )
-					{
-						towriteA = itemsave2.SubSpawnerA[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerB.Count > 0 )
-					{
-						towriteB = itemsave2.SubSpawnerB[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerC.Count > 0 )
-					{
-						towriteC = itemsave2.SubSpawnerC[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerD.Count > 0 )
-					{
-						towriteD = itemsave2.SubSpawnerD[0].ToString();
-					}
-
-					if ( itemsave2.SubSpawnerE.Count > 0 )
-					{
-						towriteE = itemsave2.SubSpawnerE[0].ToString();
-					}
-
-					for ( int i = 1; i < itemsave2.CreaturesName.Count; ++i )
-					{
-						if ( itemsave2.CreaturesName.Count > 0 )
-						{
-							towrite = towrite + ":" + itemsave2.CreaturesName[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerA.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerA.Count > 0 )
-						{
-							towriteA = towriteA + ":" + itemsave2.SubSpawnerA[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerB.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerB.Count > 0 )
-						{
-							towriteB = towriteB + ":" + itemsave2.SubSpawnerB[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerC.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerC.Count > 0 )
-						{
-							towriteC = towriteC + ":" + itemsave2.SubSpawnerC[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerD.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerD.Count > 0 )
-						{
-							towriteD = towriteD + ":" + itemsave2.SubSpawnerD[i].ToString();
-						}
-					}
-
-					for ( int i = 1; i < itemsave2.SubSpawnerE.Count; ++i )
-					{
-						if ( itemsave2.SubSpawnerE.Count > 0 )
-						{
-							towriteE = towriteE + ":" + itemsave2.SubSpawnerE[i].ToString();
-						}
-					}
-
-					op.WriteLine( "*|{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}|{18}|{19}|{20}", towrite, towriteA, towriteB, towriteC, towriteD, towriteE, itemsave2.X, itemsave2.Y, itemsave2.Z, mapnumber, timer1c, timer2c, itemsave2.HomeRange, itemsave2.SpawnRange, itemsave2.SpawnID, itemsave2.Count, itemsave2.CountA, itemsave2.CountB, itemsave2.CountC, itemsave2.CountD, itemsave2.CountE );
-				}
-			}
-
-			DateTime endTime = DateTime.Now;
-			World.Broadcast( 0x35, true, "{0} spawns have been saved. The entire process took {1:F1} seconds.", count, (endTime - startTime).TotalSeconds );
+			GenericSave( itemssave, mapanome, count, startTime );
 		}
 
 		private static void Remove( Mobile from, int x1, int y1, int x2, int y2 )
@@ -490,6 +235,7 @@ namespace Server
 			DateTime startTime = DateTime.Now;
 			int count = 0;
 			ArrayList itemssave = new ArrayList();
+			string mapanome = "spawns";
 
 			foreach ( Item itemsave in World.Items.Values )
 			{ 
@@ -500,10 +246,20 @@ namespace Server
 				}
 			}
 
+			GenericSave( itemssave, mapanome, count, startTime );
+		}
+
+		private static void GenericSave( ArrayList colecao, string mapa, int count, DateTime startTime )
+		{
+			ArrayList itemssave = new ArrayList( colecao );
+			string mapanome = mapa;
+
 			if ( !Directory.Exists( "Data/Monsters" ) )
 				Directory.CreateDirectory( "Data/Monsters" );
 
-			using ( StreamWriter op = new StreamWriter( "Data/Monsters/spawns.map" ) )
+			string escreva = "Data/Monsters/" + mapanome + ".map";
+
+			using ( StreamWriter op = new StreamWriter( escreva ) )
 			{
 				foreach ( PremiumSpawner itemsave2 in itemssave )
 				{
@@ -623,7 +379,7 @@ namespace Server
 						}
 					}
 
-					op.WriteLine( "*|{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}|{18}|{19}|{20}", towrite, towriteA, towriteB, towriteC, towriteD, towriteE, itemsave2.X, itemsave2.Y, itemsave2.Z, mapnumber, timer1c, timer2c, itemsave2.HomeRange, itemsave2.SpawnRange, itemsave2.SpawnID, itemsave2.Count, itemsave2.CountA, itemsave2.CountB, itemsave2.CountC, itemsave2.CountD, itemsave2.CountE );
+					op.WriteLine( "*|{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}|{18}|{19}|{20}", towrite, towriteA, towriteB, towriteC, towriteD, towriteE, itemsave2.X, itemsave2.Y, itemsave2.Z, mapnumber, timer1c, timer2c, itemsave2.WalkingRange, itemsave2.HomeRange, itemsave2.SpawnID, itemsave2.Count, itemsave2.CountA, itemsave2.CountB, itemsave2.CountC, itemsave2.CountD, itemsave2.CountE );
 				}
 			}
 
@@ -679,7 +435,7 @@ namespace Server
 							//Place By class
 
 							case "*":
-								PlaceNPC( split[2].Split(':'), split[3].Split(':'), split[4].Split(':'), split[5].Split(':'), split[6].Split(':'), split[7], split[8], split[9], split[10], split[11], split[12], split[13], split[14], split[15], split[16], split[17], split[18], split[19], split[20], split[21], split[1].Split(':') );
+								PlaceNPC( split[2].Split(':'), split[3].Split(':'), split[4].Split(':'), split[5].Split(':'), split[6].Split(':'), split[7], split[8], split[9], split[10], split[11], split[12], split[14], split[13], split[15], split[16], split[17], split[18], split[19], split[20], split[21], split[1].Split(':') );
 								break;
 						}
 					}
@@ -698,7 +454,7 @@ namespace Server
 			}
 		}
 
-		public static void PlaceNPC( string[] fakespawnsA, string[] fakespawnsB, string[] fakespawnsC, string[] fakespawnsD, string[] fakespawnsE, string sx, string sy, string sz, string sm, string smintime, string smaxtime, string shomerange, string sspawnrange, string sspawnid, string snpccount, string sfakecountA, string sfakecountB, string sfakecountC, string sfakecountD, string sfakecountE, params string[] types )
+		public static void PlaceNPC( string[] fakespawnsA, string[] fakespawnsB, string[] fakespawnsC, string[] fakespawnsD, string[] fakespawnsE, string sx, string sy, string sz, string sm, string smintime, string smaxtime, string swalkingrange, string shomerange, string sspawnid, string snpccount, string sfakecountA, string sfakecountB, string sfakecountC, string sfakecountD, string sfakecountE, params string[] types )
 		{
 			if ( types.Length == 0 )
 				return;
@@ -727,7 +483,7 @@ namespace Server
 
 			TimeSpan maxtime = TimeSpan.FromMinutes( dmaxtime );
 			int homerange = Utility.ToInt32( shomerange );
-		        int spawnrange = Utility.ToInt32( sspawnrange );
+			int walkingrange = Utility.ToInt32( swalkingrange );
 			int spawnid = Utility.ToInt32( sspawnid );
 			int npccount = Utility.ToInt32( snpccount );
 			int fakecountA = Utility.ToInt32( sfakecountA );
@@ -745,23 +501,23 @@ namespace Server
 			switch ( map )
 			{
 				case 0://Trammel and Felucca
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Felucca, mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Trammel, mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Felucca, mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Trammel, mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
 				case 1://Felucca
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Felucca, mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Felucca, mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
 				case 2://Trammel
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Trammel, mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Trammel, mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
 				case 3://Ilshenar
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Ilshenar, mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Ilshenar, mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
 				case 4://Malas
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Malas, mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Malas, mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
 				case 5://Tokuno
-					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Maps[4], mintime, maxtime, homerange, spawnrange, spawnid, npccount, fakecountA, fakecountB, fakecountC,  fakecountD, fakecountE );
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Maps[4], mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
 				default:
 					Console.WriteLine( "Spawn Parser: Warning, unknown map {0}", map );
@@ -769,43 +525,34 @@ namespace Server
 			}
 		}
 
-		private static void MakeSpawner( string[] types, string[] fakespawnsA, string[] fakespawnsB, string[] fakespawnsC, string[] fakespawnsD, string[] fakespawnsE, int x, int y, int z, Map map, TimeSpan mintime, TimeSpan maxtime, int homerange, int spawnrange, int spawnid, int npccount, int fakecountA, int fakecountB, int fakecountC, int fakecountD, int fakecountE )
+		private static void MakeSpawner( string[] types, string[] fakespawnsA, string[] fakespawnsB, string[] fakespawnsC, string[] fakespawnsD, string[] fakespawnsE, int x, int y, int z, Map map, TimeSpan mintime, TimeSpan maxtime, int walkingrange, int homerange, int spawnid, int npccount, int fakecountA, int fakecountB, int fakecountC, int fakecountD, int fakecountE )
 		{
 			if ( types.Length == 0 )
 				return;
 
-			ArrayList noneA = new ArrayList();
-			ArrayList noneB = new ArrayList();
-			ArrayList noneC = new ArrayList();
-			ArrayList noneD = new ArrayList();
-			ArrayList noneE = new ArrayList();
+			List<string> tipos = new List<string>( types );
+			List<string> noneA = new List<string>();
+			List<string> noneB = new List<string>();
+			List<string> noneC = new List<string>();
+			List<string> noneD = new List<string>();
+			List<string> noneE = new List<string>();
 
-			if ( fakespawnsA[0] == "" )
-				noneA = new ArrayList();
-			else
-				noneA = new ArrayList( fakespawnsA );
+			if ( fakespawnsA[0] != "" )
+				noneA = new List<string>( fakespawnsA );
 
-			if ( fakespawnsB[0] == "" )
-				noneB = new ArrayList();
-			else
-				noneB = new ArrayList( fakespawnsB );
+			if ( fakespawnsB[0] != "" )
+				noneB = new List<string>( fakespawnsB );
 
-			if ( fakespawnsC[0] == "" )
-				noneC = new ArrayList();
-			else
-				noneC = new ArrayList( fakespawnsC );
+			if ( fakespawnsC[0] != "" )
+				noneC = new List<string>( fakespawnsC );
 
-			if ( fakespawnsD[0] == "" )
-				noneD = new ArrayList();
-			else
-				noneD = new ArrayList( fakespawnsD );
+			if ( fakespawnsD[0] != "" )
+				noneD = new List<string>( fakespawnsD );
 
-			if ( fakespawnsE[0] == "" )
-				noneE = new ArrayList();
-			else
-				noneE = new ArrayList( fakespawnsE );
+			if ( fakespawnsE[0] != "" )
+				noneE = new List<string>( fakespawnsE );
 
-			PremiumSpawner spawner = new PremiumSpawner( npccount, mintime, maxtime, Team, homerange, spawnrange, spawnid, new ArrayList( types ), noneA, noneB, noneC, noneD, noneE, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
+			PremiumSpawner spawner = new PremiumSpawner( npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE, spawnid, mintime, maxtime, Team, walkingrange, homerange, tipos, noneA, noneB, noneC, noneD, noneE );
 
 			spawner.MoveToWorld( new Point3D( x, y, z ), map );
 

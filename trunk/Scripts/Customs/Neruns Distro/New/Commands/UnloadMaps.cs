@@ -1060,14 +1060,14 @@ namespace Server.Gumps
 			AddPage(1);
 
 			//fundo cinza
-            //alt era 310
-            AddBackground(0, 0, 243, 295, 5054);
+			//alt era 310
+			AddBackground( 0, 0, 243, 295, 5054 );
 			//----------
 			AddLabel( 100, 2, 200, "MALAS" );
 			//fundo branco
 			//x, y, largura, altura, item
-            //alt era 232
-            AddImageTiled(10, 20, 220, 235, 3004);
+			//alt era 232
+			AddImageTiled( 10, 20, 220, 235, 3004 );
 			//----------
 			AddLabel( 30, 27, 200, "Map name" );
 			AddLabel( 172, 27, 200, "Unload" );
@@ -1087,8 +1087,8 @@ namespace Server.Gumps
 			AddImageTiled( 20, 145, 200, 2, 10001 );
 			AddImageTiled( 20, 170, 200, 2, 10001 );
 			AddImageTiled( 20, 195, 200, 2, 10001 );
-            AddImageTiled(20, 220, 200, 2, 10001);
-            AddImageTiled(20, 245, 200, 2, 10001);
+			AddImageTiled( 20, 220, 200, 2, 10001 );
+			AddImageTiled( 20, 245, 200, 2, 10001 );
 			//Map names
 			AddLabel( 35, 51, 200, "Doom" );
 			AddLabel( 35, 76, 200, "North" );
@@ -1096,8 +1096,8 @@ namespace Server.Gumps
 			AddLabel( 35, 126, 200, "South" );
 			AddLabel( 35, 151, 200, "Vendors" );
 			AddLabel( 35, 176, 200, "Citadel" );
-            AddLabel(35, 201, 200, "Labyrinth");
-            AddLabel(35, 226, 200, "Bedlam");
+			AddLabel( 35, 201, 200, "Labyrinth" );
+			AddLabel( 35, 226, 200, "Bedlam" );
 
 			//Options
 			AddCheck( 182, 48, 210, 211, false, 101 );
@@ -1106,13 +1106,13 @@ namespace Server.Gumps
 			AddCheck( 182, 123, 210, 211, false, 104 );
 			AddCheck( 182, 148, 210, 211, false, 105 );
 			AddCheck( 182, 173, 210, 211, false, 106 );
-            AddCheck(182, 198, 210, 211, false, 107);
-            AddCheck(182, 223, 210, 211, false, 108);
+			AddCheck( 182, 198, 210, 211, false, 107 );
+			AddCheck( 182, 223, 210, 211, false, 108 );
 
 			//Ok, Cancel
-            // alt era 280
-            AddButton(55, 265, 247, 249, 1, GumpButtonType.Reply, 0);
-            AddButton(125, 265, 241, 243, 0, GumpButtonType.Reply, 0);
+			// alt era 280
+			AddButton( 55, 265, 247, 249, 1, GumpButtonType.Reply, 0 );
+			AddButton( 125, 265, 241, 243, 0, GumpButtonType.Reply, 0 );
 		}
 
 		public override void OnResponse( NetState state, RelayInfo info )
@@ -1164,11 +1164,11 @@ namespace Server.Gumps
 						if( Selections.Contains( 107 ) == true )
 						{
 							CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 407", prefix ) );
-                        }
-                        if (Selections.Contains(108) == true)
-                        {
-                            CommandSystem.Handle(from, String.Format("{0}Spawngen unload 408", prefix));
-                        }
+						}
+						if (Selections.Contains(108) == true)
+						{
+							CommandSystem.Handle(from, String.Format("{0}Spawngen unload 408", prefix));
+						}
 					}
 
 					break;

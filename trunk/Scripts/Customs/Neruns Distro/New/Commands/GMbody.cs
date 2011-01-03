@@ -123,9 +123,9 @@ namespace Server.Commands
 							Spellbook book2 = new NecromancerSpellbook( (ulong)0xffff );
 							Spellbook book3 = new BookOfChivalry();
 							Spellbook book4 = new BookOfBushido();
-                            Spellbook book5 = new BookOfNinjitsu();
+							Spellbook book5 = new BookOfNinjitsu();
 
-                            PackItem(new GMHidingStone());
+							PackItem(new GMHidingStone());
 
 							PackItem( book1 );
 							PackItem( book2 );

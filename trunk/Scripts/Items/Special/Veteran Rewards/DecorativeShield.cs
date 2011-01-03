@@ -289,7 +289,7 @@ namespace Server.Items
 							
 						Point3D p3d = new Point3D( p );
 						ItemData id = TileData.ItemTable[ m_ItemID & TileData.MaxItemValue ];
-						
+
 						if ( map.CanFit( p3d, id.Height ) )
 						{
 							house = BaseHouse.FindHouseAt( p3d, map, id.Height );

@@ -53,8 +53,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun     '<i>Il Carro</i>'      v5.2.0", true, false );
-
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.2.3", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 50 );
 
@@ -108,7 +107,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun     '<i>Il Carro</i>'      v5.2.0", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.2.3", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 110 );
 
@@ -166,7 +165,7 @@ namespace Server.Gumps
 
 			AddBackground( 0, 0, 267, 450, 5054 );
 
-			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun     '<i>Il Carro</i>'      v5.2.0", true, false );
+			AddHtml( 8, 8, 250, 42, "        PREMIUM SPAWNER<BR>" + "by Nerun                   v5.2.3", true, false );
 
 			AddBlackAlpha( 8, 58, 250, 50 );
 

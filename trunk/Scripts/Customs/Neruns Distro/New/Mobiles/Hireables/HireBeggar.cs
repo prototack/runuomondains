@@ -33,22 +33,9 @@ namespace Server.Mobiles
 				AddItem( new ShortPants( Utility.RandomNeutralHue() ) );
 			}
 			Title = "the beggar";
-			Item hair = new Item( Utility.RandomList( 0x203B, 0x2049, 0x2048, 0x204A ) );
-			hair.Hue = Utility.RandomNeutralHue();
-			hair.Layer = Layer.Hair;
-			hair.Movable = false;
-			AddItem( hair );
-
-			if( Utility.RandomBool() && !this.Female )
-			{
-				Item beard = new Item( Utility.RandomList( 0x203E, 0x203F, 0x2040, 0x2041, 0x204B, 0x204C, 0x204D ) );
-
-				beard.Hue = hair.Hue;
-				beard.Layer = Layer.FacialHair;
-				beard.Movable = false;
-
-				AddItem( beard );
-			}
+			HairItemID = Race.RandomHair( Female );
+			HairHue = Race.RandomHairHue();
+			Race.RandomFacialHair( this );
 
 			SetStr( 26, 26 );
 			SetDex( 21, 21 );

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server.Network;
 using Server.Gumps;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -69,11 +70,11 @@ namespace Server.Mobiles
 			}
 		}
 
-		public ArrayList CreateArray( RelayInfo info, Mobile from )
+		public List<string> CreateArray( RelayInfo info, Mobile from )
 		{
-			ArrayList subSpawnerB = new ArrayList();
+			List<string> subSpawnerB = new List<string>();
 
-			for ( int i = 0;  i < 15; i++ )
+			for ( int i = 0;  i < 13; i++ )
 			{
 				TextRelay te = info.GetTextEntry( i );
 
@@ -85,12 +86,14 @@ namespace Server.Mobiles
 					{
 						str = str.Trim();
 
-						Type type = SpawnerType.GetType( str );
+						string t = Spawner.ParseType( str );
+
+						Type type = ScriptCompiler.FindTypeByName( t );
 
 						if ( type != null )
 							subSpawnerB.Add( str );
 						else
-							from.SendMessage( "{0} is not a valid type name.", str );
+							from.SendMessage( "{0} is not a valid type name.", t );
 					}
 				}
 			}
