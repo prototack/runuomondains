@@ -61,11 +61,13 @@ namespace Server.Engines.Help
 			{
 				PageEntry e = (PageEntry)list[i];
 
-				if ( e.Sender.Deleted || e.Sender.NetState == null )
+				#region Tintamar's Page In Queue
+				if ( e.Sender.Deleted ) // Removed from line ---->   || e.Sender.NetState == null )
 				{
 					e.AddResponse( e.Sender, "[Logout]" );
 					PageQueue.Remove( e );
 				}
+				#endregion
 				else
 				{
 					++i;
