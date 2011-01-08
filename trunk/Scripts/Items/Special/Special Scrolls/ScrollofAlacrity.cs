@@ -142,8 +142,11 @@ namespace Server.Items
 
 		private static void Expire_Callback(object state)
 		{
-			Mobile m = (Mobile)state;
+			AlacrityEnd((Mobile)state);
+		}
 
+		public static bool AlacrityEnd(Mobile m)
+		{
 			m_Table.Remove(m);
 
 			m.PlaySound(0x1F8);
@@ -151,6 +154,8 @@ namespace Server.Items
 			BuffInfo.RemoveBuff(m, BuffIcon.ArcaneEmpowerment);
 
 			m.SendLocalizedMessage(1077957);// The intense energy dissipates. You are no longer under the effects of an accelerated skillgain scroll.
+
+			return true;
 		}
 
 		public override void Serialize(GenericWriter writer)

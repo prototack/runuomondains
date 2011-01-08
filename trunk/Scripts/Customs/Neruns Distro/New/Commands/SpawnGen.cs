@@ -281,8 +281,11 @@ namespace Server
 						case "Tokuno":
 							mapnumber = 5;
 							break;
-						default:
+						/*case "TerMur":
 							mapnumber = 6;
+							break;*/
+						default:
+							mapnumber = 6; //7;
 							Console.WriteLine( "Monster Parser: Warning, unknown map {0}", itemsave2.Map );
 							break;
 					}
@@ -519,6 +522,10 @@ namespace Server
 				case 5://Tokuno
 					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Maps[4], mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
 					break;
+				/*case 6://TerMur
+					MakeSpawner( types, fakespawnsA, fakespawnsB, fakespawnsC, fakespawnsD, fakespawnsE, x, y, z, Map.Maps[5], mintime, maxtime, walkingrange, homerange, spawnid, npccount, fakecountA, fakecountB, fakecountC, fakecountD, fakecountE );
+					break;*/
+
 				default:
 					Console.WriteLine( "Spawn Parser: Warning, unknown map {0}", map );
 					break;

@@ -23,6 +23,7 @@ namespace Server.Commands
 			CommandSystem.Register( "UnloadIlshenar", AccessLevel.Administrator, new CommandEventHandler( UnloadIlshenar_OnCommand ) );
 			CommandSystem.Register( "UnloadTokuno", AccessLevel.Administrator, new CommandEventHandler( UnloadTokuno_OnCommand ) );
 			CommandSystem.Register( "UnloadFelucca", AccessLevel.Administrator, new CommandEventHandler( UnloadFelucca_OnCommand ) );
+			//CommandSystem.Register( "UnloadTerMur", AccessLevel.Administrator, new CommandEventHandler( UnloadTerMur_OnCommand ) );
 		}
 
 		[Usage( "[Unloadtrammel" )]
@@ -59,6 +60,13 @@ namespace Server.Commands
 		{
 			e.Mobile.SendGump( new UnloadTokunoGump( e ) );
 		}
+
+		/*[Usage( "[Unloadtermur" )]
+		[Description( "Unload Ter Mur maps with a menu." )] 
+		private static void UnloadTerMur_OnCommand( CommandEventArgs e )
+		{
+			e.Mobile.SendGump( new UnloadTerMurGump( e ) );
+		}*/
 	}
 }
 
@@ -1289,4 +1297,117 @@ namespace Server.Gumps
 			}
 		}
 	}
+
+	/*public class UnloadTerMurGump : Gump
+	{
+		private CommandEventArgs m_CommandEventArgs;
+		public UnloadTerMurGump( CommandEventArgs e ) : base( 50,50 )
+		{
+			m_CommandEventArgs = e;
+			Closable = true;
+			Dragable = true;
+
+			AddPage(1);
+
+			//fundo cinza
+			//alt era 310
+			AddBackground( 0, 0, 243, 250, 5054 );
+			//----------
+			AddLabel( 95, 2, 200, "TER MUR" );
+			//fundo branco
+			//x, y, largura, altura, item
+			AddImageTiled( 10, 20, 220, 183, 3004 );
+			//----------
+			AddLabel( 30, 27, 200, "Map name" );
+			AddLabel( 172, 27, 200, "Unload" );
+			//colunas
+			//x, y, comprimento, ?, item
+			AddImageTiled( 20, 25, 2, 172, 10003 );
+			AddImageTiled( 163, 25, 2, 172, 10003 );
+			AddImageTiled( 220, 25, 2, 172, 10003 );
+			//Linhas
+			//x, y, comprimento, ?, item
+			AddImageTiled( 20, 25, 200, 2, 10001 );
+			AddImageTiled( 20, 45, 200, 2, 10001 );
+			AddImageTiled( 20, 70, 200, 2, 10001 );
+			AddImageTiled( 20, 95, 200, 2, 10001 );
+			AddImageTiled( 20, 120, 200, 2, 10001 );
+			AddImageTiled( 20, 145, 200, 2, 10001 );
+			AddImageTiled( 20, 170, 200, 2, 10001 );
+			AddImageTiled( 20, 195, 200, 2, 10001 );
+			//Map names
+			AddLabel( 35, 51, 200, "Vendors" );
+			AddLabel( 35, 76, 200, "none" );
+			AddLabel( 35, 101, 200, "none" );
+			AddLabel( 35, 126, 200, "none" );
+			AddLabel( 35, 151, 200, "none" );
+			AddLabel( 35, 176, 200, "none" );
+
+			//Options
+			AddCheck( 182, 48, 210, 211, false, 101 );
+			AddCheck( 182, 73, 210, 211, false, 102 );
+			AddCheck( 182, 98, 210, 211, false, 103 );
+			AddCheck( 182, 123, 210, 211, false, 104 );
+			AddCheck( 182, 148, 210, 211, false, 105 );
+			AddCheck( 182, 173, 210, 211, false, 106 );
+
+			//Ok, Cancel
+			// alt era 280
+			AddButton( 55, 220, 247, 249, 1, GumpButtonType.Reply, 0 );
+			AddButton( 125, 220, 241, 243, 0, GumpButtonType.Reply, 0 );
+		}
+
+		public override void OnResponse( NetState state, RelayInfo info )
+		{
+			Mobile from = state.Mobile;
+
+			switch( info.ButtonID )
+			{
+				case 0: // Closed or Cancel
+				{
+					return;
+				}
+
+				default:
+				{
+					// Make sure that the OK, button was pressed
+					if( info.ButtonID == 1 )
+					{
+						// Get the array of switches selected
+						ArrayList Selections = new ArrayList( info.Switches );
+						string prefix = Server.Commands.CommandSystem.Prefix;
+
+						// Now unloading any selected maps
+
+						if( Selections.Contains( 101 ) == true )
+						{
+							CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 601", prefix ) );
+						}
+						if( Selections.Contains( 102 ) == true )
+						{
+							//CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 602", prefix ) );
+						}
+						if( Selections.Contains( 103 ) == true )
+						{
+							//CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 603", prefix ) );
+						}
+						if( Selections.Contains( 104 ) == true )
+						{
+							//CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 604", prefix ) );
+						}
+						if( Selections.Contains( 105 ) == true )
+						{
+							//CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 605", prefix ) );
+						}
+						if( Selections.Contains( 106 ) == true )
+						{
+							//CommandSystem.Handle( from, String.Format( "{0}Spawngen unload 606", prefix ) );
+						}
+					}
+
+					break;
+				}
+			}
+		}
+	}*/
 }
