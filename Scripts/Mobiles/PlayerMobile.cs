@@ -54,9 +54,6 @@ namespace Server.Mobiles
 		Spellweaving = 0x00040000,
 		#endregion
 
-		#region Scroll of Alacrity
-		AcceleratedSkill = 0x00080000,
-		#endregion
 	}
 
 	public enum NpcGuild
@@ -1069,6 +1066,14 @@ namespace Server.Mobiles
 		{
 			if (e.Mobile is PlayerMobile)
 				((PlayerMobile)e.Mobile).AutoStablePets();
+
+			#region Scroll of ALacrity
+			if(((PlayerMobile)e.Mobile).AcceleratedStart > DateTime.Now)
+			{
+				((PlayerMobile)e.Mobile).AcceleratedStart = DateTime.Now;
+				Server.Items.ScrollofAlacrity.AlacrityEnd((PlayerMobile)e.Mobile);
+			}
+			#endregion
 		}
 
 		private static void EventSink_Connected(ConnectedEventArgs e)
@@ -2159,6 +2164,13 @@ namespace Server.Mobiles
 
 				if (!EquipItem(deathRobe))
 					deathRobe.Delete();
+
+				#region Scroll of Alacrity
+				if ( this.AcceleratedStart > DateTime.Now )
+				{
+					BuffInfo.AddBuff( this, new BuffInfo( BuffIcon.ArcaneEmpowerment, 1078511, 1078512, this.AcceleratedSkill.ToString() ) );
+				}
+				#endregion
 			}
 		}
 
@@ -4112,7 +4124,8 @@ namespace Server.Mobiles
 				new Point3D( 1916, 2814,  0 ),
 				new Point3D( 2929,  854,  0 ),
 				new Point3D(  545,  967,  0 ),
-				new Point3D( 3665, 2587,  0 )
+			//	new Point3D( 3665, 2587,  0 )	// Old Haven, no healer here anymore
+				new Point3D( 3469, 2559, 36 )	// New Haven
 			};
 
 		private static Point3D[] m_IlshenarDeathDestinations = new Point3D[]

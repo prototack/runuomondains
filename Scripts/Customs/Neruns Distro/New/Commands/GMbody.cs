@@ -97,8 +97,30 @@ namespace Server.Commands
 
 						Container pack = from.Backpack;
 
+						ArrayList ItemsToDelete = new ArrayList();
+
+						foreach (Item item in from.Items)
+						{
+							if (item.Layer != Layer.Bank && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair && item.Layer != Layer.Mount && item.Layer != Layer.Backpack)
+							{
+								ItemsToDelete.Add(item);
+							}
+						}
+						foreach (Item item in ItemsToDelete)
+						{
+							item.Delete();
+						}
+
 						if ( pack == null )
 						{
+							pack = new Backpack();
+							pack.Movable = false;
+
+							from.AddItem( pack );
+						}
+						else
+						{
+							pack.Delete();
 							pack = new Backpack();
 							pack.Movable = false;
 

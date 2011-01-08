@@ -73,6 +73,11 @@ namespace Server.Items
 				SkillName.Bushido
 			};
 
+		private static SkillName[] m_MLSkills = new SkillName[]
+			{
+				SkillName.Spellweaving
+			};
+
 		private static List<SkillName> _Skills = new List<SkillName>();
 
 		public static List<SkillName> Skills
@@ -83,7 +88,7 @@ namespace Server.Items
 				{
 					switch ( Core.Expansion )
 					{
-						case Expansion.ML: _Skills.Add( SkillName.Spellweaving ); goto case Expansion.SE;
+						case Expansion.ML: _Skills.AddRange( m_MLSkills ); goto case Expansion.SE;
 						case Expansion.SE: _Skills.AddRange( m_SESkills ); goto case Expansion.AOS;
 						case Expansion.AOS: _Skills.AddRange( m_AOSSkills ); goto default;
 						default: _Skills.AddRange( m_Skills ); break;

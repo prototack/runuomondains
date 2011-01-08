@@ -231,12 +231,17 @@ namespace Server.Misc
                         toGain *= Utility.RandomMinMax(2, 4);
                 #endregion
 
-                #region Scroll of Alacrity
-                PlayerMobile pm = from as PlayerMobile;
+				#region Scroll of Alacrity
+				PlayerMobile pm = from as PlayerMobile;
 
-                if (from is PlayerMobile)
-                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.Now)
-                        toGain *= Utility.RandomMinMax(2, 5);
+				if ( from is PlayerMobile )
+				{
+					if ( pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.Now )
+					{
+						pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
+						toGain = Utility.RandomMinMax(2, 5);
+					}
+				}
                 #endregion
 
 				if ( !from.Player || (skills.Total + toGain) <= skills.Cap )

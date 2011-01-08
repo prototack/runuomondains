@@ -75,7 +75,7 @@ namespace Server.Engines.CannedEvil
 			new SpawnRecord( 0xff, 382, 328, -30 ), // Valor
 			new SpawnRecord( 0xff, 462, 926, -67 ), // Humility
 		    new SpawnRecord( (int)ChampionSpawnType.ForestLord, 1645, 1107, 8 ), // Spirituality
-		    new SpawnRecord( (int)ChampionSpawnType.Glade, 2212, 1260, 25 ), // Twisted Glade
+			new SpawnRecord( (int)ChampionSpawnType.Glade, 2212, 1260, 25 ), // Twisted Glade
         };
 
 		private SpawnRecord[] m_Tokuno = new SpawnRecord[]
@@ -88,7 +88,7 @@ namespace Server.Engines.CannedEvil
 			new SpawnRecord( (int)ChampionSpawnType.Corrupt, 174, 1629, 8 ), // Bedlam
 		};
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public bool Active
 		{
 			get
@@ -97,7 +97,7 @@ namespace Server.Engines.CannedEvil
 			}
 			set
 			{
-				if (value)
+				if ( value )
 					Start();
 				else
 					Stop();
@@ -106,7 +106,7 @@ namespace Server.Engines.CannedEvil
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public int ActiveAltars
 		{
 			get
@@ -137,7 +137,7 @@ namespace Server.Engines.CannedEvil
 			}
 		}*/
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public TimeSpan ExpireDelay
 		{
 			get
@@ -148,14 +148,14 @@ namespace Server.Engines.CannedEvil
 			{
 				m_ExpireDelay = value;
 
-				foreach (ChampionSpawn cs in m_AllSpawn)
+				foreach( ChampionSpawn cs in m_AllSpawn )
 				{
 					cs.ExpireDelay = m_ExpireDelay;
 				}
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty( AccessLevel.GameMaster )]
 		public TimeSpan RestartDelay
 		{
 			get

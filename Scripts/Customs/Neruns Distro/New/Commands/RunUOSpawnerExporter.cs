@@ -109,7 +109,7 @@ namespace Server.Commands
 								towrite = towrite + ":" + spawner.SpawnNames[i].ToString();
 							}
 
-							op.WriteLine( "{0}||||||{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|1|{9}|0|0|0|0|0", towrite, spawner.X, spawner.Y, spawner.Z, mapfinal, MinDelay, MaxDelay, spawner.HomeRange, spawner.HomeRange, spawner.Count);
+							op.WriteLine( "{0}||||||{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|1|{9}|0|0|0|0|0", towrite, spawner.X, spawner.Y, spawner.Z, mapfinal, MinDelay, MaxDelay, spawner.WalkingRange, spawner.HomeRange, spawner.Count);
 						}
 
 						else
